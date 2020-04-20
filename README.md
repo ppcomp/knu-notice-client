@@ -1,1 +1,7 @@
-knu-notice-client
+# knu-notice-client
+
+```
+JAVA
+Gradle
+AndroidStudio
+```
