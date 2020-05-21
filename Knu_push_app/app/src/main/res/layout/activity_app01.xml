@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="MainActivity">
+
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/btn_line"
+        android:scaleType="fitCenter"
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="610dp"
+        tools:src="@drawable/search"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="270dp"
+        android:layout_height="80dp"
+        android:background="@drawable/btn_line"
+        android:text="입력하시오"
+        android:gravity="center"
+        android:textSize="20pt"
+        tools:layout_editor_absoluteX="120dp"
+        tools:layout_editor_absoluteY="610dp"
+        tools:ignore="MissingConstraints" />
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="370dp"
+        android:layout_height="550dp"
+        android:background="@drawable/btn_line"
+        android:padding="0dp"
+        tools:layout_editor_absoluteX="20dp"
+        tools:layout_editor_absoluteY="30dp"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/checkBox0"
+                android:layout_width="370dp"
+                android:layout_height="60dp"
+                android:layout_weight="1"
+                android:background="@drawable/btn_line"
+                android:text="강원대학교"
+                android:textSize="30dp"
+                android:checked="true"
+                />
+
+            <CheckBox
+                android:id="@+id/checkBox1"
+                android:layout_width="370dp"
+                android:layout_height="60dp"
+                android:layout_weight="2"
+                android:background="@drawable/btn_line"
+                android:text="컴퓨터공학과"
+                android:textSize="30dp" />
+
+            <CheckBox
+                android:id="@+id/checkBox2"
+                android:layout_width="370dp"
+                android:layout_height="60dp"
+                android:layout_weight="3"
+                android:background="@drawable/btn_line"
+                android:text="장학재단"
+                android:textSize="30dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
