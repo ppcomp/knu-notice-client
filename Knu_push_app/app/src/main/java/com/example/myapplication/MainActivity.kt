@@ -18,11 +18,51 @@ import kotlinx.android.synthetic.main.main_layout.*
 //import kotlinx.android.synthetic.main.main.*
 import kotlinx.android.synthetic.main.main_toolbar.*
 
+//parsing 부분
+import android.os.StrictMode
+import java.net.URL
+import org.json.JSONArray
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+
 class MainActivity : AppCompatActivity() {
+    var noticeList = arrayListOf<notice>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //parsing 부분
+        val noticeAdapter = noticeAdapter(this, noticeList)
+        result.adapter = noticeAdapter
+
+        StrictMode.enableDefaults()
+        val serverUrl = "http://15.165.178.103:8999/notice/"
+
+        try {
+            val stream = URL(serverUrl).openConnection() as HttpURLConnection
+            var read = BufferedReader(InputStreamReader (stream.inputStream,"UTF-8"))
+            val response = read.readLine()
+            val jArray = JSONArray(response)
+
+            for(i in 0 until jArray.length()) {
+                val obj = jArray.getJSONObject(i)
+                val bid = obj.getString("bid")
+                val title = obj.getString("title")
+                val date = obj.getString("date")
+                val author = obj.getString("author")
+                val line = notice(bid, title, date, author)
+                noticeList.add(line)
+
+            }
+        } catch (e: Exception) {
+            val line = notice("오류", "오류", "오류", "오류")
+            noticeList.add(line)
+        }
+
+
 //        main_navigationView.setNavigationItemSelectedListener (this)
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
 
@@ -49,6 +89,7 @@ class MainActivity : AppCompatActivity() {
             super.onBackPressed()
         }
     }
-    }
+
+}
 
 
