@@ -24,4 +24,7 @@
         android:title="@string/구독리스트정보"
         android:padding = "10dp"
     />
+    <item android:id="@+id/keyword"
+        android:title="키워드 리스트"
+        android:padding = "10dp"/>
 </menu>

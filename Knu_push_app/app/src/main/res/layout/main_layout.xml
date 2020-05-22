@@ -13,14 +13,14 @@
     android:orientation="vertical">
     <include layout="@layout/main_toolbar"/>
     <!--메뉴 버튼-->
-    <ImageButton
-        android:id="@+id/menubutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#00FFFFFF"
-        android:layout_marginTop="-50dp"
-        android:padding="5dp"
-        android:src="@drawable/ic_menu_black_24dp" />
+<!--    <ImageButton-->
+<!--        android:id="@+id/menubutton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="#00FFFFFF"-->
+<!--        android:layout_marginTop="-50dp"-->
+<!--        android:padding="5dp"-->
+<!--        android:src="@drawable/ic_menu_black_24dp" />-->
 
 <!--리스트뷰  -->
     <ListView

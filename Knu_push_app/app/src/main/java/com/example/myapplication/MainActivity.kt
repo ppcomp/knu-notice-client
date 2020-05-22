@@ -26,14 +26,14 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 
-class MainActivity : AppCompatActivity() {
+ class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
     var noticeList = arrayListOf<notice>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        main_navigationView.setNavigationItemSelectedListener (this)
         //parsing 부분
         val noticeAdapter = noticeAdapter(this, noticeList)
         result.adapter = noticeAdapter
@@ -63,25 +63,47 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-//        main_navigationView.setNavigationItemSelectedListener (this)
+        setSupportActionBar(main_layout_toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp)
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
 
-        val fab: ImageButton = findViewById(R.id.menubutton)    //버튼 변수에 넣기
-        fab.setOnClickListener {   //클릭시
-            main_drawer_layout.openDrawer(GravityCompat.START)    // 네비게이션 드로어 열기
         }
 
-        }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {   //메뉴 클릭시 이동(아직 안됨)
-        val id = item.itemId
-        if(id == R.id.sub_list){
-            val intent = Intent(this,sub_list::class.java)
-            startActivity(intent)
-        }
-        return super.onOptionsItemSelected(item)
+    override fun onOptionsItemSelected(items: MenuItem): Boolean {
+      when(items.itemId){
+          android.R.id.home ->{
+              main_drawer_layout.openDrawer(GravityCompat.START)
+          }
+      }
+        return super.onOptionsItemSelected(items)
     }
 
+     override fun onNavigationItemSelected(lists: MenuItem): Boolean {
+         when(lists.itemId){
+             R.id.sub_list->{
+                 val intent = Intent(this,sub_list::class.java)
+                 startActivity(intent)
+             }
+             R.id.setting ->{
+                 val intent = Intent(this,setting::class.java)
+                 startActivity(intent)
+             }
+             R.id.login->{
+                 val intent = Intent(this,login::class.java )
+                 startActivity(intent)
+             }
+             R.id.license->{
+                 val intent = Intent(this,license::class.java)
+                 startActivity(intent)
+             }
+             R.id.keyword->{
+                 val intent = Intent(this,keyword::class.java)
+                 startActivity(intent)
+             }
+         }
+         return false
+     }
     override fun onBackPressed() {  //뒤로가기 버튼.
         if(main_drawer_layout.isDrawerOpen(GravityCompat.START)){
             main_drawer_layout.closeDrawers()
@@ -90,6 +112,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-}
+
+
+ }
 
 
