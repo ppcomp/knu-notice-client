@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/login_layout"
+    android:layout_width="match_parent"
+    android:layout_height = "match_parent"
+    android:orientation="vertical">
+    <include layout="@layout/main_toolbar"/>
+    <!--메뉴 버튼-->
+<!--    <ImageButton-->
+<!--        android:id="@+id/menubutton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="#00FFFFFF"-->
+<!--        android:layout_marginTop="-50dp"-->
+<!--        android:padding="5dp"-->
+<!--        android:src="@drawable/ic_menu_black_24dp" />-->
+
+<!--리스트뷰  -->
+    <ListView
+        android:id="@+id/result"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </ListView>
+
+
+<!--    <TextView-->
+<!--        -->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:gravity="center"-->
+<!--        android:text="메인"/>-->
+
+
+</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

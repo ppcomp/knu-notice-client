@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@color/colorWhite"/>
+        <!-- 배경으로 채울 색상-->
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/logo_for_splash"/>
+        <!-- 이미지파일-->
+    </item>
+</layer-list>
+
