@@ -2,18 +2,11 @@ package com.example.myapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Gravity
 import android.view.MenuItem
-import android.widget.ImageButton
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
-import androidx.drawerlayout.widget.DrawerLayout
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
-import android.view.Menu
 import kotlinx.android.synthetic.main.main_layout.*
 //import kotlinx.android.synthetic.main.main.*
 import kotlinx.android.synthetic.main.main_toolbar.*
@@ -31,7 +24,7 @@ import java.net.HttpURLConnection
  * @author 희진
  */
  class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
-    var noticeList = arrayListOf<notice>()
+    var noticeList = arrayListOf<Notice>()
 
     /**
      * 화면생성해주는 메소드
@@ -44,7 +37,7 @@ import java.net.HttpURLConnection
         main_navigationView.setNavigationItemSelectedListener (this)
 
         //parsing 부분
-        val noticeAdapter = noticeAdapter(this, noticeList)
+        val noticeAdapter = NoticeAdapter(this, noticeList)
         result.adapter = noticeAdapter
         StrictMode.enableDefaults()
         val serverUrl = "http://15.165.178.103:8999/notice/"
@@ -60,11 +53,11 @@ import java.net.HttpURLConnection
                 val title = obj.getString("title")
                 val date = obj.getString("date")
                 val author = obj.getString("author")
-                val line = notice(bid, title, date, author)
+                val line = Notice(bid, title, date, author)
                 noticeList.add(line)
             }
         } catch (e: Exception) {
-            val line = notice("오류", "오류", "오류", "오류")
+            val line = Notice("오류", "오류", "오류", "오류")
             noticeList.add(line)
         }
 
@@ -94,23 +87,23 @@ import java.net.HttpURLConnection
      override fun onNavigationItemSelected(lists: MenuItem): Boolean {
          when(lists.itemId){
              R.id.sub_list->{
-                 val intent = Intent(this,sub_list::class.java)
+                 val intent = Intent(this,SubList::class.java)
                  startActivity(intent)
              }
              R.id.setting ->{
-                 val intent = Intent(this,setting::class.java)
+                 val intent = Intent(this,Setting::class.java)
                  startActivity(intent)
              }
              R.id.login->{
-                 val intent = Intent(this,login::class.java )
+                 val intent = Intent(this,Login::class.java )
                  startActivity(intent)
              }
              R.id.license->{
-                 val intent = Intent(this,license::class.java)
+                 val intent = Intent(this,License::class.java)
                  startActivity(intent)
              }
              R.id.keyword->{
-                 val intent = Intent(this,keyword::class.java)
+                 val intent = Intent(this,Keyword::class.java)
                  startActivity(intent)
              }
          }
