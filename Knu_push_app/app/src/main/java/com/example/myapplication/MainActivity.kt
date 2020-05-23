@@ -61,14 +61,14 @@ import java.net.HttpURLConnection
             noticeList.add(line)
         }
 
-        setSupportActionBar(main_layout_toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp)
+        setSupportActionBar(main_layout_toolbar)//toolbar 지정
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)//toolbar  보이게 하기
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp)//메뉴 아이콘 지정
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
         }
 
     /**
-     * 메뉴 클릭시 이동
+     * 메뉴 클릭시 네비게이션 바 open
      * @author 희진
      */
     override fun onOptionsItemSelected(items: MenuItem): Boolean {
@@ -111,7 +111,7 @@ import java.net.HttpURLConnection
      }
 
     /**
-     * 뒤로가기 버튼
+     * 뒤로가기 버튼 누르면 네비게이션 바 close
      * @author 희진
      */
     override fun onBackPressed() {
@@ -123,5 +123,4 @@ import java.net.HttpURLConnection
     }
 
  }
-
 
