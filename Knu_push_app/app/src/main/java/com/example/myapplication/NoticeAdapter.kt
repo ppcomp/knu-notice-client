@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
 
-class noticeAdapter(val context: Context, val noticeList: ArrayList<notice>) : BaseAdapter() {
+class NoticeAdapter(val context: Context, val noticeList: ArrayList<Notice>) : BaseAdapter() {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         /* LayoutInflater는 item을 Adapter에서 사용할 View로 부풀려주는(inflate) 역할을 한다. */
         val view: View = LayoutInflater.from(context).inflate(R.layout.notice_item, null)
