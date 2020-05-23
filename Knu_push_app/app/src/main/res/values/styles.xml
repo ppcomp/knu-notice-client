@@ -10,4 +10,9 @@
 <!--        <item name="android:windowDrawsSystemBarBackgrounds">true</item>-->
     </style>
 
+    <!-- For Splash Screen -->
+    <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+
 </resources>
