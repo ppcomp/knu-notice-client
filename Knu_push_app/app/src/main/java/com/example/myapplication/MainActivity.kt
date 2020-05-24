@@ -13,6 +13,7 @@ import kotlinx.android.synthetic.main.main_toolbar.*
 
 //parsing 부분
 import android.os.StrictMode
+import kotlinx.android.synthetic.main.main_drawer_header.*
 import java.net.URL
 import org.json.JSONArray
 import java.io.BufferedReader
