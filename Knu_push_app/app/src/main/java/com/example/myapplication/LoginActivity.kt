@@ -19,7 +19,11 @@ import com.example.myapplication.ui.login.LoggedInUserView
 import com.example.myapplication.ui.login.LoginViewModel
 import com.example.myapplication.ui.login.LoginViewModelFactory
 
-class Login : AppCompatActivity() {
+/**
+ * 로그인 화면 기능을 작성하는 클래스
+ * @author 정준
+ */
+class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
 
@@ -35,10 +39,9 @@ class Login : AppCompatActivity() {
 
         loginViewModel = ViewModelProvider(this,
             LoginViewModelFactory()
-        )
-            .get(LoginViewModel::class.java)
+        ).get(LoginViewModel::class.java)
 
-        loginViewModel.loginFormState.observe(this@Login, Observer {
+        loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
             val loginState = it ?: return@Observer
 
             // disable login button unless both username / password is valid
@@ -52,7 +55,7 @@ class Login : AppCompatActivity() {
             }
         })
 
-        loginViewModel.loginResult.observe(this@Login, Observer {
+        loginViewModel.loginResult.observe(this@LoginActivity, Observer {
             val loginResult = it ?: return@Observer
 
             loading.visibility = View.GONE

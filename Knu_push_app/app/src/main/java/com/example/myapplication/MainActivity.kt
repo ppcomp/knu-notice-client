@@ -13,7 +13,6 @@ import kotlinx.android.synthetic.main.main_toolbar.*
 
 //parsing 부분
 import android.os.StrictMode
-import kotlinx.android.synthetic.main.main_drawer_header.*
 import java.net.URL
 import org.json.JSONArray
 import java.io.BufferedReader
@@ -96,7 +95,7 @@ import java.net.HttpURLConnection
                  startActivity(intent)
              }
              R.id.login->{
-                 val intent = Intent(this,Login::class.java )
+                 val intent = Intent(this,LoginActivity::class.java )
                  startActivity(intent)
              }
              R.id.license->{

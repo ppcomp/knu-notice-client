@@ -16,7 +16,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".Keyword" />
         <activity android:name=".License" />
-        <activity android:name=".Login" />
+        <activity android:name=".LoginActivity" />
         <activity android:name=".Setting" />
         <activity android:name=".SubList" />
         <activity
