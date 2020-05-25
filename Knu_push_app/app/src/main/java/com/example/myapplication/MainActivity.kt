@@ -89,23 +89,29 @@ import java.net.HttpURLConnection
              R.id.sub_list->{
                  val intent = Intent(this,SubList::class.java)
                  startActivity(intent)
+                 overridePendingTransition(R.anim.slideright,R.anim.slideleft)
              }
              R.id.setting ->{
                  val intent = Intent(this,Setting::class.java)
                  startActivity(intent)
+                 overridePendingTransition(R.anim.slideright,R.anim.slideleft)
              }
              R.id.login->{
                  val intent = Intent(this,Login::class.java )
                  startActivity(intent)
+                 overridePendingTransition(R.anim.slideright,R.anim.slideleft)
              }
              R.id.license->{
                  val intent = Intent(this,License::class.java)
                  startActivity(intent)
+                 overridePendingTransition(R.anim.slideright,R.anim.slideleft)
              }
              R.id.keyword->{
                  val intent = Intent(this,Keyword::class.java)
                  startActivity(intent)
+                 overridePendingTransition(R.anim.slideright,R.anim.slideleft)
              }
+
          }
          return false
      }
