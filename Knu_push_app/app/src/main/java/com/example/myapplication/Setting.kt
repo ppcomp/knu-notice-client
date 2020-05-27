@@ -15,5 +15,6 @@ class Setting : AppCompatActivity() {
             val intent = Intent(this, SubscriptionActivity::class.java)
             startActivity(intent)
         }
+
     }
 }
