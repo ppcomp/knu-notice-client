@@ -3,7 +3,232 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/colorGray"
     android:layout_height="match_parent"
     tools:context=".Setting">
 
+    <ImageView
+        android:id="@+id/imageicon"
+        android:layout_width="100dp"
+        android:layout_height="110dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/setting_icon"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        ></ImageView>
+
+
+    <TextView
+        android:id="@+id/userinfor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="개인 정보 설정"
+        android:padding="15dp"
+        android:textColor="@color/colorBlack"
+        android:fontFamily="@font/cafedangdanghae"
+        android:textSize="18dp"
+        android:background="@drawable/setting_bottom_line"
+
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@id/imageicon"
+        ></TextView>
+
+    <LinearLayout
+        android:id="@+id/changeinfo"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintTop_toBottomOf="@id/userinfor"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight=".50"
+            android:text="로그아웃"
+            android:gravity="center"
+            android:textColor="@color/colorBlack"
+            android:textSize="17dp"
+            android:background="@drawable/setting_bottom_line"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            ></TextView>
+        <Switch
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight=".50"
+            android:text="알림 설정 :"
+            android:textSize="17dp"
+            android:textColor="@color/colorBlack"
+            android:paddingLeft="20dp"
+            android:paddingRight="40dp"
+            android:track="@drawable/setting_switch_selector"
+            android:thumb="@drawable/setting_switch_thumb"
+            android:background="@drawable/setting_bottom_line"
+            android:layout_marginLeft="1dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            >
+         </Switch>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="193dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/changeinfo"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="리스트 수정"
+            android:padding="15dp"
+            android:textColor="@color/colorBlack"
+            android:fontFamily="@font/cafedangdanghae"
+            android:textSize="18dp"
+            android:background="@drawable/bg_setting_button"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            ></TextView>
+        <TextView
+            android:id="@+id/subscriptionSetting"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="구독 리스트 설정"
+            android:textSize="18dp"
+            android:padding="20dp"
+            android:textColor="@color/colorBlack"
+            android:layout_marginTop="1dp"
+            android:clickable="true"
+            android:background="@drawable/bg_setting_button"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.265"/>
+
+        <TextView
+            android:id="@+id/keywordSetting"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:text="키워드 설정"
+            android:layout_marginTop="1dp"
+            android:textSize="18dp"
+            android:textColor="@color/colorBlack"
+            android:padding="20dp"
+            android:clickable="true"
+            android:background="@drawable/bg_setting_button"
+            android:focusable="true"
+            android:foreground="?android:attr/selectableItemBackground"
+
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintLeft_toLeftOf="@+id/subscriptionSetting"
+            app:layout_constraintRight_toRightOf="@+id/subscriptionSetting"
+            app:layout_constraintTop_toBottomOf="@+id/subscriptionSetting"/>
+"
+          </LinearLayout>
+
+    <TextView
+        android:id="@+id/sort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="알림 정렬"
+        android:padding="15dp"
+        android:textColor="@color/colorBlack"
+        android:fontFamily="@font/cafedangdanghae"
+        android:textSize="18dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/setting_bottom_line"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/list"
+        ></TextView>
+
+    <LinearLayout
+        android:id="@+id/selectsort"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:layout_constraintTop_toBottomOf="@id/sort"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight=".50"
+            android:text="시간별 정렬"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="18dp"
+            android:background="@drawable/setting_bottom_line"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            ></TextView>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_weight=".50"
+            android:text="항목별 정렬"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_marginLeft="1dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="18dp"
+            android:background="@drawable/setting_bottom_line"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            ></TextView>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/subsetting"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@id/selectsort"
+        android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="부가 정보"
+        android:padding="15dp"
+        android:textColor="@color/colorBlack"
+        android:fontFamily="@font/cafedangdanghae"
+        android:textSize="18dp"
+        android:background="@drawable/setting_bottom_line"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        ></TextView>
+        <TextView
+            android:id="@+id/move_license"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="라이센스"
+            android:padding="10dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="18dp"
+            android:background="@drawable/setting_bottom_line"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            ></TextView>
+        <TextView
+            android:id="@+id/move_madeby"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="만든이"
+            android:padding="10dp"
+            android:textColor="@color/colorBlack"
+            android:textSize="18dp"
+            android:background="@drawable/setting_bottom_line"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            ></TextView>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
