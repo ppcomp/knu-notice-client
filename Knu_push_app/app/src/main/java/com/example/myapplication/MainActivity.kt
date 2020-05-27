@@ -40,7 +40,7 @@ import java.net.HttpURLConnection
         val noticeAdapter = NoticeAdapter(this, noticeList)
         result.adapter = noticeAdapter
         StrictMode.enableDefaults()
-        val serverUrl = "http://15.165.178.103:8999/notice/"
+        val serverUrl = "http://15.165.178.103/notice/all"
         try {
             val stream = URL(serverUrl).openConnection() as HttpURLConnection
             var read = BufferedReader(InputStreamReader (stream.inputStream,"UTF-8"))
