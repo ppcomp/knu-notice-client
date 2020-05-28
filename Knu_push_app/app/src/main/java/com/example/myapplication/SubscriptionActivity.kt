@@ -1,8 +1,10 @@
 package com.example.myapplication
 
+import android.content.Context
 import android.os.Bundle
 import android.os.StrictMode
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_subscription.*
 import kotlinx.android.synthetic.main.main_toolbar.*
@@ -33,11 +35,11 @@ class SubscriptionActivity : AppCompatActivity() {
             for (i in 0 until jArray.length()) {
                 val obj = jArray.getJSONObject(i)
                 val name = obj.getString("name")
-                val line = Subscription(name, false)
+                val line = Subscription(name)
                 subsList.add(line)
             }
         } catch (e: Exception) {
-            val line = Subscription(e.toString(), checked = false)
+            val line = Subscription("오류")
             subsList.add(line)
         }
 
@@ -49,18 +51,44 @@ class SubscriptionActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
 
         var et = findViewById(R.id.subsSave) as TextView
+        var correct = findViewById(R.id.correct) as TextView
         subsSave.setOnClickListener {
+
+            val pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
+            val ed = pref.edit()
+            var store : String = ""
+
 
             for (i in 0 until subsAdapter.count) {
                 var ch: Boolean = subsResult.getChildAt(i).subs_checkbox.isChecked()
-                //체크 상태 확인
-                if (ch == true) {
+                var name : String
+                //체크 상태 불러오기
+                if (ch == true) { // 체크 상태 확인
+                    name = subsAdapter.getName(i)
+                    store = store + name + "+"
                     // 체크가 되었을때 저장
                 } else {
                     // 체크가 안된것도 저장
                 }
-
             }
+            if(store.equals(""))
+            {
+                ed.remove("Subs")
+                ed.apply()
+            }
+            else
+            {
+                store = store.substring(0, store.length -1)
+                ed.putString("Subs", store)
+                ed.apply()
+            }
+
+
+        }
+
+        correct.setOnClickListener {
+            val pref2 = getSharedPreferences("pref", Context.MODE_PRIVATE)
+            correct.setText(pref2.getString("Subs", "오류"))
 
 
         }

@@ -20,7 +20,7 @@ class SubscriptionAdapter(val context: Context, val subsList: ArrayList<Subscrip
         /* ArrayList<Subscription>의 변수를 TextView에 담는다. */
         val subscription = subsList[position]
         subsName.text = subscription.name
-        subsCheck.isChecked = subscription.checked
+        subsCheck.isChecked = false
         //subsUrl.text = subscription.url
         return view
     }
@@ -41,14 +41,6 @@ class SubscriptionAdapter(val context: Context, val subsList: ArrayList<Subscrip
         return subsList[position].name
     }
 
-    fun getChecked(position: Int): Boolean{
-        return subsList[position].checked
-
-    }
-
-    fun setChecked(position: Int, check: Boolean){
-        subsList[position].checked = check
-    }
 
 
 
