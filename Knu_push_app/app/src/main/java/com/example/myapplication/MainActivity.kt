@@ -8,6 +8,7 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
 import kotlinx.android.synthetic.main.main_layout.*
+import kotlinx.android.synthetic.main.board_item.*
 //import kotlinx.android.synthetic.main.main.*
 import kotlinx.android.synthetic.main.main_toolbar.*
 
@@ -25,6 +26,7 @@ import java.net.HttpURLConnection
  */
  class MainActivity : AppCompatActivity(),NavigationView.OnNavigationItemSelectedListener {
     var noticeList = arrayListOf<Notice>()
+    var boardList = arrayListOf<Board>()
 
     /**
      * 화면생성해주는 메소드
@@ -36,30 +38,116 @@ import java.net.HttpURLConnection
         setContentView(R.layout.activity_main)
         main_navigationView.setNavigationItemSelectedListener (this)
 
-        //parsing 부분
+
+
+        //게시글 parsing
+
+
+
         val noticeAdapter = NoticeAdapter(this, noticeList)
-        result.adapter = noticeAdapter
+        notice.adapter = noticeAdapter
+
         StrictMode.enableDefaults()
-        val serverUrl = "http://15.165.178.103:8999/notice/"
+
+        var mainUrl = "http://15.165.178.103/"
+        val notice_Url = "notice/all"
         try {
-            val stream = URL(serverUrl).openConnection() as HttpURLConnection
-            var read = BufferedReader(InputStreamReader (stream.inputStream,"UTF-8"))
-            val response = read.readLine()
-            val jArray = JSONArray(response)
+            // http://15.165.178.103/notice/main/
+            val noticeStream = URL(mainUrl + notice_Url).openConnection() as HttpURLConnection
+            var noticeRead = BufferedReader(InputStreamReader (noticeStream.inputStream,"UTF-8"))
+            val noticeResponse = noticeRead.readLine()
+            val jArray = JSONArray(noticeResponse)
+
 
             for(i in 0 until jArray.length()) {
                 val obj = jArray.getJSONObject(i)
-                val bid = obj.getString("bid")
+
                 val title = obj.getString("title")
                 val date = obj.getString("date")
                 val author = obj.getString("author")
-                val line = Notice(bid, title, date, author)
-                noticeList.add(line)
+                var dateArr = date.split("-")
+                var day = dateArr[2].split("T")
+                var days = dateArr[0] + "년 " + dateArr[1] + "월 " + day[0] + "일"
+                val noticeLine = Notice(title, "게시일: " + days, "작성자: " + author)
+                noticeList.add(noticeLine)
+            }
+
+        } catch (e: Exception) {
+            val noticeLine = Notice("e" + e.toString(), "오류", "오류")
+            noticeList.add(noticeLine)
+        }
+
+
+/*
+        //parsing 부분
+
+        val boardAdapter = BoardAdapter(this, boardList)
+        board.adapter = boardAdapter
+
+
+        StrictMode.enableDefaults()
+        var mainUrl = "http://15.165.178.103/"
+        val listUrl = "notice/list/"
+        try {
+            val boardStream = URL(mainUrl + listUrl).openConnection() as HttpURLConnection
+            var boardRead = BufferedReader(InputStreamReader (boardStream.inputStream,"UTF-8"))
+            val boardResponse = boardRead.readLine()
+            val jArray = JSONArray(boardResponse)
+
+            for(i in 0 until jArray.length()) {
+                val obj = jArray.getJSONObject(i)
+
+                val title = obj.getString("name")
+                val board_Url = obj.getString("api_url")
+                val boardLine = Board(title, "더보기")
+                boardList.add(boardLine)
+
+
+                //게시글 parsing
+//                var noticeList = arrayListOf<Notice>()
+//                val noticeAdapter = NoticeAdapter(this, noticeList)
+//                notice.adapter = noticeAdapter
+//                try {
+//                    // http://15.165.178.103/notice/main/
+//                    val noticeStream = URL(mainUrl + board_Url).openConnection() as HttpURLConnection
+//                    var noticeRead = BufferedReader(InputStreamReader (noticeStream.inputStream,"UTF-8"))
+//                    val noticeResponse = noticeRead.readLine()
+//                    val jArray = JSONArray(noticeResponse)
+//
+//                    var line3 = Board("333", "333")
+//                    boardList.add(line3)
+//
+//                    for(i in 0 until jArray.length()) {
+//                        val obj = jArray.getJSONObject(i)
+//
+//                        val title = obj.getString("title")
+//                        val date = obj.getString("date")
+//                        val author = obj.getString("author")
+//                        var dateArr = date.split("-")
+//                        var day = dateArr[2].split("T")
+//                        var days = dateArr[0] + "년 " + dateArr[1] + "월 " + day[0] + "일"
+//                        val noticeLine = Notice(title, "게시일: " + days, "작성자: " + author)
+//                        noticeList.add(noticeLine)
+//                    }
+//
+//                } catch (e: Exception) {
+//                    val noticeLine = Notice("e" + e.toString(), "오류", "오류")
+//                    noticeList.add(noticeLine)
+//                }
+
+
+                //
+
+
             }
         } catch (e: Exception) {
-            val line = Notice("오류", "오류", "오류", "오류")
-            noticeList.add(line)
+            val boardLine = Board(e.toString(), "")
+            boardList.add(boardLine)
         }
+
+*/
+
+
 
         setSupportActionBar(main_layout_toolbar)//toolbar 지정
         supportActionBar?.setDisplayHomeAsUpEnabled(true)//toolbar  보이게 하기
@@ -123,4 +211,19 @@ import java.net.HttpURLConnection
     }
 
  }
+/*
+//우진 추가
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.search)
+    val toolbar = findViewById(R.id.toolbar) as Toolbar
+    setSupportActionBar(toolbar)
+    val ab = supportActionBar!!
+    ab.setDisplayShowTitleEnabled(false)
+    ab.setDisplayHomeAsUpEnabled(true)
 
+    //adapter 추가
+    search_recyclerview.adapter = SearchAdapter()
+    //레이아웃 매니저 추가
+    search_recyclerview.layoutManager = LinearLayoutManager(this)
+}*/

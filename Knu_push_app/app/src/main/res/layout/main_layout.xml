@@ -6,12 +6,13 @@
     android:layout_height="match_parent">
 
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/login_layout"
     android:layout_width="match_parent"
     android:layout_height = "match_parent"
     android:orientation="vertical">
     <include layout="@layout/main_toolbar"/>
+
+
     <!--메뉴 버튼-->
 <!--    <ImageButton-->
 <!--        android:id="@+id/menubutton"-->
@@ -23,15 +24,31 @@
 <!--        android:src="@drawable/ic_menu_black_24dp" />-->
 
 <!--리스트뷰  -->
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/board"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
+
+
+
     <ListView
-        android:id="@+id/result"
+        android:id="@+id/notice"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        >
+
     </ListView>
+
+
+
+<!--    <ListView-->
+<!--        android:id="@+id/notice"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        >-->
+
+<!--    </ListView>-->
+
 
 
 <!--    <TextView-->

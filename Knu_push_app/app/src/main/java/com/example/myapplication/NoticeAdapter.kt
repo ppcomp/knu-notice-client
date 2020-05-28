@@ -13,14 +13,14 @@ class NoticeAdapter(val context: Context, val noticeList: ArrayList<Notice>) : B
         val view: View = LayoutInflater.from(context).inflate(R.layout.notice_item, null)
 
         /* 위에서 생성된 view를 res-layout-main_lv_item.xml 파일의 각 View와 연결하는 과정이다. */
-        val noticeBid = view.findViewById<TextView>(R.id.bid)
+        //val noticeBid = view.findViewById<TextView>(R.id.bid)
         val noticeTitle = view.findViewById<TextView>(R.id.title)
         val noticeDate = view.findViewById<TextView>(R.id.date)
         val noticeAuthor = view.findViewById<TextView>(R.id.author)
 
         /* ArrayList<Dog>의 변수 dog의 이미지와 데이터를 ImageView와 TextView에 담는다. */
         val notice = noticeList[position]
-        noticeBid.text = notice.bid
+        //noticeBid.text = notice.bid
         noticeTitle.text = notice.title
         noticeDate.text = notice.date
         noticeAuthor.text = notice.author
