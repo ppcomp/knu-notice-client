@@ -9,14 +9,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:background="@drawable/notice_line"
         tools:ignore="MissingConstraints">
+        <TextView
+            android:id="@+id/board"
+            android:layout_width="match_parent"
+            android:layout_height="29dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.017"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            tools:text="게시판"
+            android:gravity="left" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintVertical_bias="0.017"
-            android:textSize="28sp"
+            android:textSize="30sp"
             android:textStyle="bold"
             tools:text="제목"
             android:gravity="left"
@@ -29,6 +41,8 @@
             android:orientation="horizontal"
             tools:ignore="MissingConstraints">
 
+
+
             <TextView
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
@@ -37,7 +51,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.017"
-                android:textSize="17sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 tools:text="날짜"
                 android:gravity="left" />
@@ -49,7 +63,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.017"
-                android:textSize="17sp"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 tools:text="작성자"
                 android:gravity="left" />

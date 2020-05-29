@@ -71,17 +71,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             for (i in 0 until jArray.length()) {
                 val obj = jArray.getJSONObject(i)
                 val title = obj.getString("title")
+                var id = obj.getString("id")
                 val date = obj.getString("date")
                 val author = obj.getString("author")
                 val link = obj.getString("link")
+
+                var board = id.split("-")
+
                 var dateArr = date.split("-")
                 var day = dateArr[2].split("T")
                 var days = dateArr[0] + "년 " + dateArr[1] + "월 " + day[0] + "일"
-                val noticeLine = Notice(title, "게시일: " + days, "작성자: " + author, link)
+                val noticeLine = Notice(title, board[0], "게시일: " + days, "작성자: " + author, link)
                 noticeList.add(noticeLine)
             }
         } catch (e: Exception) {
-            val noticeLine = Notice("e" + e.toString(), "오류", "오류", "오류")
+            val noticeLine = Notice("e" + e.toString(), "오류","오류", "오류", "오류")
             noticeList.add(noticeLine)
         }
 

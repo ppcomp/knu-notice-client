@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.notice_item.*
 
 class NoticeAdapter(
     val context: Context,               // MainActivity
@@ -21,11 +22,13 @@ class NoticeAdapter(
     inner class Holder(itemView: View, itemClick: (Notice) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
         val noticeTitle = itemView.findViewById<TextView>(R.id.title)
+        val noticeBoard = itemView.findViewById<TextView>(R.id.board)
         val noticeDate = itemView.findViewById<TextView>(R.id.date)
         val noticeAuthor = itemView.findViewById<TextView>(R.id.author)
 
         fun bind (notice: Notice, context: Context) {
             noticeTitle.text = notice.title
+            noticeBoard.text = notice.board
             noticeDate.text = notice.date
             noticeAuthor.text = notice.author
             itemView.setOnClickListener { itemClick(notice) }
