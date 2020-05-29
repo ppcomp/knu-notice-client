@@ -6,14 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".SubscriptionActivity">
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/subsResult"
         android:layout_width="347dp"
         android:layout_height="599dp"
         android:layout_marginStart="32dp"
-
         android:layout_marginLeft="32dp"
-        android:choiceMode="multipleChoice"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -22,7 +21,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.121">
 
-    </ListView>
+    </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
         android:id="@+id/subsSave"
@@ -48,7 +47,7 @@
         android:clickable="true"
         android:gravity="center"
         android:text="확인"
-        android:textSize="20sp"
+        android:textSize="5sp"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

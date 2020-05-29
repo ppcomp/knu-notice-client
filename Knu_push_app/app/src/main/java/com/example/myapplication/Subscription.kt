@@ -1,5 +1,2 @@
 package com.example.myapplication
-
-import android.widget.CheckBox
-
-class Subscription (val name: String)
+class Subscription (val name: String, var checked :Boolean)
