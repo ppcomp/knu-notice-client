@@ -3,6 +3,7 @@ package com.example.myapplication
 import android.content.Context
 import android.os.Bundle
 import android.os.StrictMode
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_subscription.*
@@ -13,6 +14,10 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
+/**
+ * 어떤 데이터(ArrayList)와 어떤 RecyclerView를 쓸 것인지 설정하는 Activity
+ * @author 상은
+ */
 class SubscriptionActivity : AppCompatActivity() {
     var subsList = arrayListOf<Subscription>()
 
@@ -56,6 +61,7 @@ class SubscriptionActivity : AppCompatActivity() {
         val lm = LinearLayoutManager(this)
         subsResult.layoutManager = lm
         subsResult.setHasFixedSize(true)
+        // RecyclerView의 사이즈를 고정
 
         setSupportActionBar(main_layout_toolbar)//toolbar 지정
         supportActionBar?.setDisplayHomeAsUpEnabled(true)//toolbar  보이게 하기
@@ -86,6 +92,9 @@ class SubscriptionActivity : AppCompatActivity() {
                 ed.apply()
                 // 선택하고 저장버튼 누를시 Subs 라는 Key로 SharedPreferences에 저장
             }
+
+            Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+            // 메세지
 
         }
 

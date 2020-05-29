@@ -8,9 +8,7 @@ import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
 import kotlinx.android.synthetic.main.main_layout.*
-//import kotlinx.android.synthetic.main.main.*
 import kotlinx.android.synthetic.main.main_toolbar.*
-
 //parsing 부분
 import android.os.StrictMode
 import java.net.URL

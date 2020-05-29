@@ -7,6 +7,10 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * item의 어느요소를 어느 View에 넣을 것인지 연결해주는 Adapter
+ * @author 상은
+ */
 class SubscriptionAdapter(val context: Context, val subsList: ArrayList<Subscription>) :
     RecyclerView.Adapter<SubscriptionAdapter.Holder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -20,14 +24,14 @@ class SubscriptionAdapter(val context: Context, val subsList: ArrayList<Subscrip
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
 
-        holder?.bind(subsList[position], context)
+        holder.bind(subsList[position], context)
 
         // 체크박스 부분
-        holder.chk!!.setOnCheckedChangeListener(null)
-        holder.chk!!.setChecked(subsList.get(position).checked)
-        holder.chk!!.setOnCheckedChangeListener { // 체크 표시할 때
+        holder.chk?.setOnCheckedChangeListener(null)
+        holder.chk?.setChecked(subsList.get(position).checked)
+        holder.chk?.setOnCheckedChangeListener { // 체크 표시할 때
                 buttonView, isChecked ->
-            subsList.get(holder.adapterPosition).checked = isChecked 
+            subsList.get(holder.adapterPosition).checked = isChecked
             // 체크 상태 저장
         }
 
