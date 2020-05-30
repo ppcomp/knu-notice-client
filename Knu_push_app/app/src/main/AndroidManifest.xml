@@ -16,6 +16,8 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".Madeby"></activity>
         <activity android:name=".Keyword" />
+        <activity android:name=".SubscriptionAdapter"></activity>
+        <activity android:name=".SubscriptionActivity" />
         <activity android:name=".License" />
         <activity android:name=".Login" />
         <activity
