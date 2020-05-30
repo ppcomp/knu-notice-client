@@ -3,20 +3,50 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/login_background"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".ui.login.LoginActivity">
+    tools:context=".LoginActivity">
+
+    <ImageView
+        android:id="@+id/imageicon"
+        android:layout_width="0dp"
+        android:layout_height="130dp"
+        android:layout_gravity="center"
+        android:src="@drawable/gomduri"
+        android:layout_marginTop="40dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/pushapp"
+
+        ></ImageView>
+
+    <TextView
+        android:id="@+id/pushapp"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="knu push app"
+        android:textColor="@color/colorWhite"
+        android:textSize="20dp"
+        android:fontFamily="@font/cookierun"
+        android:layout_marginTop="130dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/imageicon"
+        ></TextView>
 
     <EditText
         android:id="@+id/username"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="96dp"
+        android:layout_marginTop="130dp"
         android:layout_marginEnd="24dp"
 
         android:hint="@string/prompt_email"
@@ -24,7 +54,7 @@
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/pushapp" />
 
     <EditText
         android:id="@+id/password"
@@ -45,20 +75,59 @@
 
     <Button
         android:id="@+id/login"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginStart="48dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="80dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="64dp"
-        android:enabled="false"
+        android:background="@drawable/loginbutton"
+        android:stateListAnimator="@null"
         android:text="@string/action_sign_in"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/findpw"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password"
+        app:layout_constraintTop_toTopOf="@id/password"
         app:layout_constraintVertical_bias="0.2" />
+    //
+
+
+    <TextView
+        android:id="@+id/findpw"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="비밀번호 찾기"
+        android:textSize="15dp"
+        android:layout_gravity="start"
+        android:layout_marginStart="30dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="160dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginBottom="150dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login"></TextView>
+
+    <TextView
+        android:id="@+id/join"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="회원가입"
+        android:textSize="15dp"
+        android:layout_gravity="start"
+        android:layout_marginStart="140dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginBottom="150dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login"></TextView>
 
     <ProgressBar
         android:id="@+id/loading"

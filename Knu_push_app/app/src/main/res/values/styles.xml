@@ -15,4 +15,11 @@
         <item name="android:windowBackground">@drawable/splash_background</item>
     </style>
 
+    <style name="fontCafe" parent ="android:Widget.TextView">
+    <item name="android:fontFamily">@font/cafedangdanghae</item>>
+    </style>>
+
+    <style name="fontCookierun" parent ="android:Widget.TextView">
+        <item name="android:fontFamily">@font/cookierun</item>>
+    </style>>
 </resources>
