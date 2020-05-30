@@ -1,38 +1,61 @@
 package com.example.myapplication
 
 import android.content.Context
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import android.widget.TextView
+import android.widget.*
+import androidx.recyclerview.widget.RecyclerView
 
-class SubscriptionAdapter(val context: Context, val subsList: ArrayList<Subscription>) : BaseAdapter() {
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        /* LayoutInflater는 item을 Adapter에서 사용할 View로 부풀려주는(inflate) 역할을 한다. */
-        val view: View = LayoutInflater.from(context).inflate(R.layout.subscription_item, null)
-
-        /* 위에서 생성된 view를 res-layout-main_lv_item.xml 파일의 각 View와 연결하는 과정이다. */
-        val subsName = view.findViewById<TextView>(R.id.subs_name)
-       // val subsUrl = view.findViewById<TextView>(R.id.url)
-
-        /* ArrayList<Dog>의 변수 dog의 이미지와 데이터를 ImageView와 TextView에 담는다. */
-        val subscription = subsList[position]
-        subsName.text = subscription.name
-        //subsUrl.text = subscription.url
-
-        return view
-    }
-    override fun getItem(position: Int): Any {
-        return subsList[position]
+/**
+ * item의 어느요소를 어느 View에 넣을 것인지 연결해주는 Adapter
+ * @author 상은
+ */
+class SubscriptionAdapter(val context: Context, val subsList: ArrayList<Subscription>) :
+    RecyclerView.Adapter<SubscriptionAdapter.Holder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        val view = LayoutInflater.from(context).inflate(R.layout.subscription_item, parent, false)
+        return Holder(view)
     }
 
-    override fun getItemId(position: Int): Long {
-        return 0
-    }
-
-    override fun getCount(): Int {
+    override fun getItemCount(): Int {
         return subsList.size
     }
+
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+
+        holder.bind(subsList[position], context)
+
+        // 체크박스 부분
+        holder.chk?.setOnCheckedChangeListener(null)
+        holder.chk?.setChecked(subsList.get(position).checked)
+        holder.chk?.setOnCheckedChangeListener { // 체크 표시할 때
+                buttonView, isChecked ->
+            subsList.get(holder.adapterPosition).checked = isChecked
+            // 체크 상태 저장
+        }
+
+    }
+
+    inner class Holder(itemView: View?) : RecyclerView.ViewHolder(itemView!!) {
+        val name = itemView?.findViewById<TextView>(R.id.subs_name)
+        val chk = itemView?.findViewById<CheckBox>(R.id.subs_checkbox)
+
+        fun bind(subscription: Subscription, context: Context) {
+            name?.text = subscription.name
+        }
+    }
+
+    fun getName(position: Int): String {
+        return subsList[position].name
+    }
+
+    fun getChecked(position: Int): Boolean {
+        return subsList[position].checked
+    }
+
 }
+
+
+
+

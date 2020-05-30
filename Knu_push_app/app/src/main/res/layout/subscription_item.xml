@@ -1,40 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    android:layout_height="50dp"
+    android:layout_marginLeft="12dp"
+    android:layout_marginRight="12dp">
+
 
     <CheckBox
         android:id="@+id/subs_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_weight=".20"
+        android:checked="false"
+        android:gravity="center"
 
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.028" />
-
+        app:layout_constraintVertical_bias="0.472" />
 
     <TextView
         android:id="@+id/subs_name"
-        android:layout_width="228dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="12dp"
+        android:layout_width="0dp"
+        android:layout_height="45dp"
+        android:layout_weight=".70"
 
-        android:layout_marginLeft="12dp"
-        android:gravity="left"
+        android:gravity="center"
         android:textSize="17sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.07"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/subs_checkbox"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.027"
-        tools:gravity="center"
+        app:layout_constraintVertical_bias="0.509"
         tools:text="제목" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

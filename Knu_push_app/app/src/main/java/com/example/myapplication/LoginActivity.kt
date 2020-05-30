@@ -1,11 +1,7 @@
 package com.example.myapplication
 
 import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -14,10 +10,14 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
-
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.example.myapplication.ui.login.LoggedInUserView
 import com.example.myapplication.ui.login.LoginViewModel
 import com.example.myapplication.ui.login.LoginViewModelFactory
+import com.google.firebase.auth.FirebaseAuth
 
 /**
  * 로그인 화면 기능을 작성하는 클래스
@@ -26,6 +26,7 @@ import com.example.myapplication.ui.login.LoginViewModelFactory
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +37,8 @@ class LoginActivity : AppCompatActivity() {
         val password = findViewById<EditText>(R.id.password)
         val login = findViewById<Button>(R.id.login)
         val loading = findViewById<ProgressBar>(R.id.loading)
+
+        auth = FirebaseAuth.getInstance()
 
         loginViewModel = ViewModelProvider(this,
             LoginViewModelFactory()
@@ -103,6 +106,8 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
+
+
 
     private fun updateUiWithUser(model: LoggedInUserView) {
         val welcome = getString(R.string.welcome)
