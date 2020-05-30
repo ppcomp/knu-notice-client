@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.main_layout.*
 import kotlinx.android.synthetic.main.board_item.*
 //import kotlinx.android.synthetic.main.main.*
 import kotlinx.android.synthetic.main.main_toolbar.*
-
 //parsing 부분
 import android.os.StrictMode
 import android.widget.Toast

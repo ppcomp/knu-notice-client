@@ -6,4 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".Setting">
 
+    <TextView
+        android:id="@+id/subscriptionSetting"
+        android:layout_width="259dp"
+        android:layout_height="82dp"
+        android:layout_marginStart="76dp"
+        android:layout_marginLeft="76dp"
+        android:text="구독 리스트 설정"
+        android:gravity="center"
+        android:clickable="true"
+        android:background="@drawable/bg_setting_button"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.265"/>
+
+    <TextView
+        android:id="@+id/keywordSetting"
+        android:layout_width="259dp"
+        android:layout_height="82dp"
+        android:layout_marginTop="44dp"
+        android:text="키워드 설정"
+        android:gravity="center"
+        android:clickable="true"
+        android:background="@drawable/bg_setting_button"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="@+id/subscriptionSetting"
+        app:layout_constraintRight_toRightOf="@+id/subscriptionSetting"
+        app:layout_constraintTop_toBottomOf="@+id/subscriptionSetting"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
