@@ -6,4 +6,11 @@
     <color name="colorBlue">#D7F1FA</color>
     <color name="colorWhite">#FFFFFF</color>>
     <color name="colorBlack">#000000</color>
+
+    <color name="red">#FF0000</color>
+    <color name="yellow">#FFE400</color>
+    <color name="blue">#0054FF</color>
+    <color name="black">#000000</color>
+
+
 </resources>
