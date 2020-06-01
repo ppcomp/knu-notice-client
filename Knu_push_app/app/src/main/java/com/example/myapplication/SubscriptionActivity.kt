@@ -3,11 +3,13 @@ package com.example.myapplication
 import android.content.Context
 import android.os.Bundle
 import android.os.StrictMode
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_subscription.*
 import kotlinx.android.synthetic.main.main_toolbar.*
+import kotlinx.android.synthetic.main.subscription_toolbar.*
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -63,11 +65,10 @@ class SubscriptionActivity : AppCompatActivity() {
         subsResult.setHasFixedSize(true)
         // RecyclerView의 사이즈를 고정
 
-        setSupportActionBar(main_layout_toolbar)//toolbar 지정
+        setSupportActionBar(subscription_layout_toolbar)//toolbar 지정
         supportActionBar?.setDisplayHomeAsUpEnabled(true)//toolbar  보이게 하기
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp)//메뉴 아이콘 지정
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back)//뒤로가기 아이콘 지정
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
-
 
         subsSave.setOnClickListener { // 저장 버튼 누를시
             val pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
