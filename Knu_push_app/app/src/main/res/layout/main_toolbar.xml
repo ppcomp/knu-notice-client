@@ -4,6 +4,6 @@
     android:id="@+id/main_layout_toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#2E989494"
+    android:background="@color/colorGray"
     android:minHeight="?attr/actionBarSize" />
 
