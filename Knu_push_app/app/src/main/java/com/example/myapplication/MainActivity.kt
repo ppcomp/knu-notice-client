@@ -198,11 +198,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                  startActivity(intent)
                  overridePendingTransition(R.anim.slideright,R.anim.slideleft)
              }
-             R.id.license->{
-                 val intent = Intent(this,License::class.java)
-                 startActivity(intent)
-                 overridePendingTransition(R.anim.slideright,R.anim.slideleft)
-             }
              R.id.keyword->{
                  val intent = Intent(this,Keyword::class.java)
                  startActivity(intent)

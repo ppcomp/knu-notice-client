@@ -2,9 +2,7 @@
     <string name="app_name">My Application</string>
     <string name="로그인">로그인</string>
     <string name="설정">설정</string>
-    <string name="라이센스">라이센스</string>
-    <string name="만든이">만든이</string>
-    <string name="구독리스트정보">구독 리스트 정보</string>
+    <string name="구독리스트">구독 리스트 </string>
     <string name="title_activity_login">Sign in</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
