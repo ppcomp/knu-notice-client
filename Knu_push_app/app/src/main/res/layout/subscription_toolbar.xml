@@ -6,12 +6,12 @@
     android:layout_height="50dp"
     android:background="@color/colorWhite"
     android:minHeight="?attr/actionBarSize" >
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:text="게시판 선택하기"
-    android:textSize="18dp"
-    android:layout_marginLeft="100dp"
-    android:layout_marginTop="10dp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="구독 리스트 설정"
+        android:textSize="18dp"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="13dp" />
 
 </androidx.appcompat.widget.Toolbar>
