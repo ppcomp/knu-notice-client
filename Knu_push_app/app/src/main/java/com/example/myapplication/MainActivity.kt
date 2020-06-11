@@ -8,8 +8,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.StrictMode
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
+import android.widget.Toast.makeText
 import androidx.annotation.IntegerRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -176,7 +178,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         return super.onOptionsItemSelected(items)
     }
-
     /**
      * 메뉴 클릭시 이동
      * @author 희진
@@ -210,12 +211,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     /**
      * 뒤로가기 버튼 누르면 네비게이션 바 close
+     * 메인 페이지에서 뒤로가기 버튼 두 번 누르면 text 후 close
      * @author 희진
      */
+    var BackWait:Long = 0
     override fun onBackPressed() {
         if (main_drawer_layout.isDrawerOpen(GravityCompat.START)) {
             main_drawer_layout.closeDrawers()
-        } else {
+        }
+        else if(System.currentTimeMillis()-BackWait >=2000){
+            BackWait= System.currentTimeMillis()
+            Toast.makeText(this,"뒤로가기 버튼을 한 번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).show()
+        }
+        else {
             super.onBackPressed()
         }
     }
