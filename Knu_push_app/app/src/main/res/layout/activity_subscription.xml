@@ -12,52 +12,47 @@
         android:layout_height="50dp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <include layout="@layout/subscription_toolbar"/>
+        <include layout="@layout/subscription_toolbar" />
 
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/subsResult"
-        android:layout_width="347dp"
-        android:layout_height="599dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
+        android:layout_width="348dp"
+        android:layout_height="578dp"
 
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginStart="28dp"
+        android:layout_marginLeft="28dp"
+        app:layout_constraintBottom_toTopOf="@+id/subsSave"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/sub_toolbar"
-        app:layout_constraintVertical_bias="0.121">
+        app:layout_constraintVertical_bias="0.135">
 
     </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
         android:id="@+id/subsSave"
-        android:layout_width="150dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="28dp"
-        android:layout_marginLeft="130dp"
-        android:layout_marginRight="130dp"
+        android:layout_width="157dp"
+        android:layout_height="39dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/loginbutton"
+        android:clickable="true"
         android:gravity="center"
         android:text="저장"
         android:textSize="20sp"
-        android:clickable="true"
-        android:background="@drawable/loginbutton"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subsResult" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/correct"
         android:layout_width="237dp"
         android:layout_height="30dp"
-        android:layout_marginBottom="28dp"
         android:layout_marginRight="200dp"
+        android:layout_marginBottom="28dp"
         android:clickable="true"
         android:gravity="center"
         android:text="확인"

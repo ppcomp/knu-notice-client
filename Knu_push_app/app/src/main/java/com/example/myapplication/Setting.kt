@@ -16,6 +16,10 @@ class Setting : AppCompatActivity() {
             val intent = Intent(this, SubscriptionActivity::class.java)
             startActivity(intent)
         }
+        keywordSetting.setOnClickListener{
+            val intent = Intent(this, KeywordActivity::class.java)
+            startActivity(intent)
+        }
         move_license.setOnClickListener{
             val intent = Intent(this, License::class.java)
             startActivity(intent)
