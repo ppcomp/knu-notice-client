@@ -15,13 +15,13 @@
         android:padding = "10dp"
         />
 
-    <item android:id="@+id/sub_list"
-        android:title="@string/구독리스트"
-        android:icon="@drawable/nav_list_icon"
+    <item android:id="@+id/madeby"
+        android:title="만든이"
+        android:icon="@drawable/nav_madeby_icon"
         android:padding = "10dp"
     />
-    <item android:id="@+id/keyword"
-        android:title="키워드 리스트"
-        android:icon="@drawable/nav_list_icon"
+    <item android:id="@+id/license"
+        android:title="라이센스"
+        android:icon="@drawable/nav_license_icon"
         android:padding = "10dp"/>
 </menu>

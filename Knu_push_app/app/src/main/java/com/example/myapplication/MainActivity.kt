@@ -8,10 +8,8 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.StrictMode
-import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import android.widget.Toast.makeText
 import androidx.annotation.IntegerRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -32,8 +30,8 @@ import java.net.URL
  * @author 희진, jungwoo
  */
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
     var noticeList = arrayListOf<Notice>()
-    var boardList = arrayListOf<Board>()
     var notice_Url: String = ""
     private lateinit var mHandler: Handler
     private lateinit var mRunnable:Runnable
@@ -47,6 +45,36 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setSupportActionBar(main_layout_toolbar)                                //toolbar 지정
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)                       //toolbar  보이게 하기
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp)   //메뉴 아이콘 지정
+        supportActionBar?.setDisplayShowTitleEnabled(false)                     //타이틀 안보이게 하기
+        main_navigationView.setNavigationItemSelectedListener(this)
+
+        /**
+         * 파싱 기능
+         * 새로고침 기능
+         * swipe시(위로 끌땅) 새로고침
+         * @author 김우진
+         */
+        parsing()
+        mHandler = Handler()
+        swipe.setOnRefreshListener {
+            // Initialize a new Runnable
+            mRunnable = Runnable {
+                parsing()
+                // Hide swipe to refresh icon animation
+                swipe.isRefreshing = false
+            }
+            mHandler.postDelayed(mRunnable, 2000)
+        }
+    }
+
+    /**
+     * 파싱하는 함수
+     */
+    fun parsing(){
+        noticeList = arrayListOf<Notice>()
         // Adapter 설정, Notice 클릭시 웹 브라우저로 이동하는 lambda 식 선언
         val noticeAdapter = NoticeAdapter(this, noticeList) { notice ->
             var link: String = notice.link
@@ -65,105 +93,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Web 통신
         StrictMode.enableDefaults()
 
-        try {
-            val mainUrl = "http://15.165.178.103/notice/all?board="
-            // http://15.165.178.103/notice/notice/all
-            val noticeStream = URL(mainUrl + notice_Url).openConnection() as HttpURLConnection
-            var noticeRead = BufferedReader(InputStreamReader(noticeStream.inputStream, "UTF-8"))
-            val noticeResponse = noticeRead.readLine()
-            val jArray = JSONArray(noticeResponse)
+        val loadPreferences = getSharedPreferences("pref", Context.MODE_PRIVATE)
+        val board_Urls = loadPreferences.getString("Urls", "오류")
+        notice_Url = board_Urls.toString()
 
-            // 모든 공지 noticeList 에 저장
-            for (i in 0 until jArray.length()) {
-                val obj = jArray.getJSONObject(i)
-                val title = obj.getString("title")
-                var id = obj.getString("id")
-                val date = obj.getString("date")
-                val author = obj.getString("author")
-                val link = obj.getString("link")
+        val mainUrl = "http://15.165.178.103/notice/all?board="
+        val noticeStream = URL(mainUrl + notice_Url).openConnection() as HttpURLConnection
+        var noticeRead = BufferedReader(InputStreamReader(noticeStream.inputStream, "UTF-8"))
+        val noticeResponse = noticeRead.readLine()
+        val jArray = JSONArray(noticeResponse)
 
-                var board = id.split("-")
-
-                var dateArr = date.split("-")
-                var day = dateArr[2].split("T")
-                var days = dateArr[0] + "년 " + dateArr[1] + "월 " + day[0] + "일"
-                val noticeLine = Notice(title, board[0], "게시일: " + days, "작성자: " + author, link)
-                noticeList.add(noticeLine)
-            }
-        } catch (e: Exception) {
-            val noticeLine = Notice("e" + e.toString(), "오류","오류", "오류", "오류")
+        // 모든 공지 noticeList 에 저장
+        for (i in 0 until jArray.length()) {
+            val obj = jArray.getJSONObject(i)
+            val title = obj.getString("title")
+            var id = obj.getString("id")
+            val date = obj.getString("date")
+            val author = obj.getString("author")
+            val link = obj.getString("link")
+            var board = id.split("-")
+            var dateArr = date.split("-")
+            var day = dateArr[2].split("T")
+            var days = dateArr[0] + "년 " + dateArr[1] + "월 " + day[0] + "일"
+            val noticeLine = Notice(title, board[0], "게시일: " + days, "작성자: " + author, link)
             noticeList.add(noticeLine)
         }
-
-
-        /**
-         * 새로고침 기능
-         * swipe시(위로 끌땅) 새로고침
-         * @author 김우진
-         */
-        //Handler 설정
-        mHandler = Handler()
-
-        swipe.setOnRefreshListener {
-            // Initialize a new Runnable
-            mRunnable = Runnable {
-                noticeList = arrayListOf<Notice>()
-                // Adapter 설정, Notice 클릭시 웹 브라우저로 이동하는 lambda 식 선언
-                val noticeAdapter = NoticeAdapter(this, noticeList) { notice ->
-                    var link: String = notice.link
-                    if (!link.startsWith("http://") && !link.startsWith("https://"))
-                        link = "http://" + link
-                    Toast.makeText(this, link, Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(intent.action, Uri.parse(link)))
-                }
-                notice.adapter = noticeAdapter
-
-                // LayoutManager 설정. RecyclerView 에서는 필수
-                val lm = LinearLayoutManager(this)
-                notice.layoutManager = lm
-                notice.setHasFixedSize(true)
-
-                // Web 통신
-                StrictMode.enableDefaults()
-
-                val loadPreferences = getSharedPreferences("pref", Context.MODE_PRIVATE)
-                val board_Urls = loadPreferences.getString("Urls", "오류")
-                notice_Url = board_Urls.toString()
-
-                    val mainUrl = "http://15.165.178.103/notice/all?board="
-                    // http://15.165.178.103/notice/notice/all
-                    val noticeStream = URL(mainUrl + notice_Url).openConnection() as HttpURLConnection
-                    var noticeRead = BufferedReader(InputStreamReader(noticeStream.inputStream, "UTF-8"))
-                    val noticeResponse = noticeRead.readLine()
-                    val jArray = JSONArray(noticeResponse)
-
-                    // 모든 공지 noticeList 에 저장
-                    for (i in 0 until jArray.length()) {
-                        val obj = jArray.getJSONObject(i)
-                        val title = obj.getString("title")
-                        var id = obj.getString("id")
-                        val date = obj.getString("date")
-                        val author = obj.getString("author")
-                        val link = obj.getString("link")
-                        var board = id.split("-")
-                        var dateArr = date.split("-")
-                        var day = dateArr[2].split("T")
-                        var days = dateArr[0] + "년 " + dateArr[1] + "월 " + day[0] + "일"
-                        val noticeLine = Notice(title, board[0], "게시일: " + days, "작성자: " + author, link)
-                        noticeList.add(noticeLine)
-                    }
-                // Hide swipe to refresh icon animation
-                swipe.isRefreshing = false
-            }
-            mHandler.postDelayed(mRunnable, 2000)
-        }
-
-        main_navigationView.setNavigationItemSelectedListener(this)
-
-        setSupportActionBar(main_layout_toolbar)                                //toolbar 지정
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)                       //toolbar  보이게 하기
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp)   //메뉴 아이콘 지정
-        supportActionBar?.setDisplayShowTitleEnabled(false)                     //타이틀 안보이게 하기
     }
 
     /**
@@ -178,52 +132,45 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         return super.onOptionsItemSelected(items)
     }
+
     /**
      * 메뉴 클릭시 이동
      * @author 희진
      */
-     override fun onNavigationItemSelected(lists: MenuItem): Boolean {
-         when(lists.itemId){
-             R.id.sub_list->{
-                 val intent = Intent(this,SubList::class.java)
-                 startActivity(intent)
-                 overridePendingTransition(R.anim.slideright,R.anim.slideleft)
-             }
-             R.id.setting ->{
-                 val intent = Intent(this,Setting::class.java)
-                 startActivity(intent)
-                 overridePendingTransition(R.anim.slideright,R.anim.slideleft)
-             }
-             R.id.login->{
-                 val intent = Intent(this,Login::class.java )
-                 startActivity(intent)
-                 overridePendingTransition(R.anim.slideright,R.anim.slideleft)
-             }
-             R.id.keyword->{
-                 val intent = Intent(this,Keyword::class.java)
-                 startActivity(intent)
-                 overridePendingTransition(R.anim.slideright,R.anim.slideleft)
-             }
-
-         }
-         return false
-     }
+    override fun onNavigationItemSelected(lists: MenuItem): Boolean {
+        when(lists.itemId){
+            R.id.setting ->{
+                val intent = Intent(this,Setting::class.java)
+                startActivity(intent)
+                overridePendingTransition(R.anim.slideright,R.anim.slideleft)
+            }
+            R.id.login->{
+                val intent = Intent(this,Login::class.java )
+                startActivity(intent)
+                overridePendingTransition(R.anim.slideright,R.anim.slideleft)
+            }
+            R.id.license->{
+                val intent = Intent(this,License::class.java)
+                startActivity(intent)
+                overridePendingTransition(R.anim.slideright,R.anim.slideleft)
+            }
+            R.id.madeby->{
+                val intent = Intent(this,Madeby::class.java)
+                startActivity(intent)
+                overridePendingTransition(R.anim.slideright,R.anim.slideleft)
+            }
+        }
+        return false
+    }
 
     /**
      * 뒤로가기 버튼 누르면 네비게이션 바 close
-     * 메인 페이지에서 뒤로가기 버튼 두 번 누르면 text 후 close
      * @author 희진
      */
-    var BackWait:Long = 0
     override fun onBackPressed() {
         if (main_drawer_layout.isDrawerOpen(GravityCompat.START)) {
             main_drawer_layout.closeDrawers()
-        }
-        else if(System.currentTimeMillis()-BackWait >=2000){
-            BackWait= System.currentTimeMillis()
-            Toast.makeText(this,"뒤로가기 버튼을 한 번 더 누르면 종료됩니다.",Toast.LENGTH_SHORT).show()
-        }
-        else {
+        } else {
             super.onBackPressed()
         }
     }
