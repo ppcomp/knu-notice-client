@@ -16,14 +16,12 @@ class Setting : AppCompatActivity() {
             val intent = Intent(this, SubscriptionActivity::class.java)
             startActivity(intent)
         }
-        move_license.setOnClickListener{
-            val intent = Intent(this, License::class.java)
+
+        keywordSetting.setOnClickListener{
+            val intent = Intent(this, KeywordActivity::class.java)
             startActivity(intent)
         }
-        move_madeby.setOnClickListener{
-            val intent = Intent(this, Madeby::class.java)
-            startActivity(intent)
-        }
+
 
         setSupportActionBar(main_layout_toolbar)                                //toolbar 지정
         supportActionBar?.setDisplayHomeAsUpEnabled(true)                       //toolbar  보이게 하기
