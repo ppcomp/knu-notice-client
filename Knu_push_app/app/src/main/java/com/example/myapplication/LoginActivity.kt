@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.app.Activity
+import android.app.TaskInfo
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -39,7 +40,24 @@ class LoginActivity : AppCompatActivity() {
         val loading = findViewById<ProgressBar>(R.id.loading)
 
         auth = FirebaseAuth.getInstance()
+        fun login() {
+            auth!!.signInWithEmailAndPassword(username.text.toString(), password.text.toString()).addOnCompleteListener(this) {
+                if (it.isSuccessful) {
+                    Toast.makeText(this, "login Success!", Toast.LENGTH_SHORT).show()
+                    val user = auth?.currentUser
+                } else {
+                    Toast.makeText(this, "login failed.", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
 
+        login.setOnClickListener{
+            login()
+        }
+
+
+
+        /*
         loginViewModel = ViewModelProvider(this,
             LoginViewModelFactory()
         ).get(LoginViewModel::class.java)
@@ -104,7 +122,8 @@ class LoginActivity : AppCompatActivity() {
                 loading.visibility = View.VISIBLE
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
-        }
+        }*/
+
     }
 
 
