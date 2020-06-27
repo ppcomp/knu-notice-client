@@ -54,8 +54,11 @@ class SubscriptionAdapter(val context: Context, val subsList: ArrayList<Subscrip
         return subsList[position].checked
     }
 
-}
+    fun getUrl(position: Int): String{
+        return subsList[position].url
+    }
 
+}
 
 
 

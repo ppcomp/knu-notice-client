@@ -3,22 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-
-    android:layout_height="50dp"
-    android:layout_marginLeft="12dp"
-    android:layout_marginRight="12dp">
+    android:layout_height="40dp"
+    android:layout_marginLeft="6dp"
+    android:layout_marginRight="6dp">
 
 
     <CheckBox
         android:id="@+id/subs_checkbox"
         android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_height="30dp"
         android:layout_marginStart="4dp"
         android:layout_marginLeft="4dp"
         android:layout_weight=".20"
         android:checked="false"
         android:gravity="center"
-
+        android:button="@drawable/subscription_checkbox_selector"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -27,11 +26,11 @@
     <TextView
         android:id="@+id/subs_name"
         android:layout_width="0dp"
-        android:layout_height="45dp"
+        android:layout_height="30dp"
         android:layout_weight=".70"
 
         android:gravity="center"
-        android:textSize="17sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

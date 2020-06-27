@@ -17,11 +17,20 @@
         <activity android:name=".Madeby"></activity>
         <activity android:name=".Keyword" />
         <activity android:name=".SubscriptionAdapter"></activity>
-        <activity android:name=".SubscriptionActivity" />
+        <activity android:name=".SubscriptionActivity"
+            android:parentActivityName=".Setting"/>
         <activity android:name=".License" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".Setting" />
-        <activity android:name=".SubList" />
+        <activity android:name=".Login" />
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".Setting"
+            android:parentActivityName=".MainActivity"/>
+        <activity
+            android:name=".SubList"
+            />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme">

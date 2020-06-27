@@ -3,11 +3,13 @@ package com.example.myapplication
 import android.content.Context
 import android.os.Bundle
 import android.os.StrictMode
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_subscription.*
 import kotlinx.android.synthetic.main.main_toolbar.*
+import kotlinx.android.synthetic.main.subscription_toolbar.*
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -27,7 +29,7 @@ class SubscriptionActivity : AppCompatActivity() {
         //parsing 부분
 
         StrictMode.enableDefaults()
-        val serverUrl = "http://15.165.178.103/notice/list/"
+        val serverUrl = "http://15.165.178.103/notice/list"
         try {
             val stream = URL(serverUrl).openConnection() as HttpURLConnection
             var read = BufferedReader(InputStreamReader(stream.inputStream, "UTF-8"))
@@ -47,12 +49,14 @@ class SubscriptionActivity : AppCompatActivity() {
             for (i in 0 until jArray.length()) {
                 val obj = jArray.getJSONObject(i)
                 val name = obj.getString("name")
+                val getUrl = obj.getString("api_url")
+                val url = getUrl.split("/")
                 val confirmCheck: Boolean = set.contains(name)// 저장된 게시판인지 확인하기위한 변수
-                val line = Subscription(name, confirmCheck)
+                val line = Subscription(name, confirmCheck, url[2])
                 subsList.add(line)
             }
         } catch (e: Exception) {
-            val line = Subscription("오류", false)
+            val line = Subscription("오류", false, "")
         }
 
         val subsAdapter = SubscriptionAdapter(this, subsList)
@@ -63,32 +67,39 @@ class SubscriptionActivity : AppCompatActivity() {
         subsResult.setHasFixedSize(true)
         // RecyclerView의 사이즈를 고정
 
-        setSupportActionBar(main_layout_toolbar)//toolbar 지정
+        setSupportActionBar(subscription_layout_toolbar)//toolbar 지정
         supportActionBar?.setDisplayHomeAsUpEnabled(true)//toolbar  보이게 하기
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp)//메뉴 아이콘 지정
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back)//뒤로가기 아이콘 지정
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
-
 
         subsSave.setOnClickListener { // 저장 버튼 누를시
             val pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
             val ed = pref.edit()
             // SharedPreferences 호출
-            var store: String = ""
+            var storeName: String = ""
+            var storeUrl: String= ""
             for (i in 0 until subsAdapter.getItemCount()) {
                 var ch: Boolean = subsAdapter.getChecked(i)
                 var name: String
+                var url: String
                 if (ch == true) {
                     name = subsAdapter.getName(i)
-                    store = store + name + "+"
+                    url = subsAdapter.getUrl(i)
+                    storeName = storeName + name + "+"
+                    storeUrl = storeUrl + url + "-"
                 }
             }
-            if (store.equals("")) {
-                ed.remove("Subs")
+            if (storeName.equals("")) {
+                ed.putString("Subs", "")
+                ed.putString("Urls", "")
                 ed.apply()
                 // 아무것도 선택 안하고 저장버튼 누를 시 rest
             } else {
-                store = store.substring(0, store.length - 1)
-                ed.putString("Subs", store)
+                storeName = storeName.substring(0, storeName.length - 1)
+                storeUrl = storeUrl.substring(0, storeUrl.length - 1)
+
+                ed.putString("Subs", storeName)
+                ed.putString("Urls", storeUrl)
                 ed.apply()
                 // 선택하고 저장버튼 누를시 Subs 라는 Key로 SharedPreferences에 저장
             }
@@ -100,7 +111,7 @@ class SubscriptionActivity : AppCompatActivity() {
 
         correct.setOnClickListener { // 저장 잘되어있는지 보려고 만든 View
             val pref2 = getSharedPreferences("pref", Context.MODE_PRIVATE)
-            correct.setText(pref2.getString("Subs", "저장 x"))
+            correct.setText(pref2.getString("Urls", "저장 x"))
         }
     }
 }
