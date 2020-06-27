@@ -29,7 +29,7 @@ class SubscriptionActivity : AppCompatActivity() {
         //parsing 부분
 
         StrictMode.enableDefaults()
-        val serverUrl = "http://15.165.178.103/notice/list/"
+        val serverUrl = "http://15.165.178.103/notice/list"
         try {
             val stream = URL(serverUrl).openConnection() as HttpURLConnection
             var read = BufferedReader(InputStreamReader(stream.inputStream, "UTF-8"))
