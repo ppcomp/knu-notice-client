@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/keyword_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <include layout="@layout/keyword_toolbar"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/keyword_info_line"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_marginTop="50dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/keyword_info_line"
+        >
+    <TextView
+        android:id="@+id/keyword_info"
+        android:layout_width="350dp"
+        android:layout_height="80dp"
+        android:text="알림을 받고 싶은 키워드를 입력하시오.\n 해당하는 공지가 올라오면 알람을 통해 알려줍니다.\n 등의 전달\n\n"
+        android:textSize="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        >
+
+    </TextView>
+    </LinearLayout>
+    <EditText
+        android:id="@+id/keywordInput"
+        android:layout_width="247dp"
+        android:layout_height="53dp"
+        android:hint="키워드 입력"
+        android:theme="@style/EditTheme"
+        app:layout_constraintBottom_toTopOf="@+id/showKeyword"
+        app:layout_constraintEnd_toStartOf="@+id/keywordEnrollment"
+        app:layout_constraintHorizontal_bias="0.682"
+        app:layout_constraintRight_toRightOf="@+id/keywordEnrollment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/keyword_info_line" />
+
+    <Button
+        android:id="@+id/keywordEnrollment"
+        android:layout_width="70dp"
+        android:layout_height="48dp"
+        android:text="등록"
+        android:background="@color/colorBlue"
+        app:layout_constraintTop_toBottomOf="@id/keyword_info_line"
+        app:layout_constraintBottom_toTopOf="@+id/showKeyword"
+        app:layout_constraintEnd_toEndOf="@id/showKeyword"/>
+
+    <TextView
+        android:id="@+id/showKeyword"
+        android:layout_width="329dp"
+        android:layout_height="400dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@id/test"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.582"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/keywordInput"
+         />
+
+    <TextView
+        android:id="@+id/test"
+        android:layout_width="298dp"
+        android:layout_height="32dp"
+        android:text="없음"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.362"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/showKeyword"
+        app:layout_constraintVertical_bias="0.977" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
