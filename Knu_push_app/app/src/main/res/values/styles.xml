@@ -22,4 +22,7 @@
     <style name="fontCookierun" parent ="android:Widget.TextView">
         <item name="android:fontFamily">@font/cookierun</item>>
     </style>>
+    <style name="EditTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="colorAccent">@color/colorBlue</item>
+    </style>
 </resources>
