@@ -9,11 +9,15 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.StrictMode
 import android.view.MenuItem
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.annotation.IntegerRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomnavigation.BottomNavigationItemView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
@@ -37,12 +41,12 @@ import java.net.URL
  * 메인화면의 기능을 작성하는 클래스
  * @author 희진, jungwoo
  */
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity() {
 
     var noticeList = arrayListOf<Notice>()
     var notice_Url: String = ""
     private lateinit var mHandler: Handler
-    private lateinit var mRunnable:Runnable
+    private lateinit var mRunnable: Runnable
 
     /**
      * 화면생성해주는 메소드
@@ -54,11 +58,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setContentView(R.layout.activity_main)
         main_navigationView.setNavigationItemSelectedListener (this)
 
-        setSupportActionBar(main_layout_toolbar)                                //toolbar 지정
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)                       //toolbar  보이게 하기
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp)   //메뉴 아이콘 지정
-        supportActionBar?.setDisplayShowTitleEnabled(false)                     //타이틀 안보이게 하기
-        main_navigationView.setNavigationItemSelectedListener(this)
+        content = findViewById(R.id.frameLayout)
+        val navigation = findViewById<BottomNavigationView>(R.id.main_navigationView)
+        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        val fragment = LoginFragment.Companion.newInstance()
+        addFragment(fragment)
+//        setSupportActionBar(main_layout_toolbar)                                //toolbar 지정
+//        supportActionBar?.setDisplayHomeAsUpEnabled(true)                       //toolbar  보이게 하기
+//        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp)   //메뉴 아이콘 지정
+//        supportActionBar?.setDisplayShowTitleEnabled(false)                     //타이틀 안보이게 하기
+
 
         /**
          * 파싱 기능
@@ -82,7 +91,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     /**
      * 파싱하는 함수
      */
-    fun parsing(){
+    fun parsing() {
         noticeList = arrayListOf<Notice>()
         // Adapter 설정, Notice 클릭시 웹 브라우저로 이동하는 lambda 식 선언
         val noticeAdapter = NoticeAdapter(this, noticeList) { notice ->
@@ -128,63 +137,58 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             noticeList.add(noticeLine)
         }
     }
-
-    /**
-     * 메뉴 클릭시 네비게이션 바 open
-     * @author 희진
-     */
-    override fun onOptionsItemSelected(items: MenuItem): Boolean {
-        when (items.itemId) {
-            android.R.id.home -> {
-                main_drawer_layout.openDrawer(GravityCompat.START)
-            }
-        }
-        return super.onOptionsItemSelected(items)
-    }
-
     /**
      * 메뉴 클릭시 이동
      * @author 희진
      */
-     override fun onNavigationItemSelected(lists: MenuItem): Boolean {
-         when(lists.itemId){
-             R.id.sub_list->{
-                 val intent = Intent(this,SubList::class.java)
-                 startActivity(intent)
-                 overridePendingTransition(R.anim.slideright,R.anim.slideleft)
-             }
-             R.id.setting ->{
-                 val intent = Intent(this,Setting::class.java)
-                 startActivity(intent)
-                 overridePendingTransition(R.anim.slideright,R.anim.slideleft)
-             }
-             R.id.login->{
-                 val intent = Intent(this,LoginActivity::class.java )
-                 startActivity(intent)
-                 overridePendingTransition(R.anim.slideright,R.anim.slideleft)
-             }
-             R.id.license->{
-                 val intent = Intent(this,License::class.java)
-                 startActivity(intent)
-                 overridePendingTransition(R.anim.slideright,R.anim.slideleft)
-             }
-             R.id.keyword->{
-                 val intent = Intent(this,Keyword::class.java)
-                 startActivity(intent)
-                 overridePendingTransition(R.anim.slideright,R.anim.slideleft)
-             }
+    private var content: FrameLayout? = null
 
-         }
-         return false
-     }
+    private val mOnNavigationItemSelectedListener =
+        BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.setting -> {
+                    val fragment = SettingFragment()
+                    addFragment(fragment)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.login -> {
+                    val fragment = LoginFragment.Companion.newInstance()// 맨 처음 뜨는 fragment로 지정
+                    addFragment(fragment)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.list -> {
+                    val fragment = NoticeFragment()
+                    addFragment(fragment)
+                    return@OnNavigationItemSelectedListener true
+                }
+            }
+            false
+        }
+
+    /**
+     * 하단 바 아이템 누르면 fragment 변경
+     * @author 희진
+     */
+    private fun addFragment(fragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .setCustomAnimations(
+                R.anim.design_bottom_sheet_slide_in,
+                R.anim.design_bottom_sheet_slide_out
+            )
+            .replace(R.id.frameLayout, fragment, fragment.javaClass.simpleName)
+            .commit()
+    }
 
     /**
      * 뒤로가기 버튼 누르면 네비게이션 바 close
      * @author 희진
      */
+    var BackWait: Long = 0
     override fun onBackPressed() {
-        if (main_drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            main_drawer_layout.closeDrawers()
+        if (System.currentTimeMillis() - BackWait >= 2000) {
+            BackWait = System.currentTimeMillis()
+            Toast.makeText(this, "뒤로가기 버튼을 한 번 더 누르면 종료됩니다.", Toast.LENGTH_SHORT).show()
         } else {
             super.onBackPressed()
         }

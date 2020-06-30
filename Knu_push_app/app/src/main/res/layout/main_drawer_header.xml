@@ -3,7 +3,7 @@
     android:id="@+id/login_layout"
     android:layout_width="match_parent"
     android:layout_height="200dp"
-    android:background="#D6DBDD"
+    android:background="@color/colorGray"
     android:orientation="vertical"
     android:padding="20dp">
 

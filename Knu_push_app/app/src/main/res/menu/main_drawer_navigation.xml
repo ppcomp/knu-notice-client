@@ -6,25 +6,27 @@
 
     <item android:id = "@+id/login"
         android:padding = "10dp"
+        android:icon="@drawable/nav_login_icon"
         android:title="@string/로그인"
         />
+    <item android:id="@+id/list"
+        android:title="리스트"
+        android:icon="@drawable/nav_list_icon"
+        android:padding = "10dp"/>
+
     <item android:id="@+id/setting"
         android:title="@string/설정"
+        android:icon="@drawable/nav_setting_icon"
         android:padding = "10dp"
         />
-    <item android:id="@+id/license"
-        android:title="@string/라이센스"
-        android:padding = "10dp"
-        />
+
     <item android:id="@+id/madeby"
-        android:title="@string/만든이"
-        android:padding = "10dp"
-        />
-    <item android:id="@+id/sub_list"
-        android:title="@string/구독리스트정보"
+        android:title="만든이"
+        android:icon="@drawable/nav_madeby_icon"
         android:padding = "10dp"
     />
-    <item android:id="@+id/keyword"
-        android:title="키워드 리스트"
+    <item android:id="@+id/license"
+        android:title="라이센스"
+        android:icon="@drawable/nav_license_icon"
         android:padding = "10dp"/>
 </menu>
