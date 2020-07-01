@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         content = findViewById(R.id.frameLayout)
         val navigation = findViewById<BottomNavigationView>(R.id.main_navigationView)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        val fragment = LoginFragment.Companion.newInstance()
+        val fragment = LoginFragment()
         addFragment(fragment)
 //        setSupportActionBar(main_layout_toolbar)                                //toolbar 지정
 //        supportActionBar?.setDisplayHomeAsUpEnabled(true)                       //toolbar  보이게 하기
@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.login -> {
-                    val fragment = LoginFragment.Companion.newInstance()// 맨 처음 뜨는 fragment로 지정
+                    val fragment = LoginFragment()
                     addFragment(fragment)
                     return@OnNavigationItemSelectedListener true
                 }
@@ -163,10 +163,7 @@ class MainActivity : AppCompatActivity() {
     private fun addFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
-            .setCustomAnimations(
-                R.anim.design_bottom_sheet_slide_in,
-                R.anim.design_bottom_sheet_slide_out
-            )
+            .setCustomAnimations(0,0)
             .replace(R.id.frameLayout, fragment, fragment.javaClass.simpleName)
             .commit()
     }
