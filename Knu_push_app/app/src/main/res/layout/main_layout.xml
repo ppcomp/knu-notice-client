@@ -6,12 +6,10 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/login_layout"
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height = "match_parent"
         android:orientation="vertical">
-
-        <include layout="@layout/main_toolbar"/>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe"
