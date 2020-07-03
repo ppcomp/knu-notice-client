@@ -23,7 +23,8 @@
         <activity android:name=".SubscriptionActivity"
             android:parentActivityName=".Setting"/>
         <activity android:name=".License" />
-        <activity android:name=".Login" />
+        <activity
+            android:name=".Login" />
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_activity_login" />
@@ -42,7 +43,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>

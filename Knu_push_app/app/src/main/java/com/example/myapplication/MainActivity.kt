@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.StrictMode
 import android.view.MenuItem
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.annotation.IntegerRes
@@ -180,6 +182,19 @@ class MainActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    /**
+     * 화면 터치시 키보드 숨김
+     * @author 희진
+     */
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if(currentFocus != null){
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken,0)
+        }
+
+        return super.dispatchTouchEvent(ev)
     }
 }
 
