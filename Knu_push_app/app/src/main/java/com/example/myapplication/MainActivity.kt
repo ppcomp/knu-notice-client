@@ -20,16 +20,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
-import android.content.Intent
-import android.net.Uri
 import kotlinx.android.synthetic.main.main_layout.*
-import kotlinx.android.synthetic.main.board_item.*
-//import kotlinx.android.synthetic.main.main.*
 import kotlinx.android.synthetic.main.main_toolbar.*
-
-//parsing 부분
-import android.os.StrictMode
-import java.net.URL
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -56,7 +48,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        main_navigationView.setNavigationItemSelectedListener (this)
 
         content = findViewById(R.id.frameLayout)
         val navigation = findViewById<BottomNavigationView>(R.id.main_navigationView)
