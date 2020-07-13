@@ -13,15 +13,7 @@ import android.widget.TextView
  */
 class LoginFragment : Fragment() {
 
-    companion object {  // 맨 처음 뜨는 fragment로 지정
-        fun newInstance(): LoginFragment {
-            val fragmentHome = LoginFragment()
-            val args = Bundle()
-            fragmentHome.arguments = args
-            return fragmentHome
-        }
 
-    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
