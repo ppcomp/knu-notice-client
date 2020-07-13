@@ -20,7 +20,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.017"
-            android:textSize="18sp"
+            android:textSize="15sp"
             tools:text="게시판"
             android:gravity="left" />
 
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintVertical_bias="0.017"
-            android:textSize="22sp"
+            android:textSize="18dp"
             android:textStyle="bold"
             android:layout_marginLeft="5dp"
             android:layout_marginTop="5dp"
@@ -56,7 +56,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.017"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 tools:text="날짜"
                 android:gravity="left" />
 
@@ -68,7 +68,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.017"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 tools:text="작성자"
                 android:gravity="left" />
 

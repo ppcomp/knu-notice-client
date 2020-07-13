@@ -33,14 +33,6 @@ import java.security.NoSuchAlgorithmException
 class LoginFragment : Fragment() {
     private var callback: SessionCallback = SessionCallback() //카카오에서 제공하는 콜백함수
 
-    companion object {  // 맨 처음 뜨는 fragment로 지정
-        fun newInstance(): LoginFragment {
-            val fragmentHome = LoginFragment()
-            val args = Bundle()
-            fragmentHome.arguments = args
-            return fragmentHome
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

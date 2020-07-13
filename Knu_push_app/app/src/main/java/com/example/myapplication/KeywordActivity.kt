@@ -3,6 +3,8 @@ package com.example.myapplication
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_keyword.*
@@ -55,5 +57,17 @@ class KeywordActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back)            //뒤로가기 아이콘 지정
         supportActionBar?.setDisplayShowTitleEnabled(false)                     //타이틀 안보이게 하기
 
+    }
+    /**
+     * 화면 터치시 키보드 숨김
+     * @author 희진
+     */
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if(currentFocus != null){
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken,0)
+        }
+
+        return super.dispatchTouchEvent(ev)
     }
 }
