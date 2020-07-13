@@ -26,7 +26,7 @@
         android:id="@+id/keyword_info"
         android:layout_width="350dp"
         android:layout_height="80dp"
-        android:text="알림을 받고 싶은 키워드를 입력하시오.\n 해당하는 공지가 올라오면 알람을 통해 알려줍니다.\n 등의 전달\n\n"
+        android:text="알림을 받고 싶은 키워드를 입력하시오.\n 해당하는 공지가 올라오면 알람을 통해 알려줍니다.\n 등의 전달 사항(임의)\n\n"
         android:textSize="16dp"
         android:layout_marginTop="20dp"
         android:layout_marginLeft="30dp"

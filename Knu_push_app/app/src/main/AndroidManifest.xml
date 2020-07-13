@@ -14,14 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Madeby"></activity>
+        <activity android:name=".Madeby" />
         <activity
             android:name=".KeywordActivity"
-            android:parentActivityName=".Setting"
-            />
-        <activity android:name=".SubscriptionAdapter"></activity>
-        <activity android:name=".SubscriptionActivity"
-            android:parentActivityName=".Setting"/>
+            android:parentActivityName=".Setting" />
+        <activity android:name=".SubscriptionAdapter" />
+        <activity
+            android:name=".SubscriptionActivity"
+            android:parentActivityName=".Setting" />
         <activity android:name=".License" />
         <activity android:name=".Login" />
         <activity
@@ -29,10 +29,8 @@
             android:label="@string/title_activity_login" />
         <activity
             android:name=".Setting"
-            android:parentActivityName=".MainActivity"/>
-        <activity
-            android:name=".SubList"
-            />
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".SubList" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
@@ -42,7 +40,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>
