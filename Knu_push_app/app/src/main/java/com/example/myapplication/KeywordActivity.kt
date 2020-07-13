@@ -3,15 +3,53 @@ package com.example.myapplication
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.StrictMode
 import android.widget.EditText
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_keyword.*
+import kotlinx.android.synthetic.main.activity_subscription.*
+import kotlinx.android.synthetic.main.subscription_toolbar.*
+
+/**
+ * 어떤 데이터(ArrayList)와 어떤 RecyclerView를 쓸 것인지 설정하는 Activity
+ * @author 상은
+ */
 
 class KeywordActivity : AppCompatActivity() {
+    var keywordList = arrayListOf<Keyword>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_keyword)
+
+        StrictMode.enableDefaults()
+
+        val loadPreferences = getSharedPreferences("pref", Context.MODE_PRIVATE)
+        val keyword = loadPreferences.getString("Keys", "")
+
+        if (keyword != null) {
+            if(!keyword.equals("")) {
+                val getkeywordList = keyword.split("+")
+                for (i in 0 until getkeywordList.count()) {
+                    val keywordName = getkeywordList[i]
+                    val line = Keyword(keywordName)
+                    keywordList.add(line)
+                }
+            }
+        }
+
+        val keyAdapter = KeywordAdapter(this, keywordList)
+        keyResult.adapter = keyAdapter
+
+        val lm = LinearLayoutManager(this)
+        keyResult.layoutManager = lm
+        keyResult.setHasFixedSize(true)
+        // RecyclerView의 사이즈를 고정
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)//toolbar  보이게 하기
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back)//뒤로가기 아이콘 지정
+        supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
 
 
         keywordEnrollment.setOnClickListener {
@@ -22,31 +60,37 @@ class KeywordActivity : AppCompatActivity() {
 
             val getKeyword = pref.getString("Keys", "")
             val set: MutableSet<String> = mutableSetOf("")
-            val keywordList = pref.getString("Keys", "오류")?.split("+")
-            if (keywordList != null) {
-                for (i in 0 until keywordList.count()) {
-                    set.add(keywordList[i])
-                }
-            }
-
-            if (getKeyword.equals("")) {
+            if (getKeyword.equals("")) { // 키워드가 아무것도 없을경우
                 ed.putString("Keys", getValue)
                 ed.apply()
-            } else {
+                keywordList.add(Keyword(getValue))
+                Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+                keyAdapter.notifyDataSetChanged()
+            } else { // 키워드가 있을경우 -> 중복확인 필요
+                val getKeywordList = pref.getString("Keys", "")?.split("+")
+                if (getKeywordList != null) { // 중복확인하기 위해여 set에 모두 삽입
+                    for (i in 0 until getKeywordList.count()) {
+                        set.add(getKeywordList[i])
+                    }
+                }
                 val keyOverlap: Boolean = set.contains(getValue)// 저장된 게시판인지 확인하기위한 변수
                 if (!keyOverlap) {
                     val storeKeyword = getKeyword + "+" + getValue
                     ed.putString("Keys", storeKeyword)
                     ed.apply()
+                    keywordList.add(Keyword(getValue))
+                    keyAdapter.notifyDataSetChanged()
                     Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(this, "이미 존재합니다.", Toast.LENGTH_SHORT).show()
                 }
             }
 
-            showKeyword.text = pref.getString("Keys", "저장 x")
+        }
 
-
+        testview.setOnClickListener { // 저장 잘되어있는지 보려고 만든 View
+            val pref2 = getSharedPreferences("pref", Context.MODE_PRIVATE)
+            testview.setText(pref2.getString("Keys", ""))
         }
 
 

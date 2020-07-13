@@ -35,6 +35,7 @@ class SubscriptionActivity : AppCompatActivity() {
             var read = BufferedReader(InputStreamReader(stream.inputStream, "UTF-8"))
             val response = read.readLine()
             val jArray = JSONArray(response)
+
             val loadPreferences = getSharedPreferences("pref", Context.MODE_PRIVATE)
             // 저장된 구독리스트 불러옴
             val subscriptionList = loadPreferences.getString("Subs", "오류")?.split("+")
@@ -71,6 +72,7 @@ class SubscriptionActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)//toolbar  보이게 하기
         supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back)//뒤로가기 아이콘 지정
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
+
 
         subsSave.setOnClickListener { // 저장 버튼 누를시
             val pref = getSharedPreferences("pref", Context.MODE_PRIVATE)

@@ -183,11 +183,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
      */
      override fun onNavigationItemSelected(lists: MenuItem): Boolean {
          when(lists.itemId){
-             R.id.sub_list->{
-                 val intent = Intent(this,SubList::class.java)
-                 startActivity(intent)
-                 overridePendingTransition(R.anim.slideright,R.anim.slideleft)
-             }
              R.id.setting ->{
                  val intent = Intent(this,Setting::class.java)
                  startActivity(intent)
