@@ -41,4 +41,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0' // DrawerLayout
     implementation 'com.google.android.material:material:1.0.0' // NavigationView
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0" //swipe 새로고침
+    implementation group: 'com.kakao.sdk', name: 'usermgmt', version: '1.29.0'// 카카오 로그인
+    implementation group: 'com.kakao.sdk', name: 'kakaotalk', version: '1.29.0' // 카카오톡 로그인
+    implementation group: 'com.kakao.sdk', name: 'kakaolink', version: '1.29.0' // 카카오 링크
 }
