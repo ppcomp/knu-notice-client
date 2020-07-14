@@ -25,7 +25,6 @@
             android:name=".SubscriptionActivity"
             android:parentActivityName=".Setting" />
         <activity android:name=".License" />
-        <activity android:name=".Login" />
         <activity
             android:name=".Setting"
             android:parentActivityName=".MainActivity" />
