@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +19,7 @@ import com.kakao.auth.ISessionCallback
 import com.kakao.auth.Session
 import com.kakao.network.ErrorResult
 import com.kakao.usermgmt.UserManagement
+import com.kakao.usermgmt.callback.LogoutResponseCallback
 import com.kakao.usermgmt.callback.MeV2ResponseCallback
 import com.kakao.usermgmt.response.MeV2Response
 import com.kakao.util.exception.KakaoException
@@ -32,14 +34,16 @@ import java.security.NoSuchAlgorithmException
  */
 class LoginFragment : Fragment() {
     private var callback: SessionCallback = SessionCallback() //카카오에서 제공하는 콜백함수
-
+    private lateinit var mHandler: Handler
+    private lateinit var mRunnable: Runnable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         callback = SessionCallback()
         Session.getCurrentSession().addCallback(callback)
-        Session.getCurrentSession().checkAndImplicitOpen()
+        Session.getCurrentSession().checkAndImplicitOpen()  //로그인 이력이 있으면 재접속해도 로그인 유지해줌
+
     }
 
     override fun onCreateView(
@@ -52,6 +56,16 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        btn_logout.setOnClickListener(object : View.OnClickListener {
+            override fun onClick(v: View?) {
+                Toast.makeText(activity, "로그아웃되었습니다.", Toast.LENGTH_SHORT).show()
+                UserManagement.getInstance().requestLogout(object : LogoutResponseCallback() {
+                    override fun onCompleteLogout() {
+                        //추후에 로그인 전, 후로 Fragment를 나누면 Fragment 전환에 사용
+                    }
+                })
+            }
+        })
     }
 
     override fun onDestroy() {
@@ -65,21 +79,23 @@ class LoginFragment : Fragment() {
             super.onActivityResult(requestCode, resultCode, data)
             return;
         }
-
     }
 
+    /**
+     * 카카오로그인 처리해주는 콜백함수
+     * @author 정준
+     */
     private inner class SessionCallback : ISessionCallback {
         override fun onSessionOpened() {
             // 로그인 세션이 열렸을 때
-            UserManagement.getInstance().me( object : MeV2ResponseCallback() {
+            UserManagement.getInstance().me(object : MeV2ResponseCallback() {
                 override fun onSuccess(result: MeV2Response?) {
-//                    // 로그인이 성공했을 때
-//                    var intent = Intent(activity, MainActivity::class.java)
-//                    intent.putExtra("name", result!!.kakaoAccount.email)
-//                    intent.putExtra("profile", result!!.kakaoAccount.profile.nickname)
-//                    startActivity(intent)
-                    Toast.makeText(activity,"로그인 성공 :"+result!!.connectedAt,Toast.LENGTH_SHORT).show()
-//                    username.text = result!!.kakaoAccount.email
+                    // 로그인이 성공했을 때
+                    Toast.makeText(
+                        activity,
+                        "로그인 성공! 계정 id: " + result!!.id,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
                 override fun onSessionClosed(errorResult: ErrorResult?) {
@@ -87,23 +103,29 @@ class LoginFragment : Fragment() {
                     Toast.makeText(
                         activity,
                         "세션이 닫혔습니다. 다시 시도해주세요 : ${errorResult.toString()}",
-                        Toast.LENGTH_SHORT).show()
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
                 override fun onFailure(errorResult: ErrorResult?) {
-                    //로그인에 실패했을 때, 네트워크 불안정한 경우도 여기에 해당
+                    //로그인에 실패했을 때, 네트워크 불안정한 경우도 여기에 해당 1405916740
                     var result = errorResult?.errorCode
 
                     if (result == ApiErrorCode.CLIENT_ERROR_CODE) {
-                        Toast.makeText(activity, "네트워크 연결이 불안정합니다. 다시 시도해 주세요.",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(activity, "네트워크 연결이 불안정합니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT)
+                            .show()
                         activity?.finish()
                     } else {
-                        Toast.makeText(activity,"로그인 도중 오류가 발생했습니다: "+errorResult?.errorMessage,Toast.LENGTH_SHORT)
+                        Toast.makeText(
+                            activity,
+                            "로그인 도중 오류가 발생했습니다: " + errorResult?.errorMessage,
+                            Toast.LENGTH_SHORT
+                        )
                     }
                 }
-
             })
         }
+
         override fun onSessionOpenFailed(exception: KakaoException?) {
             // 로그인 세션이 정상적으로 열리지 않았을 때
             if (exception != null) {
@@ -111,8 +133,10 @@ class LoginFragment : Fragment() {
                 Toast.makeText(
                     activity,
                     "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요 : $exception",
-                    Toast.LENGTH_SHORT).show()
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }
+
 }

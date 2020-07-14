@@ -46,47 +46,37 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="130dp"
         android:layout_marginEnd="24dp"
-
-        android:selectAllOnFocus="true"
-        android:text="회원 프로필"
-        android:theme="@style/EditTheme"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.843"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pushapp" />
+        app:layout_constraintTop_toBottomOf="@+id/pushapp" />
 
-    <EditText
-        android:id="@+id/password"
+    <Button
+        android:id="@+id/btn_logout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
+
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-
-        android:theme="@style/EditTheme"
-        android:hint="@string/prompt_password"
-        android:imeActionLabel="@string/action_sign_in_short"
-        android:imeOptions="actionDone"
-        android:inputType="textPassword"
-        android:selectAllOnFocus="true"
+        android:text="로그아웃"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username" />
-
-    //
+        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
     <!-- 카카오에서 제공하는 기본 로그인 버튼-->
     <com.kakao.usermgmt.LoginButton
+        android:id="@+id/loginButton"
         android:layout_width="336dp"
         android:layout_height="53dp"
-        app:layout_constraintBottom_toBottomOf="@id/findpw"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/password"
-        app:layout_constraintVertical_bias="0.29"
+        app:layout_constraintTop_toBottomOf="@+id/username"
         tools:ignore="MissingConstraints" />
+
     <TextView
         android:id="@+id/findpw"
         android:layout_width="150dp"
@@ -99,9 +89,10 @@
         android:gravity="center"
         android:text="비밀번호 찾기"
         android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="635dp"></TextView>
+        app:layout_constraintHorizontal_bias="0.14"
+        app:layout_constraintStart_toStartOf="parent"></TextView>
 
     <TextView
         android:id="@+id/join"
@@ -115,9 +106,10 @@
         android:gravity="center"
         android:text="회원가입"
         android:textSize="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="635dp"></TextView>
+        app:layout_constraintHorizontal_bias="0.722"
+        app:layout_constraintStart_toStartOf="parent"></TextView>
 
     <ProgressBar
         android:id="@+id/loading"
@@ -126,12 +118,11 @@
         android:layout_gravity="center"
         android:layout_marginStart="32dp"
         android:layout_marginTop="64dp"
-        android:layout_marginEnd="32dp"
         android:layout_marginBottom="64dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/password"
-        app:layout_constraintStart_toStartOf="@+id/password"
+        app:layout_constraintEnd_toEndOf="@+id/pushapp"
+        app:layout_constraintStart_toStartOf="@+id/pushapp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.3" />
 </androidx.constraintlayout.widget.ConstraintLayout>
