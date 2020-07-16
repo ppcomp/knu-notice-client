@@ -19,12 +19,12 @@ class NoticeAdapter(
      * bind 가 자동 호출되며 데이터가 매핑된다.
      * @author jungwoo
      */
-    inner class Holder(View: View, itemClick: (Notice) -> Unit) :
-        RecyclerView.ViewHolder(View) {
-        val noticeTitle = View.findViewById<TextView>(R.id.title)
-        val noticeBoard = View.findViewById<TextView>(R.id.board)
-        val noticeDate = View.findViewById<TextView>(R.id.date)
-        val noticeAuthor = View.findViewById<TextView>(R.id.author)
+    inner class Holder(itemView: View, itemClick: (Notice) -> Unit) :
+        RecyclerView.ViewHolder(itemView) {
+        val noticeTitle = itemView.findViewById<TextView>(R.id.title)
+        val noticeBoard = itemView.findViewById<TextView>(R.id.board)
+        val noticeDate = itemView.findViewById<TextView>(R.id.date)
+        val noticeAuthor = itemView.findViewById<TextView>(R.id.author)
 
         fun bind (notice: Notice, context: Context) {
             noticeTitle.text = notice.title
@@ -41,7 +41,7 @@ class NoticeAdapter(
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         /* LayoutInflater는 item을 Adapter에서 사용할 View로 부풀려주는(inflate) 역할을 한다. */
-        val view: View = LayoutInflater.from(context).inflate(R.layout.notice_item, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.notice_item, parent, false)
         return Holder(view, itemClick)
     }
 
