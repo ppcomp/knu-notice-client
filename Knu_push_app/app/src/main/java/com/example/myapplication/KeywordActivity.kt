@@ -1,15 +1,15 @@
 package com.example.myapplication
 
+import RestApiService
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.StrictMode
-import android.widget.EditText
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myapplication.data.model.UserInfo
 import kotlinx.android.synthetic.main.activity_keyword.*
-import kotlinx.android.synthetic.main.activity_subscription.*
-import kotlinx.android.synthetic.main.subscription_toolbar.*
+import java.util.*
 
 /**
  * 어떤 데이터(ArrayList)와 어떤 RecyclerView를 쓸 것인지 설정하는 Activity
@@ -81,6 +81,27 @@ class KeywordActivity : AppCompatActivity() {
                     keywordList.add(Keyword(getValue))
                     keyAdapter.notifyDataSetChanged()
                     Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "이미 존재합니다.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            val apiService = RestApiService()
+            var uniqueID = UUID.randomUUID().toString()
+            var getKeywords : String? = pref.getString("Keys", "")
+            var getSubscriptions : String? = pref.getString("Subs", "")
+
+            val userInfo = UserInfo(
+                id = "BBB",
+                id_method = "guid",
+                keywords = getKeywords,
+                subscriptions = getSubscriptions
+                 )
+
+            apiService.addUser(userInfo) {
+                if (it?.id != null) {
+                    // it = newly added user parsed as response
+                    // it?.id = newly added user ID
                 } else {
                     Toast.makeText(this, "이미 존재합니다.", Toast.LENGTH_SHORT).show()
                 }
