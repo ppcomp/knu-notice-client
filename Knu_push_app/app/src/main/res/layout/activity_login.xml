@@ -17,12 +17,12 @@
         android:layout_width="0dp"
         android:layout_height="130dp"
         android:layout_gravity="center"
-        android:src="@drawable/gomduri"
         android:layout_marginTop="40dp"
+        android:src="@drawable/gomduri"
+        app:layout_constraintBottom_toBottomOf="@id/pushapp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/pushapp"
 
         ></ImageView>
 
@@ -30,16 +30,15 @@
         android:id="@+id/pushapp"
         android:layout_width="150dp"
         android:layout_height="50dp"
+        android:layout_marginTop="130dp"
+        android:fontFamily="@font/cookierun"
         android:gravity="center"
         android:text="knu push app"
         android:textColor="@color/colorWhite"
         android:textSize="20dp"
-        android:fontFamily="@font/cookierun"
-        android:layout_marginTop="130dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/imageicon"
-        ></TextView>
+        app:layout_constraintTop_toTopOf="@id/imageicon"></TextView>
 
     <TextView
         android:id="@+id/username"
@@ -51,19 +50,6 @@
         app:layout_constraintHorizontal_bias="0.843"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pushapp" />
-
-    <Button
-        android:id="@+id/btn_logout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:text="로그아웃"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
     <!-- 카카오에서 제공하는 기본 로그인 버튼-->
     <com.kakao.usermgmt.LoginButton

@@ -66,7 +66,7 @@ class MainActivity : AppCompatActivity() {
 
     /**
      * 메뉴 클릭시 이동
-     * @author 희진
+     * @author 희진, 정준
      */
     private var content: FrameLayout? = null
 
@@ -79,9 +79,15 @@ class MainActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.login -> {
-                    val fragment = LoginFragment()
-                    addFragment(fragment)
-                    return@OnNavigationItemSelectedListener true
+                    if (!GlobalApplication.isLogin) {
+                        val fragment = LoginFragment()
+                        addFragment(fragment)
+                        return@OnNavigationItemSelectedListener true
+                    } else {
+                        val fragment = UserInfoFragment()
+                        addFragment(fragment)
+                        return@OnNavigationItemSelectedListener true
+                    }
                 }
                 R.id.list -> {
                     val fragment = NoticeFragment()
@@ -96,10 +102,10 @@ class MainActivity : AppCompatActivity() {
      * 하단 바 아이템 누르면 fragment 변경
      * @author 희진
      */
-    private fun addFragment(fragment: Fragment) {
+    fun addFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
-            .setCustomAnimations(0,0)
+            .setCustomAnimations(0, 0)
             .replace(R.id.frameLayout, fragment, fragment.javaClass.simpleName)
             .commit()
     }
@@ -123,9 +129,9 @@ class MainActivity : AppCompatActivity() {
      * @author 희진
      */
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        if(currentFocus != null){
+        if (currentFocus != null) {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus!!.windowToken,0)
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
         }
 
         return super.dispatchTouchEvent(ev)
