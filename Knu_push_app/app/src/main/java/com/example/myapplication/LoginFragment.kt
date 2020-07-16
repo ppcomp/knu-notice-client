@@ -34,12 +34,9 @@ import java.security.NoSuchAlgorithmException
  */
 class LoginFragment : Fragment() {
     private var callback: SessionCallback = SessionCallback() //카카오에서 제공하는 콜백함수
-    private lateinit var mHandler: Handler
-    private lateinit var mRunnable: Runnable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         callback = SessionCallback()
         Session.getCurrentSession().addCallback(callback)
         Session.getCurrentSession().checkAndImplicitOpen()  //로그인 이력이 있으면 재접속해도 로그인 유지해줌
@@ -56,16 +53,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btn_logout.setOnClickListener(object : View.OnClickListener {
-            override fun onClick(v: View?) {
-                Toast.makeText(activity, "로그아웃되었습니다.", Toast.LENGTH_SHORT).show()
-                UserManagement.getInstance().requestLogout(object : LogoutResponseCallback() {
-                    override fun onCompleteLogout() {
-                        //추후에 로그인 전, 후로 Fragment를 나누면 Fragment 전환에 사용
-                    }
-                })
-            }
-        })
+
     }
 
     override fun onDestroy() {
@@ -96,6 +84,9 @@ class LoginFragment : Fragment() {
                         "로그인 성공! 계정 id: " + result!!.id,
                         Toast.LENGTH_SHORT
                     ).show()
+                    GlobalApplication.isLogin = true    //로그인 상태 업데이트
+                    (activity as MainActivity).addFragment(UserInfoFragment())  //UserInfoFragment로 화면전환
+
                 }
 
                 override fun onSessionClosed(errorResult: ErrorResult?) {
