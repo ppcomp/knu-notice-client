@@ -1,11 +1,13 @@
 package com.example.myapplication
 
+import RestApiService
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.data.model.UserInfo
 
 /**
  * item의 어느요소를 어느 View에 넣을 것인지 연결해주는 Adapter
@@ -50,6 +52,27 @@ class KeywordAdapter(val context: Context, val keywordList: ArrayList<Keyword>) 
 
             ed.putString("Keys", completeKeyword)
             ed.apply()
+
+            val apiService = RestApiService()
+            var getUID = loadPreferences.getString("UID", "")
+            var getKeywords: String? = loadPreferences.getString("Keys", "")
+            var getSubscriptions: String? = loadPreferences.getString("Urls", "")
+
+            val userInfo = UserInfo(
+                id = getUID,
+                id_method = "guid",
+                keywords = getKeywords,
+                subscriptions = if (getSubscriptions == "") null else getSubscriptions
+            )
+
+            apiService.modifyUser(userInfo) {
+                if (it?.id != null) {
+                    // it = newly added user parsed as response
+                    // it?.id = newly added user ID
+                } else {
+
+                }
+            }
         }
 
 
