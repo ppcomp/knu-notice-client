@@ -2,7 +2,6 @@ package com.example.myapplication
 
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -10,15 +9,15 @@ import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.main_layout.*
 import kotlinx.android.synthetic.main.main_layout.view.*
-import org.json.JSONArray
+import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -38,7 +37,7 @@ class NoticeFragment : Fragment() {
     private lateinit var mRunnable: Runnable
     private lateinit var recyclerView1 : RecyclerView
     private lateinit var thisContext: Context
-
+    private var progressBar : ProgressBar? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,6 +47,7 @@ class NoticeFragment : Fragment() {
         thisContext = container!!.context                                   //context 가져오기
         recyclerView1 = view!!.findViewById(R.id.notice) as RecyclerView    //recyclerview 가져오기
 
+        progressBar = (progressBar)?.findViewById((R.id.progressbar))
         parsing()
 
         /**
@@ -61,8 +61,8 @@ class NoticeFragment : Fragment() {
             // Initialize a new Runnable
             mRunnable = Runnable {
 //                 Hide swipe to refresh icon animation
-            parsing()
-            swipe.isRefreshing = false
+                parsing()
+                swipe.isRefreshing = false
             }
             mHandler.postDelayed(mRunnable, 2000)
 
@@ -98,9 +98,15 @@ class NoticeFragment : Fragment() {
         val noticeStream = URL(mainUrl + notice_Url).openConnection() as HttpURLConnection
         var noticeRead = BufferedReader(InputStreamReader(noticeStream.inputStream, "UTF-8"))
         val noticeResponse = noticeRead.readLine()
-        val jArray = JSONArray(noticeResponse)
+        val jObject = JSONObject(noticeResponse)
+        val jArray = jObject.getJSONArray("results")
+        val nextUrl = URL(mainUrl+notice_Url)
+        val count = jObject.getString("count")
+        val next=jObject.getString("next")
 
-        // 모든 공지 noticeList 에 저장
+
+
+//         모든 공지 noticeList 에 저장
         for (i in 0 until jArray.length()) {
             val obj = jArray.getJSONObject(i)
             val title = obj.getString("title")
@@ -115,6 +121,6 @@ class NoticeFragment : Fragment() {
             val noticeLine = Notice(title, board[0], "게시일: " + days, "작성자: " + author, link)
             noticeList.add(noticeLine)
         }
+    }
 
-    }
-    }
+}
