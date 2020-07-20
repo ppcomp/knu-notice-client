@@ -38,10 +38,11 @@
 
         </TextView>
     </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/subsResult"
         android:layout_width="348dp"
-        android:layout_height="578dp"
+        android:layout_height="470dp"
 
         android:layout_marginStart="28dp"
         android:layout_marginLeft="28dp"
@@ -50,8 +51,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sub_toolbar"
-        app:layout_constraintVertical_bias="0.135">
+        app:layout_constraintTop_toBottomOf="@+id/subscription_info_line">
 
     </androidx.recyclerview.widget.RecyclerView>
 

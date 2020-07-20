@@ -20,10 +20,10 @@ class Setting : AppCompatActivity() {
             val intent = Intent(this, KeywordActivity::class.java)
             startActivity(intent)
         }
-        move_license.setOnClickListener{
-            val intent = Intent(this, License::class.java)
-            startActivity(intent)
-        }
+//        move_license.setOnClickListener{
+//            val intent = Intent(this, License::class.java)
+//            startActivity(intent)
+//        }
 
 
         setSupportActionBar(main_layout_toolbar)                                //toolbar 지정
