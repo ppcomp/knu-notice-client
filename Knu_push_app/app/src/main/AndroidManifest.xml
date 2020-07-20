@@ -17,9 +17,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity android:name=".Madeby"/>
-        <activity
-            android:name=".KeywordActivity"
-            android:parentActivityName=".Setting" />
+        <activity android:name=".KeywordActivity"></activity>
+        <activity android:name=".Keyword" />
         <activity android:name=".SubscriptionAdapter" />
         <activity
             android:name=".SubscriptionActivity"
