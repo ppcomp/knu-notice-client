@@ -1,11 +1,10 @@
-package com.example.myapplication
+package com.ppcomp.knu
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_keyword.*
 import kotlinx.android.synthetic.main.keyword_toolbar.*

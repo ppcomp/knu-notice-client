@@ -1,12 +1,11 @@
-package com.example.myapplication
+package com.ppcomp.knu
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-class Keyword : AppCompatActivity() {
+class Madeby : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_app02)
     }
 }
