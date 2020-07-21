@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.ppcomp.knu
 
 import RestApiService
 import android.content.Context
@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myapplication.data.model.UserInfo
+import com.ppcomp.knu.UserInfo
 
 /**
  * item의 어느요소를 어느 View에 넣을 것인지 연결해주는 Adapter

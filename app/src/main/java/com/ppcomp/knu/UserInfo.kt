@@ -1,4 +1,4 @@
-package com.example.myapplication.data.model
+package com.ppcomp.knu
 
 import com.google.gson.annotations.SerializedName
 

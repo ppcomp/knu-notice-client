@@ -1,4 +1,5 @@
-import com.example.myapplication.data.model.UserInfo
+package com.ppcomp.knu
+
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.Headers
