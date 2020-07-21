@@ -6,7 +6,6 @@ package com.ppcomp.knu
     import android.os.Bundle
     import android.widget.Toast
     import androidx.appcompat.app.AppCompatActivity
-    import com.example.myapplication.data.model.UserInfo
     import java.util.*
 
 /**

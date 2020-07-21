@@ -7,7 +7,6 @@ import android.os.StrictMode
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myapplication.data.model.UserInfo
 import kotlinx.android.synthetic.main.activity_subscription.*
 import kotlinx.android.synthetic.main.subscription_toolbar.*
 import org.json.JSONArray
