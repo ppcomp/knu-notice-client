@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "169526733734",
+    "firebase_url": "https://knu-notice-698ab.firebaseio.com",
+    "project_id": "knu-notice-698ab",
+    "storage_bucket": "knu-notice-698ab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:169526733734:android:b6ec010e37dc2b5472bd67",
+        "android_client_info": {
+          "package_name": "com.ppcomp.knu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "169526733734-9879iio3qsfi0kettk3pl3nfbircv0pb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ppcomp.knu",
+            "certificate_hash": "0904fab38e2ef569bc7cfebb67b2c12528a247b2"
+          }
+        },
+        {
+          "client_id": "169526733734-hatic3hebnu6a1v0481pkf4a38r0agg6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDGAOH0V85dPj0Q1focw9ksZBHfbiwjxeQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "169526733734-hatic3hebnu6a1v0481pkf4a38r0agg6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
