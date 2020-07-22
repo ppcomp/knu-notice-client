@@ -1,7 +1,9 @@
 package com.ppcomp.knu
 
+import RestApiService
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +24,7 @@ import com.kakao.util.exception.KakaoException
  */
 class LoginFragment : Fragment() {
     private var callback: SessionCallback = SessionCallback() //카카오에서 제공하는 콜백함수
-
+    private lateinit var kakaoId: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         callback = SessionCallback()
@@ -67,12 +69,14 @@ class LoginFragment : Fragment() {
             UserManagement.getInstance().me(object : MeV2ResponseCallback() {
                 override fun onSuccess(result: MeV2Response?) {
                     // 로그인이 성공했을 때
+                    kakaoId = result!!.id.toString()
                     Toast.makeText(
                         activity,
-                        "로그인 성공! 계정 id: " + result!!.id,
+                        "로그인 성공! 계정 이름: " + result!!.kakaoAccount.profile.nickname,
                         Toast.LENGTH_SHORT
                     ).show()
                     GlobalApplication.isLogin = true    //로그인 상태 업데이트
+                    userInfoUpload()    //카카오계정 데이터 api서버에 추가
                     (activity as MainActivity).addFragment(UserInfoFragment())  //UserInfoFragment로 화면전환
 
                 }
@@ -114,6 +118,23 @@ class LoginFragment : Fragment() {
                     "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요 : $exception",
                     Toast.LENGTH_SHORT
                 ).show()
+            }
+        }
+    }
+
+    fun userInfoUpload() {
+        val apiService = RestApiService()
+        val userInfo = KakaoUserInfo(   id = kakaoId,
+                                        email = "admin@test.com",
+                                        device = "testDevice")
+
+        apiService.addKakaoUser(userInfo) {
+            if (it?.id != null) {
+                // it = newly added user parsed as response
+                // it?.id = newly added user ID
+                Log.d("kakaoUser","id != null")
+            } else {
+                Log.d("kakaoUser","id = null") //응답값인 it이 null값이면 재대로 반영이 안된 것 현재상태에서 실행시키면 null값이 들어가있음
             }
         }
     }
