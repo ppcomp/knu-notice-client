@@ -15,4 +15,9 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @PUT("accounts/device")
     fun modifyUser(@Body userData: UserInfo): Call<UserInfo>
+
+    @Headers("Content-Type: application/json")
+    @POST("accounts/user")
+    fun addKakaoUser(@Body kakaoUserData: KakaoUserInfo): Call<KakaoUserInfo>
+
 }

@@ -1,4 +1,6 @@
+import android.service.autofill.UserData
 import android.util.Log
+import com.ppcomp.knu.KakaoUserInfo
 import com.ppcomp.knu.RestApi
 import com.ppcomp.knu.UserInfo
 import retrofit2.Call
@@ -39,4 +41,22 @@ class RestApiService {
             }
         )
     }
+
+    fun addKakaoUser(kakaoUserData: KakaoUserInfo, onResult: (KakaoUserInfo?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.addKakaoUser(kakaoUserData).enqueue(
+            object : Callback<KakaoUserInfo> {
+                override fun onFailure(call: Call<KakaoUserInfo>, t: Throwable) {
+                    Log.d("call",call.toString())
+                    Log.d("t",t.toString())
+                    onResult(null)
+                }
+                override fun onResponse( call: Call<KakaoUserInfo>, response: Response<KakaoUserInfo>) {
+                    val addedKakaoUser = response.body()
+                    onResult(addedKakaoUser)
+                }
+            }
+        )
+    }
+
 }
