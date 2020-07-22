@@ -43,7 +43,6 @@ class NoticeFragment : Fragment() {
     var Url:String=""                                //mainUrl + notice_Url 저장 할 변수
     var nextPage:String=""
     var previousPage:String=""
-    var itemCount:String=""
     var checkPageCount =0
     var scrollPosition=0
 
@@ -128,7 +127,6 @@ class NoticeFragment : Fragment() {
             val jObject = JSONObject(noticeResponse)
             val jArray = jObject.getJSONArray("results")
 
-            itemCount = jObject.getString("count")
             previousPage = jObject.getString("previous")
             nextPage = jObject.getString("next")
             Url = nextPage        //다음 Url 주소 변경
@@ -156,8 +154,6 @@ class NoticeFragment : Fragment() {
                 recyclerView1.scrollToPosition(scrollPosition)
             }
         }
-        else{ }
-
         Handler().postDelayed({   //스크롤시 progressbar 보이게하고 조금 대기
             progressBar.visibility = View.GONE
             mLockRecyclerView = false
