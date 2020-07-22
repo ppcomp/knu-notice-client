@@ -86,7 +86,7 @@ class SubscriptionActivity : AppCompatActivity() {
                     name = subsAdapter.getName(i)
                     url = subsAdapter.getUrl(i)
                     storeName = storeName + name + "+"
-                    storeUrl = storeUrl + url + "-"
+                    storeUrl = storeUrl + url + "+"
                 }
             }
             if (storeName.equals("")) {
