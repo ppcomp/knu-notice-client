@@ -6,6 +6,7 @@ import com.ppcomp.knu.UserInfo
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.*
 
 class RestApiService {
     fun addUser(userData: UserInfo, onResult: (UserInfo?) -> Unit){
@@ -54,6 +55,24 @@ class RestApiService {
                 override fun onResponse( call: Call<KakaoUserInfo>, response: Response<KakaoUserInfo>) {
                     val addedKakaoUser = response.body()
                     onResult(addedKakaoUser)
+                }
+            }
+        )
+    }
+
+    fun getKakaoUser(id: String, onResult: (KakaoUserInfo?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.getKakaoUser(id).enqueue(
+            object : Callback<KakaoUserInfo> {
+                override fun onFailure(call: Call<KakaoUserInfo>, t: Throwable) {
+                    Log.d("call",call.toString())
+                    Log.d("t",t.toString())
+                    onResult(null)
+                }
+
+                override fun onResponse(call: Call<KakaoUserInfo>, response: Response<KakaoUserInfo>) {
+                    val getKakaoUser = response.body()
+                    onResult(getKakaoUser)
                 }
             }
         )

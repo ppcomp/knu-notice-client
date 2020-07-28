@@ -1,6 +1,7 @@
 package com.ppcomp.knu
 
 import RestApiService
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -17,6 +18,7 @@ import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.MeV2ResponseCallback
 import com.kakao.usermgmt.response.MeV2Response
 import com.kakao.util.exception.KakaoException
+import java.util.*
 
 /**
  * 하단 바 '로그인'페이지의  kt
@@ -43,7 +45,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
     }
 
     override fun onDestroy() {
@@ -91,7 +92,7 @@ class LoginFragment : Fragment() {
                 }
 
                 override fun onFailure(errorResult: ErrorResult?) {
-                    //로그인에 실패했을 때, 네트워크 불안정한 경우도 여기에 해당 1405916740
+                    //로그인에 실패했을 때, 네트워크 불안정한 경우도 여기에 해당
                     var result = errorResult?.errorCode
 
                     if (result == ApiErrorCode.CLIENT_ERROR_CODE) {
@@ -122,21 +123,42 @@ class LoginFragment : Fragment() {
         }
     }
 
+    /**
+     * 카카오유저데이터 서버에 업로드
+     * @author 정준
+     */
     fun userInfoUpload() {
+        val pref = this.activity?.getSharedPreferences("pref", Context.MODE_PRIVATE)
+        var isGetFailed: Boolean = false
         val apiService = RestApiService()
+        val getUID = pref?.getString("UID","")
         val userInfo = KakaoUserInfo(   id = kakaoId,
-                                        email = "admin@test.com",
-                                        device = "testDevice")
+//                                        email = "test1234@gmail.com",
+                                        device_id = getUID)
 
-        apiService.addKakaoUser(userInfo) {
-            if (it?.id != null) {
-                // it = newly added user parsed as response
-                // it?.id = newly added user ID
-                Log.d("kakaoUser","id != null")
+        apiService.getKakaoUser(kakaoId) {
+            //서버에 데이터가 있는지 확인
+            if(it?.id != null) {
+                Log.d("kakaoUser_get","id != null")
+                isGetFailed = false
             } else {
-                Log.d("kakaoUser","id = null") //응답값인 it이 null값이면 재대로 반영이 안된 것 현재상태에서 실행시키면 null값이 들어가있음
+                Log.d("kakaoUser_get","id = null")
+                isGetFailed = true
+            }
+
+            if(isGetFailed) {
+                //서버에 데이터가 없으면 서버에 데이터 저장
+                apiService.addKakaoUser(userInfo) {
+                    if (it?.id != null) {
+                        // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
+                        // it?.id = newly added user ID
+                        Log.d("kakaoUser_post", "id != null")
+                    } else {
+                        Log.d("kakaoUser_post", "id = null")
+                    }
+                }
             }
         }
-    }
 
+    }
 }

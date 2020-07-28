@@ -1,10 +1,7 @@
 package com.ppcomp.knu
 
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.Headers
-import retrofit2.http.POST
-import retrofit2.http.PUT
+import retrofit2.http.*
 
 interface RestApi {
 
@@ -20,4 +17,7 @@ interface RestApi {
     @POST("accounts/user")
     fun addKakaoUser(@Body kakaoUserData: KakaoUserInfo): Call<KakaoUserInfo>
 
+    @Headers("Content-Type: application/json")
+    @GET("accounts/user")
+    fun getKakaoUser(@Query("id") id: String): Call<KakaoUserInfo>
 }
