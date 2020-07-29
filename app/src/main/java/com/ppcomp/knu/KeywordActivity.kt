@@ -5,9 +5,13 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.StrictMode
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_keyword.*
+import kotlinx.android.synthetic.main.keyword_toolbar.*
+import kotlinx.android.synthetic.main.subscription_toolbar.*
 import java.util.*
 
 /**
@@ -46,6 +50,7 @@ class KeywordActivity : AppCompatActivity() {
         keyResult.setHasFixedSize(true)
         // RecyclerView의 사이즈를 고정
 
+        setSupportActionBar(keyword_layout_toolbar)//toolbar 지정
         supportActionBar?.setDisplayHomeAsUpEnabled(true)//toolbar  보이게 하기
         supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back)//뒤로가기 아이콘 지정
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
@@ -135,5 +140,17 @@ class KeywordActivity : AppCompatActivity() {
 
 
         }
+    }
+    /**
+     * 화면 터치시 키보드 숨김
+     * @author 희진
+     */
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (currentFocus != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+        }
+
+        return super.dispatchTouchEvent(ev)
     }
 }

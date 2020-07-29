@@ -4,6 +4,8 @@ import RestApiService
 import android.content.Context
 import android.os.Bundle
 import android.os.StrictMode
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -150,5 +152,17 @@ class SubscriptionActivity : AppCompatActivity() {
             val pref2 = getSharedPreferences("pref", Context.MODE_PRIVATE)
             correct.setText(pref2.getString("Urls", ""))
         }
+    }
+    /**
+     * 화면 터치시 키보드 숨김
+     * @author 희진
+     */
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        if (currentFocus != null) {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+        }
+
+        return super.dispatchTouchEvent(ev)
     }
 }

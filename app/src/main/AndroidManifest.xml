@@ -20,6 +20,7 @@
         <activity android:name="com.ppcomp.knu.Madeby"/>
         <activity
             android:name="com.ppcomp.knu.KeywordActivity"
+            android:windowSoftInputMode="adjustNothing"
             android:parentActivityName="com.ppcomp.knu.Setting" />
         <activity android:name="com.ppcomp.knu.SubscriptionAdapter"
             tools:ignore="Instantiatable" />

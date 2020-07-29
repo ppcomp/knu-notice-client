@@ -32,7 +32,18 @@ class SettingFragment : Fragment() {
                 startActivity(intent)
             }
         })
-
+        view.license.setOnClickListener(object :View.OnClickListener {
+            override fun onClick(v: View?) {
+                val intent = Intent(context, License::class.java)
+                startActivity(intent)
+            }
+        })
+        view.madeby.setOnClickListener(object :View.OnClickListener {
+            override fun onClick(v: View?) {
+                val intent = Intent(context, Madeby::class.java)
+                startActivity(intent)
+            }
+        })
         return view
     }
 

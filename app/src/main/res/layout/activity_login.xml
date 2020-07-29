@@ -17,7 +17,7 @@
         android:layout_width="0dp"
         android:layout_height="130dp"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="80dp"
         android:src="@drawable/gomduri"
         app:layout_constraintBottom_toBottomOf="@id/pushapp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -54,48 +54,15 @@
     <!-- 카카오에서 제공하는 기본 로그인 버튼-->
     <com.kakao.usermgmt.LoginButton
         android:id="@+id/loginButton"
-        android:layout_width="336dp"
+        android:layout_width="300dp"
         android:layout_height="53dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="250dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/username"
         tools:ignore="MissingConstraints" />
 
-    <TextView
-        android:id="@+id/findpw"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_gravity="start"
-        android:layout_marginStart="30dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginEnd="160dp"
-        android:layout_marginRight="80dp"
-        android:gravity="center"
-        android:text="비밀번호 찾기"
-        android:textSize="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.14"
-        app:layout_constraintStart_toStartOf="parent"></TextView>
-
-    <TextView
-        android:id="@+id/join"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_gravity="start"
-        android:layout_marginStart="140dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="80dp"
-        android:gravity="center"
-        android:text="회원가입"
-        android:textSize="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.722"
-        app:layout_constraintStart_toStartOf="parent"></TextView>
 
     <ProgressBar
         android:id="@+id/loading"
