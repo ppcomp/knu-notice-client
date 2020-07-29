@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.ppcomp.knu">
     <!-- 통신을 위해 필요한것들 -->
     <uses-permission android:name="android.permission.INTERNET" />
@@ -20,10 +21,12 @@
         <activity
             android:name="com.ppcomp.knu.KeywordActivity"
             android:parentActivityName="com.ppcomp.knu.Setting" />
-        <activity android:name="com.ppcomp.knu.SubscriptionAdapter" />
+        <activity android:name="com.ppcomp.knu.SubscriptionAdapter"
+            tools:ignore="Instantiatable" />
         <activity
             android:name="com.ppcomp.knu.SubscriptionActivity"
-            android:parentActivityName="com.ppcomp.knu.Setting" />
+            android:windowSoftInputMode="adjustNothing"
+            android:parentActivityName="com.ppcomp.knu.Setting" /> <!-- adjustNothing : 키보드가 화면에 영향 안주도록 -->
         <activity android:name="com.ppcomp.knu.License" />
         <activity
             android:name="com.ppcomp.knu.Setting"
