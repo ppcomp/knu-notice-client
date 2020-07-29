@@ -37,21 +37,33 @@
             >
 
         </TextView>
+
     </LinearLayout>
+
+
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/subsSearch"
+        android:layout_width="372dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="4dp"
+        android:background="@color/colorGray"
+
+        android:textCursorDrawable="@null"
+        app:iconifiedByDefault="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/subscription_info_line"
+        app:queryBackground="@null" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/subsResult"
-        android:layout_width="348dp"
-        android:layout_height="470dp"
-
-        android:layout_marginStart="28dp"
-        android:layout_marginLeft="28dp"
+        android:layout_width="367dp"
+        android:layout_height="480dp"
         app:layout_constraintBottom_toTopOf="@+id/subsSave"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subscription_info_line">
+        app:layout_constraintTop_toBottomOf="@+id/subsSearch">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -59,7 +71,7 @@
         android:id="@+id/subsSave"
         android:layout_width="157dp"
         android:layout_height="39dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/loginbutton"
         android:clickable="true"
         android:gravity="center"
@@ -71,20 +83,18 @@
 
     <TextView
         android:id="@+id/correct"
-        android:layout_width="150dp"
-        android:layout_height="30dp"
-        android:layout_marginRight="200dp"
-        android:layout_marginBottom="28dp"
+        android:layout_width="100dp"
+        android:layout_height="28dp"
         android:clickable="true"
         android:gravity="center"
         android:text="확인"
-        android:textSize="5sp"
 
+        android:textSize="5sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.873"
+        app:layout_constraintHorizontal_bias="0.051"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subsResult"
-        app:layout_constraintVertical_bias="0.509" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.994" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

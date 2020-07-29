@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.StrictMode
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_subscription.*
 import kotlinx.android.synthetic.main.subscription_toolbar.*
@@ -21,11 +22,13 @@ import java.net.URL
  */
 class SubscriptionActivity : AppCompatActivity() {
     var subsList = arrayListOf<Subscription>()
+    lateinit var adapter: SubscriptionAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_subscription)
         //parsing 부분
+
 
         StrictMode.enableDefaults()
         val serverUrl = "http://15.165.178.103/notice/list"
@@ -52,15 +55,16 @@ class SubscriptionActivity : AppCompatActivity() {
                 val getUrl = obj.getString("api_url")
                 val url = getUrl.split("/")
                 val confirmCheck: Boolean = set.contains(name)// 저장된 게시판인지 확인하기위한 변수
-                val line = Subscription(name, confirmCheck, url[2])
+                val line = Subscription(name, confirmCheck, url[2], i)
                 subsList.add(line)
             }
         } catch (e: Exception) {
-            val line = Subscription("오류", false, "")
+            val line = Subscription("오류", false, "", 9999)
         }
 
         val subsAdapter = SubscriptionAdapter(this, subsList)
         subsResult.adapter = subsAdapter
+        adapter = subsAdapter
 
         val lm = LinearLayoutManager(this)
         subsResult.layoutManager = lm
@@ -72,14 +76,26 @@ class SubscriptionActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back)//뒤로가기 아이콘 지정
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
 
+        subsSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.getFilter().filter(newText)
+                return false
+            }
+
+        })
+
 
         subsSave.setOnClickListener { // 저장 버튼 누를시
             val pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
             val ed = pref.edit()
             // SharedPreferences 호출
             var storeName: String = ""
-            var storeUrl: String= ""
-            for (i in 0 until subsAdapter.getItemCount()) {
+            var storeUrl: String = ""
+            for (i in 0 until subsList.count()) {
                 var ch: Boolean = subsAdapter.getChecked(i)
                 var name: String
                 var url: String
