@@ -46,4 +46,8 @@ dependencies {
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: '1.29.0'// 카카오 로그인
     implementation group: 'com.kakao.sdk', name: 'kakaotalk', version: '1.29.0' // 카카오톡 로그인
     implementation group: 'com.kakao.sdk', name: 'kakaolink', version: '1.29.0' // 카카오 링크
+    implementation 'com.squareup.retrofit2:retrofit:2.6.1' //유저 정보 보내기
+    implementation 'com.squareup.retrofit2:converter-gson:2.6.1' //유저 정보 보내기
+    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0' //유저 정보 보내기
+    compile 'com.google.code.gson:gson:2.2.4'
 }

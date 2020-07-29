@@ -25,6 +25,7 @@ class NoticeAdapter(
         val noticeDate = itemView.findViewById<TextView>(R.id.date)
         val noticeAuthor = itemView.findViewById<TextView>(R.id.author)
 
+
         fun bind (notice: Notice, context: Context) {
             noticeTitle.text = notice.title
             noticeBoard.text = notice.board

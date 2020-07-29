@@ -1,10 +1,12 @@
 package com.ppcomp.knu
 
+import RestApiService
 import android.content.Context
 import android.os.Bundle
 import android.os.StrictMode
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_subscription.*
 import kotlinx.android.synthetic.main.subscription_toolbar.*
@@ -20,11 +22,13 @@ import java.net.URL
  */
 class SubscriptionActivity : AppCompatActivity() {
     var subsList = arrayListOf<Subscription>()
+    lateinit var adapter: SubscriptionAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_subscription)
         //parsing 부분
+
 
         StrictMode.enableDefaults()
         val serverUrl = "http://15.165.178.103/notice/list"
@@ -33,9 +37,10 @@ class SubscriptionActivity : AppCompatActivity() {
             var read = BufferedReader(InputStreamReader(stream.inputStream, "UTF-8"))
             val response = read.readLine()
             val jArray = JSONArray(response)
+
             val loadPreferences = getSharedPreferences("pref", Context.MODE_PRIVATE)
             // 저장된 구독리스트 불러옴
-            val subscriptionList = loadPreferences.getString("Subs", "오류")?.split("+")
+            val subscriptionList = loadPreferences.getString("Subs", "")?.split("+")
             val set: MutableSet<String> = mutableSetOf("")
             if (subscriptionList != null) {
                 for (i in 0 until subscriptionList.count()) {
@@ -50,15 +55,16 @@ class SubscriptionActivity : AppCompatActivity() {
                 val getUrl = obj.getString("api_url")
                 val url = getUrl.split("/")
                 val confirmCheck: Boolean = set.contains(name)// 저장된 게시판인지 확인하기위한 변수
-                val line = Subscription(name, confirmCheck, url[2])
+                val line = Subscription(name, confirmCheck, url[2], i)
                 subsList.add(line)
             }
         } catch (e: Exception) {
-            val line = Subscription("오류", false, "")
+            val line = Subscription("오류", false, "", 9999)
         }
 
         val subsAdapter = SubscriptionAdapter(this, subsList)
         subsResult.adapter = subsAdapter
+        adapter = subsAdapter
 
         val lm = LinearLayoutManager(this)
         subsResult.layoutManager = lm
@@ -70,13 +76,26 @@ class SubscriptionActivity : AppCompatActivity() {
         supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back)//뒤로가기 아이콘 지정
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
 
+        subsSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.getFilter().filter(newText)
+                return false
+            }
+
+        })
+
+
         subsSave.setOnClickListener { // 저장 버튼 누를시
             val pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
             val ed = pref.edit()
             // SharedPreferences 호출
             var storeName: String = ""
-            var storeUrl: String= ""
-            for (i in 0 until subsAdapter.getItemCount()) {
+            var storeUrl: String = ""
+            for (i in 0 until subsList.count()) {
                 var ch: Boolean = subsAdapter.getChecked(i)
                 var name: String
                 var url: String
@@ -102,6 +121,26 @@ class SubscriptionActivity : AppCompatActivity() {
                 // 선택하고 저장버튼 누를시 Subs 라는 Key로 SharedPreferences에 저장
             }
 
+            val apiService = RestApiService()
+            var getUID = pref.getString("UID", "")
+            var getKeywords: String? = pref.getString("Keys", "")
+            var getSubscriptions: String? = pref.getString("Urls", "")
+
+            val userInfo = UserInfo(
+                id = getUID,
+                id_method = "guid",
+                keywords = getKeywords,
+                subscriptions = if (getSubscriptions == "") null else getSubscriptions
+            )
+
+            apiService.modifyUser(userInfo) {
+                if (it?.id != null) {
+                    // it = newly added user parsed as response
+                    // it?.id = newly added user ID
+                } else {
+
+                }
+            }
             Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
             // 메세지
 
@@ -109,7 +148,7 @@ class SubscriptionActivity : AppCompatActivity() {
 
         correct.setOnClickListener { // 저장 잘되어있는지 보려고 만든 View
             val pref2 = getSharedPreferences("pref", Context.MODE_PRIVATE)
-            correct.setText(pref2.getString("Urls", "저장 x"))
+            correct.setText(pref2.getString("Urls", ""))
         }
     }
 }

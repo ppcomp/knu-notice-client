@@ -3,10 +3,8 @@ package com.ppcomp.knu
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-class Keyword : AppCompatActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_app02)
-    }
-}
+/**
+ * RecyclerView의 항목 하나하나를 담당할 item
+ * @author 상은
+ */
+class Keyword (var name: String)

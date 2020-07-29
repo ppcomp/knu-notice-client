@@ -1,7 +1,10 @@
 package com.ppcomp.knu
 
+import RestApiService
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +18,7 @@ import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.MeV2ResponseCallback
 import com.kakao.usermgmt.response.MeV2Response
 import com.kakao.util.exception.KakaoException
+import java.util.*
 
 /**
  * 하단 바 '로그인'페이지의  kt
@@ -22,7 +26,7 @@ import com.kakao.util.exception.KakaoException
  */
 class LoginFragment : Fragment() {
     private var callback: SessionCallback = SessionCallback() //카카오에서 제공하는 콜백함수
-
+    private lateinit var kakaoId: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         callback = SessionCallback()
@@ -41,7 +45,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
     }
 
     override fun onDestroy() {
@@ -67,12 +70,14 @@ class LoginFragment : Fragment() {
             UserManagement.getInstance().me(object : MeV2ResponseCallback() {
                 override fun onSuccess(result: MeV2Response?) {
                     // 로그인이 성공했을 때
+                    kakaoId = result!!.id.toString()
                     Toast.makeText(
                         activity,
-                        "로그인 성공! 계정 id: " + result!!.id,
+                        "로그인 성공! 계정 이름: " + result!!.kakaoAccount.profile.nickname,
                         Toast.LENGTH_SHORT
                     ).show()
                     GlobalApplication.isLogin = true    //로그인 상태 업데이트
+                    userInfoUpload()    //카카오계정 데이터 api서버에 추가
                     (activity as MainActivity).addFragment(UserInfoFragment())  //UserInfoFragment로 화면전환
 
                 }
@@ -87,7 +92,7 @@ class LoginFragment : Fragment() {
                 }
 
                 override fun onFailure(errorResult: ErrorResult?) {
-                    //로그인에 실패했을 때, 네트워크 불안정한 경우도 여기에 해당 1405916740
+                    //로그인에 실패했을 때, 네트워크 불안정한 경우도 여기에 해당
                     var result = errorResult?.errorCode
 
                     if (result == ApiErrorCode.CLIENT_ERROR_CODE) {
@@ -118,4 +123,42 @@ class LoginFragment : Fragment() {
         }
     }
 
+    /**
+     * 카카오유저데이터 서버에 업로드
+     * @author 정준
+     */
+    fun userInfoUpload() {
+        val pref = this.activity?.getSharedPreferences("pref", Context.MODE_PRIVATE)
+        var isGetFailed: Boolean = false
+        val apiService = RestApiService()
+        val getUID = pref?.getString("UID","")
+        val userInfo = KakaoUserInfo(   id = kakaoId,
+//                                        email = "test1234@gmail.com",
+                                        device_id = getUID)
+
+        apiService.getKakaoUser(kakaoId) {
+            //서버에 데이터가 있는지 확인
+            if(it?.id != null) {
+                Log.d("kakaoUser_get","id != null")
+                isGetFailed = false
+            } else {
+                Log.d("kakaoUser_get","id = null")
+                isGetFailed = true
+            }
+
+            if(isGetFailed) {
+                //서버에 데이터가 없으면 서버에 데이터 저장
+                apiService.addKakaoUser(userInfo) {
+                    if (it?.id != null) {
+                        // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
+                        // it?.id = newly added user ID
+                        Log.d("kakaoUser_post", "id != null")
+                    } else {
+                        Log.d("kakaoUser_post", "id = null")
+                    }
+                }
+            }
+        }
+
+    }
 }
