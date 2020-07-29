@@ -3,6 +3,7 @@ package com.ppcomp.knu
 //import kotlinx.android.synthetic.main.main.*
 //parsing 부분
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.MotionEvent
@@ -12,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.kakao.auth.Session
 
 
 /**
@@ -46,6 +48,18 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * 로그인 후 액티비티로 결과데이터 받아오는 메소드
+     * @author 정준
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        // 카카오 간편로그인 실행 결과를 받아서 SDK로 전달
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data)
+            return
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
 
     /**
      * 메뉴 클릭시 이동

@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.kakao.auth.ApiErrorCode
+import com.kakao.auth.AuthType
 import com.kakao.auth.ISessionCallback
 import com.kakao.auth.Session
 import com.kakao.network.ErrorResult
@@ -30,9 +31,9 @@ class LoginFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         callback = SessionCallback()
+        Session.getCurrentSession().clearCallbacks()
         Session.getCurrentSession().addCallback(callback)
         Session.getCurrentSession().checkAndImplicitOpen()  //로그인 이력이 있으면 재접속해도 로그인 유지해줌
-
     }
 
     override fun onCreateView(
@@ -52,14 +53,6 @@ class LoginFragment : Fragment() {
         Session.getCurrentSession().removeCallback(callback)
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        // 카카오 간편로그인 실행 결과를 받아서 SDK로 전달
-        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data)
-            return;
-        }
-    }
-
     /**
      * 카카오로그인 처리해주는 콜백함수
      * @author 정준
@@ -67,6 +60,7 @@ class LoginFragment : Fragment() {
     private inner class SessionCallback : ISessionCallback {
         override fun onSessionOpened() {
             // 로그인 세션이 열렸을 때
+            Log.d("kakaoLogin","good")
             UserManagement.getInstance().me(object : MeV2ResponseCallback() {
                 override fun onSuccess(result: MeV2Response?) {
                     // 로그인이 성공했을 때
