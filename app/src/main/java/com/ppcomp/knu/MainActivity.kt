@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         content = findViewById(R.id.frameLayout)
         val navigation = findViewById<BottomNavigationView>(R.id.main_navigationView)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        val fragment = LoginFragment()
+        val fragment = NoticeFragment()
         addFragment(fragment)
 //        setSupportActionBar(main_layout_toolbar)                                //toolbar 지정
 //        supportActionBar?.setDisplayHomeAsUpEnabled(true)                       //toolbar  보이게 하기

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorGray">
-    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="30dp"
@@ -55,8 +54,8 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="60dp"
-                android:layout_weight=".50"
-                android:text="로그아웃"
+                android:layout_weight=".60"
+                android:text="알림 설정"
                 android:gravity="center"
                 android:textColor="@color/colorBlack"
                 android:textSize="17dp"
@@ -67,12 +66,9 @@
             <Switch
                 android:layout_width="0dp"
                 android:layout_height="60dp"
-                android:layout_weight=".50"
-                android:text="알림 설정 :"
-                android:textSize="17dp"
-                android:textColor="@color/colorBlack"
-                android:paddingLeft="20dp"
-                android:paddingRight="40dp"
+                android:layout_weight=".40"
+                android:layout_marginTop="-1dp"
+                android:paddingRight="60dp"
                 android:track="@drawable/setting_switch_selector"
                 android:thumb="@drawable/setting_switch_thumb"
                 android:background="@drawable/setting_bottom_line"
@@ -149,7 +145,71 @@
                 app:layout_constraintTop_toBottomOf="@+id/subscriptionSetting"/>
             "
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/additional_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            app:layout_constraintTop_toBottomOf="@id/list"
+            android:orientation="vertical">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="부가 정보"
+                android:padding="10dp"
+                android:textStyle="bold"
+                android:textColor="@color/colorBlack"
+                android:textSize="16dp"
+                android:background="@drawable/setting_bottom_line"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                ></TextView>
+
+            <TextView
+                android:id="@+id/license"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/setting_bottom_line"
+                android:clickable="true"
+                android:drawableRight="@drawable/btn_setting_move"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="20dp"
+                android:text="라이선스"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.265" />
+
+            <TextView
+                android:id="@+id/madeby"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:text="만든이"
+                android:layout_marginTop="1dp"
+                android:textSize="18dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="20dp"
+                android:gravity="center_vertical"
+                android:textColor="@color/colorBlack"
+                android:clickable="true"
+                android:drawableRight="@drawable/btn_setting_move"
+                android:background="@drawable/setting_bottom_line"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="@+id/subscriptionSetting"
+                app:layout_constraintRight_toRightOf="@+id/subscriptionSetting"
+                app:layout_constraintTop_toBottomOf="@+id/subscriptionSetting"/>
+            "
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
