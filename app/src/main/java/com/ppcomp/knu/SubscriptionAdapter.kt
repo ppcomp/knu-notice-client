@@ -27,13 +27,13 @@ class SubscriptionAdapter(val context: Context, var subsList: ArrayList<Subscrip
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val charSearch = constraint.toString()
+                val charSearch = constraint.toString().toLowerCase()
                 if (charSearch.isEmpty()) {
                     subsFilterList = subsList
                 } else {
                     val resultList = ArrayList<Subscription>()
                     for (row in subsList) {
-                        if (row.name.contains(charSearch)) {
+                        if (row.name.toLowerCase().contains(charSearch)) {
                             resultList.add(row)
                         }
                     }
