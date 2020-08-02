@@ -2,6 +2,7 @@ package com.ppcomp.knu
 
 import RestApiService
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.StrictMode
 import android.view.MotionEvent
@@ -9,14 +10,15 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_subscription.*
 import kotlinx.android.synthetic.main.subscription_toolbar.*
-import org.json.JSONArray
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
+import java.lang.reflect.Type
+
 
 /**
  * 어떤 데이터(ArrayList)와 어떤 RecyclerView를 쓸 것인지 설정하는 Activity
@@ -29,40 +31,15 @@ class SubscriptionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_subscription)
-        //parsing 부분
-
 
         StrictMode.enableDefaults()
-        val serverUrl = "http://15.165.178.103/notice/list"
-        try {
-            val stream = URL(serverUrl).openConnection() as HttpURLConnection
-            var read = BufferedReader(InputStreamReader(stream.inputStream, "UTF-8"))
-            val response = read.readLine()
-            val jArray = JSONArray(response)
 
-            val loadPreferences = getSharedPreferences("pref", Context.MODE_PRIVATE)
-            // 저장된 구독리스트 불러옴
-            val subscriptionList = loadPreferences.getString("Subs", "")?.split("+")
-            val set: MutableSet<String> = mutableSetOf("")
-            if (subscriptionList != null) {
-                for (i in 0 until subscriptionList.count()) {
-                    set.add(subscriptionList[i])
-                }
-            }
-            // 구독리스트들을 "+" 기준으로 나눠서 set에 저장
+        var userLocalData = this.getSharedPreferences("pref", Context.MODE_PRIVATE)
+        var strContact = userLocalData.getString("testsub", "")
+        var makeGson = GsonBuilder().create()
+        var listType : TypeToken<ArrayList<Subscription>> = object : TypeToken<ArrayList<Subscription>>() {}
 
-            for (i in 0 until jArray.length()) {
-                val obj = jArray.getJSONObject(i)
-                val name = obj.getString("name")
-                val getUrl = obj.getString("api_url")
-                val url = getUrl.split("/")
-                val confirmCheck: Boolean = set.contains(name)// 저장된 게시판인지 확인하기위한 변수
-                val line = Subscription(name, confirmCheck, url[2], i)
-                subsList.add(line)
-            }
-        } catch (e: Exception) {
-            val line = Subscription("오류", false, "", 9999)
-        }
+        subsList = makeGson.fromJson(strContact, listType.type)
 
         val subsAdapter = SubscriptionAdapter(this, subsList)
         subsResult.adapter = subsAdapter
@@ -106,11 +83,21 @@ class SubscriptionActivity : AppCompatActivity() {
                     url = subsAdapter.getUrl(i)
                     storeName = storeName + name + "+"
                     storeUrl = storeUrl + url + "+"
+                    subsList[i].checked = true
                 }
+                else
+                {
+                    subsList[i].checked = false
+                }
+
+
             }
             if (storeName.equals("")) {
                 ed.putString("Subs", "")
                 ed.putString("Urls", "")
+
+                strContact = makeGson.toJson(subsList, listType.type)
+                ed.putString("testsub", strContact)
                 ed.apply()
                 // 아무것도 선택 안하고 저장버튼 누를 시 rest
             } else {
@@ -119,6 +106,9 @@ class SubscriptionActivity : AppCompatActivity() {
 
                 ed.putString("Subs", storeName)
                 ed.putString("Urls", storeUrl)
+
+                strContact = makeGson.toJson(subsList, listType.type)
+                ed.putString("testsub", strContact)
                 ed.apply()
                 // 선택하고 저장버튼 누를시 Subs 라는 Key로 SharedPreferences에 저장
             }
