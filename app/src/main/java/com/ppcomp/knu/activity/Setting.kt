@@ -4,14 +4,14 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.ppcomp.knu.R
-import kotlinx.android.synthetic.main.activity_setting.*
-import kotlinx.android.synthetic.main.main_toolbar.*
+import kotlinx.android.synthetic.main.fragment_setting.*
+import kotlinx.android.synthetic.main.fragment_setting_toolbar.*
 
 class Setting : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_setting)
+        setContentView(R.layout.fragment_setting)
 
         subscriptionSetting.setOnClickListener{
             val intent = Intent(this, SubscriptionActivity::class.java)

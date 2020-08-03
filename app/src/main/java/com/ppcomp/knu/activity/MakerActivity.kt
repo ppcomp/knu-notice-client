@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_maker.*
 
 import org.json.JSONArray
 
-class Maker : AppCompatActivity() {
+class MakerActivity : AppCompatActivity() {
 
     private var makerList = arrayListOf<MakerData>()
 

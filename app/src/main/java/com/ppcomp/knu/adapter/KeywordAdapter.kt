@@ -19,7 +19,7 @@ class KeywordAdapter(val context: Context, val keywordList: ArrayList<Keyword>) 
     RecyclerView.Adapter<KeywordAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(context).inflate(R.layout.keyword_item, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.activity_keyword_item, parent, false)
         return Holder(view)
     }
 

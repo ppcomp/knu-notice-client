@@ -14,7 +14,7 @@ import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.UserInfo
 import com.ppcomp.knu.`object`.Keyword
 import kotlinx.android.synthetic.main.activity_keyword.*
-import kotlinx.android.synthetic.main.keyword_toolbar.*
+import kotlinx.android.synthetic.main.activity_keyword_toolbar.*
 
 /**
  * 어떤 데이터(ArrayList)와 어떤 RecyclerView를 쓸 것인지 설정하는 Activity

@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.ppcomp.knu.activity.Maker"/>
+        <activity android:name="com.ppcomp.knu.activity.MakerActivity"/>
         <activity
             android:name="com.ppcomp.knu.activity.KeywordActivity"
             android:windowSoftInputMode="adjustNothing"
@@ -28,7 +28,7 @@
             android:name="com.ppcomp.knu.activity.SubscriptionActivity"
             android:windowSoftInputMode="adjustNothing"
             android:parentActivityName="com.ppcomp.knu.activity.Setting" /> <!-- adjustNothing : 키보드가 화면에 영향 안주도록 -->
-        <activity android:name="com.ppcomp.knu.activity.License" />
+        <activity android:name="com.ppcomp.knu.activity.LicenseActivity" />
         <activity
             android:name="com.ppcomp.knu.activity.Setting"
             android:parentActivityName="com.ppcomp.knu.activity.MainActivity"

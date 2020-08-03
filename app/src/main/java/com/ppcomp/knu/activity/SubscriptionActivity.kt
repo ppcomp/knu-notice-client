@@ -17,7 +17,7 @@ import com.ppcomp.knu.adapter.SubscriptionAdapter
 import com.ppcomp.knu.`object`.UserInfo
 import com.ppcomp.knu.`object`.Subscription
 import kotlinx.android.synthetic.main.activity_subscription.*
-import kotlinx.android.synthetic.main.subscription_toolbar.*
+import kotlinx.android.synthetic.main.activity_subscription_toolbar.*
 
 
 /**

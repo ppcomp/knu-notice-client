@@ -43,7 +43,7 @@ class NoticeAdapter(
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         /* LayoutInflater는 item을 Adapter에서 사용할 View로 부풀려주는(inflate) 역할을 한다. */
-        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.notice_item, parent, false)
+        val view: View = LayoutInflater.from(parent.context).inflate(R.layout.fragment_notice_item, parent, false)
         return Holder(view, itemClick)
     }
 

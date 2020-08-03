@@ -64,7 +64,7 @@ class MakerAdapter(
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MakerAdapter.Holder {
         /* LayoutInflater는 item을 Adapter에서 사용할 View로 부풀려주는(inflate) 역할을 한다. */
-        val view: View = LayoutInflater.from(context).inflate(R.layout.maker_item, parent, false)
+        val view: View = LayoutInflater.from(context).inflate(R.layout.activity_maker_item, parent, false)
         return Holder(view)
     }
 

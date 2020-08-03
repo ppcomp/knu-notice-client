@@ -18,9 +18,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.adapter.NoticeAdapter
-import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.main_layout.*
-import kotlinx.android.synthetic.main.main_layout.view.*
+import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.fragment_notice_layout.*
+import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -52,7 +52,7 @@ class NoticeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.main_layout, container, false)
+        val view = inflater.inflate(R.layout.fragment_notice_layout, container, false)
 
         thisContext = container!!.context                                   //context 가져오기
         recyclerView1 = view!!.findViewById(R.id.notice) as RecyclerView    //recyclerview 가져오기
@@ -98,7 +98,7 @@ class NoticeFragment : Fragment() {
     fun parsing() {
         mLockRecyclerView = true    //실행 중 중복 사용 막기
 
-        val view = LayoutInflater.from(requireContext()).inflate(R.layout.main_layout, container, false)
+        val view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_notice_layout, container, false)
 
         val Noticeadapter = NoticeAdapter(
             thisContext,

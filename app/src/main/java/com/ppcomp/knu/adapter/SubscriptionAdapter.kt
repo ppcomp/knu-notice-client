@@ -8,7 +8,7 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Subscription
-import kotlinx.android.synthetic.main.subscription_item.view.*
+import kotlinx.android.synthetic.main.activity_subscription_item.view.*
 import kotlin.collections.ArrayList
 
 /**
@@ -54,7 +54,7 @@ class SubscriptionAdapter(val context: Context, var subsList: ArrayList<Subscrip
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(context).inflate(R.layout.subscription_item, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.activity_subscription_item, parent, false)
         return Holder(view)
     }
 
