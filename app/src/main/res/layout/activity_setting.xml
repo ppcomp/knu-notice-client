@@ -188,7 +188,7 @@
                 app:layout_constraintVertical_bias="0.265" />
 
             <TextView
-                android:id="@+id/madeby"
+                android:id="@+id/maker"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
                 android:text="만든이"

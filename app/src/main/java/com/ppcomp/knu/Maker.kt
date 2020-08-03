@@ -7,23 +7,24 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.StrictMode
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.DataRunner.CountryTown.MadebyAdapter
-import kotlinx.android.synthetic.main.activity_madeby.*
+import com.DataRunner.CountryTown.MakerAdapter
+import kotlinx.android.synthetic.main.activity_maker.*
+
 import org.json.JSONArray
 
-class Madeby : AppCompatActivity() {
+class Maker : AppCompatActivity() {
 
-    private var madebyList = arrayListOf<MadebyData>()
+    private var makerList = arrayListOf<MakerData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_madeby)
+        setContentView(R.layout.activity_maker)
 
         getMakers()
     }
 
     private fun getMakers() {
-        val madeByAdapter =  MadebyAdapter(this, madebyList) { maker ->
+        val makerAdapter =  MakerAdapter(this, makerList) { maker ->
             val intent = Intent(Intent.ACTION_SENDTO).apply {
                 data = Uri.parse("mailto:") // only email apps should handle this
                 putExtra(Intent.EXTRA_EMAIL, arrayOf(maker.makerEmail))
@@ -33,19 +34,19 @@ class Madeby : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-        madeBy.adapter = madeByAdapter
+        maker.adapter = makerAdapter
 
         // LayoutManager 설정. RecyclerView 에서는 필수
         val lm = LinearLayoutManager(this)
-        madeBy.layoutManager = lm
-        madeBy.setHasFixedSize(true)
+        maker.layoutManager = lm
+        maker.setHasFixedSize(true)
 
         //start
         StrictMode.enableDefaults()
         try {
 //            val jsonString = loadData(this, "maker")
             val assetManager = resources.assets
-            val inputStream = assetManager.open("madeby.json")
+            val inputStream = assetManager.open("maker.json")
             val jsonString = inputStream.bufferedReader().use { it.readText() }
             val jArray = JSONArray(jsonString)
 
@@ -54,18 +55,18 @@ class Madeby : AppCompatActivity() {
 
                 val obj = jArray.getJSONObject(i)
 
-                val listLine = MadebyData(
+                val listLine = MakerData(
                     obj.getString("이름"),
                     obj.getString("이메일"),
                     obj.getString("깃주소"),
                     obj.getString("소속"),
                     obj.getString("사진")
                 )
-                madebyList.add(listLine)
+                makerList.add(listLine)
             }
         } catch (e: Exception) {
-            val listLine = MadebyData(e.toString(), "오류", "오류", "오류", "오류")
-            madebyList.add(listLine)
+            val listLine = MakerData(e.toString(), "오류", "오류", "오류", "오류")
+            makerList.add(listLine)
         }
     }
     fun loadData(context: Context, key: String): String? {

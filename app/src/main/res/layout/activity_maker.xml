@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Madeby"
+    tools:context=".Maker"
     tools:ignore="MissingDefaultResource">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/madeBy"
+        android:id="@+id/maker"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </androidx.recyclerview.widget.RecyclerView>

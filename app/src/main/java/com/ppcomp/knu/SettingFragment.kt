@@ -38,9 +38,9 @@ class SettingFragment : Fragment() {
                 startActivity(intent)
             }
         })
-        view.madeby.setOnClickListener(object :View.OnClickListener {
+        view.maker.setOnClickListener(object :View.OnClickListener {
             override fun onClick(v: View?) {
-                val intent = Intent(context, Madeby::class.java)
+                val intent = Intent(context, Maker::class.java)
                 startActivity(intent)
             }
         })

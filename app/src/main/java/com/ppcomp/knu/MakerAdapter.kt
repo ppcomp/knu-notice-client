@@ -9,16 +9,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
-import com.ppcomp.knu.MadebyData
+import com.ppcomp.knu.MakerData
 import com.ppcomp.knu.R
 
-class MadebyAdapter(
+class MakerAdapter(
     val context: Context,               // MainActivity
-    val makerList: ArrayList<MadebyData>,     // 객체 list
-    val itemClick: (MadebyData) -> Unit)      // 객체 클릭시 실행되는 lambda 식
-    : RecyclerView.Adapter<MadebyAdapter.Holder>() {
+    val makerList: ArrayList<MakerData>,     // 객체 list
+    val itemClick: (MakerData) -> Unit)      // 객체 클릭시 실행되는 lambda 식
+    : RecyclerView.Adapter<MakerAdapter.Holder>() {
 
     /**
      * 각 객체를 감싸는 Holder
@@ -34,7 +32,7 @@ class MadebyAdapter(
         val dataAff= itemView.findViewById<TextView>(R.id.maker_aff)
         val dataImg= itemView.findViewById<ImageView>(R.id.maker_img)
 
-        fun bind (data: MadebyData, context: Context) {
+        fun bind (data: MakerData, context: Context) {
             dateName.text = data.makerName
             dataEmail.text = data.makerEmail
             dataGit.text = data.makerGit
@@ -64,9 +62,9 @@ class MadebyAdapter(
      * 화면을 최초로 로딩하여 만들어진 View 가 없는 경우, xml 파일을 inflate 하여 ViewHolder 생성
      * @author jungwoo
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MadebyAdapter.Holder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MakerAdapter.Holder {
         /* LayoutInflater는 item을 Adapter에서 사용할 View로 부풀려주는(inflate) 역할을 한다. */
-        val view: View = LayoutInflater.from(context).inflate(R.layout.madeby_item, parent, false)
+        val view: View = LayoutInflater.from(context).inflate(R.layout.maker_item, parent, false)
         return Holder(view)
     }
 
@@ -74,7 +72,7 @@ class MadebyAdapter(
      * onCreateViewHolder 에서 만든 view 와 실제 입력되는 각각의 데이터 연결
      * @author jungwoo
      */
-    override fun onBindViewHolder(holder: MadebyAdapter.Holder, position: Int) {
+    override fun onBindViewHolder(holder: MakerAdapter.Holder, position: Int) {
         holder.bind(makerList[position], context)
     }
 

@@ -1,6 +1,6 @@
 package com.ppcomp.knu
 
-data class MadebyData (
+data class MakerData (
     val makerName: String,
     val makerEmail: String,
     val makerGit: String,

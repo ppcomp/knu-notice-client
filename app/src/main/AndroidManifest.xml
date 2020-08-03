@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name="com.ppcomp.knu.Madeby"/>
+        <activity android:name="com.ppcomp.knu.Maker"/>
         <activity
             android:name="com.ppcomp.knu.KeywordActivity"
             android:windowSoftInputMode="adjustNothing"
@@ -31,7 +31,8 @@
         <activity android:name="com.ppcomp.knu.License" />
         <activity
             android:name="com.ppcomp.knu.Setting"
-            android:parentActivityName="com.ppcomp.knu.MainActivity" />
+            android:parentActivityName="com.ppcomp.knu.MainActivity"
+        />
         <activity android:name="com.ppcomp.knu.SubList" />
         <activity
             android:name="com.ppcomp.knu.SplashActivity"
