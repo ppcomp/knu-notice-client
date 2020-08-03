@@ -1,4 +1,4 @@
-package com.ppcomp.knu
+package com.ppcomp.knu.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.ppcomp.knu.R
+import com.ppcomp.knu.activity.SubscriptionActivity
+import com.ppcomp.knu.activity.KeywordActivity
+import com.ppcomp.knu.activity.License
+import com.ppcomp.knu.activity.Maker
 import kotlinx.android.synthetic.main.activity_setting.view.*
 
 /**

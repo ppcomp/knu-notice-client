@@ -1,7 +1,8 @@
-package com.ppcomp.knu
+package com.ppcomp.knu.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.ppcomp.knu.R
 
 class License : AppCompatActivity() {
 

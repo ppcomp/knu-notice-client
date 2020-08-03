@@ -1,4 +1,4 @@
-package com.ppcomp.knu
+package com.ppcomp.knu.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_subscription.*
+import com.ppcomp.knu.R
+import com.ppcomp.knu.`object`.Subscription
 import kotlinx.android.synthetic.main.subscription_item.view.*
-import java.util.*
 import kotlin.collections.ArrayList
 
 /**

@@ -1,18 +1,17 @@
-package com.ppcomp.knu
+package com.ppcomp.knu.activity
 
 import RestApiService
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.StrictMode
 import android.view.Gravity
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.preference.PreferenceManager
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.ppcomp.knu.`object`.Subscription
+import com.ppcomp.knu.`object`.UserInfo
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -56,7 +55,12 @@ class SplashActivity : AppCompatActivity() {
                 val getUrl = obj.getString("api_url")
                 val url = getUrl.split("/")
                 val confirmCheck: Boolean = set.contains(name)// 저장된 게시판인지 확인하기위한 변수
-                val line = Subscription(name, confirmCheck, url[2])
+                val line =
+                    Subscription(
+                        name,
+                        confirmCheck,
+                        url[2]
+                    )
                 subsList.add(line)
             }
         } catch (e: Exception) {

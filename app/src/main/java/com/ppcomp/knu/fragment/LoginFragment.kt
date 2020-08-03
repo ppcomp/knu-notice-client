@@ -1,4 +1,4 @@
-package com.ppcomp.knu
+package com.ppcomp.knu.fragment
 
 import RestApiService
 import android.content.Context
@@ -17,7 +17,10 @@ import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.MeV2ResponseCallback
 import com.kakao.usermgmt.response.MeV2Response
 import com.kakao.util.exception.KakaoException
+import com.ppcomp.knu.GlobalApplication
+import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.KakaoUserInfo
+import com.ppcomp.knu.activity.MainActivity
 
 /**
  * 하단 바 '로그인'페이지의  kt

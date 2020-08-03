@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.ppcomp.knu.MakerData
+import com.ppcomp.knu.`object`.MakerData
 import com.ppcomp.knu.R
 
 class MakerAdapter(

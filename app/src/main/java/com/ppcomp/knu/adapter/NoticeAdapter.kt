@@ -1,4 +1,4 @@
-package com.ppcomp.knu
+package com.ppcomp.knu.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.ppcomp.knu.R
+import com.ppcomp.knu.`object`.Notice
 
 class NoticeAdapter(
     val context: Context,               // MainActivity

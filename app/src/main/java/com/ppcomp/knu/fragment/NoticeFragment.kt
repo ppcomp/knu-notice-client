@@ -1,4 +1,4 @@
-package com.ppcomp.knu
+package com.ppcomp.knu.fragment
 
 import android.content.Context
 import android.content.Intent
@@ -15,6 +15,9 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ppcomp.knu.R
+import com.ppcomp.knu.`object`.Notice
+import com.ppcomp.knu.adapter.NoticeAdapter
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.main_layout.*
 import kotlinx.android.synthetic.main.main_layout.view.*
@@ -71,7 +74,10 @@ class NoticeFragment : Fragment() {
             // Initialize a new Runnable
             mRunnable = Runnable {
 //                 Hide swipe to refresh icon animation
-                val Noticeadapter = NoticeAdapter(thisContext, noticeList) { notice ->
+                val Noticeadapter = NoticeAdapter(
+                    thisContext,
+                    noticeList
+                ) { notice ->
                     var link: String = notice.link
                     if (!link.startsWith("http://") && !link.startsWith("https://"))
                         link = "http://" + link
@@ -94,7 +100,10 @@ class NoticeFragment : Fragment() {
 
         val view = LayoutInflater.from(requireContext()).inflate(R.layout.main_layout, container, false)
 
-        val Noticeadapter = NoticeAdapter(thisContext, noticeList) { notice ->
+        val Noticeadapter = NoticeAdapter(
+            thisContext,
+            noticeList
+        ) { notice ->
             var link: String = notice.link
             if (!link.startsWith("http://") && !link.startsWith("https://"))
                 link = "http://" + link
@@ -146,7 +155,13 @@ class NoticeFragment : Fragment() {
                 var dateArr = date.split("-")
                 var day = dateArr[2].split("T")
                 var days = dateArr[0] + "년 " + dateArr[1] + "월 " + day[0] + "일"
-                val noticeLine = Notice(title, board[0], "게시일: " + days, "작성자: " + author, link)
+                val noticeLine = Notice(
+                    title,
+                    board[0],
+                    "게시일: " + days,
+                    "작성자: " + author,
+                    link
+                )
                 noticeList.add(noticeLine)
             }
             if(checkPageCount==0){                  //스크롤 누르지 않았을 때 스크롤 위치

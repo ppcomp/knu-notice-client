@@ -1,4 +1,4 @@
-package com.ppcomp.knu
+package com.ppcomp.knu.adapter
 
 import RestApiService
 import android.content.Context
@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.ppcomp.knu.R
+import com.ppcomp.knu.`object`.UserInfo
+import com.ppcomp.knu.`object`.Keyword
 
 /**
  * item의 어느요소를 어느 View에 넣을 것인지 연결해주는 Adapter

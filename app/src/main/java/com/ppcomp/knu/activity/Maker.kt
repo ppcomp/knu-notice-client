@@ -1,4 +1,4 @@
-package com.ppcomp.knu
+package com.ppcomp.knu.activity
 
 import android.content.Context
 import android.content.Intent
@@ -8,6 +8,8 @@ import android.os.Bundle
 import android.os.StrictMode
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.DataRunner.CountryTown.MakerAdapter
+import com.ppcomp.knu.`object`.MakerData
+import com.ppcomp.knu.R
 import kotlinx.android.synthetic.main.activity_maker.*
 
 import org.json.JSONArray
@@ -65,7 +67,14 @@ class Maker : AppCompatActivity() {
                 makerList.add(listLine)
             }
         } catch (e: Exception) {
-            val listLine = MakerData(e.toString(), "오류", "오류", "오류", "오류")
+            val listLine =
+                MakerData(
+                    e.toString(),
+                    "오류",
+                    "오류",
+                    "오류",
+                    "오류"
+                )
             makerList.add(listLine)
         }
     }

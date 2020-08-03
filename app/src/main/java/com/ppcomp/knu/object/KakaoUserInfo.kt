@@ -1,4 +1,4 @@
-package com.ppcomp.knu
+package com.ppcomp.knu.`object`
 
 import com.google.gson.annotations.SerializedName
 

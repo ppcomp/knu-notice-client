@@ -1,4 +1,4 @@
-package com.ppcomp.knu
+package com.ppcomp.knu.`object`
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

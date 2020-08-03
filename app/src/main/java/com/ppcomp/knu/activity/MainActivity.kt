@@ -1,4 +1,4 @@
-package com.ppcomp.knu
+package com.ppcomp.knu.activity
 
 //import kotlinx.android.synthetic.main.main.*
 //parsing 부분
@@ -14,6 +14,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kakao.auth.Session
+import com.ppcomp.knu.*
+import com.ppcomp.knu.`object`.Notice
+import com.ppcomp.knu.fragment.LoginFragment
+import com.ppcomp.knu.fragment.NoticeFragment
+import com.ppcomp.knu.fragment.SettingFragment
+import com.ppcomp.knu.fragment.UserInfoFragment
 
 
 /**

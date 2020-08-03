@@ -1,8 +1,7 @@
-package com.ppcomp.knu
+package com.ppcomp.knu.activity
 
 import RestApiService
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.StrictMode
 import android.view.MotionEvent
@@ -10,14 +9,15 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.ppcomp.knu.R
+import com.ppcomp.knu.adapter.SubscriptionAdapter
+import com.ppcomp.knu.`object`.UserInfo
+import com.ppcomp.knu.`object`.Subscription
 import kotlinx.android.synthetic.main.activity_subscription.*
 import kotlinx.android.synthetic.main.subscription_toolbar.*
-import java.lang.reflect.Type
 
 
 /**
@@ -41,7 +41,8 @@ class SubscriptionActivity : AppCompatActivity() {
 
         subsList = makeGson.fromJson(strContact, listType.type)
 
-        val subsAdapter = SubscriptionAdapter(this, subsList)
+        val subsAdapter =
+            SubscriptionAdapter(this, subsList)
         subsResult.adapter = subsAdapter
         adapter = subsAdapter
 
