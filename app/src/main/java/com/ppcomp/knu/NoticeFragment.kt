@@ -9,7 +9,6 @@ import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AbsListView
 import android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -76,8 +75,10 @@ class NoticeFragment : Fragment() {
                     var link: String = notice.link
                     if (!link.startsWith("http://") && !link.startsWith("https://"))
                         link = "http://" + link
-                    Toast.makeText(requireContext(), link, Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(Intent().action, Uri.parse(link)))
+                    val Intent: Intent = Uri.parse(link).let { webpage ->
+                        Intent(Intent.ACTION_VIEW, webpage)
+                    }
+                    startActivity(Intent)
                 }
                 recyclerView1.adapter = Noticeadapter
                 swipe.isRefreshing = false
@@ -97,8 +98,10 @@ class NoticeFragment : Fragment() {
             var link: String = notice.link
             if (!link.startsWith("http://") && !link.startsWith("https://"))
                 link = "http://" + link
-            Toast.makeText(requireContext(), link, Toast.LENGTH_SHORT).show()
-            startActivity(Intent(Intent().action, Uri.parse(link)))
+            val Intent: Intent = Uri.parse(link).let { webpage ->
+                Intent(Intent.ACTION_VIEW, webpage)
+            }
+            startActivity(Intent)
         }
 
         recyclerView1.adapter = Noticeadapter
