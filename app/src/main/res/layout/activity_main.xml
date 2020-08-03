@@ -9,7 +9,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <!-- main_layout-->
+    <!-- fragment_notice_layout-->
 
 
     <FrameLayout

@@ -2,6 +2,7 @@ package com.ppcomp.knu
 
 import android.app.Application
 import com.kakao.auth.KakaoSDK
+import com.ppcomp.knu.adapter.KakaoSDKAdapter
 
 /**
  * 글로벌 어플리케이션 설정
