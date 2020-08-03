@@ -2,7 +2,6 @@ package com.ppcomp.knu
 
 import RestApiService
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,7 +17,7 @@ import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.MeV2ResponseCallback
 import com.kakao.usermgmt.response.MeV2Response
 import com.kakao.util.exception.KakaoException
-import java.util.*
+import com.ppcomp.knu.`object`.KakaoUserInfo
 
 /**
  * 하단 바 '로그인'페이지의  kt
@@ -137,9 +136,11 @@ class LoginFragment : Fragment() {
         var isGetFailed: Boolean = false
         val apiService = RestApiService()
         val getUID = pref?.getString("UID","")
-        val userInfo = KakaoUserInfo(   id = kakaoId,
+        val userInfo = KakaoUserInfo(
+            id = kakaoId,
 //                                        email = "test1234@gmail.com",
-                                        device_id = getUID)
+            device_id = getUID
+        )
 
         apiService.getKakaoUser(kakaoId) {
             //서버에 데이터가 있는지 확인

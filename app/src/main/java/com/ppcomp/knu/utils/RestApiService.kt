@@ -1,12 +1,10 @@
-import android.service.autofill.UserData
 import android.util.Log
-import com.ppcomp.knu.KakaoUserInfo
-import com.ppcomp.knu.RestApi
-import com.ppcomp.knu.UserInfo
+import com.ppcomp.knu.`object`.KakaoUserInfo
+import com.ppcomp.knu.utils.RestApi
+import com.ppcomp.knu.`object`.UserInfo
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 class RestApiService {
     fun addUser(userData: UserInfo, onResult: (UserInfo?) -> Unit){
@@ -18,7 +16,7 @@ class RestApiService {
                     Log.d("t",t.toString())
                     onResult(null)
                 }
-                override fun onResponse( call: Call<UserInfo>, response: Response<UserInfo>) {
+                override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
                     val addedUser = response.body()
                     onResult(addedUser)
                 }
@@ -35,7 +33,7 @@ class RestApiService {
                     Log.d("t",t.toString())
                     onResult(null)
                 }
-                override fun onResponse( call: Call<UserInfo>, response: Response<UserInfo>) {
+                override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
                     val modifiedUser = response.body()
                     onResult(modifiedUser)
                 }
@@ -52,7 +50,7 @@ class RestApiService {
                     Log.d("t",t.toString())
                     onResult(null)
                 }
-                override fun onResponse( call: Call<KakaoUserInfo>, response: Response<KakaoUserInfo>) {
+                override fun onResponse(call: Call<KakaoUserInfo>, response: Response<KakaoUserInfo>) {
                     val addedKakaoUser = response.body()
                     onResult(addedKakaoUser)
                 }

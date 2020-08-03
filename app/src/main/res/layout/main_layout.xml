@@ -17,12 +17,12 @@
             android:layout_height="match_parent"
             android:layout_alignParentBottom="false">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/notice"
-            android:scrollbars="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/progressbar"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/notice"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/progressbar"
+                android:scrollbars="vertical" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>

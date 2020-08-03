@@ -1,5 +1,7 @@
-package com.ppcomp.knu
+package com.ppcomp.knu.utils
 
+import com.ppcomp.knu.`object`.UserInfo
+import com.ppcomp.knu.`object`.KakaoUserInfo
 import retrofit2.Call
 import retrofit2.http.*
 
