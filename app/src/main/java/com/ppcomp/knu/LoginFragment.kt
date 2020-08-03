@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.kakao.auth.ApiErrorCode
-import com.kakao.auth.AuthType
 import com.kakao.auth.ISessionCallback
 import com.kakao.auth.Session
 import com.kakao.network.ErrorResult
@@ -28,6 +27,8 @@ import java.util.*
 class LoginFragment : Fragment() {
     private var callback: SessionCallback = SessionCallback() //카카오에서 제공하는 콜백함수
     private lateinit var kakaoId: String
+    private lateinit var kakaoNickname: String
+    private lateinit var kakakoThumbnail: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         callback = SessionCallback()
@@ -58,20 +59,30 @@ class LoginFragment : Fragment() {
      * @author 정준
      */
     private inner class SessionCallback : ISessionCallback {
+
+        val pref = activity?.getSharedPreferences("pref", Context.MODE_PRIVATE)
+        val ed = pref?.edit()
+
         override fun onSessionOpened() {
             // 로그인 세션이 열렸을 때
-            Log.d("kakaoLogin","good")
+
             UserManagement.getInstance().me(object : MeV2ResponseCallback() {
                 override fun onSuccess(result: MeV2Response?) {
                     // 로그인이 성공했을 때
                     kakaoId = result!!.id.toString()
+                    kakaoNickname = result!!.kakaoAccount.profile.nickname
+                    kakakoThumbnail = result!!.kakaoAccount.profile.thumbnailImageUrl
                     Toast.makeText(
                         activity,
-                        "로그인 성공! 계정 이름: " + result!!.kakaoAccount.profile.nickname,
+                        "로그인 성공! 계정 이름: " + kakaoNickname,
                         Toast.LENGTH_SHORT
                     ).show()
                     GlobalApplication.isLogin = true    //로그인 상태 업데이트
                     userInfoUpload()    //카카오계정 데이터 api서버에 추가
+                    ed?.putString("nickname",kakaoNickname) //닉네임 저장
+                    ed?.putString("thumbnail",kakakoThumbnail) //썸네일 저장
+                    ed?.commit()
+                    Log.d("kakaoLogin",result!!.kakaoAccount.profile.thumbnailImageUrl)
                     (activity as MainActivity).addFragment(UserInfoFragment())  //UserInfoFragment로 화면전환
 
                 }
@@ -153,6 +164,7 @@ class LoginFragment : Fragment() {
                 }
             }
         }
-
     }
+
+
 }
