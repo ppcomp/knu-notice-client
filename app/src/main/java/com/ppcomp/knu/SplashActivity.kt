@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.StrictMode
+import android.view.Gravity
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceManager
@@ -31,11 +32,7 @@ class SplashActivity : AppCompatActivity() {
 
         val pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
         val ed = pref.edit()
-        var uniqueID = UUID.randomUUID().toString()
-        val getId = pref.getString("UID", uniqueID)
-        ed.putString("UID", getId)
-        ed.apply()
-
+        val getId = pref.getString("UID", "")
         var subsList = arrayListOf<Subscription>()
         val serverUrl = "http://15.165.178.103/notice/list"
         val subscriptionList = pref.getString("Subs", "")?.split("+")
@@ -77,14 +74,20 @@ class SplashActivity : AppCompatActivity() {
         editor.putString("testsub", strContact)
         editor.commit()
 
-        if (getId.equals(uniqueID)) {
-            Toast.makeText(this, "ID 존재", Toast.LENGTH_SHORT).show()
+        if (getId.equals("")) { // ID가 등록이 안되어있을경우
+
+            val toast = Toast.makeText(this, "신규 사용자입니다. \n구독리스트 설정화면으로 이동합니다.", Toast.LENGTH_SHORT)
+            toast.setGravity(Gravity.CENTER,0,0)
+            toast.show()
+            var uniqueID = UUID.randomUUID().toString()
             val userInfo = UserInfo(
-                id = getId,
+                id = uniqueID,
                 id_method = "guid",
                 keywords = null,
                 subscriptions = null
             )
+            ed.putString("UID", uniqueID)
+            ed.apply()
 
             val apiService = RestApiService()
             apiService.addUser(userInfo) {
