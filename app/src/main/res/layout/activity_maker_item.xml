@@ -46,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/ic_mail_black_24dp"
+                    android:src="@drawable/maker_mail_ic"
                     android:background="@color/colorWhite"
                     android:scaleType="fitCenter" />
 
@@ -119,7 +119,7 @@
             android:layout_marginRight="5dp"
             android:layout_gravity="center_vertical|right"
             android:scaleType="centerCrop"
-            android:src="@drawable/loading_spinningwheel"
+            android:src="@drawable/maker_loading_spinningwheel"
             tools:ignore="MissingConstraints" />
 
     </androidx.cardview.widget.CardView>

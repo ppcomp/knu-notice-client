@@ -40,7 +40,7 @@ class MakerAdapter(
 
             // Set loading image
             Glide.with(itemView)
-                .load(R.drawable.loading_spinningwheel)
+                .load(R.drawable.maker_loading_spinningwheel)
                 .into(dataImg)
 
 //            // Set image

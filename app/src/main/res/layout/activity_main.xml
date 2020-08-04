@@ -28,8 +28,8 @@
         android:layout_height="wrap_content"
         android:background="@color/colorWhite"
 
-        app:itemTextColor="@drawable/menu_selected_color"
-        app:itemIconTint="@drawable/menu_selected_color"
+        app:itemTextColor="@drawable/nav_selected_color"
+        app:itemIconTint="@drawable/nav_selected_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
