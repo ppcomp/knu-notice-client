@@ -1,6 +1,7 @@
 package com.ppcomp.knu.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,15 @@ class NoticeAdapter(
             noticeBoard.text = notice.board
             noticeDate.text = notice.date
             noticeAuthor.text = notice.author
+            val hash = notice.board.hashCode()
+            val r = (hash and 0xFF0000 shr 16)
+            val g = (hash and 0x00FF00 shr 8)
+            val b = (hash and 0x0000FF)
+            val hsv = FloatArray(3)
+            Color.colorToHSV(Color.rgb(r,g,b), hsv)
+            hsv[1] += (100F-hsv[1])/2
+            val color = Color.HSVToColor(hsv)
+            noticeBoard.setTextColor(color)
             itemView.setOnClickListener { itemClick(notice) }
         }
     }
