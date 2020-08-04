@@ -26,7 +26,7 @@
         android:text="입력하시오"
         android:gravity="center"
         android:textSize="20pt"
-        android:background="@drawable/btn_line"
+        android:background="@drawable/prototype1_line"
         tools:layout_editor_absoluteX="20dp"
         tools:layout_editor_absoluteY="150dp"
         tools:ignore="MissingConstraints" />
@@ -36,11 +36,11 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:adjustViewBounds="true"
-        android:background="@drawable/btn_line"
+        android:background="@drawable/prototype1_line"
         android:scaleType="fitCenter"
         tools:layout_editor_absoluteX="310dp"
         tools:layout_editor_absoluteY="150dp"
-        tools:src="@drawable/plus"
+        tools:src="@drawable/prototype2_plus_ic"
         tools:ignore="MissingConstraints" />
 
     <ScrollView
@@ -49,7 +49,7 @@
         android:padding="0dp"
         tools:layout_editor_absoluteX="20dp"
         tools:layout_editor_absoluteY="260dp"
-        android:background="@drawable/btn_line"
+        android:background="@drawable/prototype1_line"
         tools:ignore="MissingConstraints">
 
         <LinearLayout
@@ -61,7 +61,7 @@
                 android:id="@+id/TextView01"
                 android:layout_width="370dp"
                 android:layout_height="70dp"
-                android:background="@drawable/btn_line"
+                android:background="@drawable/prototype1_line"
                 android:gravity="center"
                 android:textColor="#000000"
                 android:text="장학금"
@@ -70,7 +70,7 @@
                 android:id="@+id/TextView02"
                 android:layout_width="370dp"
                 android:layout_height="70dp"
-                android:background="@drawable/btn_line"
+                android:background="@drawable/prototype1_line"
                 android:gravity="center"
                 android:textColor="#000000"
                 android:text="현장실습"
@@ -79,28 +79,28 @@
                 android:id="@+id/TextView03"
                 android:layout_width="370dp"
                 android:layout_height="70dp"
-                android:background="@drawable/btn_line"
+                android:background="@drawable/prototype1_line"
                 android:text=""
                 android:textSize="40dp" />
             <TextView
                 android:id="@+id/TextView04"
                 android:layout_width="370dp"
                 android:layout_height="70dp"
-                android:background="@drawable/btn_line"
+                android:background="@drawable/prototype1_line"
                 android:text=""
                 android:textSize="40dp" />
             <TextView
                 android:id="@+id/TextView05"
                 android:layout_width="370dp"
                 android:layout_height="70dp"
-                android:background="@drawable/btn_line"
+                android:background="@drawable/prototype1_line"
                 android:text=""
                 android:textSize="40dp" />
             <TextView
                 android:id="@+id/TextView06"
                 android:layout_width="370dp"
                 android:layout_height="70dp"
-                android:background="@drawable/btn_line"
+                android:background="@drawable/prototype1_line"
                 android:text="2/5"
                 android:gravity="center"
                 android:textColor="#000000"

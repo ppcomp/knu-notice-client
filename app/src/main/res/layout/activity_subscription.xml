@@ -59,12 +59,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/subsResult"
         android:layout_width="367dp"
-        android:layout_height="450dp"
+        android:layout_height="430dp"
         android:layout_marginTop="10dp"
         app:layout_constraintBottom_toTopOf="@+id/subsSave"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/subsSearch"
+        app:layout_constraintBottom_toBottomOf="@id/subsSave"
         app:layout_constraintVertical_bias="0.188">
 
     </androidx.recyclerview.widget.RecyclerView>
@@ -74,7 +75,7 @@
         android:layout_width="157dp"
         android:layout_height="39dp"
         android:layout_marginBottom="30dp"
-        android:background="@drawable/loginbutton"
+        android:background="@drawable/login_submit_btn"
         android:clickable="true"
         android:gravity="center"
         android:text="저장"

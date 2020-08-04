@@ -14,5 +14,5 @@
 
         </shape>
     </item>
-    <item android:drawable="@drawable/subscription_checkicon"/>
+    <item android:drawable="@drawable/subscription_check_ic"/>
 </layer-list>

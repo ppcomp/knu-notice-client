@@ -90,7 +90,7 @@
             android:layout_marginTop="40dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
-            android:src="@drawable/nav_madeby_icon"
+            android:src="@drawable/nav_maker_ic"
             app:layout_constraintEnd_toStartOf="@+id/view_userName"
             app:layout_constraintHorizontal_bias="0.888"
             app:layout_constraintStart_toStartOf="parent"
