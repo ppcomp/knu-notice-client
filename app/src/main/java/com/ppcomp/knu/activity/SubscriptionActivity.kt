@@ -53,7 +53,7 @@ class SubscriptionActivity : AppCompatActivity() {
 
         setSupportActionBar(subscription_layout_toolbar)//toolbar 지정
         supportActionBar?.setDisplayHomeAsUpEnabled(true)//toolbar  보이게 하기
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back)//뒤로가기 아이콘 지정
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back_ic)//뒤로가기 아이콘 지정
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
 
         subsSearch.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

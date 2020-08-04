@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="30dp"
-        tools:context=".activity.Setting">
+        tools:context=".activity.KeywordActivity">
         <include layout="@layout/fragment_setting_toolbar"/>
 
         <ImageView
@@ -19,7 +19,7 @@
             android:layout_height="110dp"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:src="@drawable/setting_icon"
+            android:src="@drawable/setting_main_ic"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -113,7 +113,7 @@
                 android:textColor="@color/colorBlack"
                 android:layout_marginTop="1dp"
                 android:clickable="true"
-                android:drawableRight="@drawable/btn_setting_move"
+                android:drawableRight="@drawable/setting_move_btn"
                 android:background="@drawable/setting_bottom_line"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
@@ -134,7 +134,7 @@
                 android:gravity="center_vertical"
                 android:textColor="@color/colorBlack"
                 android:clickable="true"
-                android:drawableRight="@drawable/btn_setting_move"
+                android:drawableRight="@drawable/setting_move_btn"
                 android:background="@drawable/setting_bottom_line"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
@@ -173,7 +173,7 @@
                 android:layout_marginTop="1dp"
                 android:background="@drawable/setting_bottom_line"
                 android:clickable="true"
-                android:drawableRight="@drawable/btn_setting_move"
+                android:drawableRight="@drawable/setting_move_btn"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:gravity="center_vertical"
@@ -199,7 +199,7 @@
                 android:gravity="center_vertical"
                 android:textColor="@color/colorBlack"
                 android:clickable="true"
-                android:drawableRight="@drawable/btn_setting_move"
+                android:drawableRight="@drawable/setting_move_btn"
                 android:background="@drawable/setting_bottom_line"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"

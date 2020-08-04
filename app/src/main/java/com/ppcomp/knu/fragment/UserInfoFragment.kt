@@ -72,6 +72,6 @@ class UserInfoFragment : Fragment() {
         view_keyword_data.text = keywords   //키워드 목록 출력
         view_keyword_cnt.text = keywordsSplit.size.toString()   //키워드 갯수 출력
 
-        Glide.with(this).load(thumbnail).placeholder(R.drawable.nav_madeby_icon).into(iv_thumbnail) //카카오 프로필 사진 띄우기
+        Glide.with(this).load(thumbnail).placeholder(R.drawable.nav_maker_ic).into(iv_thumbnail) //카카오 프로필 사진 띄우기
     }
 }
