@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kakao.auth.Session
 import com.ppcomp.knu.*
-import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.fragment.LoginFragment
 import com.ppcomp.knu.fragment.NoticeFragment
 import com.ppcomp.knu.fragment.SettingFragment
@@ -28,15 +27,15 @@ import com.ppcomp.knu.fragment.UserInfoFragment
  */
 class MainActivity : AppCompatActivity() {
 
-    var noticeList = arrayListOf<Notice>()
-    var notice_Url: String = ""
-    private lateinit var mHandler: Handler
-    private lateinit var mRunnable: Runnable
-
+    val settingFragment = SettingFragment()
+    val loginFragment = LoginFragment()
+    val userInfoFragment = UserInfoFragment()
+    val noticeFragment = NoticeFragment()
+    var activeFragment: Fragment = noticeFragment   //현재 띄워진 프레그먼트(default: noticeFragment)
     /**
      * 화면생성해주는 메소드
      * 생성시 서버에서 받아오는 데이터파싱기능도 실행
-     * @author 희진, 우진, jungwoo
+     * @author 희진, 우진, jungwoo, 정준
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,12 +44,12 @@ class MainActivity : AppCompatActivity() {
         content = findViewById(R.id.frameLayout)
         val navigation = findViewById<BottomNavigationView>(R.id.main_navigationView)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        val fragment = NoticeFragment()
-        addFragment(fragment)
-//        setSupportActionBar(main_layout_toolbar)                                //toolbar 지정
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)                       //toolbar  보이게 하기
-//        supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp)   //메뉴 아이콘 지정
-//        supportActionBar?.setDisplayShowTitleEnabled(false)                     //타이틀 안보이게 하기
+        supportFragmentManager.beginTransaction().apply {       // 모든 프레그먼트 삽입
+            add(R.id.frameLayout, settingFragment, settingFragment.javaClass.simpleName).hide(settingFragment)
+            add(R.id.frameLayout, loginFragment, loginFragment.javaClass.simpleName).hide(loginFragment)
+            add(R.id.frameLayout, userInfoFragment, userInfoFragment.javaClass.simpleName).hide(userInfoFragment)
+            add(R.id.frameLayout, noticeFragment, noticeFragment.javaClass.simpleName)
+        }.commit()
 
     }
 
@@ -72,45 +71,42 @@ class MainActivity : AppCompatActivity() {
      * @author 희진, 정준
      */
     private var content: FrameLayout? = null
-
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.setting -> {
-                    val fragment = SettingFragment()
-                    addFragment(fragment)
+                    addFragment(settingFragment)
                     return@OnNavigationItemSelectedListener true
                 }
                 R.id.login -> {
                     if (!GlobalApplication.isLogin) {
-                        val fragment = LoginFragment()
-                        addFragment(fragment)
+                        addFragment(loginFragment)
                         return@OnNavigationItemSelectedListener true
                     } else {
-                        val fragment = UserInfoFragment()
-                        addFragment(fragment)
+                        addFragment(userInfoFragment)
                         return@OnNavigationItemSelectedListener true
                     }
                 }
                 R.id.list -> {
-                    val fragment = NoticeFragment()
-                    addFragment(fragment)
+                    addFragment(noticeFragment)
                     return@OnNavigationItemSelectedListener true
                 }
             }
             false
         }
-
+    
     /**
      * 하단 바 아이템 누르면 fragment 변경
-     * @author 희진
+     * @author 희진, 정준
      */
     fun addFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(0, 0)
-            .replace(R.id.frameLayout, fragment, fragment.javaClass.simpleName)
+            .hide(activeFragment)
+            .show(fragment)
             .commit()
+        activeFragment = fragment
     }
 
     /**
