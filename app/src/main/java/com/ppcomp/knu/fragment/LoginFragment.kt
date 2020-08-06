@@ -84,9 +84,9 @@ class LoginFragment : Fragment() {
                     ed?.putString("nickname",kakaoNickname) //닉네임 저장
                     ed?.putString("thumbnail",kakakoThumbnail) //썸네일 저장
                     ed?.commit()
-                    Log.d("kakaoLogin",result!!.kakaoAccount.profile.thumbnailImageUrl)
-                    (activity as MainActivity).addFragment(UserInfoFragment())  //UserInfoFragment로 화면전환
 
+                    if((activity as MainActivity).loginFragment.isVisible)  //처음 로그인 할때만 화면 전환
+                        (activity as MainActivity).addFragment((activity as MainActivity).userInfoFragment)  //UserInfoFragment로 화면전환
                 }
 
                 override fun onSessionClosed(errorResult: ErrorResult?) {
