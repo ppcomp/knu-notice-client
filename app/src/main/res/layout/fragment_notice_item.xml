@@ -44,9 +44,6 @@
             android:orientation="horizontal"
             android:layout_marginTop="10dp"
             tools:ignore="MissingConstraints">
-
-
-
             <TextView
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
@@ -56,7 +53,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.017"
-                android:textSize="13sp"
+                android:textSize="11sp"
                 tools:text="날짜"
                 android:gravity="left" />
 
@@ -68,8 +65,20 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.017"
-                android:textSize="13sp"
+                android:textSize="11sp"
                 tools:text="작성자"
+                android:gravity="left" />
+
+            <TextView
+                android:id="@+id/reference"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_marginLeft="30dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.017"
+                android:textSize="11sp"
+                tools:text="참조"
                 android:gravity="left" />
 
         </LinearLayout>
