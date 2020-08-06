@@ -32,6 +32,7 @@ class SplashActivity : AppCompatActivity() {
         val pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
         val ed = pref.edit()
         val getId = pref.getString("UID", "")
+        val checkFirstUser = pref.getString("First?", "Yes")
         var subsList = arrayListOf<Subscription>()
         val serverUrl = "http://15.165.178.103/notice/list"
         val subscriptionList = pref.getString("Subs", "")?.split("+")
@@ -103,11 +104,19 @@ class SplashActivity : AppCompatActivity() {
                 }
             }
         }
+        if(checkFirstUser.equals("Yes")) // 신규 사용자일시 구독리스트 설정, 아닐시 메인화면
+        {
+            var intent = Intent(this, SubscriptionActivity::class.java)
+            startActivity(intent)
+            finish()
+        }else{
+            var intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
 
-        var intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
+
     }
 
 }

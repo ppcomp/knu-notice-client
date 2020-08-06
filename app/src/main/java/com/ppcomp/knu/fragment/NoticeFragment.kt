@@ -10,7 +10,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE
+import android.widget.LinearLayout
 import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,6 +21,7 @@ import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.adapter.NoticeAdapter
 import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.fragment_notice_item.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
 import org.json.JSONObject
@@ -41,6 +44,7 @@ class NoticeFragment : Fragment() {
     private lateinit var recyclerView1 : RecyclerView
     private lateinit var thisContext: Context
     private lateinit var progressBar : ProgressBar
+    private lateinit var noData : TextView
     private var mLockRecyclerView  = false           //데이터 중복 안되게 체크하는 변수
     var Url:String=""                                //mainUrl + notice_Url 저장 할 변수
     var nextPage:String=""
@@ -58,8 +62,14 @@ class NoticeFragment : Fragment() {
         recyclerView1 = view!!.findViewById(R.id.notice) as RecyclerView    //recyclerview 가져오기
         progressBar = view!!.findViewById((R.id.progressbar)) as ProgressBar
         progressBar.setVisibility(View.GONE)                                //progressbar 숨기기
-
-        parsing()
+        val preferences = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
+        var board_Urls = preferences.getString("Urls", "")
+        if(!board_Urls.equals("")) // 구독리스트가 있을시 안내화면 숨기고 파싱
+        {
+            noData = view!!.findViewById((R.id.noData)) as TextView
+            noData.setVisibility(View.GONE)
+            parsing()
+        }
         scrollPagination()
         /**
          * 파싱 기능
@@ -122,9 +132,13 @@ class NoticeFragment : Fragment() {
         // Web 통신
         StrictMode.enableDefaults()
 
-        if(previousPage =="" ) {   //처음 호출시 혹은 학과가 바뀔 때 실행
+        if(previousPage =="") {   //처음 호출시 혹은 학과가 바뀔 때 실행
             val preferences = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
-            val board_Urls = preferences.getString("Urls", "오류")
+            var board_Urls = preferences.getString("Urls", "")
+            if(board_Urls.equals(""))
+            {
+                board_Urls = "오류"
+            }
             val notice_Url = board_Urls.toString()
             val mainUrl = "http://15.165.178.103/notice/all?q="
             Url = mainUrl + notice_Url
@@ -148,20 +162,31 @@ class NoticeFragment : Fragment() {
                 val obj = jArray.getJSONObject(i)
                 val title = obj.getString("title")
                 var id = obj.getString("id")
-                val date = obj.getString("date")
-                val author = obj.getString("author")
+                var date = obj.getString("date")
+                var reference = obj.getString("reference")
+                if(reference.equals("null"))
+                {
+                    reference = ""
+                }
+                var days :String = ""
+                if(date.equals("null"))
+                {
+                    date = ""
+                }
+                else
+                {
+                    var dateArr = date.split("-")
+                    var day = dateArr[2].split("T")
+                    days = dateArr[0] + "년 " + dateArr[1] + "월 " + day[0] + "일"
+                }
+                var author = obj.getString("author")
+                if(author.equals("null"))
+                {
+                    author = ""
+                }
                 val link = obj.getString("link")
                 var board = id.split("-")
-                var dateArr = date.split("-")
-                var day = dateArr[2].split("T")
-                var days = dateArr[0] + "년 " + dateArr[1] + "월 " + day[0] + "일"
-                val noticeLine = Notice(
-                    title,
-                    board[0],
-                    "게시일: " + days,
-                    "작성자: " + author,
-                    link
-                )
+                val noticeLine = Notice(title, board[0], "게시일: " + days, "작성자: " + author, link, "참조: "+reference)
                 noticeList.add(noticeLine)
             }
             if(checkPageCount==0){                  //스크롤 누르지 않았을 때 스크롤 위치
