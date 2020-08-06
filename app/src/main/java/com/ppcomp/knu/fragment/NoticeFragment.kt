@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.core.os.postDelayed
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -45,9 +47,8 @@ class NoticeFragment : Fragment() {
     var Url:String=""                                //mainUrl + notice_Url 저장 할 변수
     var nextPage:String=""
     var previousPage:String=""
-    var checkPageCount =0
-    var scrollPosition=0
-
+    var checkcount =0
+    var itemcount=0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -96,14 +97,12 @@ class NoticeFragment : Fragment() {
     }
 
     fun parsing() {
+        itemcount=0
         mLockRecyclerView = true    //실행 중 중복 사용 막기
-
+        progressBar.visibility = View.GONE
         val view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_notice_layout, container, false)
 
-        val Noticeadapter = NoticeAdapter(
-            thisContext,
-            noticeList
-        ) { notice ->
+        val Noticeadapter = NoticeAdapter(thisContext, noticeList) { notice ->
             var link: String = notice.link
             if (!link.startsWith("http://") && !link.startsWith("https://"))
                 link = "http://" + link
@@ -128,8 +127,8 @@ class NoticeFragment : Fragment() {
             val notice_Url = board_Urls.toString()
             val mainUrl = "http://15.165.178.103/notice/all?q="
             Url = mainUrl + notice_Url
-            scrollPosition=0
-            checkPageCount=0
+            checkcount=0
+            itemcount=0
         }
 
         if(Url!="null") {  //다음 페이지가 없으면 실행 X
@@ -155,27 +154,25 @@ class NoticeFragment : Fragment() {
                 var dateArr = date.split("-")
                 var day = dateArr[2].split("T")
                 var days = dateArr[0] + "년 " + dateArr[1] + "월 " + day[0] + "일"
-                val noticeLine = Notice(
-                    title,
-                    board[0],
-                    "게시일: " + days,
-                    "작성자: " + author,
-                    link
-                )
+                val noticeLine =
+                    Notice(title, board[0], "게시일: " + days, "작성자: " + author, link)
                 noticeList.add(noticeLine)
-            }
-            if(checkPageCount==0){                  //스크롤 누르지 않았을 때 스크롤 위치
-                recyclerView1.scrollToPosition(0)
-            }
-            else {                                  //스크롤시 위치 지정
-                scrollPosition = 3 + (10*(checkPageCount-1))
-                recyclerView1.scrollToPosition(scrollPosition)
+                itemcount=itemcount+1
             }
         }
-        Handler().postDelayed({   //스크롤시 progressbar 보이게하고 조금 대기
-            progressBar.visibility = View.GONE
-            mLockRecyclerView = false
-            checkPageCount++
+        if(checkcount==0){
+            recyclerView1.scrollToPosition(0)
+        }
+        else if(noticeList.size %10 ==0){
+            recyclerView1.scrollToPosition(noticeList.size-17)
+        }
+        else{
+            recyclerView1.scrollToPosition(noticeList.size-17+(10-itemcount))
+        }
+
+        Handler().postDelayed({
+            progressBar.visibility = View.GONE                           //progressbar 숨김
+            checkcount++
         }, 500)
     }
 
@@ -187,10 +184,12 @@ class NoticeFragment : Fragment() {
         recyclerView1.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1)
-                    && newState == SCROLL_STATE_IDLE && mLockRecyclerView == false ) {  //위치가 맨 밑이며 중복 안되고 멈춘경우
+                    && newState == SCROLL_STATE_IDLE ) {  //위치가 맨 밑이며 중복 안되고 멈춘경우
                     if(Url!="null") {
                         progressBar.visibility = View.VISIBLE                           //progressbar 나옴
-                        parsing()
+                        Handler().postDelayed({
+                            parsing()
+                        }, 500)
                     }
                     else{
                         Toast.makeText(requireContext(), "더 이상 공지가 없습니다.", Toast.LENGTH_SHORT).show()
@@ -199,6 +198,4 @@ class NoticeFragment : Fragment() {
             }
         })
     }
-
-
 }
