@@ -16,10 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.kakao.auth.Session
 import com.ppcomp.knu.*
 import com.ppcomp.knu.`object`.Notice
-import com.ppcomp.knu.fragment.LoginFragment
-import com.ppcomp.knu.fragment.NoticeFragment
-import com.ppcomp.knu.fragment.SettingFragment
-import com.ppcomp.knu.fragment.UserInfoFragment
+import com.ppcomp.knu.fragment.*
 
 
 /**
@@ -94,6 +91,11 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.list -> {
                     val fragment = NoticeFragment()
+                    addFragment(fragment)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.keywordlist -> {
+                    val fragment = KeywordNoticeFragment()
                     addFragment(fragment)
                     return@OnNavigationItemSelectedListener true
                 }
