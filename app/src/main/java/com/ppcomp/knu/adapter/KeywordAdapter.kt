@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.UserInfo
 import com.ppcomp.knu.`object`.Keyword
@@ -75,6 +76,7 @@ class KeywordAdapter(val context: Context, val keywordList: ArrayList<Keyword>) 
 
                 }
             }
+            GlobalApplication.iskeywordChange = true //키워드 변경사항 확인
         }
 
 

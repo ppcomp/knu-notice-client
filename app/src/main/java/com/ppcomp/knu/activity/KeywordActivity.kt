@@ -9,6 +9,7 @@ import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.adapter.KeywordAdapter
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.UserInfo
@@ -139,7 +140,7 @@ class KeywordActivity : AppCompatActivity() {
                 val pref2 = getSharedPreferences("pref", Context.MODE_PRIVATE)
                 testview.setText(pref2.getString("Keys", ""))
             }
-
+            GlobalApplication.iskeywordChange = true //키워드 변경사항 확인
 
         }
     }
