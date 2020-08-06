@@ -27,10 +27,10 @@ import com.ppcomp.knu.fragment.UserInfoFragment
  */
 class MainActivity : AppCompatActivity() {
 
-    val settingFragment = SettingFragment()
-    val loginFragment = LoginFragment()
-    val userInfoFragment = UserInfoFragment()
-    val noticeFragment = NoticeFragment()
+    var settingFragment = SettingFragment()
+    var loginFragment = LoginFragment()
+    var userInfoFragment = UserInfoFragment()
+    var noticeFragment = NoticeFragment()
     var activeFragment: Fragment = noticeFragment   //현재 띄워진 프레그먼트(default: noticeFragment)
 
     /**
@@ -83,11 +83,27 @@ class MainActivity : AppCompatActivity() {
                         addFragment(loginFragment)
                         return@OnNavigationItemSelectedListener true
                     } else {
+                        if(GlobalApplication.isSubsChange || GlobalApplication.iskeywordChange) {   //구독리스트와 키워드에 변경사항 있으면 화면 갱신
+                            supportFragmentManager.beginTransaction().apply {
+                                remove(userInfoFragment)
+                                userInfoFragment = UserInfoFragment()
+                                add(R.id.frameLayout, userInfoFragment, userInfoFragment.javaClass.simpleName)
+                            }.commit()
+                            GlobalApplication.iskeywordChange = false   //변경사항 갱신 후 false로 변경
+                        }
                         addFragment(userInfoFragment)
                         return@OnNavigationItemSelectedListener true
                     }
                 }
                 R.id.list -> {
+                    if(GlobalApplication.isSubsChange) {    //구독리스트에 변경사항이 있으면 화면 갱신
+                        supportFragmentManager.beginTransaction().apply {
+                            remove(noticeFragment)
+                            noticeFragment = NoticeFragment()
+                            add(R.id.frameLayout, noticeFragment, noticeFragment.javaClass.simpleName)
+                        }.commit()
+                        GlobalApplication.isSubsChange = false  //변경사항 갱신 후 false로 변경
+                    }
                     addFragment(noticeFragment)
                     return@OnNavigationItemSelectedListener true
                 }

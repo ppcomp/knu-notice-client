@@ -12,6 +12,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.adapter.SubscriptionAdapter
 import com.ppcomp.knu.`object`.UserInfo
@@ -136,6 +137,7 @@ class SubscriptionActivity : AppCompatActivity() {
             }
             Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
             // 메세지
+            GlobalApplication.isSubsChange = true //구독리스트 변경사항 확인
 
         }
 
