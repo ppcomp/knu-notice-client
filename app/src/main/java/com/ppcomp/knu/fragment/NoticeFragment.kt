@@ -41,16 +41,16 @@ class NoticeFragment : Fragment() {
     var noticeList = arrayListOf<Notice>()
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
-    private lateinit var recyclerView1 : RecyclerView
+    private lateinit var recyclerView1: RecyclerView
     private lateinit var thisContext: Context
-    private lateinit var progressBar : ProgressBar
-    private lateinit var noData : TextView
-    private var mLockRecyclerView  = false           //데이터 중복 안되게 체크하는 변수
-    var Url:String=""                                //mainUrl + notice_Url 저장 할 변수
-    var nextPage:String=""
-    var previousPage:String=""
-    var checkPageCount =0
-    var scrollPosition=0
+    private lateinit var progressBar: ProgressBar
+    private lateinit var noData: TextView
+    private var mLockRecyclerView = false           //데이터 중복 안되게 체크하는 변수
+    var Url: String = ""                                //mainUrl + notice_Url 저장 할 변수
+    var nextPage: String = ""
+    var previousPage: String = ""
+    var checkPageCount = 0
+    var scrollPosition = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,7 +64,7 @@ class NoticeFragment : Fragment() {
         progressBar.setVisibility(View.GONE)                                //progressbar 숨기기
         val preferences = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
         var board_Urls = preferences.getString("Urls", "")
-        if(!board_Urls.equals("")) // 구독리스트가 있을시 안내화면 숨기고 파싱
+        if (!board_Urls.equals("")) // 구독리스트가 있을시 안내화면 숨기고 파싱
         {
             noData = view!!.findViewById((R.id.noData)) as TextView
             noData.setVisibility(View.GONE)
@@ -108,7 +108,8 @@ class NoticeFragment : Fragment() {
     fun parsing() {
         mLockRecyclerView = true    //실행 중 중복 사용 막기
 
-        val view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_notice_layout, container, false)
+        val view = LayoutInflater.from(requireContext())
+            .inflate(R.layout.fragment_notice_layout, container, false)
 
         val Noticeadapter = NoticeAdapter(
             thisContext,
@@ -132,21 +133,20 @@ class NoticeFragment : Fragment() {
         // Web 통신
         StrictMode.enableDefaults()
 
-        if(previousPage =="") {   //처음 호출시 혹은 학과가 바뀔 때 실행
+        if (previousPage == "") {   //처음 호출시 혹은 학과가 바뀔 때 실행
             val preferences = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
             var board_Urls = preferences.getString("Urls", "")
-            if(board_Urls.equals(""))
-            {
+            if (board_Urls.equals("")) {
                 board_Urls = "오류"
             }
             val notice_Url = board_Urls.toString()
             val mainUrl = "http://15.165.178.103/notice/all?q="
             Url = mainUrl + notice_Url
-            scrollPosition=0
-            checkPageCount=0
+            scrollPosition = 0
+            checkPageCount = 0
         }
 
-        if(Url!="null") {  //다음 페이지가 없으면 실행 X
+        if (Url != "null") {  //다음 페이지가 없으면 실행 X
             val noticeStream = URL(Url).openConnection() as HttpURLConnection
             var noticeRead = BufferedReader(InputStreamReader(noticeStream.inputStream, "UTF-8"))
             val noticeResponse = noticeRead.readLine()
@@ -155,6 +155,9 @@ class NoticeFragment : Fragment() {
 
             previousPage = jObject.getString("previous")
             nextPage = jObject.getString("next")
+            if (previousPage == "null" && nextPage == "null") {
+                Toast.makeText(requireContext(), "게시글이 존재하지 않습니다", Toast.LENGTH_SHORT).show()
+            }
             Url = nextPage        //다음 Url 주소 변경
 
 //         모든 공지 noticeList 에 저장
@@ -164,36 +167,37 @@ class NoticeFragment : Fragment() {
                 var id = obj.getString("id")
                 var date = obj.getString("date")
                 var reference = obj.getString("reference")
-                if(reference.equals("null"))
-                {
+                if (reference.equals("null")) {
                     reference = ""
                 }
-                var days :String = ""
-                if(date.equals("null"))
-                {
+                var days: String = ""
+                if (date.equals("null")) {
                     date = ""
-                }
-                else
-                {
+                } else {
                     var dateArr = date.split("-")
                     var day = dateArr[2].split("T")
                     days = dateArr[0] + "년 " + dateArr[1] + "월 " + day[0] + "일"
                 }
                 var author = obj.getString("author")
-                if(author.equals("null"))
-                {
+                if (author.equals("null")) {
                     author = ""
                 }
                 val link = obj.getString("link")
                 var board = id.split("-")
-                val noticeLine = Notice(title, board[0], "게시일: " + days, "작성자: " + author, link, "참조: "+reference)
+                val noticeLine = Notice(
+                    title,
+                    board[0],
+                    "게시일: " + days,
+                    "작성자: " + author,
+                    link,
+                    "참조: " + reference
+                )
                 noticeList.add(noticeLine)
             }
-            if(checkPageCount==0){                  //스크롤 누르지 않았을 때 스크롤 위치
+            if (checkPageCount == 0) {                  //스크롤 누르지 않았을 때 스크롤 위치
                 recyclerView1.scrollToPosition(0)
-            }
-            else {                                  //스크롤시 위치 지정
-                scrollPosition = 3 + (10*(checkPageCount-1))
+            } else {                                  //스크롤시 위치 지정
+                scrollPosition = 3 + (10 * (checkPageCount - 1))
                 recyclerView1.scrollToPosition(scrollPosition)
             }
         }
@@ -208,17 +212,19 @@ class NoticeFragment : Fragment() {
      *  스크롤시 서버의 다음 페이지 정보를 크롤링
      *  @author 희진
      */
-    fun scrollPagination(){
+    fun scrollPagination() {
         recyclerView1.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1)
-                    && newState == SCROLL_STATE_IDLE && mLockRecyclerView == false ) {  //위치가 맨 밑이며 중복 안되고 멈춘경우
-                    if(Url!="null") {
-                        progressBar.visibility = View.VISIBLE                           //progressbar 나옴
+                    && newState == SCROLL_STATE_IDLE && mLockRecyclerView == false
+                ) {  //위치가 맨 밑이며 중복 안되고 멈춘경우
+                    if (Url != "null") {
+                        progressBar.visibility =
+                            View.VISIBLE                           //progressbar 나옴
                         parsing()
-                    }
-                    else{
-                        Toast.makeText(requireContext(), "더 이상 공지가 없습니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), "더 이상 공지가 없습니다.", Toast.LENGTH_SHORT)
+                            .show()
                     }
                 }
             }
