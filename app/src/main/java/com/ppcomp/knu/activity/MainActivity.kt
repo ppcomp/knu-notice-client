@@ -32,9 +32,9 @@ class MainActivity : AppCompatActivity() {
     val userInfoFragment = UserInfoFragment()
     val noticeFragment = NoticeFragment()
     var activeFragment: Fragment = noticeFragment   //현재 띄워진 프레그먼트(default: noticeFragment)
+
     /**
      * 화면생성해주는 메소드
-     * 생성시 서버에서 받아오는 데이터파싱기능도 실행
      * @author 희진, 우진, jungwoo, 정준
      */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
             }
             false
         }
-    
+
     /**
      * 하단 바 아이템 누르면 fragment 변경
      * @author 희진, 정준
