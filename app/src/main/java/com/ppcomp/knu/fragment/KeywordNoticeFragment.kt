@@ -184,9 +184,10 @@ class KeywordNoticeFragment : Fragment() {
             }, 0)
 
         }
-        if(noticeList.size == 0){
+        if(noticeList.size ==0 && notice_Url !="[]"){
             keywordNullView.setVisibility(View.GONE)
             itemNullView.setVisibility(View.VISIBLE)
+            Toast.makeText(requireContext(), noticeList.size.toString(), Toast.LENGTH_SHORT).show()
         }
     }
     /**
