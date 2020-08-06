@@ -27,6 +27,7 @@ class NoticeAdapter(
         val noticeBoard = itemView.findViewById<TextView>(R.id.board)
         val noticeDate = itemView.findViewById<TextView>(R.id.date)
         val noticeAuthor = itemView.findViewById<TextView>(R.id.author)
+        val noticeReference = itemView.findViewById<TextView>(R.id.reference)
 
 
         fun bind (notice: Notice, context: Context) {
@@ -34,6 +35,8 @@ class NoticeAdapter(
             noticeBoard.text = notice.board
             noticeDate.text = notice.date
             noticeAuthor.text = notice.author
+            noticeReference.text = notice.reference
+
             val hash = notice.board.hashCode()
             val r = (hash and 0xFF0000 shr 16)
             val g = (hash and 0x00FF00 shr 8)

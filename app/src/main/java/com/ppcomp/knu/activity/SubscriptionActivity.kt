@@ -2,6 +2,7 @@ package com.ppcomp.knu.activity
 
 import RestApiService
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import android.view.MotionEvent
@@ -12,6 +13,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.adapter.SubscriptionAdapter
 import com.ppcomp.knu.`object`.UserInfo
@@ -38,6 +40,7 @@ class SubscriptionActivity : AppCompatActivity() {
         var strContact = userLocalData.getString("testsub", "")
         var makeGson = GsonBuilder().create()
         var listType : TypeToken<ArrayList<Subscription>> = object : TypeToken<ArrayList<Subscription>>() {}
+        val checkFirstUser = userLocalData.getString("First?", "Yes") // 신규 사용자 확인
 
         subsList = makeGson.fromJson(strContact, listType.type)
 
@@ -51,8 +54,14 @@ class SubscriptionActivity : AppCompatActivity() {
         subsResult.setHasFixedSize(true)
         // RecyclerView의 사이즈를 고정
 
+        var showToolbar : Boolean = true
+        if(checkFirstUser.equals("Yes"))
+        {
+            showToolbar = false
+        }
+
         setSupportActionBar(subscription_layout_toolbar)//toolbar 지정
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)//toolbar  보이게 하기
+        supportActionBar?.setDisplayHomeAsUpEnabled(showToolbar)//toolbar  보이게 하기
         supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back_ic)//뒤로가기 아이콘 지정
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
 
@@ -135,7 +144,18 @@ class SubscriptionActivity : AppCompatActivity() {
                 }
             }
             Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+
             // 메세지
+            GlobalApplication.isSubsChange = true //구독리스트 변경사항 확인
+
+            if(checkFirstUser.equals("Yes")) // 신규 사용자일시 확인버튼이 메인을 띄우도록
+            {
+                ed.putString("First?", "No")
+                ed.apply()
+                var intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
 
         }
 
