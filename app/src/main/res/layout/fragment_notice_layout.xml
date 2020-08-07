@@ -8,8 +8,17 @@
     <LinearLayout
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
-        android:layout_height = "match_parent"
+        android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/noData"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="구독리스트가 없습니다. \n [설정 -> 구독리스트]\n화면에서 설정해주세요."
+            android:textSize="30dp"
+            tools:ignore="Suspicious0dp" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe"
@@ -24,15 +33,17 @@
                 android:layout_above="@+id/progressbar"
                 android:scrollbars="vertical" />
 
+
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </LinearLayout>
+
 
     <ProgressBar
         android:id="@+id/progressbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminateTint="@color/colorBlue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

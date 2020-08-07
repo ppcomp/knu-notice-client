@@ -30,6 +30,8 @@ class GlobalApplication : Application() {
 
     companion object {  //자바의 static이 없는 대신 있는 코틀린만의 구조체, 싱글톤 패턴 구현가능
         var isLogin: Boolean = false    //로그인 상태
+        var isSubsChange: Boolean = false //구독리스트 변경사항 유무
+        var iskeywordChange: Boolean = false //키워드 변경사항 유무
         var instance: GlobalApplication? = null
     }
 }

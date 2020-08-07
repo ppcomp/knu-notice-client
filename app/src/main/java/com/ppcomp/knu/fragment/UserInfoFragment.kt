@@ -53,7 +53,7 @@ class UserInfoFragment : Fragment() {
             UserManagement.getInstance().requestLogout(object : LogoutResponseCallback() {
                 override fun onCompleteLogout() {
                     GlobalApplication.isLogin = false   //로그인 상태 업데이트
-                    (activity as MainActivity).addFragment(LoginFragment())
+                    (activity as MainActivity).addFragment((activity as MainActivity).loginFragment)
                 }
             })
         }
