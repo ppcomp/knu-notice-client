@@ -13,9 +13,12 @@ import com.google.firebase.messaging.RemoteMessage
 import com.ppcomp.knu.R
 import com.ppcomp.knu.activity.MainActivity
 
+/**
+ * 푸시 알림 클래스
+ * @author 정준
+ */
 class MessagingService : FirebaseMessagingService() {
     private val TAG = "FirebaseService"
-
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "From: " + remoteMessage.from)
 
@@ -28,7 +31,6 @@ class MessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         Log.d(TAG, "new Token: $token")
     }
-    //token : c9zpYqv7QaelBZ10V8CIYe:APA91bFLwrKJftxwBTzGYQosA9Brr2n15QikKpAKLoePmpYqmt8X75yht4by4UPditMOP02pore9XZbaywLjpj5EpkYgsWS6hbVOGE9OiRn41_n8RfKsigfRJqGPdpcNTJEZVLIhm-pR
 
     private fun sendNotification(body: String?) {
         val intent = Intent(this, MainActivity::class.java).apply {
