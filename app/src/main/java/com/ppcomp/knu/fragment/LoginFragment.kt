@@ -85,8 +85,11 @@ class LoginFragment : Fragment() {
                     ed?.putString("thumbnail",kakakoThumbnail) //썸네일 저장
                     ed?.commit()
 
-                    if((activity as MainActivity).loginFragment.isVisible)  //처음 로그인 할때만 화면 전환
-                        (activity as MainActivity).addFragment((activity as MainActivity).userInfoFragment)  //UserInfoFragment로 화면전환
+
+                    if((activity as MainActivity).loginFragment.isVisible) {    //로그인 화면이 뜬 상태에서만 작동
+                        (activity as MainActivity).replaceFragment((activity as MainActivity).userInfoFragment)  //UserInfoFragment화면 갱신
+                        (activity as MainActivity).addFragment((activity as MainActivity).userInfoFragment)  //UserInfoFragment화면 전환
+                    }
                 }
 
                 override fun onSessionClosed(errorResult: ErrorResult?) {
