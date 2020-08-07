@@ -19,6 +19,7 @@ import com.ppcomp.knu.fragment.LoginFragment
 import com.ppcomp.knu.fragment.NoticeFragment
 import com.ppcomp.knu.fragment.SettingFragment
 import com.ppcomp.knu.fragment.UserInfoFragment
+import com.ppcomp.knu.fragment.KeywordNoticeFragment
 
 
 /**
@@ -105,6 +106,11 @@ class MainActivity : AppCompatActivity() {
                         GlobalApplication.isSubsChange = false  //변경사항 갱신 후 false로 변경
                     }
                     addFragment(noticeFragment)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.keywordlist -> {
+                    val fragment = KeywordNoticeFragment()
+                    addFragment(fragment)
                     return@OnNavigationItemSelectedListener true
                 }
             }
