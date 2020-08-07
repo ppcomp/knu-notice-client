@@ -22,6 +22,7 @@ import com.ppcomp.knu.fragment.LoginFragment
 import com.ppcomp.knu.fragment.NoticeFragment
 import com.ppcomp.knu.fragment.SettingFragment
 import com.ppcomp.knu.fragment.UserInfoFragment
+import com.ppcomp.knu.fragment.KeywordNoticeFragment
 
 
 /**
@@ -34,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     var loginFragment = LoginFragment()
     var userInfoFragment = UserInfoFragment()
     var noticeFragment = NoticeFragment()
+    var keywordNoticeFragment = KeywordNoticeFragment()
     var activeFragment: Fragment = noticeFragment   //현재 띄워진 프레그먼트(default: noticeFragment)
 
     /**
@@ -52,6 +54,7 @@ class MainActivity : AppCompatActivity() {
             add(R.id.frameLayout, loginFragment, loginFragment.javaClass.simpleName).hide(loginFragment)
             add(R.id.frameLayout, userInfoFragment, userInfoFragment.javaClass.simpleName).hide(userInfoFragment)
             add(R.id.frameLayout, noticeFragment, noticeFragment.javaClass.simpleName)
+            add(R.id.frameLayout,keywordNoticeFragment,keywordNoticeFragment.javaClass.simpleName).hide(keywordNoticeFragment)
         }.commit()
 
     }
@@ -110,6 +113,18 @@ class MainActivity : AppCompatActivity() {
                     addFragment(noticeFragment)
                     return@OnNavigationItemSelectedListener true
                 }
+                R.id.keywordlist -> {
+                    if(GlobalApplication.iskeywordChange) {    //구독리스트에 변경사항이 있으면 화면 갱신
+                        supportFragmentManager.beginTransaction().apply {
+                            remove(keywordNoticeFragment)
+                            keywordNoticeFragment = KeywordNoticeFragment()
+                            add(R.id.frameLayout, keywordNoticeFragment, keywordNoticeFragment.javaClass.simpleName)
+                        }.commit()
+                        GlobalApplication.iskeywordChange = false  //변경사항 갱신 후 false로 변경
+                    }
+                    addFragment(keywordNoticeFragment)
+                    return@OnNavigationItemSelectedListener true
+                }
             }
             false
         }
@@ -155,5 +170,4 @@ class MainActivity : AppCompatActivity() {
         return super.dispatchTouchEvent(ev)
     }
 }
-
 
