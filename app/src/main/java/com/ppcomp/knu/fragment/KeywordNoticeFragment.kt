@@ -90,7 +90,7 @@ class KeywordNoticeFragment : Fragment() {
             mHandler.postDelayed(mRunnable, 2000)
         }
 
-            return view
+        return view
     }
     fun parsing() {
 
@@ -155,15 +155,34 @@ class KeywordNoticeFragment : Fragment() {
                         if (title.contains(j) == true && set.contains(title) == false) {    //키워드를 포함하고 값 중복x시
                             set.add(title)          //중복된 데이터 저장 x
                             var id = obj.getString("id")
-                            val date = obj.getString("date")
-                            val author = obj.getString("author")
+                            var date = obj.getString("date")
+                            var reference = obj.getString("reference")
+                            if (reference.equals("null")) {
+                                reference = ""
+                            }
+                            var days: String = ""
+                            if (date.equals("null")) {
+                                date = ""
+                            } else {
+                                var dateArr = date.split("-")
+                                var day = dateArr[2].split("T")
+                                days = dateArr[0] + "년 " + dateArr[1] + "월 " + day[0] + "일"
+                            }
+                            var author = obj.getString("author")
+                            if (author.equals("null")) {
+                                author = ""
+                            }
                             val link = obj.getString("link")
                             var board = id.split("-")
-                            var dateArr = date.split("-")
-                            var day = dateArr[2].split("T")
-                            var days = dateArr[0] + "년 " + dateArr[1] + "월 " + day[0] + "일"
-                            val noticeLine =
-                                Notice(title, board[0], "게시일: " + days, "작성자: " + author, link)
+                            val noticeLine = Notice(
+                                title,
+                                board[0],
+                                "게시일: " + days,
+                                "작성자: " + author,
+                                link,
+                                "참조: " + reference
+                            )
+
                             noticeList.add(noticeLine)
                             itemcount = itemcount + 1   //새로 저장되는 아이템
                         }
@@ -213,4 +232,3 @@ class KeywordNoticeFragment : Fragment() {
         })
     }
 }
-
