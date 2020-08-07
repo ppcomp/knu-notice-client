@@ -5,9 +5,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
+import android.util.Log
 import android.view.Gravity
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.`object`.Subscription
@@ -22,7 +25,7 @@ import java.util.*
 
 /**
  * intro 기능, intro후 mainActivity 실행
- * @author 김상은
+ * @author 김상은, 정준
  */
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -115,6 +118,22 @@ class SplashActivity : AppCompatActivity() {
             finish()
         }
 
+        //firebase token값 저장하는 코드
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("tokenSave", "getInstanceId failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val fbToken = task.result?.token
+                ed.putString("token",fbToken)
+                ed.apply()
+                // Log and toast
+                val msg = pref.getString("token","")
+                Log.d("tokenSave", msg)
+            })
 
 
     }

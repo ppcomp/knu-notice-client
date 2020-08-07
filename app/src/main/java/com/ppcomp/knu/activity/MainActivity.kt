@@ -6,13 +6,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.iid.FirebaseInstanceId
 import com.kakao.auth.Session
 import com.ppcomp.knu.*
 import com.ppcomp.knu.fragment.LoginFragment
@@ -20,6 +23,7 @@ import com.ppcomp.knu.fragment.NoticeFragment
 import com.ppcomp.knu.fragment.SettingFragment
 import com.ppcomp.knu.fragment.UserInfoFragment
 import com.ppcomp.knu.fragment.KeywordNoticeFragment
+import kotlin.math.log
 
 
 /**
@@ -86,25 +90,14 @@ class MainActivity : AppCompatActivity() {
                         addFragment(loginFragment)
                         return@OnNavigationItemSelectedListener true
                     } else {
-                        if(GlobalApplication.isSubsChange || GlobalApplication.iskeywordChange) {   //구독리스트와 키워드에 변경사항 있으면 화면 갱신
-                            supportFragmentManager.beginTransaction().apply {
-                                remove(userInfoFragment)
-                                userInfoFragment = UserInfoFragment()
-                                add(R.id.frameLayout, userInfoFragment, userInfoFragment.javaClass.simpleName)
-                            }.commit()
-                            GlobalApplication.iskeywordChange = false   //변경사항 갱신 후 false로 변경
-                        }
+                        replaceFragment(userInfoFragment)   //화면갱신
                         addFragment(userInfoFragment)
                         return@OnNavigationItemSelectedListener true
                     }
                 }
                 R.id.list -> {
                     if(GlobalApplication.isSubsChange) {    //구독리스트에 변경사항이 있으면 화면 갱신
-                        supportFragmentManager.beginTransaction().apply {
-                            remove(noticeFragment)
-                            noticeFragment = NoticeFragment()
-                            add(R.id.frameLayout, noticeFragment, noticeFragment.javaClass.simpleName)
-                        }.commit()
+                        replaceFragment(noticeFragment)     //화면갱신
                         GlobalApplication.isSubsChange = false  //변경사항 갱신 후 false로 변경
                     }
                     addFragment(noticeFragment)
@@ -112,11 +105,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.keywordlist -> {
                     if(GlobalApplication.iskeywordChange) {    //구독리스트에 변경사항이 있으면 화면 갱신
-                        supportFragmentManager.beginTransaction().apply {
-                            remove(keywordNoticeFragment)
-                            keywordNoticeFragment = KeywordNoticeFragment()
-                            add(R.id.frameLayout, keywordNoticeFragment, keywordNoticeFragment.javaClass.simpleName)
-                        }.commit()
+                        replaceFragment(keywordNoticeFragment)  //화면갱신
                         GlobalApplication.iskeywordChange = false  //변경사항 갱신 후 false로 변경
                     }
                     addFragment(keywordNoticeFragment)
@@ -138,6 +127,51 @@ class MainActivity : AppCompatActivity() {
             .show(fragment)
             .commit()
         activeFragment = fragment
+    }
+
+    /**
+     * 화면 갱신에 사용하는 함수
+     * @author 정준
+     */
+    fun replaceFragment(fragment: Fragment) {
+        when(fragment) {
+            settingFragment -> {
+                supportFragmentManager.beginTransaction().apply {
+                    remove(settingFragment)
+                    settingFragment = SettingFragment()
+                    add(R.id.frameLayout, settingFragment, settingFragment.javaClass.simpleName)
+                }.commit()
+            }
+            loginFragment -> {
+                supportFragmentManager.beginTransaction().apply {
+                    remove(loginFragment)
+                    loginFragment = LoginFragment()
+                    add(R.id.frameLayout, loginFragment, loginFragment.javaClass.simpleName)
+                }.commit()
+            }
+            userInfoFragment -> {
+                supportFragmentManager.beginTransaction().apply {
+                    remove(userInfoFragment)
+                    userInfoFragment = UserInfoFragment()
+                    add(R.id.frameLayout, userInfoFragment, userInfoFragment.javaClass.simpleName)
+                }.commit()
+            }
+            noticeFragment -> {
+                supportFragmentManager.beginTransaction().apply {
+                    remove(noticeFragment)
+                    noticeFragment = NoticeFragment()
+                    add(R.id.frameLayout, noticeFragment, noticeFragment.javaClass.simpleName)
+                }.commit()
+            }
+            keywordNoticeFragment -> {
+                supportFragmentManager.beginTransaction().apply {
+                    remove(keywordNoticeFragment)
+                    keywordNoticeFragment = KeywordNoticeFragment()
+                    add(R.id.frameLayout, keywordNoticeFragment, keywordNoticeFragment.javaClass.simpleName)
+                }.commit()
+            }
+        }
+
     }
 
     /**
