@@ -42,7 +42,7 @@
         android:id="@+id/keywordInput"
         android:layout_width="247dp"
         android:layout_height="53dp"
-        android:hint="TextView"
+        android:hint="키워드를 입력하세요"
         android:theme="@style/EditTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/keywordEnrollment"
