@@ -181,7 +181,8 @@ class KeywordNoticeFragment : Fragment() {
                                 "작성자: " + author,
                                 link,
                                 "참조: " + reference,
-                                false
+                                false,
+                                0
                             )
 
                             noticeList.add(noticeLine)

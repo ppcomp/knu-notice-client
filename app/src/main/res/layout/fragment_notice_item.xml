@@ -6,12 +6,13 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/noticeLinear"
         android:layout_width="match_parent"
+        android:id = "@+id/noticeLinear"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@drawable/notice_item_line"
+        android:orientation="vertical"
         tools:ignore="MissingConstraints">
+
         <TextView
             android:id="@+id/board"
             android:layout_width="match_parent"
@@ -25,62 +26,76 @@
             tools:text="게시판"
             android:gravity="left" />
 
-        <TextView
-            android:id="@+id/title"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintVertical_bias="0.017"
-            android:textSize="18dp"
-            android:textStyle="bold"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="5dp"
-            tools:text="제목"
-            android:gravity="left"
-            android:singleLine="true"
-            />
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
+
+            <ImageView
+                android:id="@+id/image"
+                android:layout_width="16dp"
+                android:layout_height="14dp"
+                android:layout_marginLeft="5dp" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:gravity="left"
+                android:singleLine="true"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                app:layout_constraintVertical_bias="0.017"
+                tools:text="제목" />
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_marginTop="10dp"
+            android:orientation="horizontal"
             tools:ignore="MissingConstraints">
+
             <TextView
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
-                android:layout_marginRight="2dp"
                 android:layout_marginLeft="5dp"
+                android:layout_marginRight="2dp"
+                android:gravity="left"
+                android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.017"
-                android:textSize="11sp"
-                tools:text="날짜"
-                android:gravity="left" />
+                tools:text="날짜" />
 
             <TextView
                 android:id="@+id/author"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:layout_marginLeft="30dp"
+                android:gravity="left"
+                android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.017"
-                android:textSize="11sp"
-                tools:text="작성자"
-                android:gravity="left" />
+                tools:text="작성자" />
 
             <TextView
                 android:id="@+id/reference"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
                 android:layout_marginLeft="30dp"
+                android:gravity="left"
+                android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.017"
-                android:textSize="11sp"
-                tools:text="참조"
-                android:gravity="left" />
+                tools:text="참조" />
 
         </LinearLayout>
     </LinearLayout>

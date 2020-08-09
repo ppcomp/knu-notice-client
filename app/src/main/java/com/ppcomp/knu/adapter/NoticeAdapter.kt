@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +31,7 @@ class NoticeAdapter(
         val noticeDate = itemView.findViewById<TextView>(R.id.date)
         val noticeAuthor = itemView.findViewById<TextView>(R.id.author)
         val noticeReference = itemView.findViewById<TextView>(R.id.reference)
+        val noticeImage = itemView.findViewById<ImageView>(R.id.image)
 
 
         fun bind (notice: Notice, context: Context) {
@@ -38,6 +40,11 @@ class NoticeAdapter(
             noticeDate.text = notice.date
             noticeAuthor.text = notice.author
             noticeReference.text = notice.reference
+            if(notice.image == 0) {
+                noticeImage.setVisibility(View.GONE);
+            }else {
+                noticeImage.setImageResource(notice.image)
+            }
             if(notice.fixed)
             {
                 noticeLinear.setBackgroundResource(R.drawable.notice_fixed_item_line)
