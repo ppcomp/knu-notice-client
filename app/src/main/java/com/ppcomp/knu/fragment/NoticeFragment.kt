@@ -169,6 +169,7 @@ class NoticeFragment : Fragment() {
                 var id = obj.getString("id")
                 var date = obj.getString("date")
                 var reference = obj.getString("reference")
+                val fixed = obj.getString("is_fixed").toBoolean()
                 if (reference.equals("null")) {
                     reference = ""
                 }
@@ -192,7 +193,8 @@ class NoticeFragment : Fragment() {
                     "게시일: " + days,
                     "작성자: " + author,
                     link,
-                    "참조: " + reference
+                    reference,
+                    fixed
                 )
               
                 noticeList.add(noticeLine)
