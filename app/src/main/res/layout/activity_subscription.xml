@@ -61,6 +61,7 @@
         android:layout_width="367dp"
         android:layout_height="430dp"
         android:layout_marginTop="10dp"
+        android:overScrollMode="never"
         app:layout_constraintBottom_toTopOf="@+id/subsSave"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
