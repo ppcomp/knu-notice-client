@@ -70,6 +70,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/keyResult"
         android:layout_width="368dp"
+        android:overScrollMode="never"
         android:layout_height="400dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

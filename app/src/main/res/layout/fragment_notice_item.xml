@@ -48,7 +48,6 @@
                 android:gravity="left"
                 android:singleLine="true"
                 android:textSize="18dp"
-                android:textStyle="bold"
                 app:layout_constraintVertical_bias="0.017"
                 tools:text="제목" />
         </LinearLayout>
