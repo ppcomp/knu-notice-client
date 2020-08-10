@@ -2,20 +2,18 @@ package com.ppcomp.knu.fragment
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.StrictMode
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AbsListView
 import android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.view.ViewCompat.isNestedScrollingEnabled
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ppcomp.knu.R
@@ -23,9 +21,8 @@ import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.adapter.NoticeAdapter
 import kotlinx.android.synthetic.main.fragment_keyword_notice.*
 import kotlinx.android.synthetic.main.fragment_keyword_notice.view.*
-import kotlinx.android.synthetic.main.fragment_notice_layout.*
-import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
 import org.json.JSONObject
+import org.w3c.dom.Text
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -43,12 +40,14 @@ class KeywordNoticeFragment : Fragment() {
     private lateinit var progressBar : ProgressBar
     private lateinit var keywordNullView : TextView
     private lateinit var itemNullView : TextView
+    private lateinit var test : TextView
     private var mLockRecyclerView  = false           //데이터 중복 안되게 체크하는 변수
     var Url:String=""                                //mainUrl + notice_Url 저장 할 변수
     var nextPage:String=""
     var previousPage:String=""
     var itemcount =0
     var checkcount=0
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -92,8 +91,10 @@ class KeywordNoticeFragment : Fragment() {
 
         return view
     }
-    fun parsing() {
 
+
+    fun parsing() {
+        keywordNullView.setVisibility(View.GONE)
         mLockRecyclerView = true    //실행 중 중복 사용 막기
         itemcount=0
         if(noticeList.size==0){
@@ -149,11 +150,24 @@ class KeywordNoticeFragment : Fragment() {
 
 ////         모든 공지 noticeList 에 저장
                 for (i in 0 until jArray.length()) {
-                    for (j in keywordList) {
+                    for (keyword in keywordList) {
                         val obj = jArray.getJSONObject(i)
-                        val title = obj.getString("title")
-                        if (title.contains(j) == true && set.contains(title) == false) {    //키워드를 포함하고 값 중복x시
-                            set.add(title)          //중복된 데이터 저장 x
+                        var title = obj.getString("title")
+                        if (title.contains(keyword) == true && set.contains(title) == false) {    //키워드를 포함하고 값 중복x시
+                            val start = title.indexOf(keyword)
+                            val end = start+keyword.length
+                            var spannedTitle =""
+
+                            for(k in 0 until start) {
+                                spannedTitle += title[k]
+                            }
+                            spannedTitle += "<u><strong>"+keyword+"</strong></u>"
+                            for(k in end until title.length-1) {
+                                spannedTitle += title[k]
+                            }
+                            title = spannedTitle
+                            set.add(title)   //중복된 데이터 저장 x
+
                             var id = obj.getString("id")
                             var date = obj.getString("date")
                             var reference = obj.getString("reference")
@@ -180,7 +194,9 @@ class KeywordNoticeFragment : Fragment() {
                                 "게시일: " + days,
                                 "작성자: " + author,
                                 link,
-                                "참조: " + reference
+                                "참조: " + reference,
+                                false,
+                                0
                             )
 
                             noticeList.add(noticeLine)

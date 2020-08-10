@@ -11,6 +11,26 @@
         android:layout_height = "match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/keyword_null_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="선택된 키워드가 없습니다. \n [설정 -> 키워드]\n화면에서 설정해주세요."
+            android:textSize="25dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"></TextView>
+
+        <TextView
+            android:id="@+id/item_null_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="해당하는 공지가 없습니다."
+            android:textSize="25dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"></TextView>
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/keyword_swipe"
             android:layout_width="match_parent"
@@ -26,24 +46,7 @@
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
-    <TextView
-        android:id="@+id/keyword_null_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="선택된 키워드가 없습니다. \n [설정 -> 키워드]\n화면에서 설정해주세요."
-        android:textSize="25dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"></TextView>
-    <TextView
-        android:id="@+id/item_null_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="해당하는 공지가 없습니다."
-        android:textSize="25dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"></TextView>
+
     <ProgressBar
         android:id="@+id/keyword_progressbar"
         android:layout_width="match_parent"

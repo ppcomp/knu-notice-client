@@ -3,6 +3,7 @@ package com.ppcomp.knu.fragment
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.StrictMode
@@ -14,6 +15,7 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.os.postDelayed
 import androidx.core.view.size
 import androidx.fragment.app.Fragment
@@ -31,6 +33,8 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import java.text.SimpleDateFormat
+import java.time.LocalDate
 
 
 /**
@@ -51,10 +55,10 @@ class NoticeFragment : Fragment() {
     var Url: String = ""                                //mainUrl + notice_Url 저장 할 변수
     var nextPage: String = ""
     var previousPage: String = ""
-    var checkPageCount = 0
-    var scrollPosition = 0
     var checkcount =0
     var itemcount=0
+    @RequiresApi(Build.VERSION_CODES.O)
+    val nowDate: LocalDate = LocalDate.now()
   
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -65,14 +69,19 @@ class NoticeFragment : Fragment() {
         thisContext = container!!.context                                   //context 가져오기
         recyclerView1 = view!!.findViewById(R.id.notice) as RecyclerView    //recyclerview 가져오기
         progressBar = view!!.findViewById((R.id.progressbar)) as ProgressBar
+        noData = view!!.findViewById((R.id.noData)) as TextView
         progressBar.setVisibility(View.GONE)                                //progressbar 숨기기
+        noData.setVisibility(View.GONE)
+
         val preferences = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
         var board_Urls = preferences.getString("Urls", "")
         if (!board_Urls.equals("")) // 구독리스트가 있을시 안내화면 숨기고 파싱
         {
-            noData = view!!.findViewById((R.id.noData)) as TextView
             noData.setVisibility(View.GONE)
             parsing()
+        }
+       if(board_Urls == ""){
+           noData.setVisibility(View.VISIBLE)
         }
         scrollPagination()
         /**
@@ -169,6 +178,9 @@ class NoticeFragment : Fragment() {
                 var id = obj.getString("id")
                 var date = obj.getString("date")
                 var reference = obj.getString("reference")
+                val fixed = obj.getString("is_fixed").toBoolean()
+                var image : Int = 0
+
                 if (reference.equals("null")) {
                     reference = ""
                 }
@@ -176,6 +188,12 @@ class NoticeFragment : Fragment() {
                 if (date.equals("null")) {
                     date = ""
                 } else {
+                    var sf = SimpleDateFormat("yyyy-MM-dd")
+                    val diff = Math.abs((sf.parse(nowDate.toString()).getTime() - sf.parse(date).getTime()) / (24*60*60*1000))
+                    if(diff <= 5)
+                    {
+                        image =  R.drawable.new_post
+                    }
                     var dateArr = date.split("-")
                     var day = dateArr[2].split("T")
                     days = dateArr[0] + "년 " + dateArr[1] + "월 " + day[0] + "일"
@@ -192,7 +210,9 @@ class NoticeFragment : Fragment() {
                     "게시일: " + days,
                     "작성자: " + author,
                     link,
-                    "참조: " + reference
+                    reference,
+                    fixed,
+                    image
                 )
               
                 noticeList.add(noticeLine)

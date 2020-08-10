@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.StrictMode
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ppcomp.knu.GlobalApplication
@@ -24,12 +25,13 @@ import kotlinx.android.synthetic.main.activity_keyword_toolbar.*
 
 class KeywordActivity : AppCompatActivity() {
     var keywordList = arrayListOf<Keyword>()
-
+    private lateinit var inputKeyword : TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_keyword)
 
         StrictMode.enableDefaults()
+        inputKeyword = findViewById(R.id.keywordInput) as TextView
 
         val loadPreferences = getSharedPreferences("pref", Context.MODE_PRIVATE)
         val keyword = loadPreferences.getString("Keys", "")
@@ -66,14 +68,19 @@ class KeywordActivity : AppCompatActivity() {
             val ed = pref.edit()
 
             val getKeyword = pref.getString("Keys", "")
+            val keyworditem = pref.getString("Keys", "오류")?.split("+")
+            val keywordSize = keyworditem!!.count()
             val set: MutableSet<String> = mutableSetOf("")
-            if (getKeyword.equals("")) { // 키워드가 아무것도 없을경우
-                ed.putString("Keys", getValue)
+
+            if(getValue == ""){
+                Toast.makeText(this, "입력된 키워드가 없습니다.", Toast.LENGTH_SHORT).show()
+            }
+            else if (getKeyword.equals("") && (getValue != "")) { // 키워드가 아무것도 없을경우
+                ed.putString("Keys",getValue)
                 ed.apply()
                 keywordList.add(Keyword(getValue))
-                Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
                 keyAdapter.notifyDataSetChanged()
-
+                Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
                 val apiService = RestApiService()
                 var getUID = pref.getString("UID", "")
                 var getKeywords: String? = pref.getString("Keys", "")
@@ -90,12 +97,18 @@ class KeywordActivity : AppCompatActivity() {
                     if (it?.id != null) {
                         // it = newly added user parsed as response
                         // it?.id = newly added user ID
-                    } else {
-                        Toast.makeText(this, "이미 존재합니다.", Toast.LENGTH_SHORT).show()
+                    }
+                    else {
+                        for (keyword in keyworditem) {
+                            if (keyword.equals(getValue)) {
+                                Toast.makeText(this, "이미 존재합니다.", Toast.LENGTH_SHORT).show()
+                            }
+                        }
                     }
                 }
 
-            } else { // 키워드가 있을경우 -> 중복확인 필요
+            }
+            else{ // 키워드가 있을경우 -> 중복확인 필요
                 val getKeywordList = pref.getString("Keys", "")?.split("+")
                 if (getKeywordList != null) { // 중복확인하기 위해여 set에 모두 삽입
                     for (i in 0 until getKeywordList.count()) {
@@ -126,16 +139,27 @@ class KeywordActivity : AppCompatActivity() {
                         if (it?.id != null) {
                             // it = newly added user parsed as response
                             // it?.id = newly added user ID
-                        } else {
+                        }
+                        else {
+                            for (keyword in keyworditem) {
+                                if (keyword.equals(getValue)) {
+                                    Toast.makeText(this, "이미 존재합니다.", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+
+                    }
+
+                }
+                else {
+                    for (keyword in keyworditem) {
+                        if (keyword.equals(getValue)) {
                             Toast.makeText(this, "이미 존재합니다.", Toast.LENGTH_SHORT).show()
                         }
                     }
-
-                } else {
-                    Toast.makeText(this, "이미 존재합니다.", Toast.LENGTH_SHORT).show()
                 }
             }
-
+            inputKeyword.setText("")        //텍스트 초기화
             testview.setOnClickListener { // 저장 잘되어있는지 보려고 만든 View
                 val pref2 = getSharedPreferences("pref", Context.MODE_PRIVATE)
                 testview.setText(pref2.getString("Keys", ""))
