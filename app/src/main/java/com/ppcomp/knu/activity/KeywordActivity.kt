@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.activity_keyword_toolbar.*
 
 /**
  * 어떤 데이터(ArrayList)와 어떤 RecyclerView를 쓸 것인지 설정하는 Activity
- * @author 상은
+ * @author 상은, 정준
  */
 
 class KeywordActivity : AppCompatActivity() {
@@ -81,36 +81,19 @@ class KeywordActivity : AppCompatActivity() {
                 keywordList.add(Keyword(getValue))
                 keyAdapter.notifyDataSetChanged()
                 Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
-                val apiService = RestApiService()
-                var getUID = pref.getString("UID", "")
-                var getKeywords: String? = pref.getString("Keys", "")
-                var getSubscriptions: String? = pref.getString("Urls", "")
 
-                val userInfo = UserInfo(
-                    id = getUID,
-                    id_method = "guid",
-                    keywords = getKeywords,
-                    subscriptions = if (getSubscriptions == "") null else getSubscriptions
-                )
+                GlobalApplication.UserInfoUpload()  //서버에 업로드
 
-                apiService.modifyUser(userInfo) {
-                    if (it?.id != null) {
-                        // it = newly added user parsed as response
-                        // it?.id = newly added user ID
-                    }
-                    else {
-                        for (keyword in keyworditem) {
-                            if (keyword.equals(getValue)) {
-                                Toast.makeText(this, "이미 존재합니다.", Toast.LENGTH_SHORT).show()
-                            }
-                        }
+                for (keyword in keyworditem) {
+                    if (keyword.equals(getValue)) {
+                        Toast.makeText(this, "이미 존재합니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
 
             }
             else{ // 키워드가 있을경우 -> 중복확인 필요
                 val getKeywordList = pref.getString("Keys", "")?.split("+")
-                if (getKeywordList != null) { // 중복확인하기 위해여 set에 모두 삽입
+                if (getKeywordList != null) { // 중복확인하기 위해서 set에 모두 삽입
                     for (i in 0 until getKeywordList.count()) {
                         set.add(getKeywordList[i])
                     }
@@ -123,31 +106,13 @@ class KeywordActivity : AppCompatActivity() {
                     keywordList.add(Keyword(getValue))
                     keyAdapter.notifyDataSetChanged()
                     Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
-                    val apiService = RestApiService()
-                    var getUID = pref.getString("UID", "")
-                    var getKeywords: String? = pref.getString("Keys", "")
-                    var getSubscriptions: String? = pref.getString("Urls", "")
 
-                    val userInfo = UserInfo(
-                        id = getUID,
-                        id_method = "guid",
-                        keywords = getKeywords,
-                        subscriptions = if (getSubscriptions == "") null else getSubscriptions
-                    )
+                    GlobalApplication.UserInfoUpload()  //서버에 업로드
 
-                    apiService.modifyUser(userInfo) {
-                        if (it?.id != null) {
-                            // it = newly added user parsed as response
-                            // it?.id = newly added user ID
+                    for (keyword in keyworditem) {
+                        if (keyword.equals(getValue)) {
+                            Toast.makeText(this, "이미 존재합니다.", Toast.LENGTH_SHORT).show()
                         }
-                        else {
-                            for (keyword in keyworditem) {
-                                if (keyword.equals(getValue)) {
-                                    Toast.makeText(this, "이미 존재합니다.", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                        }
-
                     }
 
                 }

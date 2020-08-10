@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.activity_subscription_toolbar.*
 
 /**
  * 어떤 데이터(ArrayList)와 어떤 RecyclerView를 쓸 것인지 설정하는 Activity
- * @author 상은
+ * @author 상은, 정준
  */
 class SubscriptionActivity : AppCompatActivity() {
     var subsList = arrayListOf<Subscription>()
@@ -123,26 +123,8 @@ class SubscriptionActivity : AppCompatActivity() {
                 // 선택하고 저장버튼 누를시 Subs 라는 Key로 SharedPreferences에 저장
             }
 
-            val apiService = RestApiService()
-            var getUID = pref.getString("UID", "")
-            var getKeywords: String? = pref.getString("Keys", "")
-            var getSubscriptions: String? = pref.getString("Urls", "")
+            GlobalApplication.UserInfoUpload()  //구독리스트 서버에 업로드
 
-            val userInfo = UserInfo(
-                id = getUID,
-                id_method = "guid",
-                keywords = getKeywords,
-                subscriptions = if (getSubscriptions == "") null else getSubscriptions
-            )
-
-            apiService.modifyUser(userInfo) {
-                if (it?.id != null) {
-                    // it = newly added user parsed as response
-                    // it?.id = newly added user ID
-                } else {
-
-                }
-            }
             Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
             // 메세지

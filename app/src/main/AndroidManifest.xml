@@ -19,7 +19,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name="com.ppcomp.knu.activity.MakerActivity"
-            android:screenOrientation="portrait"/>      //화면 세로로 고정
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.ppcomp.knu.activity.KeywordActivity"
             android:screenOrientation="portrait"

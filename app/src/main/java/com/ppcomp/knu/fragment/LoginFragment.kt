@@ -80,7 +80,8 @@ class LoginFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                     GlobalApplication.isLogin = true    //로그인 상태 업데이트
-                    userInfoUpload()    //카카오계정 데이터 api서버에 추가
+                    GlobalApplication.KakaoUserInfoUpload()    //카카오계정 데이터 api서버에 추가
+                    ed?.putString("kakaoId",kakaoId)
                     ed?.putString("nickname",kakaoNickname) //닉네임 저장
                     ed?.putString("thumbnail",kakakoThumbnail) //썸네일 저장
                     ed?.commit()
@@ -132,46 +133,4 @@ class LoginFragment : Fragment() {
             }
         }
     }
-
-    /**
-     * 카카오유저데이터 서버에 업로드
-     * @author 정준
-     */
-    fun userInfoUpload() {
-        val pref = this.activity?.getSharedPreferences("pref", Context.MODE_PRIVATE)
-        var isGetFailed: Boolean = false
-        val apiService = RestApiService()
-        val getUID = pref?.getString("UID","")
-        val userInfo = KakaoUserInfo(
-            id = kakaoId,
-//                                        email = "test1234@gmail.com",
-            device_id = getUID
-        )
-
-        apiService.getKakaoUser(kakaoId) {
-            //서버에 데이터가 있는지 확인
-            if(it?.id != null) {
-                Log.d("kakaoUser_get","id != null")
-                isGetFailed = false
-            } else {
-                Log.d("kakaoUser_get","id = null")
-                isGetFailed = true
-            }
-
-            if(isGetFailed) {
-                //서버에 데이터가 없으면 서버에 데이터 저장
-                apiService.addKakaoUser(userInfo) {
-                    if (it?.id != null) {
-                        // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
-                        // it?.id = newly added user ID
-                        Log.d("kakaoUser_post", "id != null")
-                    } else {
-                        Log.d("kakaoUser_post", "id = null")
-                    }
-                }
-            }
-        }
-    }
-
-
 }
