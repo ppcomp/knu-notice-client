@@ -7,6 +7,8 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
@@ -26,11 +28,13 @@ class NoticeAdapter(
      */
     inner class Holder(itemView: View, itemClick: (Notice) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
+        val noticeLinear = itemView.findViewById<LinearLayout>(R.id.noticeLinear)
         val noticeTitle = itemView.findViewById<TextView>(R.id.title)
         val noticeBoard = itemView.findViewById<TextView>(R.id.board)
         val noticeDate = itemView.findViewById<TextView>(R.id.date)
         val noticeAuthor = itemView.findViewById<TextView>(R.id.author)
         val noticeReference = itemView.findViewById<TextView>(R.id.reference)
+        val noticeImage = itemView.findViewById<ImageView>(R.id.image)
 
 
         @RequiresApi(Build.VERSION_CODES.N)
@@ -41,7 +45,15 @@ class NoticeAdapter(
             noticeDate.text = notice.date
             noticeAuthor.text = notice.author
             noticeReference.text = notice.reference
-
+            if(notice.image == 0) {
+                noticeImage.setVisibility(View.GONE);
+            }else {
+                noticeImage.setImageResource(notice.image)
+            }
+            if(notice.fixed)
+            {
+                noticeLinear.setBackgroundResource(R.drawable.notice_fixed_item_line)
+            }
             val hash = notice.board.hashCode()
             val r = (hash and 0xFF0000 shr 16)
             val g = (hash and 0x00FF00 shr 8)
@@ -80,5 +92,18 @@ class NoticeAdapter(
      */
     override fun getItemCount(): Int {
         return noticeList.size
+    }
+
+
+    /**
+     * 밑의 함수를 오버라이딩하여 리사이클러뷰 재사용 문제 해결
+     * @author 상은
+     */
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 }

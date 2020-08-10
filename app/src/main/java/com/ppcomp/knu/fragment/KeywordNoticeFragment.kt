@@ -194,7 +194,9 @@ class KeywordNoticeFragment : Fragment() {
                                 "게시일: " + days,
                                 "작성자: " + author,
                                 link,
-                                "참조: " + reference
+                                "참조: " + reference,
+                                false,
+                                0
                             )
 
                             noticeList.add(noticeLine)
