@@ -51,8 +51,6 @@ class NoticeFragment : Fragment() {
     var Url: String = ""                                //mainUrl + notice_Url 저장 할 변수
     var nextPage: String = ""
     var previousPage: String = ""
-    var checkPageCount = 0
-    var scrollPosition = 0
     var checkcount =0
     var itemcount=0
   
@@ -65,14 +63,19 @@ class NoticeFragment : Fragment() {
         thisContext = container!!.context                                   //context 가져오기
         recyclerView1 = view!!.findViewById(R.id.notice) as RecyclerView    //recyclerview 가져오기
         progressBar = view!!.findViewById((R.id.progressbar)) as ProgressBar
+        noData = view!!.findViewById((R.id.noData)) as TextView
         progressBar.setVisibility(View.GONE)                                //progressbar 숨기기
+        noData.setVisibility(View.GONE)
+
         val preferences = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
         var board_Urls = preferences.getString("Urls", "")
         if (!board_Urls.equals("")) // 구독리스트가 있을시 안내화면 숨기고 파싱
         {
-            noData = view!!.findViewById((R.id.noData)) as TextView
             noData.setVisibility(View.GONE)
             parsing()
+        }
+       if(board_Urls == ""){
+           noData.setVisibility(View.VISIBLE)
         }
         scrollPagination()
         /**
