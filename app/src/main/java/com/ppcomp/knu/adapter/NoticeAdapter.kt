@@ -2,10 +2,13 @@ package com.ppcomp.knu.adapter
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
@@ -30,8 +33,10 @@ class NoticeAdapter(
         val noticeReference = itemView.findViewById<TextView>(R.id.reference)
 
 
+        @RequiresApi(Build.VERSION_CODES.N)
         fun bind (notice: Notice, context: Context) {
-            noticeTitle.text = notice.title
+            val spannedTitle = Html.fromHtml(notice.title, Html.FROM_HTML_MODE_LEGACY)
+            noticeTitle.text = spannedTitle
             noticeBoard.text = notice.board
             noticeDate.text = notice.date
             noticeAuthor.text = notice.author
@@ -64,6 +69,7 @@ class NoticeAdapter(
      * onCreateViewHolder 에서 만든 view 와 실제 입력되는 각각의 데이터 연결
      * @author jungwoo
      */
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(noticeList[position], context)
     }
