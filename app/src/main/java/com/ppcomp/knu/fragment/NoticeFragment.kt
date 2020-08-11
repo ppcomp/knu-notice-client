@@ -188,7 +188,7 @@ class NoticeFragment : Fragment() {
                     val diff = Math.abs((sf.parse(nowDate.toString()).getTime() - sf.parse(date).getTime()) / (24*60*60*1000))
                     if(diff <= 5)
                     {
-                        image =  R.drawable.icon
+                        image =  R.drawable.list_new_icon
                     }
                     var dateArr = date.split("-")
                     var day = dateArr[2].split("T")
