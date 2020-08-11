@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="선택된 키워드가 없습니다. \n [설정 -> 키워드]\n화면에서 설정해주세요."
-            android:textSize="25dp"
+            android:textSize="30dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"></TextView>
 
