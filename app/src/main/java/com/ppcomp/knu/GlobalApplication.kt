@@ -1,7 +1,12 @@
 package com.ppcomp.knu
 
+import RestApiService
 import android.app.Application
+import android.content.Context
+import android.util.Log
 import com.kakao.auth.KakaoSDK
+import com.ppcomp.knu.`object`.KakaoUserInfo
+import com.ppcomp.knu.`object`.UserInfo
 import com.ppcomp.knu.adapter.KakaoSDKAdapter
 
 /**
@@ -33,5 +38,101 @@ class GlobalApplication : Application() {
         var isSubsChange: Boolean = false //구독리스트 변경사항 유무
         var iskeywordChange: Boolean = false //키워드 변경사항 유무
         var instance: GlobalApplication? = null
+
+        /**
+         * 카카오 유저 데이터 서버에 업로드
+         * @author 정준
+         */
+        fun KakaoUserInfoUpload() {
+            val pref = this.instance?.getSharedPreferences("pref", Context.MODE_PRIVATE)
+            var isGetFailed: Boolean = false
+            val apiService = RestApiService()
+            val getId = pref?.getString("fbId","")
+            val getKakaoId = pref?.getString("kakaoId","").toString()
+            val userInfo = KakaoUserInfo(
+                id = getKakaoId,
+                device_id = getId
+            )
+
+            apiService.getKakaoUser(getKakaoId) {
+                //서버에 데이터가 있는지 확인
+                if(it?.id != null) {
+                    Log.d("kakaoUser_get","id != null")
+                    isGetFailed = false
+                } else {
+                    Log.d("kakaoUser_get","id = null")
+                    isGetFailed = true
+                }
+
+                if(isGetFailed) {
+                    //서버에 데이터가 없으면 서버에 데이터 저장 (POST)
+                    apiService.addKakaoUser(userInfo) {
+                        if (it?.id != null) {
+                            // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
+                            // it?.id = newly added user ID
+                            Log.d("kakaoUser_post", "id != null")
+                        } else {
+                            Log.d("kakaoUser_post", "id = null")
+                        }
+                    }
+                }
+            }
+        }
+
+        /**
+         * 유저 데이터 서버에 업로드
+         * @author 정준
+         */
+        fun UserInfoUpload() {
+            val pref = this.instance?.getSharedPreferences("pref", Context.MODE_PRIVATE)
+            var isGetFailed: Boolean = false
+            val apiService = RestApiService()
+            val getId = pref?.getString("fbId","").toString()
+            val getKeywords: String? = pref?.getString("Keys", "")
+            val getSubscriptions: String? = pref?.getString("Urls", "")
+            val userInfo = UserInfo(
+                id = getId,
+                id_method = "InstanceId",
+                keywords = getKeywords,
+                subscriptions = if (getSubscriptions == "") null else getSubscriptions
+            )
+
+            apiService.getUser(getId) {
+                //서버에 데이터가 있는지 확인
+                if(it?.id != null) {
+                    Log.d("User_get","id != null")
+                    isGetFailed = false
+                } else {
+                    Log.d("User_get","id = null")
+                    isGetFailed = true
+                }
+
+                if(isGetFailed) {
+                    //서버에 데이터가 없으면 서버에 데이터 저장 (POST)
+                    apiService.addUser(userInfo) {
+                        if (it?.id != null) {
+                            // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
+                            // it?.id = newly added user ID
+                            Log.d("User_post", "id != null")
+                        } else {
+                            Log.d("User_post", "id = null")
+                        }
+                    }
+                }
+                else {
+                    //서버에 데이터가 있으면 데이터 변경 (PUT)
+                    apiService.modifyUser(userInfo) {
+                        if (it?.id != null) {
+                            // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
+                            // it?.id = newly added user ID
+                            Log.d("User_put", "id != null")
+                        } else {
+                            Log.d("User_put", "id = null")
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

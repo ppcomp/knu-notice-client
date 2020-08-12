@@ -7,6 +7,24 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RestApiService {
+    fun getUser(id: String, onResult: (UserInfo?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.getUser(id).enqueue(
+            object : Callback<UserInfo> {
+                override fun onFailure(call: Call<UserInfo>, t: Throwable) {
+                    Log.d("call",call.toString())
+                    Log.d("t",t.toString())
+                    onResult(null)
+                }
+
+                override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
+                    val getUser = response.body()
+                    onResult(getUser)
+                }
+            }
+        )
+    }
+
     fun addUser(userData: UserInfo, onResult: (UserInfo?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.addUser(userData).enqueue(
@@ -41,23 +59,6 @@ class RestApiService {
         )
     }
 
-    fun addKakaoUser(kakaoUserData: KakaoUserInfo, onResult: (KakaoUserInfo?) -> Unit){
-        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
-        retrofit.addKakaoUser(kakaoUserData).enqueue(
-            object : Callback<KakaoUserInfo> {
-                override fun onFailure(call: Call<KakaoUserInfo>, t: Throwable) {
-                    Log.d("call",call.toString())
-                    Log.d("t",t.toString())
-                    onResult(null)
-                }
-                override fun onResponse(call: Call<KakaoUserInfo>, response: Response<KakaoUserInfo>) {
-                    val addedKakaoUser = response.body()
-                    onResult(addedKakaoUser)
-                }
-            }
-        )
-    }
-
     fun getKakaoUser(id: String, onResult: (KakaoUserInfo?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.getKakaoUser(id).enqueue(
@@ -71,6 +72,23 @@ class RestApiService {
                 override fun onResponse(call: Call<KakaoUserInfo>, response: Response<KakaoUserInfo>) {
                     val getKakaoUser = response.body()
                     onResult(getKakaoUser)
+                }
+            }
+        )
+    }
+
+    fun addKakaoUser(kakaoUserData: KakaoUserInfo, onResult: (KakaoUserInfo?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.addKakaoUser(kakaoUserData).enqueue(
+            object : Callback<KakaoUserInfo> {
+                override fun onFailure(call: Call<KakaoUserInfo>, t: Throwable) {
+                    Log.d("call",call.toString())
+                    Log.d("t",t.toString())
+                    onResult(null)
+                }
+                override fun onResponse(call: Call<KakaoUserInfo>, response: Response<KakaoUserInfo>) {
+                    val addedKakaoUser = response.body()
+                    onResult(addedKakaoUser)
                 }
             }
         )

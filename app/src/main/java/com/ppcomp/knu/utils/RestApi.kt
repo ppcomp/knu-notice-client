@@ -8,6 +8,10 @@ import retrofit2.http.*
 interface RestApi {
 
     @Headers("Content-Type: application/json")
+    @GET("accounts/device")
+    fun getUser(@Query("id") id: String): Call<UserInfo>
+
+    @Headers("Content-Type: application/json")
     @POST("accounts/device")
     fun addUser(@Body userData: UserInfo): Call<UserInfo>
 
@@ -16,10 +20,12 @@ interface RestApi {
     fun modifyUser(@Body userData: UserInfo): Call<UserInfo>
 
     @Headers("Content-Type: application/json")
+    @GET("accounts/user")
+    fun getKakaoUser(@Query("id") id: String): Call<KakaoUserInfo>
+
+    @Headers("Content-Type: application/json")
     @POST("accounts/user")
     fun addKakaoUser(@Body kakaoUserData: KakaoUserInfo): Call<KakaoUserInfo>
 
-    @Headers("Content-Type: application/json")
-    @GET("accounts/user")
-    fun getKakaoUser(@Query("id") id: String): Call<KakaoUserInfo>
+
 }
