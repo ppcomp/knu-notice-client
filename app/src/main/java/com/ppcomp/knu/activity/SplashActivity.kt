@@ -32,7 +32,9 @@ class SplashActivity : AppCompatActivity() {
 
         val pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
         val ed = pref.edit()
-        //firebase token값 저장하는 코드
+        val isNewUser = pref.getBoolean("NewUser", true) // 신규 사용자 확인
+
+        //firebase instanceId를 저장하는 코드
         FirebaseInstanceId.getInstance().instanceId
             .addOnCompleteListener(OnCompleteListener { task ->
                 if (!task.isSuccessful) {
@@ -42,18 +44,43 @@ class SplashActivity : AppCompatActivity() {
 
                 // Get new Instance ID token
                 val fbId = task.result?.token
-                ed.putString("fbId",fbId)
+                ed.putString("fbId", fbId)
                 ed.apply()
                 // Log and toast
-                val getId = pref.getString("fbId","")
+                val getId = pref.getString("fbId", "")
                 Log.d("tokenSave", getId)
             })
 
-        val checkFirstUser = pref.getString("First?", "Yes") // 신규 사용자 구독을 위함
+        loadSubscription()  //서버에서 전체 구독리스트 다운로드
+
+        if (isNewUser) { // 신규 사용자일시 구독리스트 설정, 아닐시 메인화면
+            val toast = Toast.makeText(this, "신규 사용자입니다. \n구독리스트 설정화면으로 이동합니다.", Toast.LENGTH_SHORT)
+            toast.setGravity(Gravity.CENTER, 0, 0)
+            toast.show()
+
+            var intent = Intent(this, SubscriptionActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            var intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+    }
+
+    /**
+     * 전체 구독리스트 다운로드 후 정렬
+     * @author 상은, 정준
+     */
+    fun loadSubscription() {
+        val pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
+        val ed = pref.edit()
         var subsList = arrayListOf<Subscription>()
         val serverUrl = "http://15.165.178.103/notice/list" // Server URL
         val subscriptionList = pref.getString("Subs", "")?.split("+") // 저장된 학과를 나눠 ArrayList에 저장 -- 체크박스를 위한 용도
         val set: MutableSet<String> = mutableSetOf("")
+
         if (subscriptionList != null) {
             for (i in 0 until subscriptionList.count()) { // 중복 제거
                 set.add(subscriptionList[i])
@@ -84,32 +111,15 @@ class SplashActivity : AppCompatActivity() {
             val line = Subscription("오류", false, "")
         }
 
-        subsList.sortWith(Comparator { data1, data2 -> data1.name.compareTo(data2.name)})
+        subsList.sortWith(Comparator { data1, data2 -> data1.name.compareTo(data2.name) })
         subsList.sortBy { data -> data.name } // 정렬
 
-        val editor = pref!!.edit()           // Arraylist를 SharedPreferences에 저장
+        // Arraylist를 SharedPreferences에 저장
         val makeGson = GsonBuilder().create()
-        var listType : TypeToken<ArrayList<Subscription>> = object : TypeToken<ArrayList<Subscription>>() {}
+        var listType: TypeToken<ArrayList<Subscription>> = object : TypeToken<ArrayList<Subscription>>() {}
         var strContact = makeGson.toJson(subsList, listType.type)
-        editor.putString("testsub", strContact)
-        editor.commit()
-
-
-        
-        if(checkFirstUser.equals("Yes")) // 신규 사용자일시 구독리스트 설정, 아닐시 메인화면
-        {
-            val toast = Toast.makeText(this, "신규 사용자입니다. \n구독리스트 설정화면으로 이동합니다.", Toast.LENGTH_SHORT)
-            toast.setGravity(Gravity.CENTER,0,0)
-            toast.show()
-            var intent = Intent(this, SubscriptionActivity::class.java)
-            startActivity(intent)
-            finish()
-        }else{
-            var intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
-
+        ed.putString("testsub", strContact)
+        ed.commit()
     }
 
 }

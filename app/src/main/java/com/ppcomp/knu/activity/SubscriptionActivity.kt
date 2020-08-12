@@ -1,6 +1,5 @@
 package com.ppcomp.knu.activity
 
-import RestApiService
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -16,7 +15,6 @@ import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.adapter.SubscriptionAdapter
-import com.ppcomp.knu.`object`.UserInfo
 import com.ppcomp.knu.`object`.Subscription
 import kotlinx.android.synthetic.main.activity_subscription.*
 import kotlinx.android.synthetic.main.activity_subscription_toolbar.*
@@ -40,7 +38,7 @@ class SubscriptionActivity : AppCompatActivity() {
         var strContact = userLocalData.getString("testsub", "")
         var makeGson = GsonBuilder().create()
         var listType : TypeToken<ArrayList<Subscription>> = object : TypeToken<ArrayList<Subscription>>() {}
-        val checkFirstUser = userLocalData.getString("First?", "Yes") // 신규 사용자 확인
+        val isNewUser = userLocalData.getBoolean("NewUser", true) // 신규 사용자 확인
 
         subsList = makeGson.fromJson(strContact, listType.type)
 
@@ -54,11 +52,9 @@ class SubscriptionActivity : AppCompatActivity() {
         subsResult.setHasFixedSize(true)
         // RecyclerView의 사이즈를 고정
 
-        var showToolbar : Boolean = true
-        if(checkFirstUser.equals("Yes"))
-        {
+        var showToolbar: Boolean = true
+        if (isNewUser)   //신규 사용자일 경우 툴바 제거
             showToolbar = false
-        }
 
         setSupportActionBar(subscription_layout_toolbar)//toolbar 지정
         supportActionBar?.setDisplayHomeAsUpEnabled(showToolbar)//toolbar  보이게 하기
@@ -74,7 +70,6 @@ class SubscriptionActivity : AppCompatActivity() {
                 adapter.getFilter().filter(newText)
                 return false
             }
-
         })
 
 
@@ -94,13 +89,9 @@ class SubscriptionActivity : AppCompatActivity() {
                     storeName = storeName + name + "+"
                     storeUrl = storeUrl + url + "+"
                     subsList[i].checked = true
-                }
-                else
-                {
+                } else {
                     subsList[i].checked = false
                 }
-
-
             }
             if (storeName.equals("")) {
                 ed.putString("Subs", "")
@@ -109,7 +100,7 @@ class SubscriptionActivity : AppCompatActivity() {
                 strContact = makeGson.toJson(subsList, listType.type)
                 ed.putString("testsub", strContact)
                 ed.apply()
-                // 아무것도 선택 안하고 저장버튼 누를 시 rest
+                // 아무것도 선택 안하고 저장버튼 누를 시 reset
             } else {
                 storeName = storeName.substring(0, storeName.length - 1)
                 storeUrl = storeUrl.substring(0, storeUrl.length - 1)
@@ -127,18 +118,15 @@ class SubscriptionActivity : AppCompatActivity() {
 
             Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
-            // 메세지
             GlobalApplication.isSubsChange = true //구독리스트 변경사항 확인
 
-            if(checkFirstUser.equals("Yes")) // 신규 사용자일시 확인버튼이 메인을 띄우도록
-            {
-                ed.putString("First?", "No")
+            if (isNewUser) { // 신규 사용자일시 확인버튼이 메인을 띄우도록
+                ed.putBoolean("NewUser", false)
                 ed.apply()
                 var intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
             }
-
         }
 
         correct.setOnClickListener { // 저장 잘되어있는지 보려고 만든 View
@@ -146,6 +134,7 @@ class SubscriptionActivity : AppCompatActivity() {
             correct.setText(pref2.getString("Urls", ""))
         }
     }
+
     /**
      * 화면 터치시 키보드 숨김
      * @author 희진
