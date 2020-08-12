@@ -1,6 +1,5 @@
 package com.ppcomp.knu.activity
 
-import RestApiService
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.adapter.KeywordAdapter
 import com.ppcomp.knu.R
-import com.ppcomp.knu.`object`.UserInfo
 import com.ppcomp.knu.`object`.Keyword
 import kotlinx.android.synthetic.main.activity_keyword.*
 import kotlinx.android.synthetic.main.activity_keyword_toolbar.*
