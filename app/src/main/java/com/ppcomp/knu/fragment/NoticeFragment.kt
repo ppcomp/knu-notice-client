@@ -55,8 +55,7 @@ class NoticeFragment : Fragment() {
     var Url: String = ""                                //mainUrl + notice_Url 저장 할 변수
     var nextPage: String = ""
     var previousPage: String = ""
-    var checkcount =0
-    var itemcount=0
+
     @RequiresApi(Build.VERSION_CODES.O)
     val nowDate: LocalDate = LocalDate.now()
   
@@ -119,7 +118,6 @@ class NoticeFragment : Fragment() {
     }
 
     fun parsing() {
-        itemcount=0
         mLockRecyclerView = true    //실행 중 중복 사용 막기
         progressBar.visibility = View.GONE
         val view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_notice_layout, container, false)
@@ -152,8 +150,6 @@ class NoticeFragment : Fragment() {
             val notice_Url = board_Urls.toString()
             val mainUrl = "http://15.165.178.103/notice/all?q="
             Url = mainUrl + notice_Url
-            checkcount=0
-            itemcount=0
 
         }
 
@@ -192,7 +188,7 @@ class NoticeFragment : Fragment() {
                     val diff = Math.abs((sf.parse(nowDate.toString()).getTime() - sf.parse(date).getTime()) / (24*60*60*1000))
                     if(diff <= 5)
                     {
-                        image =  R.drawable.new_post
+                        image =  R.drawable.list_new_icon
                     }
                     var dateArr = date.split("-")
                     var day = dateArr[2].split("T")
@@ -214,26 +210,14 @@ class NoticeFragment : Fragment() {
                     fixed,
                     image
                 )
-              
                 noticeList.add(noticeLine)
-                itemcount=itemcount+1
             }
 
         }
-        if(checkcount==0){
-            recyclerView1.scrollToPosition(0)
-        }
-        else if(noticeList.size %10 ==0){
-            recyclerView1.scrollToPosition(noticeList.size-17)
-        }
-        else{
-            recyclerView1.scrollToPosition(noticeList.size-17+(10-itemcount))
-        }
-
         Handler().postDelayed({
             progressBar.visibility = View.GONE                           //progressbar 숨김
-            checkcount++
-        }, 500)
+            recyclerView1.scrollToPosition(Noticeadapter.itemCount-11)
+        }, 0)
     }
 
     /**
