@@ -7,12 +7,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.iid.FirebaseInstanceId
@@ -77,15 +80,25 @@ class MainActivity : AppCompatActivity() {
      * 메뉴 클릭시 이동
      * @author 희진, 정준
      */
+
     private var content: FrameLayout? = null
+    var listLocationCount =1
+    var keywordlistLocationCount =1
+
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
+
                 R.id.setting -> {
+                    listLocationCount =0
+                    keywordlistLocationCount =0
                     addFragment(settingFragment)
                     return@OnNavigationItemSelectedListener true
                 }
+
                 R.id.login -> {
+                    listLocationCount =0
+                    keywordlistLocationCount=0
                     if (!GlobalApplication.isLogin) {
                         addFragment(loginFragment)
                         return@OnNavigationItemSelectedListener true
@@ -95,18 +108,34 @@ class MainActivity : AppCompatActivity() {
                         return@OnNavigationItemSelectedListener true
                     }
                 }
+
                 R.id.list -> {
+                    keywordlistLocationCount=0
                     if(GlobalApplication.isSubsChange) {    //구독리스트에 변경사항이 있으면 화면 갱신
                         replaceFragment(noticeFragment)     //화면갱신
                         GlobalApplication.isSubsChange = false  //변경사항 갱신 후 false로 변경
+                        listLocationCount=0
+                    }
+                    listLocationCount++
+                    if(listLocationCount >=2){
+                        var recyclerview = noticeFragment.view!!.findViewById(R.id.notice) as RecyclerView
+                        recyclerview.scrollToPosition(0)
                     }
                     addFragment(noticeFragment)
                     return@OnNavigationItemSelectedListener true
                 }
+
                 R.id.keywordlist -> {
+                    listLocationCount =0
                     if(GlobalApplication.iskeywordChange) {    //구독리스트에 변경사항이 있으면 화면 갱신
                         replaceFragment(keywordNoticeFragment)  //화면갱신
                         GlobalApplication.iskeywordChange = false  //변경사항 갱신 후 false로 변경
+                        keywordlistLocationCount =0
+                    }
+                    keywordlistLocationCount++
+                    if(keywordlistLocationCount >=2){
+                        var recyclerview = keywordNoticeFragment.view!!.findViewById(R.id.keyword_notice) as RecyclerView
+                        recyclerview.scrollToPosition(0)
                     }
                     addFragment(keywordNoticeFragment)
                     return@OnNavigationItemSelectedListener true
