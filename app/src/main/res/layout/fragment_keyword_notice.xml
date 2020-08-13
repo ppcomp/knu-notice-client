@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="해당하는 공지가 없습니다."
-            android:textSize="25dp"
+            android:textSize="30dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"></TextView>
 
