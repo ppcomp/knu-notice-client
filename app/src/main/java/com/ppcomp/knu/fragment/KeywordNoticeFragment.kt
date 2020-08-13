@@ -14,6 +14,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,11 +42,11 @@ class KeywordNoticeFragment : Fragment() {
     var noticeList = arrayListOf<Notice>()
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
-    private lateinit var recyclerView2 : RecyclerView
+    private lateinit var keywordRecyclerView : RecyclerView
     private lateinit var progressBar : ProgressBar
     private lateinit var keywordNullView : TextView
     private lateinit var itemNullView : TextView
-    private var mLockRecyclerView  = false           //데이터 중복 안되게 체크하는 변수
+    var mLockRecyclerView  = true           //데이터 중복 안되게 체크하는 변수
     var Url:String=""                                //mainUrl + notice_Url 저장 할 변수
     var nextPage:String=""
     var previousPage:String=""
@@ -59,7 +60,7 @@ class KeywordNoticeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_keyword_notice, container, false)
 
-        recyclerView2 = view!!.findViewById(R.id.keyword_notice) as RecyclerView    //recyclerview 가져오기
+        keywordRecyclerView = view!!.findViewById(R.id.keyword_notice) as RecyclerView    //recyclerview 가져오기
         progressBar = view!!.findViewById((R.id.keyword_progressbar)) as ProgressBar
         keywordNullView = view!!.findViewById(R.id.keyword_null_view) as TextView
         itemNullView =view!!.findViewById(R.id.item_null_view) as TextView
@@ -88,7 +89,7 @@ class KeywordNoticeFragment : Fragment() {
                     }
                     startActivity(Intent)
                 }
-                recyclerView2.adapter = Noticeadapter
+                keywordRecyclerView.adapter = Noticeadapter
                 keyword_swipe.isRefreshing = false
             }
             mHandler.postDelayed(mRunnable, 2000)
@@ -100,8 +101,6 @@ class KeywordNoticeFragment : Fragment() {
 
     fun parsing() {
         keywordNullView.setVisibility(View.GONE)
-        mLockRecyclerView = true    //실행 중 중복 사용 막기
-
         val Noticeadapter = NoticeAdapter(requireContext(), noticeList) { notice ->
             var link: String = notice.link
             if (!link.startsWith("http://") && !link.startsWith("https://"))
@@ -111,13 +110,13 @@ class KeywordNoticeFragment : Fragment() {
             }
             startActivity(Intent)
         }
-        recyclerView2.adapter = Noticeadapter
-        recyclerView2.scrollToPosition(SCROLL_STATE_IDLE)
+        keywordRecyclerView.adapter = Noticeadapter
+        keywordRecyclerView.scrollToPosition(SCROLL_STATE_IDLE)
 
         // LayoutManager 설정. RecyclerView 에서는 필수
         var lm = LinearLayoutManager(requireContext())
-        recyclerView2.keyword_notice.layoutManager = lm
-        recyclerView2.keyword_notice.setHasFixedSize(true)
+        keywordRecyclerView.keyword_notice.layoutManager = lm
+        keywordRecyclerView.keyword_notice.setHasFixedSize(true)
         // Web 통신
         StrictMode.enableDefaults()
 
@@ -190,12 +189,16 @@ class KeywordNoticeFragment : Fragment() {
 
                 noticeList.add(noticeLine)
             }
+            if(noticeList.size == 0 ){      //해당하는 아이템이 없을 때 화면 설정
+                noticeList.removeAll(noticeList)
+                keywordNullView.setVisibility(View.GONE)
+                itemNullView.setVisibility(View.VISIBLE)
+            }
 
         }
         Handler().postDelayed({   //스크롤시 progressbar 보이게하고 조금 대기
             progressBar.visibility = View.GONE
-            mLockRecyclerView == false
-            recyclerView2.scrollToPosition(Noticeadapter.itemCount-11)
+            keywordRecyclerView.scrollToPosition(Noticeadapter.itemCount-11)
         }, 0)
     }
 
@@ -204,10 +207,10 @@ class KeywordNoticeFragment : Fragment() {
      *  @author 희진
      */
     fun scrollPagination(){
-        recyclerView2.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        keywordRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1)
-                    && newState ==SCROLL_STATE_IDLE ) {  //위치가 맨 밑이며 중복 안되고 멈춘경우
+                    && newState ==SCROLL_STATE_IDLE) {  //위치가 맨 밑이며 중복 안되고 멈춘경우
                     if(Url!="null") {
                         progressBar.visibility = View.VISIBLE                           //progressbar 나옴
                         Handler().postDelayed({   //스크롤시 progressbar 보이게하고 조금 대기

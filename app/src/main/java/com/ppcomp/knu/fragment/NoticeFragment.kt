@@ -47,7 +47,7 @@ class NoticeFragment : Fragment() {
     var noticeList = arrayListOf<Notice>()
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
-    private lateinit var recyclerView1: RecyclerView
+    private lateinit var noticeRecyclerView: RecyclerView
     private lateinit var thisContext: Context
     private lateinit var progressBar: ProgressBar
     private lateinit var noData: TextView
@@ -66,7 +66,7 @@ class NoticeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_notice_layout, container, false)
 
         thisContext = container!!.context                                   //context 가져오기
-        recyclerView1 = view!!.findViewById(R.id.notice) as RecyclerView    //recyclerview 가져오기
+        noticeRecyclerView = view!!.findViewById(R.id.notice) as RecyclerView    //recyclerview 가져오기
         progressBar = view!!.findViewById((R.id.progressbar)) as ProgressBar
         noData = view!!.findViewById((R.id.noData)) as TextView
         progressBar.setVisibility(View.GONE)                                //progressbar 숨기기
@@ -108,7 +108,7 @@ class NoticeFragment : Fragment() {
                     }
                     startActivity(Intent)
                 }
-                recyclerView1.adapter = Noticeadapter
+                noticeRecyclerView.adapter = Noticeadapter
                 swipe.isRefreshing = false
             }
             mHandler.postDelayed(mRunnable, 2000)
@@ -132,11 +132,11 @@ class NoticeFragment : Fragment() {
             startActivity(Intent)
         }
 
-        recyclerView1.adapter = Noticeadapter
+        noticeRecyclerView.adapter = Noticeadapter
         // LayoutManager 설정. RecyclerView 에서는 필수
         val lm = LinearLayoutManager(thisContext)
-        recyclerView1.notice.layoutManager = lm
-        recyclerView1.notice.setHasFixedSize(true)
+        noticeRecyclerView.notice.layoutManager = lm
+        noticeRecyclerView.notice.setHasFixedSize(true)
 
         // Web 통신
         StrictMode.enableDefaults()
@@ -216,7 +216,7 @@ class NoticeFragment : Fragment() {
         }
         Handler().postDelayed({
             progressBar.visibility = View.GONE                           //progressbar 숨김
-            recyclerView1.scrollToPosition(Noticeadapter.itemCount-11)
+            noticeRecyclerView.scrollToPosition(Noticeadapter.itemCount-11)
         }, 0)
     }
 
@@ -225,7 +225,7 @@ class NoticeFragment : Fragment() {
      *  @author 희진
      */
     fun scrollPagination() {
-        recyclerView1.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        noticeRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1)
                     && newState == SCROLL_STATE_IDLE ) {  //위치가 맨 밑이며 중복 안되고 멈춘경우
