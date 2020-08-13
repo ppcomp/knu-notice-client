@@ -11,13 +11,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE
-import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.os.postDelayed
-import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,7 +22,6 @@ import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.adapter.NoticeAdapter
 import kotlinx.android.synthetic.main.fragment_login.*
-import kotlinx.android.synthetic.main.fragment_notice_item.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
 import org.json.JSONObject
@@ -51,6 +47,7 @@ class NoticeFragment : Fragment() {
     private lateinit var thisContext: Context
     private lateinit var progressBar: ProgressBar
     private lateinit var noData: TextView
+    private lateinit var listTitle: TextView
     private var mLockRecyclerView = false           //데이터 중복 안되게 체크하는 변수
     var Url: String = ""                                //mainUrl + notice_Url 저장 할 변수
     var nextPage: String = ""
@@ -71,7 +68,6 @@ class NoticeFragment : Fragment() {
         noData = view!!.findViewById((R.id.noData)) as TextView
         progressBar.setVisibility(View.GONE)                                //progressbar 숨기기
         noData.setVisibility(View.GONE)
-
         val preferences = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
         var board_Urls = preferences.getString("Urls", "")
         if (!board_Urls.equals("")) // 구독리스트가 있을시 안내화면 숨기고 파싱
@@ -176,7 +172,10 @@ class NoticeFragment : Fragment() {
                 var reference = obj.getString("reference")
                 val fixed = obj.getString("is_fixed").toBoolean()
                 var image : Int = 0
-
+                var fixed_image =0
+                if(fixed == true){
+                    fixed_image=R.drawable.notice_fixed_icon
+                }
                 if (reference.equals("null")) {
                     reference = ""
                 }
@@ -188,7 +187,7 @@ class NoticeFragment : Fragment() {
                     val diff = Math.abs((sf.parse(nowDate.toString()).getTime() - sf.parse(date).getTime()) / (24*60*60*1000))
                     if(diff <= 5)
                     {
-                        image =  R.drawable.list_new_icon
+                        image =  R.drawable.notice_new_icon
                     }
                     var dateArr = date.split("-")
                     var day = dateArr[2].split("T")
@@ -208,7 +207,9 @@ class NoticeFragment : Fragment() {
                     link,
                     reference,
                     fixed,
-                    image
+                    image,
+                    fixed_image
+
                 )
                 noticeList.add(noticeLine)
             }

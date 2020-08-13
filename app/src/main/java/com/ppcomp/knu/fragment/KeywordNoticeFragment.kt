@@ -14,7 +14,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,10 +22,7 @@ import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.adapter.NoticeAdapter
 import kotlinx.android.synthetic.main.fragment_keyword_notice.*
 import kotlinx.android.synthetic.main.fragment_keyword_notice.view.*
-import kotlinx.android.synthetic.main.fragment_notice_item.*
-import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import org.json.JSONObject
-import org.w3c.dom.Text
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -152,7 +148,6 @@ class KeywordNoticeFragment : Fragment() {
                 var date = obj.getString("date")
                 var reference = obj.getString("reference")
                 var image : Int = 0
-
                 if (reference.equals("null")) {
                     reference = ""
                 }
@@ -164,7 +159,7 @@ class KeywordNoticeFragment : Fragment() {
                     val diff = Math.abs((sf.parse(nowDate.toString()).getTime() - sf.parse(date).getTime()) / (24*60*60*1000))
                     if(diff <= 5)
                     {
-                        image =  R.drawable.list_new_icon
+                        image =  R.drawable.notice_new_icon
                     }
                     var dateArr = date.split("-")
                     var day = dateArr[2].split("T")
@@ -184,7 +179,8 @@ class KeywordNoticeFragment : Fragment() {
                     link,
                     reference,
                     false,
-                    image
+                    image,
+                    0
                 )
 
                 noticeList.add(noticeLine)
