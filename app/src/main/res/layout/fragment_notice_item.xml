@@ -70,9 +70,10 @@
                 tools:text="날짜" />
             <ImageView
                 android:id="@+id/image"
-                android:layout_width="16dp"
-                android:layout_height="14dp"
-                android:layout_marginLeft="5dp" />
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="-4dp"/>
 
             <TextView
                 android:id="@+id/author"
