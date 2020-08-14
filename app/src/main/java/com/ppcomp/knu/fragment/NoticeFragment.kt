@@ -47,7 +47,6 @@ class NoticeFragment : Fragment() {
     private lateinit var thisContext: Context
     private lateinit var progressBar: ProgressBar
     private lateinit var noData: TextView
-    private lateinit var listTitle: TextView
     private var mLockRecyclerView = false           //데이터 중복 안되게 체크하는 변수
     var Url: String = ""                                //mainUrl + notice_Url 저장 할 변수
     var nextPage: String = ""
@@ -176,7 +175,7 @@ class NoticeFragment : Fragment() {
                 var image : Int = 0
                 var fixed_image =0
                 if(fixed == true){
-                    fixed_image=R.drawable.notice_fixed_icon
+                    fixed_image=R.drawable.notice_fixed_pin_icon
                 }
                 if (reference.equals("null")) {
                     reference = ""
