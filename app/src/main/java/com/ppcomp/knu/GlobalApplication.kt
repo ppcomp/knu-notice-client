@@ -38,6 +38,7 @@ class GlobalApplication : Application() {
         var isSubsChange: Boolean = false //구독리스트 변경사항 유무
         var iskeywordChange: Boolean = false //키워드 변경사항 유무
         var instance: GlobalApplication? = null
+        var isSearchChange: Boolean = false //검색 변경사항 유무
 
         /**
          * 카카오 유저 데이터 서버에 업로드
