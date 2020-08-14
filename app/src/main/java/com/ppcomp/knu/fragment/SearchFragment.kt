@@ -10,20 +10,24 @@ import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.*
 import android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.os.postDelayed
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.adapter.NoticeAdapter
+import com.ppcomp.knu.adapter.SearchAdapter
 import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.fragment_notice_item.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
+import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.fragment_search.view.*
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -38,48 +42,55 @@ import java.time.LocalDate
  * 크롤링한 공지사항을 띄워줌
  * @author 희진
  */
-class NoticeFragment : Fragment() {
+class SearchFragment : Fragment() {
 
-    var noticeList = arrayListOf<Notice>()
+    var searchList = arrayListOf<Notice>()
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
-    private lateinit var noticeRecyclerView: RecyclerView
+    private lateinit var searchRecyclerView: RecyclerView
     private lateinit var thisContext: Context
     private lateinit var progressBar: ProgressBar
-    private lateinit var noData: TextView
-    private lateinit var listTitle: TextView
+    private lateinit var search_noData: TextView
+    private lateinit var search_button: Button
+    private lateinit var search_edit: EditText
     private var mLockRecyclerView = false           //데이터 중복 안되게 체크하는 변수
-    var Url: String = ""                                //mainUrl + notice_Url 저장 할 변수
+    var Url: String = ""//mainUrl + notice_Url 저장 할 변수
+    var count: Int = 0
     var nextPage: String = ""
     var previousPage: String = ""
-    var count: Int = 0
+    var getSearchData: String = ""
+    private lateinit var listTitle: TextView
 
     @RequiresApi(Build.VERSION_CODES.O)
     val nowDate: LocalDate = LocalDate.now()
-  
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_notice_layout, container, false)
-
-        thisContext = container!!.context                                   //context 가져오기
-        noticeRecyclerView = view!!.findViewById(R.id.notice) as RecyclerView    //recyclerview 가져오기
+        val view = inflater.inflate(R.layout.fragment_search, container, false)
         progressBar = view!!.findViewById((R.id.progressbar)) as ProgressBar
-        noData = view!!.findViewById((R.id.noData)) as TextView
-        progressBar.setVisibility(View.GONE)                                //progressbar 숨기기
-        noData.setVisibility(View.GONE)
-        val preferences = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
-        var board_Urls = preferences.getString("Urls", "")
-        if (!board_Urls.equals("")) // 구독리스트가 있을시 안내화면 숨기고 파싱
-        {
-            noData.setVisibility(View.GONE)
-            parsing()
+        search_noData = view!!.findViewById((R.id.search_noData)) as TextView
+        search_button = view!!.findViewById(R.id.search_button) as Button
+        progressBar.setVisibility(View.GONE)
+        thisContext = container!!.context //context 가져오기
+        searchRecyclerView =
+            view!!.findViewById(R.id.search_recycler) as RecyclerView    //recyclerview 가져오기
+        search_edit = view!!.findViewById(R.id.search_edit) as EditText
+
+
+        search_button.setOnClickListener() {
+            getSearchData = search_edit.getText().toString()
+            if (getSearchData.equals("")) {
+                search_noData.setVisibility(View.VISIBLE)
+            } else {
+                search_noData.setVisibility(View.GONE)
+                previousPage = ""
+                parsing()
+                scrollPagination()
+            }
         }
-       if(board_Urls == ""){
-           noData.setVisibility(View.VISIBLE)
-        }
-        scrollPagination()
+
         /**
          * 파싱 기능
          * 새로고침 기능
@@ -89,13 +100,13 @@ class NoticeFragment : Fragment() {
          * @author 김우진,희진
          */
         mHandler = Handler()
-        view.swipe.setOnRefreshListener {
+        view.search_swipe.setOnRefreshListener {
             // Initialize a new Runnable
             mRunnable = Runnable {
 //                 Hide swipe to refresh icon animation
-                val Noticeadapter = NoticeAdapter(
+                val searchAdapter = SearchAdapter(
                     thisContext,
-                    noticeList
+                    searchList
                 ) { notice ->
                     var link: String = notice.link
                     if (!link.startsWith("http://") && !link.startsWith("https://"))
@@ -105,8 +116,8 @@ class NoticeFragment : Fragment() {
                     }
                     startActivity(Intent)
                 }
-                noticeRecyclerView.adapter = Noticeadapter
-                swipe.isRefreshing = false
+                searchRecyclerView.adapter = searchAdapter
+                search_swipe.isRefreshing = false
             }
             mHandler.postDelayed(mRunnable, 2000)
 
@@ -115,11 +126,12 @@ class NoticeFragment : Fragment() {
     }
 
     fun parsing() {
+        search_edit = view!!.findViewById(R.id.search_edit) as EditText
         mLockRecyclerView = true    //실행 중 중복 사용 막기
         progressBar.visibility = View.GONE
-        val view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_notice_layout, container, false)
+        getSearchData = search_edit.getText().toString()
 
-        val Noticeadapter = NoticeAdapter(thisContext, noticeList) { notice ->
+        val searchAdapter = SearchAdapter(thisContext, searchList) { notice ->
             var link: String = notice.link
             if (!link.startsWith("http://") && !link.startsWith("https://"))
                 link = "http://" + link
@@ -129,24 +141,23 @@ class NoticeFragment : Fragment() {
             startActivity(Intent)
         }
 
-        noticeRecyclerView.adapter = Noticeadapter
+
+        searchRecyclerView.adapter = searchAdapter
         // LayoutManager 설정. RecyclerView 에서는 필수
         val lm = LinearLayoutManager(thisContext)
-        noticeRecyclerView.layoutManager = lm
-        noticeRecyclerView.setHasFixedSize(true)
+        searchRecyclerView.layoutManager = lm
+        searchRecyclerView.setHasFixedSize(true)
 
         // Web 통신
         StrictMode.enableDefaults()
 
         if (previousPage == "") {   //처음 호출시 혹은 학과가 바뀔 때 실행
-            val preferences = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
-            var board_Urls = preferences.getString("Urls", "")
-            if (board_Urls.equals("")) {
-                board_Urls = "오류"
+            if (getSearchData.equals("")) {
+                getSearchData = "null"
             }
-            val notice_Url = board_Urls.toString()
-            val mainUrl = "http://15.165.178.103/notice/all?q="
-            Url = mainUrl + notice_Url
+            val mainUrl = "http://15.165.178.103/notice/search?q="
+            Url = mainUrl + getSearchData
+            searchAdapter.clear()
 
         }
 
@@ -161,23 +172,40 @@ class NoticeFragment : Fragment() {
             count = jObject.getInt("count")
             nextPage = jObject.getString("next")
             if (count == 0) {
-                Toast.makeText(requireContext(), "게시글이 존재하지 않습니다", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "검색어에 해당되는 게시글이 존재하지 않습니다", Toast.LENGTH_SHORT)
+                    .show()
             }
             Url = nextPage        //다음 Url 주소 변경
 
 //         모든 공지 noticeList 에 저장
             for (i in 0 until jArray.length()) {
                 val obj = jArray.getJSONObject(i)
-                val title = obj.getString("title")
+
+                var title = obj.getString("title") // 검색 키워드 강조
+                val start = title.indexOf(getSearchData)
+                val end = start + getSearchData.length
+                var spannedTitle = ""
+
+                for (k in 0 until start) {
+                    spannedTitle += title[k]
+                }
+                spannedTitle += "<u><strong>" + getSearchData + "</strong></u>"
+                for (k in end until title.length) {
+                    spannedTitle += title[k]
+                }
+                title = spannedTitle
+
+
                 var id = obj.getString("id")
                 var date = obj.getString("date")
                 var reference = obj.getString("reference")
                 val fixed = obj.getString("is_fixed").toBoolean()
-                var image : Int = 0
+                var image: Int = 0
                 var fixed_image =0
                 if(fixed == true){
                     fixed_image=R.drawable.notice_fixed_icon
                 }
+
                 if (reference.equals("null")) {
                     reference = ""
                 }
@@ -186,9 +214,11 @@ class NoticeFragment : Fragment() {
                     date = ""
                 } else {
                     var sf = SimpleDateFormat("yyyy-MM-dd")
-                    val diff = Math.abs((sf.parse(nowDate.toString()).getTime() - sf.parse(date).getTime()) / (24*60*60*1000))
-                    if(diff <= 5)
-                    {
+                    val diff = Math.abs(
+                        (sf.parse(nowDate.toString()).getTime() - sf.parse(date)
+                            .getTime()) / (24 * 60 * 60 * 1000)
+                    )
+                    if (diff <= 5) {
                         image =  R.drawable.notice_new_icon
                     }
                     var dateArr = date.split("-")
@@ -211,16 +241,15 @@ class NoticeFragment : Fragment() {
                     fixed,
                     image,
                     fixed_image
-
                 )
-                noticeList.add(noticeLine)
+                searchList.add(noticeLine)
             }
 
         }
         Handler().postDelayed({
             progressBar.visibility = View.GONE                           //progressbar 숨김
-            noticeRecyclerView.scrollToPosition(Noticeadapter.itemCount-11)
-        }, 0)
+            searchRecyclerView.scrollToPosition(searchAdapter.itemCount - 10)
+        }, 40)
     }
 
     /**
@@ -228,18 +257,20 @@ class NoticeFragment : Fragment() {
      *  @author 희진
      */
     fun scrollPagination() {
-        noticeRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        searchRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1)
-                    && newState == SCROLL_STATE_IDLE ) {  //위치가 맨 밑이며 중복 안되고 멈춘경우
-                    if(Url!="null") {
-                        progressBar.visibility = View.VISIBLE                           //progressbar 나옴
+                    && newState == SCROLL_STATE_IDLE
+                ) {  //위치가 맨 밑이며 중복 안되고 멈춘경우
+                    if (Url != "null") {
+                        progressBar.visibility =
+                            View.VISIBLE                           //progressbar 나옴
                         Handler().postDelayed({
                             parsing()
                         }, 500)
-                    }
-                    else{
-                        Toast.makeText(requireContext(), "더 이상 공지가 없습니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Toast.makeText(requireContext(), "더 이상 공지가 없습니다.", Toast.LENGTH_SHORT)
+                            .show()
 
                     }
                 }

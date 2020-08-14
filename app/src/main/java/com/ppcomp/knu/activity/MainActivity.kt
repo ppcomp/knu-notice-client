@@ -21,11 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.iid.FirebaseInstanceId
 import com.kakao.auth.Session
 import com.ppcomp.knu.*
-import com.ppcomp.knu.fragment.LoginFragment
-import com.ppcomp.knu.fragment.NoticeFragment
-import com.ppcomp.knu.fragment.SettingFragment
-import com.ppcomp.knu.fragment.UserInfoFragment
-import com.ppcomp.knu.fragment.KeywordNoticeFragment
+import com.ppcomp.knu.fragment.*
 import kotlin.math.log
 
 
@@ -41,6 +37,8 @@ class MainActivity : AppCompatActivity() {
     var noticeFragment = NoticeFragment()
     var keywordNoticeFragment = KeywordNoticeFragment()
     var activeFragment: Fragment = noticeFragment   //현재 띄워진 프레그먼트(default: noticeFragment)
+    var searchFragment = SearchFragment()
+
 
     /**
      * 화면생성해주는 메소드
@@ -59,7 +57,8 @@ class MainActivity : AppCompatActivity() {
             add(R.id.frameLayout, userInfoFragment, userInfoFragment.javaClass.simpleName).hide(userInfoFragment)
             add(R.id.frameLayout, noticeFragment, noticeFragment.javaClass.simpleName)
             add(R.id.frameLayout,keywordNoticeFragment,keywordNoticeFragment.javaClass.simpleName).hide(keywordNoticeFragment)
-        }.commit()
+            add(R.id.frameLayout, searchFragment, searchFragment.javaClass.simpleName).hide(searchFragment)
+    }.commit()
 
     }
 
@@ -140,6 +139,21 @@ class MainActivity : AppCompatActivity() {
                     addFragment(keywordNoticeFragment)
                     return@OnNavigationItemSelectedListener true
                 }
+                R.id.search -> {
+                    listLocationCount =0
+                    if(GlobalApplication.isSearchChange) {    //구독리스트에 변경사항이 있으면 화면 갱신
+                        replaceFragment(searchFragment)  //화면갱신
+                        GlobalApplication.isSearchChange = false  //변경사항 갱신 후 false로 변경
+                        listLocationCount =0
+                    }
+                    listLocationCount++
+                    if(listLocationCount >=2){
+                        var recyclerview = searchFragment.view!!.findViewById(R.id.search_recycler) as RecyclerView
+                        recyclerview.scrollToPosition(0)
+                    }
+                    addFragment(searchFragment)
+                    return@OnNavigationItemSelectedListener true
+                }
             }
             false
         }
@@ -197,6 +211,13 @@ class MainActivity : AppCompatActivity() {
                     remove(keywordNoticeFragment)
                     keywordNoticeFragment = KeywordNoticeFragment()
                     add(R.id.frameLayout, keywordNoticeFragment, keywordNoticeFragment.javaClass.simpleName)
+                }.commit()
+            }
+            searchFragment -> {
+                supportFragmentManager.beginTransaction().apply {
+                    remove(searchFragment)
+                    searchFragment = SearchFragment()
+                    add(R.id.frameLayout, searchFragment, searchFragment.javaClass.simpleName)
                 }.commit()
             }
         }
