@@ -52,6 +52,7 @@ class NoticeFragment : Fragment() {
     var Url: String = ""                                //mainUrl + notice_Url 저장 할 변수
     var nextPage: String = ""
     var previousPage: String = ""
+    var count: Int = 0
 
     @RequiresApi(Build.VERSION_CODES.O)
     val nowDate: LocalDate = LocalDate.now()
@@ -157,8 +158,9 @@ class NoticeFragment : Fragment() {
             val jArray = jObject.getJSONArray("results")
 
             previousPage = jObject.getString("previous")
+            count = jObject.getInt("count")
             nextPage = jObject.getString("next")
-            if (previousPage == "null" && nextPage == "null") {
+            if (count == 0) {
                 Toast.makeText(requireContext(), "게시글이 존재하지 않습니다", Toast.LENGTH_SHORT).show()
             }
             Url = nextPage        //다음 Url 주소 변경
