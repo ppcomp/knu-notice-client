@@ -35,6 +35,7 @@ class SearchAdapter(
         val noticeAuthor = itemView.findViewById<TextView>(R.id.search_author)
         val noticeReference = itemView.findViewById<TextView>(R.id.search_reference)
         val noticeImage = itemView.findViewById<ImageView>(R.id.search_image)
+        val noticeFixedImage = itemView.findViewById<ImageView>(R.id.search_fixed_image)
 
 
         @RequiresApi(Build.VERSION_CODES.N)
@@ -52,6 +53,7 @@ class SearchAdapter(
             }
             if(notice.fixed)
             {
+                noticeFixedImage.setImageResource(notice.fixed_image)
                 noticeLinear.setBackgroundResource(R.drawable.notice_fixed_item_line)
             }
             val hash = notice.board.hashCode()

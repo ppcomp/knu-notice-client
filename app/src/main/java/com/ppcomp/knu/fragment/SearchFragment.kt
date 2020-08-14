@@ -59,6 +59,7 @@ class SearchFragment : Fragment() {
     var nextPage: String = ""
     var previousPage: String = ""
     var getSearchData: String = ""
+    private lateinit var listTitle: TextView
 
     @RequiresApi(Build.VERSION_CODES.O)
     val nowDate: LocalDate = LocalDate.now()
@@ -200,6 +201,10 @@ class SearchFragment : Fragment() {
                 var reference = obj.getString("reference")
                 val fixed = obj.getString("is_fixed").toBoolean()
                 var image: Int = 0
+                var fixed_image =0
+                if(fixed == true){
+                    fixed_image=R.drawable.notice_fixed_icon
+                }
 
                 if (reference.equals("null")) {
                     reference = ""
@@ -214,7 +219,7 @@ class SearchFragment : Fragment() {
                             .getTime()) / (24 * 60 * 60 * 1000)
                     )
                     if (diff <= 5) {
-                        image = R.drawable.list_new_icon
+                        image =  R.drawable.notice_new_icon
                     }
                     var dateArr = date.split("-")
                     var day = dateArr[2].split("T")
@@ -234,7 +239,8 @@ class SearchFragment : Fragment() {
                     link,
                     reference,
                     fixed,
-                    image
+                    image,
+                    fixed_image
                 )
                 searchList.add(noticeLine)
             }
