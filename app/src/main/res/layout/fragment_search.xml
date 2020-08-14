@@ -23,7 +23,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="8"
                 android:gravity="center_vertical|center_horizontal"
-                android:text="검색"
+                android:hint="검색어를 입력하세요"
+                android:theme="@style/EditTheme"
                 tools:ignore="Suspicious0dp" />
 
             <Button
