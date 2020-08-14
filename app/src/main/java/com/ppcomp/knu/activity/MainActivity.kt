@@ -126,7 +126,7 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.keywordlist -> {
                     listLocationCount =0
-                    if(GlobalApplication.iskeywordChange) {    //구독리스트에 변경사항이 있으면 화면 갱신
+                    if(GlobalApplication.iskeywordChange || GlobalApplication.isSubsChange) {    //구독리스트에 변경사항이 있으면 화면 갱신
                         replaceFragment(keywordNoticeFragment)  //화면갱신
                         GlobalApplication.iskeywordChange = false  //변경사항 갱신 후 false로 변경
                         keywordlistLocationCount =0
