@@ -118,17 +118,25 @@ class KeywordNoticeFragment : Fragment() {
 
         val preferences = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
         val keywordList = preferences.getString("Keys", "오류")
-        var notice_Url = keywordList.toString()
+        val boardList = preferences.getString("Urls", "오류")
+        var keyword_item = keywordList.toString()
+        var board_item = boardList.toString()
 
-        if (notice_Url == "") {  //페이지가 빈 경우
+        if (keyword_item == "") {  //키워드 설정이 안된경우
             noticeList.removeAll(noticeList)
             progressBar.setVisibility(View.GONE)
-            keywordNullView.setVisibility(View.VISIBLE)
+            keywordNullView.setVisibility(View.VISIBLE) //문구 수정 필요
+            itemNullView.setVisibility(View.GONE)
+        }
+        else if(board_item==""){    //구독리스트 설정이 안된경우
+            noticeList.removeAll(noticeList)
+            progressBar.setVisibility(View.GONE)
+            keywordNullView.setVisibility(View.GONE)
             itemNullView.setVisibility(View.GONE)
         }
         else {
-            if (previousPage == "" && notice_Url != "") {
-                Url = "http://15.165.178.103/notice/search?q=" + keywordList
+            if (previousPage == "" && keyword_item != "" && board_item != ""  ) {
+                Url = "http://15.165.178.103/notice/search?q=" + keywordList+"&target="+board_item
             }
             val noticeStream = URL(Url).openConnection() as HttpURLConnection
             var noticeRead = BufferedReader(InputStreamReader(noticeStream.inputStream, "UTF-8"))
