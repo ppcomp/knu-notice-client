@@ -167,6 +167,27 @@
                 ></TextView>
 
             <TextView
+                android:id="@+id/login"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_marginTop="1dp"
+                android:background="@drawable/setting_bottom_line"
+                android:clickable="true"
+                android:drawableRight="@drawable/setting_move_btn"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="20dp"
+                android:text="로그인"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.265" />
+
+            <TextView
                 android:id="@+id/license"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"

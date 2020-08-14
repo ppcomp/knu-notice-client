@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.adapter.NoticeAdapter
-import kotlinx.android.synthetic.main.fragment_login.*
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
 import org.json.JSONObject
