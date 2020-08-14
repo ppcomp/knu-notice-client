@@ -146,8 +146,13 @@ class KeywordNoticeFragment : Fragment() {
                 var title = obj.getString("bold_title")
                 var id = obj.getString("id")
                 var date = obj.getString("date")
+                val fixed = obj.getString("is_fixed").toBoolean()
                 var reference = obj.getString("reference")
                 var image : Int = 0
+                var fixed_image =0
+                if(fixed == true){
+                    fixed_image=R.drawable.notice_fixed_pin_icon
+                }
                 if (reference.equals("null")) {
                     reference = ""
                 }
@@ -178,9 +183,9 @@ class KeywordNoticeFragment : Fragment() {
                     "작성자: " + author,
                     link,
                     reference,
-                    false,
+                    fixed,
                     image,
-                    0
+                    fixed_image
                 )
 
                 noticeList.add(noticeLine)
