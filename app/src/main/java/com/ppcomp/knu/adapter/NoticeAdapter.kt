@@ -35,7 +35,7 @@ class NoticeAdapter(
         val noticeAuthor = itemView.findViewById<TextView>(R.id.author)
         val noticeReference = itemView.findViewById<TextView>(R.id.reference)
         val noticeImage = itemView.findViewById<ImageView>(R.id.image)
-
+        val noticeFixedImage = itemView.findViewById<ImageView>(R.id.fixed_image)
 
         @RequiresApi(Build.VERSION_CODES.N)
         fun bind (notice: Notice, context: Context) {
@@ -52,6 +52,7 @@ class NoticeAdapter(
             }
             if(notice.fixed)
             {
+                noticeFixedImage.setImageResource(notice.fixed_image)
                 noticeLinear.setBackgroundResource(R.drawable.notice_fixed_item_line)
             }
             val hash = notice.board.hashCode()
