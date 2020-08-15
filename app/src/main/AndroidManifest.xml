@@ -19,7 +19,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name="com.ppcomp.knu.activity.MakerActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:parentActivityName="com.ppcomp.knu.activity.KeywordActivity"/>
         <activity
             android:name="com.ppcomp.knu.activity.KeywordActivity"
             android:screenOrientation="portrait"
@@ -34,7 +35,8 @@
             android:parentActivityName="com.ppcomp.knu.activity.KeywordActivity" /> <!-- adjustNothing : 키보드가 화면에 영향 안주도록 -->
         <activity
             android:name="com.ppcomp.knu.activity.LicenseActivity"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:parentActivityName="com.ppcomp.knu.activity.KeywordActivity"/>
         <activity
             android:name="com.ppcomp.knu.activity.SplashActivity"
             android:screenOrientation="portrait"
