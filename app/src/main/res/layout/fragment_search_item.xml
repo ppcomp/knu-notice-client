@@ -23,16 +23,16 @@
 
             <ImageView
                 android:id="@+id/search_fixed_image"
-                android:layout_width="16dp"
-                android:layout_height="14dp"
-                android:layout_marginTop="10dp" />
+                android:layout_width="20dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="7dp" />
 
             <TextView
                 android:id="@+id/search_board"
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
                 android:layout_marginTop="10dp"
-                android:textSize="15sp"
+                android:textSize="11sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.017"
@@ -44,18 +44,17 @@
             android:id="@+id/search_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="20dp"
             android:gravity="left"
-            android:layout_marginTop="5dp"
             android:singleLine="true"
-            android:textSize="18dp"
+            android:textSize="15dp"
             app:layout_constraintVertical_bias="0.017"
             tools:text="제목" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="7dp"
             android:orientation="horizontal"
             tools:ignore="MissingConstraints">
 
@@ -63,9 +62,9 @@
                 android:id="@+id/search_date"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="20dp"
                 android:gravity="left"
-                android:textSize="11sp"
+                android:textSize="9sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.017"
@@ -73,18 +72,18 @@
 
             <ImageView
                 android:id="@+id/search_image"
-                android:layout_width="25dp"
+                android:layout_width="20dp"
                 android:layout_height="25dp"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="-4dp"/>
+                android:layout_marginTop="-5dp"/>
 
             <TextView
                 android:id="@+id/search_author"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="20dp"
                 android:gravity="left"
-                android:textSize="11sp"
+                android:textSize="9sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.017"
@@ -94,9 +93,9 @@
                 android:id="@+id/search_reference"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="20dp"
                 android:gravity="left"
-                android:textSize="11sp"
+                android:textSize="9sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.017"

@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     private var content: FrameLayout? = null
     var listLocationCount =1
     var keywordlistLocationCount =1
-
+    var searchLocationCount =1
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -67,6 +67,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.setting -> {
                     listLocationCount =0
                     keywordlistLocationCount =0
+                    searchLocationCount=0
                     addFragment(settingFragment)
                     return@OnNavigationItemSelectedListener true
                 }
@@ -74,19 +75,21 @@ class MainActivity : AppCompatActivity() {
                 R.id.bookmark -> {
                     listLocationCount =0
                     keywordlistLocationCount=0
+                    searchLocationCount=0
                     addFragment(bookmarkFragment)
                     return@OnNavigationItemSelectedListener true
                 }
 
                 R.id.list -> {
                     keywordlistLocationCount=0
+                    searchLocationCount=0
                     if(GlobalApplication.isSubsChange) {    //구독리스트에 변경사항이 있으면 화면 갱신
                         replaceFragment(noticeFragment)     //화면갱신
                         GlobalApplication.isSubsChange = false  //변경사항 갱신 후 false로 변경
                         listLocationCount=0
                     }
-                    listLocationCount++
-                    if(listLocationCount >=2){
+                    listLocationCount++             //해당 fragment에 들어가면 count++
+                    if(listLocationCount >=2){      //count가 2 이상이면 scroll이 맨 위로 이동
                         var recyclerview = noticeFragment.view!!.findViewById(R.id.notice) as RecyclerView
                         recyclerview.scrollToPosition(0)
                     }
@@ -96,7 +99,8 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.keywordlist -> {
                     listLocationCount =0
-                    if(GlobalApplication.iskeywordChange) {    //구독리스트에 변경사항이 있으면 화면 갱신
+                    searchLocationCount=0
+                    if(GlobalApplication.iskeywordChange || GlobalApplication.isSubsChange) {    //구독리스트나 키워드 리스트에 변경사항이 있으면 화면 갱신
                         replaceFragment(keywordNoticeFragment)  //화면갱신
                         GlobalApplication.iskeywordChange = false  //변경사항 갱신 후 false로 변경
                         keywordlistLocationCount =0
@@ -111,13 +115,14 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.search -> {
                     listLocationCount =0
+                    keywordlistLocationCount=0
                     if(GlobalApplication.isSearchChange) {    //구독리스트에 변경사항이 있으면 화면 갱신
                         replaceFragment(searchFragment)  //화면갱신
                         GlobalApplication.isSearchChange = false  //변경사항 갱신 후 false로 변경
-                        listLocationCount =0
+                        searchLocationCount =0
                     }
-                    listLocationCount++
-                    if(listLocationCount >=2){
+                    searchLocationCount++
+                    if(searchLocationCount >=2){
                         var recyclerview = searchFragment.view!!.findViewById(R.id.search_recycler) as RecyclerView
                         recyclerview.scrollToPosition(0)
                     }

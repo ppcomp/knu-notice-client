@@ -42,7 +42,6 @@ class KeywordNoticeFragment : Fragment() {
     private lateinit var progressBar : ProgressBar
     private lateinit var keywordNullView : TextView
     private lateinit var itemNullView : TextView
-    var mLockRecyclerView  = true           //데이터 중복 안되게 체크하는 변수
     var Url:String=""                                //mainUrl + notice_Url 저장 할 변수
     var nextPage:String=""
     var previousPage:String=""
@@ -50,6 +49,7 @@ class KeywordNoticeFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     val nowDate: LocalDate = LocalDate.now()
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -94,7 +94,6 @@ class KeywordNoticeFragment : Fragment() {
         return view
     }
 
-
     fun parsing() {
         keywordNullView.setVisibility(View.GONE)
         val Noticeadapter = NoticeAdapter(requireContext(), noticeList) { notice ->
@@ -118,19 +117,26 @@ class KeywordNoticeFragment : Fragment() {
 
         val preferences = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
         val keywordList = preferences.getString("Keys", "오류")
-        var notice_Url = keywordList.toString()
+        val boardList = preferences.getString("Urls", "오류")
+        var keyword_item = keywordList.toString()
+        var board_item = boardList.toString()
 
-        if (notice_Url == "") {  //페이지가 빈 경우
+        if (keyword_item == "") {  //키워드 설정이 안된경우
             noticeList.removeAll(noticeList)
             progressBar.setVisibility(View.GONE)
-            keywordNullView.setVisibility(View.VISIBLE)
+            keywordNullView.setVisibility(View.VISIBLE) //문구 수정 필요
             itemNullView.setVisibility(View.GONE)
-        }
-        else {
-            if (previousPage == "" && notice_Url != "") {
-                Url = "http://15.165.178.103/notice/search?q=" + keywordList
+        } else if (board_item == "") {    //구독리스트 설정이 안된경우
+            noticeList.removeAll(noticeList)
+            progressBar.setVisibility(View.GONE)
+            keywordNullView.setVisibility(View.GONE)
+            itemNullView.setVisibility(View.GONE)
+        } else {
+            if (previousPage == "") {
+                Url =
+                    "http://15.165.178.103/notice/search?q=" + keyword_item + "&target=" + board_item
             }
-            val noticeStream = URL(Url).openConnection() as HttpURLConnection
+            var noticeStream = URL(Url).openConnection() as HttpURLConnection
             var noticeRead = BufferedReader(InputStreamReader(noticeStream.inputStream, "UTF-8"))
             val noticeResponse = noticeRead.readLine()
             val jObject = JSONObject(noticeResponse)
@@ -139,15 +145,19 @@ class KeywordNoticeFragment : Fragment() {
             previousPage = jObject.getString("previous")
             nextPage = jObject.getString("next")
             Url = nextPage        //다음 Url 주소 변경
-
 ////         모든 공지 noticeList 에 저장
             for (i in 0 until jArray.length()) {
                 val obj = jArray.getJSONObject(i)
                 var title = obj.getString("bold_title")
                 var id = obj.getString("id")
                 var date = obj.getString("date")
+                val fixed = obj.getString("is_fixed").toBoolean()
                 var reference = obj.getString("reference")
-                var image : Int = 0
+                var image: Int = 0
+                var fixed_image = 0
+                if (fixed == true) {
+                    fixed_image = R.drawable.notice_fixed_pin_icon
+                }
                 if (reference.equals("null")) {
                     reference = ""
                 }
@@ -156,10 +166,12 @@ class KeywordNoticeFragment : Fragment() {
                     date = ""
                 } else {
                     var sf = SimpleDateFormat("yyyy-MM-dd")
-                    val diff = Math.abs((sf.parse(nowDate.toString()).getTime() - sf.parse(date).getTime()) / (24*60*60*1000))
-                    if(diff <= 5)
-                    {
-                        image =  R.drawable.notice_new_icon
+                    val diff = Math.abs(
+                        (sf.parse(nowDate.toString()).getTime() - sf.parse(date)
+                            .getTime()) / (24 * 60 * 60 * 1000)
+                    )
+                    if (diff <= 5) {
+                        image = R.drawable.notice_new_icon
                     }
                     var dateArr = date.split("-")
                     var day = dateArr[2].split("T")
@@ -178,24 +190,22 @@ class KeywordNoticeFragment : Fragment() {
                     "작성자: " + author,
                     link,
                     reference,
-                    false,
+                    fixed,
                     image,
-                    0
+                    fixed_image
                 )
-
                 noticeList.add(noticeLine)
             }
-            if(noticeList.size == 0 ){      //해당하는 아이템이 없을 때 화면 설정
+            if (noticeList.size == 0) {      //해당하는 아이템이 없을 때 화면 설정
                 noticeList.removeAll(noticeList)
                 keywordNullView.setVisibility(View.GONE)
                 itemNullView.setVisibility(View.VISIBLE)
             }
-
         }
         Handler().postDelayed({   //스크롤시 progressbar 보이게하고 조금 대기
             progressBar.visibility = View.GONE
-            keywordRecyclerView.scrollToPosition(Noticeadapter.itemCount-11)
-        }, 0)
+            keywordRecyclerView.scrollToPosition(Noticeadapter.itemCount - 11)
+        }, 40)
     }
 
     /**
@@ -204,20 +214,22 @@ class KeywordNoticeFragment : Fragment() {
      */
     fun scrollPagination(){
         keywordRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1)
-                    && newState ==SCROLL_STATE_IDLE) {  //위치가 맨 밑이며 중복 안되고 멈춘경우
+                    && newState ==SCROLL_STATE_IDLE && progressBar.isAnimating ==false ) {  //위치가 맨 밑이며 progressBar가 GONE이며 멈춘경우
                     if(Url!="null") {
-                        progressBar.visibility = View.VISIBLE                           //progressbar 나옴
+                        progressBar.visibility = View.VISIBLE   //progressbar 나옴
                         Handler().postDelayed({   //스크롤시 progressbar 보이게하고 조금 대기
                             parsing()
-                        }, 700)
+                        }, 500)
                     }
                     else{
                         Toast.makeText(requireContext(), "더 이상 공지가 없습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
+
         })
     }
 }

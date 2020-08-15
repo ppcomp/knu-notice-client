@@ -53,13 +53,11 @@ class SearchFragment : Fragment() {
     private lateinit var search_noData: TextView
     private lateinit var search_button: Button
     private lateinit var search_edit: EditText
-    private var mLockRecyclerView = false           //데이터 중복 안되게 체크하는 변수
     var Url: String = ""//mainUrl + notice_Url 저장 할 변수
     var count: Int = 0
     var nextPage: String = ""
     var previousPage: String = ""
     var getSearchData: String = ""
-    private lateinit var listTitle: TextView
 
     @RequiresApi(Build.VERSION_CODES.O)
     val nowDate: LocalDate = LocalDate.now()
@@ -127,7 +125,6 @@ class SearchFragment : Fragment() {
 
     fun parsing() {
         search_edit = view!!.findViewById(R.id.search_edit) as EditText
-        mLockRecyclerView = true    //실행 중 중복 사용 막기
         progressBar.visibility = View.GONE
         getSearchData = search_edit.getText().toString()
 
@@ -203,7 +200,7 @@ class SearchFragment : Fragment() {
                 var image: Int = 0
                 var fixed_image =0
                 if(fixed == true){
-                    fixed_image=R.drawable.notice_fixed_icon
+                    fixed_image=R.drawable.notice_fixed_pin_icon
                 }
 
                 if (reference.equals("null")) {
@@ -258,9 +255,10 @@ class SearchFragment : Fragment() {
      */
     fun scrollPagination() {
         searchRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1)
-                    && newState == SCROLL_STATE_IDLE
+                    && newState == SCROLL_STATE_IDLE && progressBar.isAnimating ==false
                 ) {  //위치가 맨 밑이며 중복 안되고 멈춘경우
                     if (Url != "null") {
                         progressBar.visibility =
