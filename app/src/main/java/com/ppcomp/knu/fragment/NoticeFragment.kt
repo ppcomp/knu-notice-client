@@ -47,7 +47,6 @@ class NoticeFragment : Fragment() {
     private lateinit var thisContext: Context
     private lateinit var progressBar: ProgressBar
     private lateinit var noData: TextView
-    private var mLockRecyclerView = false           //데이터 중복 안되게 체크하는 변수
     var Url: String = ""                                //mainUrl + notice_Url 저장 할 변수
     var nextPage: String = ""
     var previousPage: String = ""
@@ -114,7 +113,6 @@ class NoticeFragment : Fragment() {
     }
 
     fun parsing() {
-        mLockRecyclerView = true    //실행 중 중복 사용 막기
         progressBar.visibility = View.GONE
         val view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_notice_layout, container, false)
 
@@ -219,7 +217,7 @@ class NoticeFragment : Fragment() {
         Handler().postDelayed({
             progressBar.visibility = View.GONE                           //progressbar 숨김
             noticeRecyclerView.scrollToPosition(Noticeadapter.itemCount-11)
-        }, 0)
+        }, 40)
     }
 
     /**
@@ -228,9 +226,10 @@ class NoticeFragment : Fragment() {
      */
     fun scrollPagination() {
         noticeRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 if (!recyclerView.canScrollVertically(1)
-                    && newState == SCROLL_STATE_IDLE ) {  //위치가 맨 밑이며 중복 안되고 멈춘경우
+                    && newState == SCROLL_STATE_IDLE && progressBar.isAnimating ==false ) {  //위치가 맨 밑이며 중복 안되고 멈춘경우
                     if(Url!="null") {
                         progressBar.visibility = View.VISIBLE                           //progressbar 나옴
                         Handler().postDelayed({
