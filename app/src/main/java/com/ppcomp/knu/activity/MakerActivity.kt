@@ -11,6 +11,8 @@ import com.DataRunner.CountryTown.MakerAdapter
 import com.ppcomp.knu.`object`.MakerData
 import com.ppcomp.knu.R
 import kotlinx.android.synthetic.main.activity_maker.*
+import kotlinx.android.synthetic.main.activity_maker_toolbar.*
+import kotlinx.android.synthetic.main.activity_subscription_toolbar.*
 
 import org.json.JSONArray
 
@@ -23,6 +25,12 @@ class MakerActivity : AppCompatActivity() {
         setContentView(R.layout.activity_maker)
 
         getMakers()
+
+        setSupportActionBar(maker_layout_toolbar)//toolbar 지정
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back_ic)//뒤로가기 아이콘 지정
+        supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
+
     }
 
     private fun getMakers() {
