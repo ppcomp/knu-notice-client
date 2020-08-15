@@ -1,14 +1,10 @@
-package com.ppcomp.knu.fragment
+package com.ppcomp.knu.activity
 
-import RestApiService
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import com.kakao.auth.ApiErrorCode
 import com.kakao.auth.ISessionCallback
 import com.kakao.auth.Session
@@ -19,36 +15,26 @@ import com.kakao.usermgmt.response.MeV2Response
 import com.kakao.util.exception.KakaoException
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
-import com.ppcomp.knu.`object`.KakaoUserInfo
-import com.ppcomp.knu.activity.MainActivity
 
 /**
- * 하단 바 '로그인'페이지의  kt
- * @author 희진, 정준
+ * 로그인 화면 Activity
+ * @author 정준
  */
-class LoginFragment : Fragment() {
+
+class LoginActivity : AppCompatActivity() {
     private var callback: SessionCallback = SessionCallback() //카카오에서 제공하는 콜백함수
     private lateinit var kakaoId: String
     private lateinit var kakaoNickname: String
     private lateinit var kakakoThumbnail: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_login)
+
         callback = SessionCallback()
         Session.getCurrentSession().clearCallbacks()
         Session.getCurrentSession().addCallback(callback)
         Session.getCurrentSession().checkAndImplicitOpen()  //로그인 이력이 있으면 재접속해도 로그인 유지해줌
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_login, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     override fun onDestroy() {
@@ -57,17 +43,28 @@ class LoginFragment : Fragment() {
     }
 
     /**
+     * 로그인 후 액티비티로 결과데이터 받아오는 메소드
+     * @author 정준
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        // 카카오 간편로그인 실행 결과를 받아서 SDK로 전달
+        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data)
+            return
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    /**
      * 카카오로그인 처리해주는 콜백함수
      * @author 정준
      */
     private inner class SessionCallback : ISessionCallback {
 
-        val pref = activity?.getSharedPreferences("pref", Context.MODE_PRIVATE)
-        val ed = pref?.edit()
-
         override fun onSessionOpened() {
             // 로그인 세션이 열렸을 때
-
+            val pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
+            val ed = pref?.edit()
             UserManagement.getInstance().me(object : MeV2ResponseCallback() {
                 override fun onSuccess(result: MeV2Response?) {
                     // 로그인이 성공했을 때
@@ -75,7 +72,7 @@ class LoginFragment : Fragment() {
                     kakaoNickname = result!!.kakaoAccount.profile.nickname
                     kakakoThumbnail = result!!.kakaoAccount.profile.thumbnailImageUrl
                     Toast.makeText(
-                        activity,
+                        this@LoginActivity,
                         "로그인 성공! 계정 이름: " + kakaoNickname,
                         Toast.LENGTH_SHORT
                     ).show()
@@ -86,17 +83,17 @@ class LoginFragment : Fragment() {
                     ed?.putString("thumbnail",kakakoThumbnail) //썸네일 저장
                     ed?.commit()
 
+                    val intent = Intent(this@LoginActivity, UserInfoActivity::class.java)
+                    startActivity(intent)
+                    finish()
 
-                    if((activity as MainActivity).loginFragment.isVisible) {    //로그인 화면이 뜬 상태에서만 작동
-                        (activity as MainActivity).replaceFragment((activity as MainActivity).userInfoFragment)  //UserInfoFragment화면 갱신
-                        (activity as MainActivity).addFragment((activity as MainActivity).userInfoFragment)  //UserInfoFragment화면 전환
-                    }
+
                 }
 
                 override fun onSessionClosed(errorResult: ErrorResult?) {
                     // 로그인 도중 세션이 비정상적인 이유로 닫혔을 때
                     Toast.makeText(
-                        activity,
+                        this@LoginActivity,
                         "세션이 닫혔습니다. 다시 시도해주세요 : ${errorResult.toString()}",
                         Toast.LENGTH_SHORT
                     ).show()
@@ -107,12 +104,12 @@ class LoginFragment : Fragment() {
                     var result = errorResult?.errorCode
 
                     if (result == ApiErrorCode.CLIENT_ERROR_CODE) {
-                        Toast.makeText(activity, "네트워크 연결이 불안정합니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT)
+                        Toast.makeText(this@LoginActivity, "네트워크 연결이 불안정합니다. 다시 시도해 주세요.", Toast.LENGTH_SHORT)
                             .show()
-                        activity?.finish()
+                        this@LoginActivity?.finish()
                     } else {
                         Toast.makeText(
-                            activity,
+                            this@LoginActivity,
                             "로그인 도중 오류가 발생했습니다: " + errorResult?.errorMessage,
                             Toast.LENGTH_SHORT
                         )
@@ -126,7 +123,7 @@ class LoginFragment : Fragment() {
             if (exception != null) {
                 com.kakao.util.helper.log.Logger.e(exception)
                 Toast.makeText(
-                    activity,
+                    this@LoginActivity,
                     "로그인 도중 오류가 발생했습니다. 인터넷 연결을 확인해주세요 : $exception",
                     Toast.LENGTH_SHORT
                 ).show()

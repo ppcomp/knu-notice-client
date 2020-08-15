@@ -3,26 +3,17 @@ package com.ppcomp.knu.activity
 //import kotlinx.android.synthetic.main.main.*
 //parsing 부분
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.MotionEvent
-import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.iid.FirebaseInstanceId
-import com.kakao.auth.Session
 import com.ppcomp.knu.*
 import com.ppcomp.knu.fragment.*
-import kotlin.math.log
 
 
 /**
@@ -32,8 +23,7 @@ import kotlin.math.log
 class MainActivity : AppCompatActivity() {
 
     var settingFragment = SettingFragment()
-    var loginFragment = LoginFragment()
-    var userInfoFragment = UserInfoFragment()
+    var bookmarkFragment = BookmarkFragment()
     var noticeFragment = NoticeFragment()
     var keywordNoticeFragment = KeywordNoticeFragment()
     var activeFragment: Fragment = noticeFragment   //현재 띄워진 프레그먼트(default: noticeFragment)
@@ -53,28 +43,14 @@ class MainActivity : AppCompatActivity() {
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         supportFragmentManager.beginTransaction().apply {       // 모든 프레그먼트 삽입
             add(R.id.frameLayout, settingFragment, settingFragment.javaClass.simpleName).hide(settingFragment)
-            add(R.id.frameLayout, loginFragment, loginFragment.javaClass.simpleName).hide(loginFragment)
-            add(R.id.frameLayout, userInfoFragment, userInfoFragment.javaClass.simpleName).hide(userInfoFragment)
+            add(R.id.frameLayout, bookmarkFragment, bookmarkFragment.javaClass.simpleName).hide(bookmarkFragment)
             add(R.id.frameLayout, noticeFragment, noticeFragment.javaClass.simpleName)
             add(R.id.frameLayout,keywordNoticeFragment,keywordNoticeFragment.javaClass.simpleName).hide(keywordNoticeFragment)
             add(R.id.frameLayout, searchFragment, searchFragment.javaClass.simpleName).hide(searchFragment)
     }.commit()
 
     }
-
-    /**
-     * 로그인 후 액티비티로 결과데이터 받아오는 메소드
-     * @author 정준
-     */
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        // 카카오 간편로그인 실행 결과를 받아서 SDK로 전달
-        if (Session.getCurrentSession().handleActivityResult(requestCode, resultCode, data)) {
-            super.onActivityResult(requestCode, resultCode, data)
-            return
-        }
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
+    
     /**
      * 메뉴 클릭시 이동
      * @author 희진, 정준
@@ -96,18 +72,12 @@ class MainActivity : AppCompatActivity() {
                     return@OnNavigationItemSelectedListener true
                 }
 
-                R.id.login -> {
+                R.id.bookmark -> {
                     listLocationCount =0
                     keywordlistLocationCount=0
                     searchLocationCount=0
-                    if (!GlobalApplication.isLogin) {
-                        addFragment(loginFragment)
-                        return@OnNavigationItemSelectedListener true
-                    } else {
-                        replaceFragment(userInfoFragment)   //화면갱신
-                        addFragment(userInfoFragment)
-                        return@OnNavigationItemSelectedListener true
-                    }
+                    addFragment(bookmarkFragment)
+                    return@OnNavigationItemSelectedListener true
                 }
 
                 R.id.list -> {
@@ -190,18 +160,11 @@ class MainActivity : AppCompatActivity() {
                     add(R.id.frameLayout, settingFragment, settingFragment.javaClass.simpleName)
                 }.commit()
             }
-            loginFragment -> {
+            bookmarkFragment -> {
                 supportFragmentManager.beginTransaction().apply {
-                    remove(loginFragment)
-                    loginFragment = LoginFragment()
-                    add(R.id.frameLayout, loginFragment, loginFragment.javaClass.simpleName)
-                }.commit()
-            }
-            userInfoFragment -> {
-                supportFragmentManager.beginTransaction().apply {
-                    remove(userInfoFragment)
-                    userInfoFragment = UserInfoFragment()
-                    add(R.id.frameLayout, userInfoFragment, userInfoFragment.javaClass.simpleName)
+                    remove(bookmarkFragment)
+                    bookmarkFragment = BookmarkFragment()
+                    add(R.id.frameLayout, bookmarkFragment, bookmarkFragment.javaClass.simpleName)
                 }.commit()
             }
             noticeFragment -> {

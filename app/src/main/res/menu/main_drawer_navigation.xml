@@ -18,10 +18,10 @@
         android:icon="@drawable/nav_search_ic"
         android:padding = "10dp"/>
 
-    <item android:id = "@+id/login"
+    <item android:id = "@+id/bookmark"
         android:padding = "10dp"
-        android:icon="@drawable/nav_login_ic"
-        android:title="@string/로그인"
+        android:icon="@drawable/nav_bookmark_ic"
+        android:title="즐겨찾기"
         />
 
     <item android:id="@+id/setting"

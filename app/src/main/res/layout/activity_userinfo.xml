@@ -6,9 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".fragment.UserInfoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -67,7 +64,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.172" />
+            app:layout_constraintVertical_bias="0.586" />
 
         <Button
             android:id="@+id/btn_logout"
@@ -87,7 +84,7 @@
             android:id="@+id/iv_thumbnail"
             android:layout_width="75dp"
             android:layout_height="97dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="68dp"
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:src="@drawable/nav_maker_ic"
