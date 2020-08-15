@@ -177,6 +177,21 @@ AOSP를 사용하는 직원은 기업(또는 기타 법인)에 제공되는 기�
                 android:layout_marginTop="5dp"
                 android:textSize="15sp"
                 android:text="https://github.com/bumptech/glide/blob/master/LICENSE" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="23sp"
+                android:textStyle="bold"
+                android:text="벡터 아이콘" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textSize="15sp"
+                android:text="https://www.flaticon.com/kr/authors/freepik\nhttps://pngtree.com/so/게시판-아이콘'>게시판-아이콘 "/>
+
+
 
         </LinearLayout>
     </ScrollView>
