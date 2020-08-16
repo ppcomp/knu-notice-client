@@ -107,4 +107,10 @@ class NoticeAdapter(
     override fun getItemViewType(position: Int): Int {
         return position
     }
+
+    fun clear() {
+        val size: Int = noticeList.size
+        noticeList.clear()
+        notifyItemRangeRemoved(0, size)
+    }
 }
