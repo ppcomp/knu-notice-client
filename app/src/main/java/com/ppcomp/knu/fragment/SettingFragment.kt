@@ -24,9 +24,10 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_setting, container, false)
+        val pref = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
 
+        view.alarmSwitch.isChecked = pref.getBoolean("alarmSwitch", false)
         view.alarmSwitch.setOnCheckedChangeListener { compoundButton: CompoundButton, isChecked: Boolean ->
-            val pref = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
             val editor = pref.edit()
             editor.putBoolean("alarmSwitch", isChecked)
             editor.commit()
