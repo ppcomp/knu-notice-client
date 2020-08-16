@@ -54,7 +54,7 @@ class NoticeFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     val nowDate: LocalDate = LocalDate.now()
-  
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -74,8 +74,8 @@ class NoticeFragment : Fragment() {
             noData.setVisibility(View.GONE)
             parsing()
         }
-       if(board_Urls == ""){
-           noData.setVisibility(View.VISIBLE)
+        if(board_Urls == ""){
+            noData.setVisibility(View.VISIBLE)
         }
         scrollPagination()
         /**
@@ -165,7 +165,10 @@ class NoticeFragment : Fragment() {
 //         모든 공지 noticeList 에 저장
             for (i in 0 until jArray.length()) {
                 val obj = jArray.getJSONObject(i)
-                val title = obj.getString("title")
+                var title = obj.getString("title")
+                if(title.contains("<")){
+                    title = title.replace("<", "&lt;") // "<" 문자로 생기는 버그 문제 해결 -> 아스키 코드로 변환
+                }
                 var id = obj.getString("id")
                 var date = obj.getString("date")
                 var reference = obj.getString("reference")
@@ -228,8 +231,9 @@ class NoticeFragment : Fragment() {
         noticeRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             @RequiresApi(Build.VERSION_CODES.O)
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if (!recyclerView.canScrollVertically(1)
-                    && newState == SCROLL_STATE_IDLE && progressBar.isAnimating ==false ) {  //위치가 맨 밑이며 중복 안되고 멈춘경우
+                if ((!recyclerView.canScrollVertically(1)
+                            && newState == SCROLL_STATE_IDLE) && !progressBar.isAnimating
+                ) {  //위치가 맨 밑이며 중복 안되고 멈춘경우
                     if(Url!="null") {
                         progressBar.visibility = View.VISIBLE                           //progressbar 나옴
                         Handler().postDelayed({
