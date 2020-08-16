@@ -27,10 +27,10 @@ import kotlinx.android.synthetic.main.activity_subscription_toolbar.*
  */
 class SubscriptionActivity : AppCompatActivity() {
     var subsList = arrayListOf<Subscription>()
-    lateinit var strContact : String
-    lateinit var makeGson : Gson
-    lateinit var listType : TypeToken<ArrayList<Subscription>>
-    lateinit var subsAdapter : SubscriptionAdapter
+    lateinit var strContact: String
+    lateinit var makeGson: Gson
+    lateinit var listType: TypeToken<ArrayList<Subscription>>
+    lateinit var subsAdapter: SubscriptionAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +82,13 @@ class SubscriptionActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
+
+        }
+
+        subs_allCheckbox.setOnCheckedChangeListener { // 체크 표시할 때
+                buttonView, isChecked ->
+            subsAdapter.setCheckAll(isChecked)
+
         }
 
         correct.setOnClickListener { // 저장 잘되어있는지 보려고 만든 View

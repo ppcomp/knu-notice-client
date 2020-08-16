@@ -66,9 +66,6 @@ class SubscriptionAdapter(val context: Context, var subsList: ArrayList<Subscrip
     override fun onBindViewHolder(holder: Holder, position: Int) {
 
         holder.bind(subsFilterList[position], context) // 확실하지않은 부분
-//        holder.itemView.subs_name.text = subsFilterList[position].name
-//        holder.itemView.subs_checkbox.isChecked = subsFilterList[position].checked
-
 
         holder.chk?.setOnCheckedChangeListener(null)
         // 체크박스 부분
@@ -93,7 +90,6 @@ class SubscriptionAdapter(val context: Context, var subsList: ArrayList<Subscrip
         val chk = itemView?.findViewById<CheckBox>(R.id.subs_checkbox)
 
         fun bind(subscription: Subscription, context: Context) {
-
             name?.text = subscription.name
             chk?.isChecked = subscription.checked
         }
@@ -109,6 +105,15 @@ class SubscriptionAdapter(val context: Context, var subsList: ArrayList<Subscrip
 
     fun getUrl(position: Int): String {
         return subsList[position].url
+    }
+
+    fun setCheckAll(boolean: Boolean) {
+        for(ckbox in subsList){
+            if(ckbox.checked == !boolean)
+                ckbox.checked = boolean
+
+        }
+        notifyDataSetChanged()
     }
 
 

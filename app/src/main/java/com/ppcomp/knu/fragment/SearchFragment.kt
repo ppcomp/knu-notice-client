@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.StrictMode
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.adapter.NoticeAdapter
 import com.ppcomp.knu.adapter.SearchAdapter
+import kotlinx.android.synthetic.main.activity_keyword.*
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_notice_item.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
@@ -75,6 +77,18 @@ class SearchFragment : Fragment() {
         searchRecyclerView =
             view!!.findViewById(R.id.search_recycler) as RecyclerView    //recyclerview 가져오기
         search_edit = view!!.findViewById(R.id.search_edit) as EditText
+
+        search_edit.setOnKeyListener(object : View.OnKeyListener { // 엔터키누르면 검색버튼을 자동으로 누르도록
+            override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
+                if (event != null) {
+                    if (event.getAction() === KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                        search_button.performClick()
+                        return true
+                    }
+                }
+                return false
+            }
+        })
 
 
         search_button.setOnClickListener() {
