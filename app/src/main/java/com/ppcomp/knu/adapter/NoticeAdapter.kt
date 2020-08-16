@@ -4,16 +4,16 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
+import com.ppcomp.knu.activity.MainActivity
 
 class NoticeAdapter(
     val context: Context,               // MainActivity
@@ -36,6 +36,7 @@ class NoticeAdapter(
         val noticeReference = itemView.findViewById<TextView>(R.id.reference)
         val noticeImage = itemView.findViewById<ImageView>(R.id.image)
         val noticeFixedImage = itemView.findViewById<ImageView>(R.id.fixed_image)
+        val noticeBookmark = itemView.findViewById<ToggleButton>(R.id.toggle_bookmark)
 
         @RequiresApi(Build.VERSION_CODES.N)
         fun bind (notice: Notice, context: Context) {
@@ -45,6 +46,7 @@ class NoticeAdapter(
             noticeDate.text = notice.date
             noticeAuthor.text = notice.author
             noticeReference.text = notice.reference
+
             if(notice.image == 0) {
                 noticeImage.setVisibility(View.GONE);
             }else {
@@ -55,6 +57,7 @@ class NoticeAdapter(
                 noticeFixedImage.setImageResource(notice.fixed_image)
                 noticeLinear.setBackgroundResource(R.drawable.notice_fixed_item_line)
             }
+
             val hash = notice.board.hashCode()
             val r = (hash and 0xFF0000 shr 16)
             val g = (hash and 0x00FF00 shr 8)
@@ -85,6 +88,15 @@ class NoticeAdapter(
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.bind(noticeList[position], context)
+
+        holder.noticeBookmark.isChecked = noticeList.get(position).bookmark
+
+        holder.noticeBookmark.setOnCheckedChangeListener {
+            buttonView, isChecked ->
+            noticeList.get(position).bookmark = isChecked
+            Log.d("bookmark",noticeList.get(position).bookmark.toString())
+        }
+
     }
 
     /**

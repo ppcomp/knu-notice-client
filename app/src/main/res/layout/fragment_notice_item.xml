@@ -30,12 +30,21 @@
                 android:id="@+id/board"
                 android:layout_width="wrap_content"
                 android:layout_height="22dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="2dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.017"
                 android:textSize="11sp"
                 tools:text="게시판" />
+
+            <ToggleButton
+                android:id="@+id/toggle_bookmark"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="#00FFFFFF"
+                android:button="@drawable/item_bookmark_ic"
+                android:textOff=""
+                android:textOn="" />
         </LinearLayout>
 
             <TextView

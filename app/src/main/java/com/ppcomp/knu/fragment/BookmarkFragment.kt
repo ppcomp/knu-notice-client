@@ -2,6 +2,7 @@ package com.ppcomp.knu.fragment
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ import com.kakao.util.exception.KakaoException
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.activity.MainActivity
+import kotlinx.android.synthetic.main.fragment_bookmark.*
 
 /**
  * 즐겨찾기추가한 리스트를 보여주는 Fragment

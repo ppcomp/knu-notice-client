@@ -192,7 +192,8 @@ class KeywordNoticeFragment : Fragment() {
                     reference,
                     fixed,
                     image,
-                    fixed_image
+                    fixed_image,
+                    bookmark = false
                 )
                 noticeList.add(noticeLine)
             }

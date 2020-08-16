@@ -237,7 +237,8 @@ class SearchFragment : Fragment() {
                     reference,
                     fixed,
                     image,
-                    fixed_image
+                    fixed_image,
+                    bookmark = false
                 )
                 searchList.add(noticeLine)
             }
