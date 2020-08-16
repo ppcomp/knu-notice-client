@@ -64,6 +64,7 @@
                 app:layout_constraintRight_toRightOf="parent"
                 ></TextView>
             <Switch
+                android:id="@+id/alarmSwitch"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_weight=".40"
