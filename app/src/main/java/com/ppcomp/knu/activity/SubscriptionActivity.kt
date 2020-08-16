@@ -17,6 +17,7 @@ import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.adapter.SubscriptionAdapter
 import com.ppcomp.knu.`object`.Subscription
+import com.ppcomp.knu.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_subscription.*
 import kotlinx.android.synthetic.main.activity_subscription_toolbar.*
 
@@ -37,14 +38,12 @@ class SubscriptionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_subscription)
         StrictMode.enableDefaults()
 
-        val pref = this.getSharedPreferences("pref", Context.MODE_PRIVATE)
-        val ed = pref.edit()
-        val isNewUser = pref.getBoolean("NewUser", true) // 신규 사용자 확인
+        val isNewUser = PreferenceHelper.get("NewUser", true) // 신규 사용자 확인
         val lm = LinearLayoutManager(this)
 
         //전역변수 초기화
         listType = object : TypeToken<ArrayList<Subscription>>() {}
-        strContact = pref.getString("testsub", "").toString()
+        strContact = PreferenceHelper.get("testsub", "").toString()
         makeGson = GsonBuilder().create()
         subsList = makeGson.fromJson(strContact, listType.type)
         subsAdapter = SubscriptionAdapter(this, subsList)
@@ -76,8 +75,7 @@ class SubscriptionActivity : AppCompatActivity() {
             Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
             if (isNewUser) { // 신규 사용자일시 확인버튼이 메인을 띄우도록
-                ed.putBoolean("NewUser", false)
-                ed.apply()
+                PreferenceHelper.put("NewUser", false)
                 var intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
@@ -92,7 +90,7 @@ class SubscriptionActivity : AppCompatActivity() {
         }
 
         correct.setOnClickListener { // 저장 잘되어있는지 보려고 만든 View
-            correct.setText(pref.getString("Urls", ""))
+            correct.setText(PreferenceHelper.get("Urls", ""))
         }
     }
 
@@ -102,8 +100,6 @@ class SubscriptionActivity : AppCompatActivity() {
      */
     fun saveSubsciption() {
 
-        val pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
-        val ed = pref.edit()
         var storeName: String = ""
         var storeUrl: String = ""
 
@@ -122,23 +118,21 @@ class SubscriptionActivity : AppCompatActivity() {
             }
         }
         if (storeName.equals("")) {
-            ed.putString("Subs", "")
-            ed.putString("Urls", "")
+            PreferenceHelper.put("Subs", "")
+            PreferenceHelper.put("Urls", "")
 
             strContact = makeGson.toJson(subsList, listType.type)
-            ed.putString("testsub", strContact)
-            ed.apply()
+            PreferenceHelper.put("testsub", strContact)
             // 아무것도 선택 안하고 저장버튼 누를 시 reset
         } else {
             storeName = storeName.substring(0, storeName.length - 1)
             storeUrl = storeUrl.substring(0, storeUrl.length - 1)
 
-            ed.putString("Subs", storeName)
-            ed.putString("Urls", storeUrl)
+            PreferenceHelper.put("Subs", storeName)
+            PreferenceHelper.put("Urls", storeUrl)
 
             strContact = makeGson.toJson(subsList, listType.type)
-            ed.putString("testsub", strContact)
-            ed.apply()
+            PreferenceHelper.put("testsub", strContact)
             // 선택하고 저장버튼 누를시 Subs 라는 Key로 SharedPreferences에 저장
         }
         GlobalApplication.isSubsChange = true //구독리스트 변경사항 확인

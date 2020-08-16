@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.adapter.NoticeAdapter
+import com.ppcomp.knu.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.fragment_keyword_notice.*
 import kotlinx.android.synthetic.main.fragment_keyword_notice.view.*
 import org.json.JSONObject
@@ -115,6 +116,7 @@ class KeywordNoticeFragment : Fragment() {
         // Web 통신
         StrictMode.enableDefaults()
 
+        PreferenceHelper.get("Keys", "오류")
         val preferences = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
         val keywordList = preferences.getString("Keys", "오류")
         val boardList = preferences.getString("Urls", "오류")

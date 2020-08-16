@@ -13,6 +13,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.`object`.Subscription
+import com.ppcomp.knu.utils.PreferenceHelper
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -30,9 +31,11 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         StrictMode.enableDefaults()
 
-        val pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
-        val ed = pref.edit()
-        val isNewUser = pref.getBoolean("NewUser", true) // 신규 사용자 확인
+        // Init singleton Object
+        val preference = PreferenceHelper.getInstance(this)
+
+        // 신규 사용자 확인
+        val isNewUser = PreferenceHelper.get("NewUser", true)
 
         //firebase instanceId를 저장하는 코드
         FirebaseInstanceId.getInstance().instanceId
@@ -44,10 +47,9 @@ class SplashActivity : AppCompatActivity() {
 
                 // Get new Instance ID token
                 val fbId = task.result?.token
-                ed.putString("fbId", fbId)
-                ed.apply()
+                PreferenceHelper.put("fbId", fbId)
                 // Log and toast
-                val getId = pref.getString("fbId", "")
+                val getId = PreferenceHelper.get("fbId", "")
                 Log.d("tokenSave", getId)
             })
 
@@ -74,11 +76,9 @@ class SplashActivity : AppCompatActivity() {
      * @author 상은, 정준
      */
     fun loadSubscription() {
-        val pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
-        val ed = pref.edit()
         var subsList = arrayListOf<Subscription>()
         val serverUrl = "http://15.165.178.103/notice/list" // Server URL
-        val subscriptionList = pref.getString("Subs", "")?.split("+") // 저장된 학과를 나눠 ArrayList에 저장 -- 체크박스를 위한 용도
+        val subscriptionList = PreferenceHelper.get("Subs", "")?.split("+") // 저장된 학과를 나눠 ArrayList에 저장 -- 체크박스를 위한 용도
         val set: MutableSet<String> = mutableSetOf("")
 
         if (subscriptionList != null) {
@@ -118,9 +118,7 @@ class SplashActivity : AppCompatActivity() {
         val makeGson = GsonBuilder().create()
         var listType: TypeToken<ArrayList<Subscription>> = object : TypeToken<ArrayList<Subscription>>() {}
         var strContact = makeGson.toJson(subsList, listType.type)
-        ed.putString("testsub", strContact)
-        ed.commit()
+        PreferenceHelper.put("testsub",strContact)
     }
-
 }
 

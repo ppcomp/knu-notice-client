@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.adapter.NoticeAdapter
+import com.ppcomp.knu.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
@@ -67,8 +68,7 @@ class NoticeFragment : Fragment() {
         noData = view!!.findViewById((R.id.noData)) as TextView
         progressBar.setVisibility(View.GONE)                                //progressbar 숨기기
         noData.setVisibility(View.GONE)
-        val preferences = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
-        var board_Urls = preferences.getString("Urls", "")
+        var board_Urls = PreferenceHelper.get("Urls", "")
         if (!board_Urls.equals("")) // 구독리스트가 있을시 안내화면 숨기고 파싱
         {
             noData.setVisibility(View.GONE)
@@ -136,8 +136,7 @@ class NoticeFragment : Fragment() {
         StrictMode.enableDefaults()
 
         if (previousPage == "") {   //처음 호출시 혹은 학과가 바뀔 때 실행
-            val preferences = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
-            var board_Urls = preferences.getString("Urls", "")
+            var board_Urls = PreferenceHelper.get("Urls", "")
             if (board_Urls.equals("")) {
                 board_Urls = "오류"
             }
