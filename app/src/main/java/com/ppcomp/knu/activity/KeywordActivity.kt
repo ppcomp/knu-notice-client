@@ -1,18 +1,20 @@
 package com.ppcomp.knu.activity
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.StrictMode
+import android.view.KeyEvent
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ppcomp.knu.GlobalApplication
-import com.ppcomp.knu.adapter.KeywordAdapter
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Keyword
+import com.ppcomp.knu.adapter.KeywordAdapter
 import kotlinx.android.synthetic.main.activity_keyword.*
 import kotlinx.android.synthetic.main.activity_keyword_toolbar.*
 
@@ -57,6 +59,18 @@ class KeywordActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)//toolbar  보이게 하기
         supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back_ic)//뒤로가기 아이콘 지정
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
+
+        keywordInput.setOnKeyListener(object : View.OnKeyListener { // 엔터키누르면 등록버튼을 자동으로 누르도록
+            override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
+                if (event != null) {
+                    if (event.getAction() === KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                        keywordEnrollment.performClick()
+                        return true
+                    }
+                }
+                return false
+            }
+        })
 
 
         keywordEnrollment.setOnClickListener {
