@@ -57,15 +57,17 @@ class KeywordAdapter(val context: Context, val keywordList: ArrayList<Keyword>) 
             ed.apply()
 
             val apiService = RestApiService()
-            var getUID = loadPreferences.getString("UID", "")
+            var getFbId = loadPreferences.getString("fbId", "")
             var getKeywords: String? = loadPreferences.getString("Keys", "")
             var getSubscriptions: String? = loadPreferences.getString("Urls", "")
+            var alarmSwitch = loadPreferences.getBoolean("alarmSwitch", false)
 
             val userInfo = UserInfo(
-                id = getUID,
+                id = getFbId,
                 id_method = "guid",
                 keywords = getKeywords,
-                subscriptions = if (getSubscriptions == "") null else getSubscriptions
+                subscriptions = getSubscriptions,
+                alarmSwitch = alarmSwitch
             )
 
             apiService.modifyUser(userInfo) {
