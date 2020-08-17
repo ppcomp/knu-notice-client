@@ -58,6 +58,14 @@ class SettingFragment : Fragment() {
             val intent = Intent(context, MakerActivity::class.java)
             startActivity(intent)
         }
+        view.inquire.setOnClickListener{
+            val email = Intent(Intent.ACTION_SEND)
+            email.setType("plain/text")
+            val address = arrayOf("email@address.com")
+            email.putExtra(Intent.EXTRA_EMAIL,address)
+            email.putExtra(Intent.EXTRA_SUBJECT,"[앱 이름] 오류 | 요청할 사항이 있습니다!")
+            startActivity(email)
+        }
         return view
     }
 
