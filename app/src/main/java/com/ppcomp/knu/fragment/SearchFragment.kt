@@ -87,10 +87,11 @@ class SearchFragment : Fragment() {
             // Initialize a new Runnable
             mRunnable = Runnable {
                 // Hide swipe to refresh icon animation
+                url = ""
+                parsing()
                 search_swipe.isRefreshing = false
             }
-            mHandler.postDelayed(mRunnable, 2000)
-
+            mHandler.postDelayed(mRunnable, 1000)
         }
         return view
     }
@@ -100,7 +101,7 @@ class SearchFragment : Fragment() {
      * @author 김우진, 희진, 정우
      */
     @RequiresApi(Build.VERSION_CODES.O)
-    fun parsing() {
+    private fun parsing() {
         search_edit = view!!.findViewById(R.id.search_edit) as EditText
         searchQuery = search_edit.text.toString()
 

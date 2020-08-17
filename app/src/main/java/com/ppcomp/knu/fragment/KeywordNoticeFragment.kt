@@ -64,17 +64,17 @@ class KeywordNoticeFragment : Fragment() {
             // Initialize a new Runnable
             mRunnable = Runnable {
             // Hide swipe to refresh icon animation
+                parsing()
                 keyword_swipe.isRefreshing = false
             }
-            mHandler.postDelayed(mRunnable, 2000)
+            mHandler.postDelayed(mRunnable, 1000)
         }
-
         return view
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SimpleDateFormat")
-    fun parsing() {
+    private fun parsing() {
         val searchQuery = PreferenceHelper.get("Keys", "오류").toString()
         val target = PreferenceHelper.get("Urls", "오류").toString()
         if (searchQuery == "") {                        // 검색어(키워드)가 없는 경우
