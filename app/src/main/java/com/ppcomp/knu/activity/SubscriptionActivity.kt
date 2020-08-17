@@ -89,9 +89,9 @@ class SubscriptionActivity : AppCompatActivity() {
 
         }
 
-        correct.setOnClickListener { // 저장 잘되어있는지 보려고 만든 View
-            correct.setText(PreferenceHelper.get("Urls", ""))
-        }
+//        correct.setOnClickListener { // 저장 잘되어있는지 보려고 만든 View
+//            correct.setText(PreferenceHelper.get("Urls", ""))
+//        }
     }
 
     /**

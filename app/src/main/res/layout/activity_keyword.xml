@@ -44,8 +44,6 @@
         android:layout_height="53dp"
         android:hint="키워드를 입력하세요"
         android:theme="@style/EditTheme"
-        android:inputType="text"
-        android:imeOptions="actionSearch"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/keywordEnrollment"
         app:layout_constraintHorizontal_bias="1.0"

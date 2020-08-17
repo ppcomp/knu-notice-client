@@ -3,18 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="40dp"
-    android:layout_marginLeft="6dp"
-    android:layout_marginRight="6dp">
+    android:layout_height="wrap_content" >
 
 
     <CheckBox
         android:id="@+id/subs_checkbox"
         android:layout_width="0dp"
         android:layout_height="30dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginLeft="4dp"
         android:layout_weight=".20"
+        android:layout_margin="5dp"
         android:checked="false"
         android:gravity="center"
         android:button="@drawable/subscription_checkbox_selector"
