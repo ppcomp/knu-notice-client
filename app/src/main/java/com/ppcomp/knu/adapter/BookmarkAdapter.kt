@@ -8,7 +8,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.ToggleButton
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -16,23 +19,19 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
-import com.ppcomp.knu.`object`.Subscription
-import com.ppcomp.knu.activity.MainActivity
 
-class NoticeAdapter(
-    val context: Context,               // MainActivity
-    val noticeList: ArrayList<Notice>,  // Notice 객체 list
-    val bookmarkList: ArrayList<Notice>,// 즐겨찾기한 list
-    val itemClick: (Notice) -> Unit)    // Notice 객체 클릭시 실행되는 lambda 식
-    : RecyclerView.Adapter<NoticeAdapter.Holder>() {
-    lateinit var strContact: String
+/**
+ * 즐겨찾기 리사이클뷰 어뎁터
+ * @author 정준
+ */
+class BookmarkAdapter(
+    val context: Context,
+    var bookmarkList: ArrayList<Notice>,
+    val itemClick: (Notice) -> Unit)
+    : RecyclerView.Adapter<BookmarkAdapter.Holder>() {
     var makeGson: Gson = GsonBuilder().create()
     var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
-    /**
-     * 각 Notice 객체를 감싸는 Holder
-     * bind 가 자동 호출되며 데이터가 매핑된다.
-     * @author jungwoo
-     */
+
     inner class Holder(itemView: View, itemClick: (Notice) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
         val noticeLinear = itemView.findViewById<LinearLayout>(R.id.noticeLinear)
@@ -59,8 +58,7 @@ class NoticeAdapter(
             }else {
                 noticeImage.setImageResource(notice.image)
             }
-            if(notice.fixed)
-            {
+            if(notice.fixed) {
                 noticeFixedImage.setImageResource(notice.fixed_image)
                 noticeLinear.setBackgroundResource(R.drawable.notice_fixed_item_line)
             }
@@ -78,12 +76,7 @@ class NoticeAdapter(
         }
     }
 
-    /**
-     * 화면을 최초로 로딩하여 만들어진 View 가 없는 경우, xml 파일을 inflate 하여 ViewHolder 생성
-     * @author jungwoo
-     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        /* LayoutInflater는 item을 Adapter에서 사용할 View로 부풀려주는(inflate) 역할을 한다. */
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.fragment_notice_item, parent, false)
         return Holder(view, itemClick)
     }
@@ -97,35 +90,26 @@ class NoticeAdapter(
         val pref = context.getSharedPreferences("pref", Context.MODE_PRIVATE)
         val ed = pref.edit()
 
-        holder.bind(noticeList[position], context)
+        bookmarkList = makeGson.fromJson(pref.getString("bookmark",""),listType)
+        
 
-        holder.noticeBookmark.isChecked = noticeList[position].bookmark
+        holder.bind(bookmarkList[position], context)
+
+        holder.noticeBookmark.isChecked = bookmarkList.get(position).bookmark
 
         holder.noticeBookmark.setOnCheckedChangeListener {
-            buttonView, isChecked ->
-            noticeList[position].bookmark = isChecked
-            if(isChecked) {
-                if(bookmarkList.indexOf(noticeList[position]) == -1)
-                    bookmarkList.add(noticeList[position])
-            } else {
-                if(bookmarkList.indexOf(noticeList[position]) != -1)
-                    bookmarkList.remove(noticeList[position])
-            }
-            strContact = makeGson.toJson(bookmarkList, listType.type)
-            ed.putString("bookmark",strContact)
-            ed.apply()
-            Log.d("bookmark",strContact)
-
+                buttonView, isChecked ->
+            bookmarkList.get(position).bookmark = isChecked
+            Log.d("bookmark",bookmarkList.get(position).bookmark.toString())
         }
-
     }
 
     /**
      * RecyclerView 로 만들어지는 item 의 총 개수 반환
-     * @author jungwoo
+     * @author jungwoo, 정준
      */
     override fun getItemCount(): Int {
-        return noticeList.size
+        return bookmarkList.size
     }
 
 
@@ -141,3 +125,5 @@ class NoticeAdapter(
         return position
     }
 }
+
+

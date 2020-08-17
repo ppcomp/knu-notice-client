@@ -36,6 +36,7 @@ import java.time.LocalDate
  */
 class KeywordNoticeFragment : Fragment() {
     var noticeList = arrayListOf<Notice>()
+    var bookmarkList = arrayListOf<Notice>()
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
     private lateinit var keywordRecyclerView : RecyclerView
@@ -75,7 +76,8 @@ class KeywordNoticeFragment : Fragment() {
 //                 Hide swipe to refresh icon animation
                 val Noticeadapter = NoticeAdapter(
                     requireContext(),
-                    noticeList
+                    noticeList,
+                    bookmarkList
                 ) { notice ->
                     var link: String = notice.link
                     if (!link.startsWith("http://") && !link.startsWith("https://"))
@@ -96,7 +98,7 @@ class KeywordNoticeFragment : Fragment() {
 
     fun parsing() {
         keywordNullView.setVisibility(View.GONE)
-        val Noticeadapter = NoticeAdapter(requireContext(), noticeList) { notice ->
+        val Noticeadapter = NoticeAdapter(requireContext(), noticeList, bookmarkList) { notice ->
             var link: String = notice.link
             if (!link.startsWith("http://") && !link.startsWith("https://"))
                 link = "http://" + link

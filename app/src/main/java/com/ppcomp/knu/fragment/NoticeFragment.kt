@@ -41,6 +41,7 @@ import java.time.LocalDate
 class NoticeFragment : Fragment() {
 
     var noticeList = arrayListOf<Notice>()
+    var bookmarkList = arrayListOf<Notice>()
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
     private lateinit var noticeRecyclerView: RecyclerView
@@ -93,7 +94,8 @@ class NoticeFragment : Fragment() {
 //                 Hide swipe to refresh icon animation
                 val Noticeadapter = NoticeAdapter(
                     thisContext,
-                    noticeList
+                    noticeList,
+                    bookmarkList
                 ) { notice ->
                     var link: String = notice.link
                     if (!link.startsWith("http://") && !link.startsWith("https://"))
@@ -116,7 +118,7 @@ class NoticeFragment : Fragment() {
         progressBar.visibility = View.GONE
         val view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_notice_layout, container, false)
 
-        val Noticeadapter = NoticeAdapter(thisContext, noticeList) { notice ->
+        val Noticeadapter = NoticeAdapter(thisContext, noticeList, bookmarkList) { notice ->
             var link: String = notice.link
             if (!link.startsWith("http://") && !link.startsWith("https://"))
                 link = "http://" + link
