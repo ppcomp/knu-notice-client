@@ -50,13 +50,13 @@ class SearchFragment : Fragment() {
         searchButton = view!!.findViewById(R.id.search_button) as Button
         progressBar.visibility = View.GONE
         searchRecyclerView =
-            view!!.findViewById(R.id.search_recycler) as RecyclerView   //recyclerview 가져오기
+            view!!.findViewById(R.id.search_recycler) as RecyclerView   // recyclerview 가져오기
         search_edit = view!!.findViewById(R.id.search_edit) as EditText
 
         search_edit.setOnKeyListener(object : View.OnKeyListener {      // 엔터키누르면 검색버튼을 자동으로 누르도록
             override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
                 if (event != null) {
-                    if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    if (keyCode == KeyEvent.KEYCODE_ENTER) {
                         searchButton.performClick()
                         return true
                     }

@@ -46,7 +46,7 @@ class NoticeAdapter(
             noticeAuthor.text = notice.author
             noticeReference.text = notice.reference
             if(notice.image == 0) {
-                noticeImage.setVisibility(View.GONE);
+                noticeImage.visibility = View.GONE;
             }else {
                 noticeImage.setImageResource(notice.image)
             }
