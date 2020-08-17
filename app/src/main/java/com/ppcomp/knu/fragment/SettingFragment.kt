@@ -11,6 +11,7 @@ import android.widget.CompoundButton
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.activity.*
+import com.ppcomp.knu.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.fragment_setting.view.*
 
 /**
@@ -24,13 +25,10 @@ class SettingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_setting, container, false)
-        val pref = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
 
-        view.alarmSwitch.isChecked = pref.getBoolean("alarmSwitch", false)
+        view.alarmSwitch.isChecked = PreferenceHelper.get("alarmSwitch", false)
         view.alarmSwitch.setOnCheckedChangeListener { compoundButton: CompoundButton, isChecked: Boolean ->
-            val editor = pref.edit()
-            editor.putBoolean("alarmSwitch", isChecked)
-            editor.commit()
+            PreferenceHelper.put("alarmSwitch", isChecked)
             GlobalApplication.UserInfoUpload()
         }
         view.subscriptionSetting.setOnClickListener {
@@ -60,5 +58,4 @@ class SettingFragment : Fragment() {
         }
         return view
     }
-
 }

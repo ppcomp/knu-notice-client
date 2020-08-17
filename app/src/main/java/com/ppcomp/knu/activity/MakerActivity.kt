@@ -86,10 +86,4 @@ class MakerActivity : AppCompatActivity() {
             makerList.add(listLine)
         }
     }
-    fun loadData(context: Context, key: String): String? {
-        val sharedPreferences =
-            context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
-        val data = sharedPreferences.getString(key, "")
-        return data
-    }
 }

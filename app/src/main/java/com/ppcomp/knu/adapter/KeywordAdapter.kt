@@ -11,6 +11,7 @@ import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.UserInfo
 import com.ppcomp.knu.`object`.Keyword
+import com.ppcomp.knu.utils.PreferenceHelper
 
 /**
  * item의 어느요소를 어느 View에 넣을 것인지 연결해주는 Adapter
@@ -37,9 +38,7 @@ class KeywordAdapter(val context: Context, val keywordList: ArrayList<Keyword>) 
             keywordList.removeAt(position)
             notifyDataSetChanged()
 
-            val loadPreferences = context.getSharedPreferences("pref", Context.MODE_PRIVATE)
-            val ed = loadPreferences.edit()
-            val getKeyword = loadPreferences.getString("Keys", "")
+            val getKeyword = PreferenceHelper.get("Keys", "")
             val getKeywordList = getKeyword?.split("+")
             var completeKeyword : String = ""
             for (i in 0 until getKeywordList!!.count()) {
@@ -53,14 +52,13 @@ class KeywordAdapter(val context: Context, val keywordList: ArrayList<Keyword>) 
                 }
             }
 
-            ed.putString("Keys", completeKeyword)
-            ed.apply()
+            PreferenceHelper.put("Keys", completeKeyword)
 
             val apiService = RestApiService()
-            var getFbId = loadPreferences.getString("fbId", "")
-            var getKeywords: String? = loadPreferences.getString("Keys", "")
-            var getSubscriptions: String? = loadPreferences.getString("Urls", "")
-            var alarmSwitch = loadPreferences.getBoolean("alarmSwitch", false)
+            var getFbId = PreferenceHelper.get("fbId", "")
+            var getKeywords: String? = PreferenceHelper.get("Keys", "")
+            var getSubscriptions: String? = PreferenceHelper.get("Urls", "")
+            var alarmSwitch = PreferenceHelper.get("alarmSwitch", false)
 
             val userInfo = UserInfo(
                 id = getFbId,

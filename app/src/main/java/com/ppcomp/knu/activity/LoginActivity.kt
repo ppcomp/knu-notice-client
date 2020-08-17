@@ -15,6 +15,7 @@ import com.kakao.usermgmt.response.MeV2Response
 import com.kakao.util.exception.KakaoException
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
+import com.ppcomp.knu.utils.PreferenceHelper
 
 /**
  * 로그인 화면 Activity
@@ -63,8 +64,6 @@ class LoginActivity : AppCompatActivity() {
 
         override fun onSessionOpened() {
             // 로그인 세션이 열렸을 때
-            val pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
-            val ed = pref?.edit()
             UserManagement.getInstance().me(object : MeV2ResponseCallback() {
                 override fun onSuccess(result: MeV2Response?) {
                     // 로그인이 성공했을 때
@@ -78,10 +77,9 @@ class LoginActivity : AppCompatActivity() {
                     ).show()
                     GlobalApplication.isLogin = true    //로그인 상태 업데이트
                     GlobalApplication.KakaoUserInfoUpload()    //카카오계정 데이터 api서버에 추가
-                    ed?.putString("kakaoId",kakaoId)
-                    ed?.putString("nickname",kakaoNickname) //닉네임 저장
-                    ed?.putString("thumbnail",kakakoThumbnail) //썸네일 저장
-                    ed?.commit()
+                    PreferenceHelper.put("kakaoId",kakaoId)
+                    PreferenceHelper.put("nickname",kakaoNickname) //닉네임 저장
+                    PreferenceHelper.put("thumbnail",kakakoThumbnail) //썸네일 저장
 
                     val intent = Intent(this@LoginActivity, UserInfoActivity::class.java)
                     startActivity(intent)

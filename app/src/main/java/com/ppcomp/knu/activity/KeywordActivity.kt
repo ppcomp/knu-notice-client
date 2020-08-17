@@ -15,12 +15,13 @@ import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.adapter.KeywordAdapter
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Keyword
+import com.ppcomp.knu.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_keyword.*
 import kotlinx.android.synthetic.main.activity_keyword_toolbar.*
 
 /**
  * 어떤 데이터(ArrayList)와 어떤 RecyclerView를 쓸 것인지 설정하는 Activity
- * @author 상은, 정준
+ * @author 상은, 정준, 정우
  */
 
 class KeywordActivity : AppCompatActivity() {
@@ -33,10 +34,7 @@ class KeywordActivity : AppCompatActivity() {
         StrictMode.enableDefaults()
         inputKeyword = findViewById(R.id.keywordInput) as TextView
 
-        val pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
-        val ed = pref.edit()
-
-        val keyword = pref.getString("Keys", "")
+        val keyword = PreferenceHelper.get("Keys", "")
 
         if (keyword != null) { // 첫 화면을 띄울 시 키워드들을 리사이클러뷰에 등록
             if (!keyword.equals("")) {
@@ -64,7 +62,7 @@ class KeywordActivity : AppCompatActivity() {
         keywordInput.setOnKeyListener(object : View.OnKeyListener { // 엔터키누르면 등록버튼을 자동으로 누르도록
             override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
                 if (event != null) {
-                    if (event.getAction() === KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                    if (keyCode == KeyEvent.KEYCODE_ENTER) {
                         keywordEnrollment.performClick()
                         return true
                     }
@@ -76,55 +74,56 @@ class KeywordActivity : AppCompatActivity() {
 
         keywordEnrollment.setOnClickListener { // 버튼 클릭시 동작
             val getValue = keywordInput.text.toString()
-            val getKeyword = pref.getString("Keys", "")
-            val keyworditem = pref.getString("Keys", "오류")?.split("+")
+            val getKeyword = PreferenceHelper.get("Keys", "")
+            val keywordItem = PreferenceHelper.get("Keys", "오류")?.split("+")
 
             val set: MutableSet<String> = mutableSetOf("")
 
-            if (getValue == "") { // 입력값이 없을 경우
+            if (getValue == "") {
+                // 1. 입력값이 없을 경우
                 Toast.makeText(this, "입력된 키워드가 없습니다.", Toast.LENGTH_SHORT).show()
-            } else if (getKeyword.equals("") && (getValue != "")) { // 입력값이 없고, 키워드 저장값이 없을 경우
-                ed.putString("Keys", getValue)
-                ed.apply()
+            } else if (getKeyword.equals("") && (getValue != "")) {
+                // 2. 입력값이 없고, 키워드 저장값이 없을 경우
+                PreferenceHelper.put("Keys", getValue)
                 keywordList.add(Keyword(getValue))
                 keyAdapter.notifyDataSetChanged()
                 Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
                 GlobalApplication.UserInfoUpload()  //서버에 업로드
-            } else { // 키워드가 있을경우 -> 중복확인 필요
-                val getKeywordList = pref.getString("Keys", "")?.split("+")
-                if (getKeywordList != null) { // 중복확인하기 위해서 set에 모두 삽입
+            } else {
+                // 3. 키워드가 있을경우 -> 중복확인 필요
+                val getKeywordList = PreferenceHelper.get("Keys", "")?.split("+")
+                if (getKeywordList != null) {
+                    // 3-1. 중복확인하기 위해서 set에 모두 삽입
                     for (i in 0 until getKeywordList.count()) {
                         set.add(getKeywordList[i])
                     }
                 }
-                val keyOverlap: Boolean = set.contains(getValue)// 저장된 게시판인지 확인하기위한 변수
-                if (!keyOverlap) { // 중복이 아닌 키워드를 입력한 경우(올바른 경우)
-                    val storeKeyword = getKeyword + "+" + getValue
-                    ed.putString("Keys", storeKeyword)
-                    ed.apply()
+                val keyOverlap: Boolean = set.contains(getValue)    // 저장된 게시판인지 확인하기위한 변수
+                if (!keyOverlap) {
+                    // 3-2-1. 중복이 아닌 키워드를 입력한 경우(올바른 경우)
+                    val storeKeyword = "$getKeyword+$getValue"
+                    PreferenceHelper.put("Keys", storeKeyword)
                     keywordList.add(Keyword(getValue))
                     keyAdapter.notifyDataSetChanged()
                     Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
                     GlobalApplication.UserInfoUpload()  //서버에 업로드
-                } else { // 중복 키워드를 입력한 경우(문제 발생)
-                    if (keyworditem != null) {
-                        for (keyword in keyworditem) {
-                            if (keyword.equals(getValue)) {
+                } else {
+                    // 3-2-2. 중복 키워드를 입력한 경우(문제 발생)
+                    if (keywordItem != null) {
+                        for (keyword in keywordItem) {
+                            if (keyword == getValue) {
                                 Toast.makeText(this, "이미 존재합니다.", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
                 }
             }
-            inputKeyword.setText("")   //텍스트 초기화
-
-
+            inputKeyword.text = ""      //텍스트 초기화
             GlobalApplication.iskeywordChange = true //키워드 변경사항 확인
-
         }
 
-        testview.setOnClickListener { // 저장 잘되어있는지 보려고 만든 View
-            testview.setText(pref.getString("Keys", ""))
+        testview.setOnClickListener {   // 저장 잘되어있는지 보려고 만든 View
+            testview.text = PreferenceHelper.get("Keys", "")
         }
     }
 
