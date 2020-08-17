@@ -3,7 +3,10 @@ package com.ppcomp.knu.utils
 import android.content.Context
 import android.content.SharedPreferences
 
-
+/**
+ * 싱글턴 패턴의 PreferenceHelper 클래스
+ * @author 정우
+ */
 class PreferenceHelper private constructor(context: Context) {
 
     companion object {
@@ -14,6 +17,10 @@ class PreferenceHelper private constructor(context: Context) {
         private lateinit var prefsEditor: SharedPreferences.Editor
         @Volatile private var INSTANCE: PreferenceHelper? = null
 
+        /**
+         * SplashActivity 에서 처음에 한 번만 호출하면 됨
+         * @author 정우
+         */
         fun getInstance(context: Context): PreferenceHelper =
             INSTANCE ?: synchronized(this) {
                 INSTANCE ?: PreferenceHelper(context).also {
