@@ -8,6 +8,7 @@ import com.kakao.auth.KakaoSDK
 import com.ppcomp.knu.`object`.KakaoUserInfo
 import com.ppcomp.knu.`object`.UserInfo
 import com.ppcomp.knu.adapter.KakaoSDKAdapter
+import com.ppcomp.knu.utils.PreferenceHelper
 
 /**
  * 글로벌 어플리케이션 설정
@@ -46,11 +47,10 @@ class GlobalApplication : Application() {
          * @author 정준
          */
         fun KakaoUserInfoUpload() {
-            val pref = this.instance?.getSharedPreferences("pref", Context.MODE_PRIVATE)
             var isGetFailed: Boolean = false
             val apiService = RestApiService()
-            val getId = pref?.getString("fbId","")
-            val getKakaoId = pref?.getString("kakaoId","").toString()
+            val getId = PreferenceHelper.get("fbId","")
+            val getKakaoId = PreferenceHelper.get("kakaoId","").toString()
             val userInfo = KakaoUserInfo(
                 id = getKakaoId,
                 device_id = getId
@@ -83,20 +83,21 @@ class GlobalApplication : Application() {
 
         /**
          * 유저 데이터 서버에 업로드
-         * @author 정준
+         * @author 정준, 정우
          */
         fun UserInfoUpload() {
-            val pref = this.instance?.getSharedPreferences("pref", Context.MODE_PRIVATE)
             var isGetFailed: Boolean = false
             val apiService = RestApiService()
-            val getId = pref?.getString("fbId","").toString()
-            val getKeywords: String? = pref?.getString("Keys", "")
-            val getSubscriptions: String? = pref?.getString("Urls", "")
+            val getId = PreferenceHelper.get("fbId","").toString()
+            val getKeywords: String? = PreferenceHelper.get("Keys", "")
+            val getSubscriptions: String? = PreferenceHelper.get("Urls", "")
+            val getAlarmSwitch: Boolean? = PreferenceHelper.get("alarmSwitch", false)
             val userInfo = UserInfo(
                 id = getId,
                 id_method = "InstanceId",
                 keywords = getKeywords,
-                subscriptions = if (getSubscriptions == "") null else getSubscriptions
+                subscriptions = getSubscriptions,
+                alarmSwitch = getAlarmSwitch
             )
 
             apiService.getUser(getId) {

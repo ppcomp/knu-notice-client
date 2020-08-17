@@ -10,7 +10,6 @@ import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AbsListView.OnScrollListener.SCROLL_STATE_IDLE
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -21,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.adapter.NoticeAdapter
+import com.ppcomp.knu.utils.Parsing
+import com.ppcomp.knu.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
@@ -36,6 +37,7 @@ import java.time.LocalDate
 /**
  * 하단 바 '리스트'페이지의  kt
  * 크롤링한 공지사항을 띄워줌
+ * 리펙토링 - 정우
  * @author 희진
  */
 class NoticeFragment : Fragment() {
@@ -47,208 +49,74 @@ class NoticeFragment : Fragment() {
     private lateinit var noticeRecyclerView: RecyclerView
     private lateinit var thisContext: Context
     private lateinit var progressBar: ProgressBar
-    private lateinit var noData: TextView
-    var Url: String = ""                                //mainUrl + notice_Url 저장 할 변수
-    var nextPage: String = ""
-    var previousPage: String = ""
-    var count: Int = 0
+    private lateinit var emptyResultView: TextView
+    private var url: String = ""    //mainUrl + notice_Url 저장 할 변수
+    private var nextPage: String = ""
+    private var previousPage: String = ""
 
     @RequiresApi(Build.VERSION_CODES.O)
-    val nowDate: LocalDate = LocalDate.now()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_notice_layout, container, false)
 
-        thisContext = container!!.context                                   //context 가져오기
-        noticeRecyclerView = view!!.findViewById(R.id.notice) as RecyclerView    //recyclerview 가져오기
+        noticeRecyclerView = view!!.findViewById(R.id.notice) as RecyclerView   //recyclerview 가져오기
         progressBar = view!!.findViewById((R.id.progressbar)) as ProgressBar
-        noData = view!!.findViewById((R.id.noData)) as TextView
-        progressBar.setVisibility(View.GONE)                                //progressbar 숨기기
-        noData.setVisibility(View.GONE)
-        val preferences = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
-        var board_Urls = preferences.getString("Urls", "")
-        if (!board_Urls.equals("")) // 구독리스트가 있을시 안내화면 숨기고 파싱
-        {
-            noData.setVisibility(View.GONE)
-            parsing()
-        }
-        if(board_Urls == ""){
-            noData.setVisibility(View.VISIBLE)
-        }
-        scrollPagination()
-        /**
-         * 파싱 기능
-         * 새로고침 기능
-         * swipe시(위로 끌땅) 새로고침
-         * parsing()호출로 새로고침시 다음 페이지의 정보를 가져오는 오류
-         * 저장된 recyclerview 만 가져오도록 수정
-         * @author 김우진,희진
-         */
+        emptyResultView = view!!.findViewById((R.id.noData)) as TextView
+
+        progressBar.visibility = View.GONE                                      //progressbar 숨기기
+        emptyResultView.visibility = View.GONE
+
+        parsing()
+        Parsing.scrollPagination(
+            requireContext(),
+            noticeRecyclerView,
+            progressBar,
+            ::parsing
+        )
+
         mHandler = Handler()
         view.swipe.setOnRefreshListener {
             // Initialize a new Runnable
             mRunnable = Runnable {
-//                 Hide swipe to refresh icon animation
-                val Noticeadapter = NoticeAdapter(
-                    thisContext,
-                    noticeList,
-                    bookmarkList
-                ) { notice ->
-                    var link: String = notice.link
-                    if (!link.startsWith("http://") && !link.startsWith("https://"))
-                        link = "http://" + link
-                    val Intent: Intent = Uri.parse(link).let { webpage ->
-                        Intent(Intent.ACTION_VIEW, webpage)
-                    }
-                    startActivity(Intent)
-                }
-                noticeRecyclerView.adapter = Noticeadapter
+                // Hide swipe to refresh icon animation
+                url = ""
+                parsing()
                 swipe.isRefreshing = false
             }
-            mHandler.postDelayed(mRunnable, 2000)
-
+            mHandler.postDelayed(mRunnable, 1000)
         }
         return view
     }
 
-    fun parsing() {
-        progressBar.visibility = View.GONE
-        val view = LayoutInflater.from(requireContext()).inflate(R.layout.fragment_notice_layout, container, false)
-
-        val Noticeadapter = NoticeAdapter(thisContext, noticeList, bookmarkList) { notice ->
-            var link: String = notice.link
-            if (!link.startsWith("http://") && !link.startsWith("https://"))
-                link = "http://" + link
-            val Intent: Intent = Uri.parse(link).let { webpage ->
-                Intent(Intent.ACTION_VIEW, webpage)
-            }
-            startActivity(Intent)
-        }
-
-        noticeRecyclerView.adapter = Noticeadapter
-        // LayoutManager 설정. RecyclerView 에서는 필수
-        val lm = LinearLayoutManager(thisContext)
-        noticeRecyclerView.layoutManager = lm
-        noticeRecyclerView.setHasFixedSize(true)
-
-        // Web 통신
-        StrictMode.enableDefaults()
-
-        if (previousPage == "") {   //처음 호출시 혹은 학과가 바뀔 때 실행
-            val preferences = activity!!.getSharedPreferences("pref", Context.MODE_PRIVATE)
-            var board_Urls = preferences.getString("Urls", "")
-            if (board_Urls.equals("")) {
-                board_Urls = "오류"
-            }
-            val notice_Url = board_Urls.toString()
-            val mainUrl = "http://15.165.178.103/notice/all?q="
-            Url = mainUrl + notice_Url
-
-        }
-
-        if (Url != "null") {  //다음 페이지가 없으면 실행 X
-            val noticeStream = URL(Url).openConnection() as HttpURLConnection
-            var noticeRead = BufferedReader(InputStreamReader(noticeStream.inputStream, "UTF-8"))
-            val noticeResponse = noticeRead.readLine()
-            val jObject = JSONObject(noticeResponse)
-            val jArray = jObject.getJSONArray("results")
-
-            previousPage = jObject.getString("previous")
-            count = jObject.getInt("count")
-            nextPage = jObject.getString("next")
-            if (count == 0) {
-                Toast.makeText(requireContext(), "게시글이 존재하지 않습니다", Toast.LENGTH_SHORT).show()
-            }
-            Url = nextPage        //다음 Url 주소 변경
-
-//         모든 공지 noticeList 에 저장
-            for (i in 0 until jArray.length()) {
-                val obj = jArray.getJSONObject(i)
-                var title = obj.getString("title")
-                if(title.contains("<")){
-                    title = title.replace("<", "&lt;") // "<" 문자로 생기는 버그 문제 해결 -> 아스키 코드로 변환
-                }
-                var id = obj.getString("id")
-                var date = obj.getString("date")
-                var reference = obj.getString("reference")
-                val fixed = obj.getString("is_fixed").toBoolean()
-                var image : Int = 0
-                var fixed_image =0
-                if(fixed == true){
-                    fixed_image=R.drawable.notice_fixed_pin_icon
-                }
-                if (reference.equals("null")) {
-                    reference = ""
-                }
-                var days: String = ""
-                if (date.equals("null")) {
-                    date = ""
-                } else {
-                    var sf = SimpleDateFormat("yyyy-MM-dd")
-                    val diff = Math.abs((sf.parse(nowDate.toString()).getTime() - sf.parse(date).getTime()) / (24*60*60*1000))
-                    if(diff <= 5)
-                    {
-                        image =  R.drawable.notice_new_icon
-                    }
-                    var dateArr = date.split("-")
-                    var day = dateArr[2].split("T")
-                    days = dateArr[0] + "년 " + dateArr[1] + "월 " + day[0] + "일"
-                }
-                var author = obj.getString("author")
-                if (author.equals("null")) {
-                    author = ""
-                }
-                val link = obj.getString("link")
-                var board = id.split("-")
-                val noticeLine = Notice(
-                    title,
-                    board[0],
-                    "게시일: " + days,
-                    "작성자: " + author,
-                    link,
-                    reference,
-                    fixed,
-                    image,
-                    fixed_image,
-                    bookmark = false
-
-                )
-                noticeList.add(noticeLine)
-            }
-
-        }
-        Handler().postDelayed({
-            progressBar.visibility = View.GONE                           //progressbar 숨김
-            noticeRecyclerView.scrollToPosition(Noticeadapter.itemCount-11)
-        }, 40)
-    }
-
     /**
-     *  스크롤시 서버의 다음 페이지 정보를 크롤링
-     *  @author 희진
+     * 파싱 기능
+     * @author 김우진,희진
      */
-    fun scrollPagination() {
-        noticeRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            @RequiresApi(Build.VERSION_CODES.O)
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                if ((!recyclerView.canScrollVertically(1)
-                            && newState == SCROLL_STATE_IDLE) && !progressBar.isAnimating
-                ) {  //위치가 맨 밑이며 중복 안되고 멈춘경우
-                    if(Url!="null") {
-                        progressBar.visibility = View.VISIBLE                           //progressbar 나옴
-                        Handler().postDelayed({
-                            parsing()
-                        }, 500)
-                    }
-                    else{
-                        Toast.makeText(requireContext(), "더 이상 공지가 없습니다.", Toast.LENGTH_SHORT).show()
-
-                    }
-                }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun parsing() {
+        val target = PreferenceHelper.get("Urls", "").toString()
+        if (target == "") {
+            emptyResultView.visibility = View.VISIBLE
+        } else {
+            emptyResultView.visibility = View.GONE
+            val parseResult: List<String> = Parsing.parsing(
+                requireContext(),
+                noticeList,
+                noticeRecyclerView,
+                progressBar,
+                url,
+                "",
+                target
+            )
+            if (noticeList.size == 0) {
+                Toast.makeText(requireContext(), "게시글이 존재하지 않습니다.", Toast.LENGTH_SHORT)
+                    .show()
             }
-        })
+            previousPage = parseResult[0]
+            url = parseResult[1]
+            nextPage = parseResult[2]
+        }
     }
 }

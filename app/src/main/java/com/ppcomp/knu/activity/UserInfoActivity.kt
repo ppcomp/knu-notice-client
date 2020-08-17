@@ -10,6 +10,7 @@ import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.LogoutResponseCallback
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
+import com.ppcomp.knu.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_userinfo_toolbar.*
 import kotlinx.android.synthetic.main.activity_userinfo.*
 import kotlinx.android.synthetic.main.fragment_setting.*
@@ -43,12 +44,11 @@ class UserInfoActivity : AppCompatActivity(){
             })
         }
 
-        val pref = getSharedPreferences("pref", Context.MODE_PRIVATE)
-        nickname = pref?.getString("nickname","").toString()
-        thumbnail = pref?.getString("thumbnail","").toString()
-        subscriptions = pref?.getString("Subs","").toString().replace("+",", ")
+        nickname = PreferenceHelper.get("nickname","").toString()
+        thumbnail = PreferenceHelper.get("thumbnail","").toString()
+        subscriptions = PreferenceHelper.get("Subs","").toString().replace("+",", ")
         subscriptionsSplit = subscriptions.split(", ").toTypedArray()
-        keywords = pref?.getString("Keys","").toString().replace("+",", ")
+        keywords = PreferenceHelper.get("Keys","").toString().replace("+",", ")
         keywordsSplit = keywords.split(", ").toTypedArray()
 
         view_userName.text = nickname   //카카오 닉네임 출력
