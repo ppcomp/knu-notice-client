@@ -148,7 +148,7 @@ class Parsing private constructor() {
                 /////////////////////////////////// End binding ////////////////////////////////////
 
                 ////////////////////////////////// Data cleansing //////////////////////////////////
-                title = title.replace("<", "&lt;").replace(">", "&gt;")
+//                title = title.replace("<", "&lt;").replace(">", "&gt;")
                 if (fixed) {
                     fixedImage = R.drawable.notice_fixed_pin_icon
                 }
