@@ -16,8 +16,7 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
-import com.ppcomp.knu.`object`.Subscription
-import com.ppcomp.knu.activity.MainActivity
+import com.ppcomp.knu.utils.PreferenceHelper
 
 class NoticeAdapter(
     val context: Context,               // MainActivity
@@ -25,9 +24,11 @@ class NoticeAdapter(
     val bookmarkList: ArrayList<Notice>,// 즐겨찾기한 list
     val itemClick: (Notice) -> Unit)    // Notice 객체 클릭시 실행되는 lambda 식
     : RecyclerView.Adapter<NoticeAdapter.Holder>() {
-    lateinit var strContact: String
-    var makeGson: Gson = GsonBuilder().create()
-    var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
+
+    lateinit var bookmarkListJson: String
+    private var gson: Gson = GsonBuilder().create()
+    private var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
+
     /**
      * 각 Notice 객체를 감싸는 Holder
      * bind 가 자동 호출되며 데이터가 매핑된다.
@@ -94,28 +95,27 @@ class NoticeAdapter(
      */
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        val pref = context.getSharedPreferences("pref", Context.MODE_PRIVATE)
-        val ed = pref.edit()
-
+        // 공지리스트를 북마크리스트와 비교하여 공지리스트에 북마크 맵핑
+        for( i in 0..position) {
+            for (j in 0..bookmarkList.lastIndex) {
+                if (noticeList[i].link == bookmarkList[j].link)
+                    noticeList[i].bookmark = true
+            }
+        }
         holder.bind(noticeList[position], context)
-
-        holder.noticeBookmark.isChecked = noticeList[position].bookmark
-
-        holder.noticeBookmark.setOnCheckedChangeListener {
-            buttonView, isChecked ->
+        holder.noticeBookmark.isChecked = noticeList[position].bookmark //북마크 레이아웃에 북마크 맵핑
+        holder.noticeBookmark.setOnCheckedChangeListener {  //북마크 버튼 누를시
+                _, isChecked ->
             noticeList[position].bookmark = isChecked
-            if(isChecked) {
-                if(bookmarkList.indexOf(noticeList[position]) == -1)
+            if(isChecked) { //버튼이 눌려서 true
+                if(bookmarkList.indexOf(noticeList[position]) == -1)    //북마크리스트에 버튼이 눌린 공지가 없으면 리스트에 추가
                     bookmarkList.add(noticeList[position])
-            } else {
-                if(bookmarkList.indexOf(noticeList[position]) != -1)
+            } else {    //버튼이 눌려서 false
+                if(bookmarkList.indexOf(noticeList[position]) != -1)    //북마크리스트에 버튼이 눌린 공지가 있으면 리스트에서 제거
                     bookmarkList.remove(noticeList[position])
             }
-            strContact = makeGson.toJson(bookmarkList, listType.type)
-            ed.putString("bookmark",strContact)
-            ed.apply()
-            Log.d("bookmark",strContact)
-
+            bookmarkListJson = gson.toJson(bookmarkList, listType.type)
+            PreferenceHelper.put("bookmark",bookmarkListJson)
         }
 
     }

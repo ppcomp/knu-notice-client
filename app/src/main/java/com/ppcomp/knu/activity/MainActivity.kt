@@ -76,6 +76,7 @@ class MainActivity : AppCompatActivity() {
                     listLocationCount =0
                     keywordlistLocationCount=0
                     searchLocationCount=0
+                    replaceFragment(bookmarkFragment)
                     addFragment(bookmarkFragment)
                     return@OnNavigationItemSelectedListener true
                 }

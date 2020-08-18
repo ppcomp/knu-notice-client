@@ -78,13 +78,14 @@ class Parsing private constructor() {
         fun parsing(
             context: Context,
             noticeList: ArrayList<Notice>,
+            bookmarkList: ArrayList<Notice>,
             view: RecyclerView,
             progressBar: ProgressBar,
             currentUrl: String,
             searchQuery: String,
             target: String
         ): List<String> {
-            val noticeAdapter = NoticeAdapter(context, noticeList) { notice ->
+            val noticeAdapter = NoticeAdapter(context, noticeList, bookmarkList) { notice ->
                 var link: String = notice.link
                 if (!link.startsWith("http://") && !link.startsWith("https://"))
                     link = "http://$link"
@@ -148,7 +149,7 @@ class Parsing private constructor() {
                 /////////////////////////////////// End binding ////////////////////////////////////
 
                 ////////////////////////////////// Data cleansing //////////////////////////////////
-                title = title.replace("<", "&lt;").replace(">", "&gt;")
+//                title = title.replace("<", "&lt;").replace(">", "&gt;")
                 if (fixed) {
                     fixedImage = R.drawable.notice_fixed_pin_icon
                 }
@@ -185,7 +186,8 @@ class Parsing private constructor() {
                         reference,
                         fixed,
                         image,
-                        fixedImage
+                        fixedImage,
+                        bookmark = false
                     )
                 )
 

@@ -19,9 +19,10 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
+import com.ppcomp.knu.utils.PreferenceHelper
 
 /**
- * 즐겨찾기 리사이클뷰 어뎁터
+ * BookmarkFragment의 RecyclerView를 위한 클래스
  * @author 정준
  */
 class BookmarkAdapter(
@@ -29,9 +30,14 @@ class BookmarkAdapter(
     var bookmarkList: ArrayList<Notice>,
     val itemClick: (Notice) -> Unit)
     : RecyclerView.Adapter<BookmarkAdapter.Holder>() {
-    var makeGson: Gson = GsonBuilder().create()
+    lateinit var bookmarkListJson: String
+    var gson: Gson = GsonBuilder().create()
     var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
 
+    /**
+     * Notice 객체를 RecyclerView에 맵핑해주는 클래스
+     * @author 정준
+     */
     inner class Holder(itemView: View, itemClick: (Notice) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
         val noticeLinear = itemView.findViewById<LinearLayout>(R.id.noticeLinear)
@@ -83,30 +89,25 @@ class BookmarkAdapter(
 
     /**
      * onCreateViewHolder 에서 만든 view 와 실제 입력되는 각각의 데이터 연결
-     * @author jungwoo, 정준
+     * @author 정준
      */
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        val pref = context.getSharedPreferences("pref", Context.MODE_PRIVATE)
-        val ed = pref.edit()
-
-        bookmarkList = makeGson.fromJson(pref.getString("bookmark",""),listType)
-        
-
         holder.bind(bookmarkList[position], context)
-
-        holder.noticeBookmark.isChecked = bookmarkList.get(position).bookmark
-
-        holder.noticeBookmark.setOnCheckedChangeListener {
-                buttonView, isChecked ->
-            bookmarkList.get(position).bookmark = isChecked
-            Log.d("bookmark",bookmarkList.get(position).bookmark.toString())
+        holder.noticeBookmark.isChecked = bookmarkList[position].bookmark   //북마크 레이아웃에 북마크 맵핑
+        holder.noticeBookmark.setOnCheckedChangeListener {  //북마크 버튼 누를시
+                _, isChecked ->
+            bookmarkList[position].bookmark = isChecked
+            if(!isChecked)  //북마크 체크해제시
+                bookmarkList.remove(bookmarkList[position]) //북마크리스트에서 제거
+            bookmarkListJson = gson.toJson(bookmarkList, listType.type)
+            PreferenceHelper.put("bookmark",bookmarkListJson)
         }
     }
 
     /**
      * RecyclerView 로 만들어지는 item 의 총 개수 반환
-     * @author jungwoo, 정준
+     * @author 정준
      */
     override fun getItemCount(): Int {
         return bookmarkList.size
@@ -115,7 +116,7 @@ class BookmarkAdapter(
 
     /**
      * 밑의 함수를 오버라이딩하여 리사이클러뷰 재사용 문제 해결
-     * @author 상은
+     * @author 정준
      */
     override fun getItemId(position: Int): Long {
         return position.toLong()
