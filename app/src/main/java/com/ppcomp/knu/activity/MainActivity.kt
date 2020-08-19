@@ -21,17 +21,16 @@ import com.ppcomp.knu.fragment.*
  */
 class MainActivity : AppCompatActivity() {
 
-    var settingFragment = SettingFragment()
-    var bookmarkFragment = BookmarkFragment()
-    var noticeFragment = NoticeFragment()
-    var keywordNoticeFragment = KeywordNoticeFragment()
-    var activeFragment: Fragment = noticeFragment   //현재 띄워진 프레그먼트(default: noticeFragment)
-    var searchFragment = SearchFragment()
-
+    private var noticeFragment = NoticeFragment()
+    private var keywordNoticeFragment = KeywordNoticeFragment()
+    private var searchFragment = SearchFragment()
+    private var bookmarkFragment = BookmarkFragment()
+    private var settingFragment = SettingFragment()
+    private var activeFragment: Fragment = noticeFragment   //현재 띄워진 프레그먼트(default: noticeFragment)
 
     /**
      * 메인 레이아웃과 fragment 화면 생성
-     * 모든 fragment는 이 함수에서 초기화가 되어야 함
+     * 모든 fragment는 이 함수에서 초기화 되어야 함
      * @author 희진, 우진, jungwoo, 정준
      */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,75 +54,72 @@ class MainActivity : AppCompatActivity() {
      * @author 희진, 정준
      */
     private var content: FrameLayout? = null
-    var listLocationCount =1
-    var keywordlistLocationCount =1
-    var searchLocationCount =1
+    private var setScrollTop = -1   // 0:notice, 1:keywordNotice, 2:search, 3:bookmark
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.list -> {
-                    keywordlistLocationCount=0
-                    searchLocationCount=0
+                R.id.noticelist -> {
                     if(GlobalApplication.isFragmentChange[0]) { //구독리스트, 북마크리스트에 변경사항이 있으면 화면 갱신
                         replaceFragment(noticeFragment) //화면갱신
-                        GlobalApplication.isFragmentChange[0] = false   //갱신후 false로 변경
-                        listLocationCount=0
+                        GlobalApplication.isFragmentChange[0] = false
                     }
-                    listLocationCount++             //해당 fragment에 들어가면 count++
-                    if(listLocationCount >=2){      //count가 2 이상이면 scroll이 맨 위로 이동
-                        var recyclerview = noticeFragment.view!!.findViewById(R.id.notice) as RecyclerView
-                        recyclerview.scrollToPosition(0)
+                    if(setScrollTop == 0){      //setScrollTop이 0이면 scroll이 맨 위로 이동
+                        (noticeFragment.view!!.findViewById(R.id.notice) as RecyclerView).apply {
+                            scrollToPosition(0)
+                        }
                     }
+                    setScrollTop = 0
                     addFragment(noticeFragment)
                     return@OnNavigationItemSelectedListener true
                 }
+
                 R.id.keywordlist -> {
-                    listLocationCount =0
-                    searchLocationCount=0
                     if(GlobalApplication.isFragmentChange[1]) { //구독리스트, 키워드 리스트, 북마크리스트에 변경사항이 있으면 화면 갱신
                         replaceFragment(keywordNoticeFragment)  //화면갱신
-                        GlobalApplication.isFragmentChange[1] = false   //갱신후 false로 변경
-                        keywordlistLocationCount =0
+                        GlobalApplication.isFragmentChange[1] = false
                     }
-                    keywordlistLocationCount++
-                    if(keywordlistLocationCount >=2){
-                        var recyclerview = keywordNoticeFragment.view!!.findViewById(R.id.keyword_notice) as RecyclerView
-                        recyclerview.scrollToPosition(0)
+                    if(setScrollTop == 1){      //setScrollTop이 1이면 scroll이 맨 위로 이동
+                        (keywordNoticeFragment.view!!.findViewById(R.id.keyword_notice) as RecyclerView).apply {
+                            scrollToPosition(0)
+                        }
                     }
+                    setScrollTop = 1
                     addFragment(keywordNoticeFragment)
                     return@OnNavigationItemSelectedListener true
                 }
+
                 R.id.search -> {
-                    listLocationCount =0
-                    keywordlistLocationCount=0
                     if(GlobalApplication.isFragmentChange[2]) { //북마크리스트에 변경사항이 있으면 화면 갱신
                         replaceFragment(searchFragment) //화면갱신
-                        GlobalApplication.isFragmentChange[2] = false   //갱신후 false로 변경
-                        searchLocationCount =0
+                        GlobalApplication.isFragmentChange[2] = false
                     }
-                    searchLocationCount++
-                    if(searchLocationCount >=2){
-                        var recyclerview = searchFragment.view!!.findViewById(R.id.search_recycler) as RecyclerView
-                        recyclerview.scrollToPosition(0)
+                    if(setScrollTop == 2){      //setScrollTop이 2이면 scroll이 맨 위로 이동
+                        (searchFragment.view!!.findViewById(R.id.search_recycler) as RecyclerView).apply {
+                            scrollToPosition(0)
+                        }
                     }
+                    setScrollTop = 2
                     addFragment(searchFragment)
                     return@OnNavigationItemSelectedListener true
                 }
+
                 R.id.bookmark -> {
-                    listLocationCount =0
-                    keywordlistLocationCount=0
-                    searchLocationCount=0
-                    if(GlobalApplication.isFragmentChange[3]) { //
-                        replaceFragment(bookmarkFragment)
+                    if(GlobalApplication.isFragmentChange[3]) { //북마크리스트에 변경사항이 있으면 화면 갱신
+                        replaceFragment(bookmarkFragment)   //화면갱신
                         GlobalApplication.isFragmentChange[3] = false
                     }
+                    if(setScrollTop == 3){      //setScrollTop이 3이면 scroll이 맨 위로 이동
+                        (bookmarkFragment.view!!.findViewById(R.id.bookmark_notice) as RecyclerView).apply {
+                            scrollToPosition(0)
+                        }
+                    }
+                    setScrollTop = 3
                     addFragment(bookmarkFragment)
                     return@OnNavigationItemSelectedListener true
                 }
+
                 R.id.setting -> {
-                    listLocationCount =0
-                    keywordlistLocationCount =0
-                    searchLocationCount=0
+                    setScrollTop = -1
                     addFragment(settingFragment)
                     return@OnNavigationItemSelectedListener true
                 }
@@ -135,7 +131,7 @@ class MainActivity : AppCompatActivity() {
      * fragment 전환에 사용하는 함수
      * @author 희진, 정준
      */
-    fun addFragment(fragment: Fragment) {
+    private fun addFragment(fragment: Fragment) {
         supportFragmentManager
             .beginTransaction()
             .setCustomAnimations(0, 0)
@@ -146,10 +142,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * fragment 화면갱신에 사용하는 함수
+     * fragment 갱신에 사용하는 함수
+     * fragment가 추가되면 이곳에 추가된 fragment 코드 넣어줘야 함
      * @author 정준
      */
-    fun replaceFragment(fragment: Fragment) {
+    private fun replaceFragment(fragment: Fragment) {
         when(fragment) {
             noticeFragment -> {
                 supportFragmentManager.beginTransaction().apply {
