@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -109,7 +106,7 @@ class BookmarkAdapter(
             }
             bookmarkListJson = gson.toJson(bookmarkList, listType.type)
             PreferenceHelper.put("bookmark",bookmarkListJson)
-            GlobalApplication.isBookmarkChange = arrayOf(true, true, true, true)  //북마크리스트 변경사항 확인
+            GlobalApplication.isFragmentChange = arrayOf(true, true, true, true)  //북마크리스트 변경사항 확인
         }
 
     }

@@ -16,7 +16,7 @@ import com.ppcomp.knu.fragment.*
 
 
 /**
- * 메인화면의 기능을 작성하는 클래스
+ * 메인화면 클래스
  * @author 희진, jungwoo
  */
 class MainActivity : AppCompatActivity() {
@@ -30,31 +30,30 @@ class MainActivity : AppCompatActivity() {
 
 
     /**
-     * 화면생성해주는 메소드
+     * 메인 레이아웃과 fragment 화면 생성
+     * 모든 fragment는 이 함수에서 초기화가 되어야 함
      * @author 희진, 우진, jungwoo, 정준
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         content = findViewById(R.id.frameLayout)
         val navigation = findViewById<BottomNavigationView>(R.id.main_navigationView)
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         supportFragmentManager.beginTransaction().apply {       // 모든 프레그먼트 삽입
-            add(R.id.frameLayout, settingFragment, settingFragment.javaClass.simpleName).hide(settingFragment)
-            add(R.id.frameLayout, bookmarkFragment, bookmarkFragment.javaClass.simpleName).hide(bookmarkFragment)
             add(R.id.frameLayout, noticeFragment, noticeFragment.javaClass.simpleName)
-            add(R.id.frameLayout,keywordNoticeFragment,keywordNoticeFragment.javaClass.simpleName).hide(keywordNoticeFragment)
+            add(R.id.frameLayout, keywordNoticeFragment, keywordNoticeFragment.javaClass.simpleName).hide(keywordNoticeFragment)
             add(R.id.frameLayout, searchFragment, searchFragment.javaClass.simpleName).hide(searchFragment)
-    }.commit()
+            add(R.id.frameLayout, bookmarkFragment, bookmarkFragment.javaClass.simpleName).hide(bookmarkFragment)
+            add(R.id.frameLayout, settingFragment, settingFragment.javaClass.simpleName).hide(settingFragment)
+        }.commit()
 
     }
     
     /**
-     * 메뉴 클릭시 이동
+     * 하단 메뉴 클릭시 fragment 전환
      * @author 희진, 정준
      */
-
     private var content: FrameLayout? = null
     var listLocationCount =1
     var keywordlistLocationCount =1
@@ -62,34 +61,12 @@ class MainActivity : AppCompatActivity() {
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
-
-                R.id.setting -> {
-                    listLocationCount =0
-                    keywordlistLocationCount =0
-                    searchLocationCount=0
-                    addFragment(settingFragment)
-                    return@OnNavigationItemSelectedListener true
-                }
-
-                R.id.bookmark -> {
-                    listLocationCount =0
-                    keywordlistLocationCount=0
-                    searchLocationCount=0
-                    if(GlobalApplication.isBookmarkChange[3]) {
-                        replaceFragment(bookmarkFragment)
-                        GlobalApplication.isBookmarkChange[3] = false
-                    }
-                    addFragment(bookmarkFragment)
-                    return@OnNavigationItemSelectedListener true
-                }
-
                 R.id.list -> {
                     keywordlistLocationCount=0
                     searchLocationCount=0
-                    if(GlobalApplication.isSubsChange || GlobalApplication.isBookmarkChange[0]) {    //구독리스트에 변경사항이 있으면 화면 갱신
-                        replaceFragment(noticeFragment)     //화면갱신
-                        GlobalApplication.isSubsChange = false  //변경사항 갱신 후 false로 변경
-                        GlobalApplication.isBookmarkChange[0] = false
+                    if(GlobalApplication.isFragmentChange[0]) { //구독리스트, 북마크리스트에 변경사항이 있으면 화면 갱신
+                        replaceFragment(noticeFragment) //화면갱신
+                        GlobalApplication.isFragmentChange[0] = false   //갱신후 false로 변경
                         listLocationCount=0
                     }
                     listLocationCount++             //해당 fragment에 들어가면 count++
@@ -100,14 +77,12 @@ class MainActivity : AppCompatActivity() {
                     addFragment(noticeFragment)
                     return@OnNavigationItemSelectedListener true
                 }
-
                 R.id.keywordlist -> {
                     listLocationCount =0
                     searchLocationCount=0
-                    if(GlobalApplication.iskeywordChange || GlobalApplication.isSubsChange || GlobalApplication.isBookmarkChange[1]) {    //구독리스트나 키워드 리스트에 변경사항이 있으면 화면 갱신
+                    if(GlobalApplication.isFragmentChange[1]) { //구독리스트, 키워드 리스트, 북마크리스트에 변경사항이 있으면 화면 갱신
                         replaceFragment(keywordNoticeFragment)  //화면갱신
-                        GlobalApplication.iskeywordChange = false  //변경사항 갱신 후 false로 변경
-                        GlobalApplication.isBookmarkChange[1] = false
+                        GlobalApplication.isFragmentChange[1] = false   //갱신후 false로 변경
                         keywordlistLocationCount =0
                     }
                     keywordlistLocationCount++
@@ -121,10 +96,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.search -> {
                     listLocationCount =0
                     keywordlistLocationCount=0
-                    if(GlobalApplication.isSearchChange || GlobalApplication.isBookmarkChange[2]) {    //구독리스트에 변경사항이 있으면 화면 갱신
-                        replaceFragment(searchFragment)  //화면갱신
-                        GlobalApplication.isSearchChange = false  //변경사항 갱신 후 false로 변경
-                        GlobalApplication.isBookmarkChange[2] = false
+                    if(GlobalApplication.isFragmentChange[2]) { //북마크리스트에 변경사항이 있으면 화면 갱신
+                        replaceFragment(searchFragment) //화면갱신
+                        GlobalApplication.isFragmentChange[2] = false   //갱신후 false로 변경
                         searchLocationCount =0
                     }
                     searchLocationCount++
@@ -135,12 +109,30 @@ class MainActivity : AppCompatActivity() {
                     addFragment(searchFragment)
                     return@OnNavigationItemSelectedListener true
                 }
+                R.id.bookmark -> {
+                    listLocationCount =0
+                    keywordlistLocationCount=0
+                    searchLocationCount=0
+                    if(GlobalApplication.isFragmentChange[3]) { //
+                        replaceFragment(bookmarkFragment)
+                        GlobalApplication.isFragmentChange[3] = false
+                    }
+                    addFragment(bookmarkFragment)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.setting -> {
+                    listLocationCount =0
+                    keywordlistLocationCount =0
+                    searchLocationCount=0
+                    addFragment(settingFragment)
+                    return@OnNavigationItemSelectedListener true
+                }
             }
             false
         }
 
     /**
-     * 하단 바 아이템 누르면 fragment 변경
+     * fragment 전환에 사용하는 함수
      * @author 희진, 정준
      */
     fun addFragment(fragment: Fragment) {
@@ -154,25 +146,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * 화면 갱신에 사용하는 함수
+     * fragment 화면갱신에 사용하는 함수
      * @author 정준
      */
     fun replaceFragment(fragment: Fragment) {
         when(fragment) {
-            settingFragment -> {
-                supportFragmentManager.beginTransaction().apply {
-                    remove(settingFragment)
-                    settingFragment = SettingFragment()
-                    add(R.id.frameLayout, settingFragment, settingFragment.javaClass.simpleName)
-                }.commit()
-            }
-            bookmarkFragment -> {
-                supportFragmentManager.beginTransaction().apply {
-                    remove(bookmarkFragment)
-                    bookmarkFragment = BookmarkFragment()
-                    add(R.id.frameLayout, bookmarkFragment, bookmarkFragment.javaClass.simpleName)
-                }.commit()
-            }
             noticeFragment -> {
                 supportFragmentManager.beginTransaction().apply {
                     remove(noticeFragment)
@@ -192,6 +170,20 @@ class MainActivity : AppCompatActivity() {
                     remove(searchFragment)
                     searchFragment = SearchFragment()
                     add(R.id.frameLayout, searchFragment, searchFragment.javaClass.simpleName)
+                }.commit()
+            }
+            bookmarkFragment -> {
+                supportFragmentManager.beginTransaction().apply {
+                    remove(bookmarkFragment)
+                    bookmarkFragment = BookmarkFragment()
+                    add(R.id.frameLayout, bookmarkFragment, bookmarkFragment.javaClass.simpleName)
+                }.commit()
+            }
+            settingFragment -> {
+                supportFragmentManager.beginTransaction().apply {
+                    remove(settingFragment)
+                    settingFragment = SettingFragment()
+                    add(R.id.frameLayout, settingFragment, settingFragment.javaClass.simpleName)
                 }.commit()
             }
         }

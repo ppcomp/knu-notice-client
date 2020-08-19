@@ -1,6 +1,5 @@
 package com.ppcomp.knu.fragment
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -29,7 +28,7 @@ class SettingFragment : Fragment() {
         view.alarmSwitch.isChecked = PreferenceHelper.get("alarmSwitch", false)
         view.alarmSwitch.setOnCheckedChangeListener { compoundButton: CompoundButton, isChecked: Boolean ->
             PreferenceHelper.put("alarmSwitch", isChecked)
-            GlobalApplication.UserInfoUpload()
+            GlobalApplication.userInfoUpload()
         }
         view.subscriptionSetting.setOnClickListener {
             val intent = Intent(context, SubscriptionActivity::class.java)

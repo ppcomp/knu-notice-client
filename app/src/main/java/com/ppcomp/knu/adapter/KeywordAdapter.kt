@@ -76,7 +76,7 @@ class KeywordAdapter(val context: Context, val keywordList: ArrayList<Keyword>) 
 
                 }
             }
-            GlobalApplication.iskeywordChange = true //키워드 변경사항 확인
+            GlobalApplication.isFragmentChange[1] = true    //키워드 변경사항 확인
         }
 
 
