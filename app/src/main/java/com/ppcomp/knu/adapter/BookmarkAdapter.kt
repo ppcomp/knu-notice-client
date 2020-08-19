@@ -8,8 +8,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.ToggleButton
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -18,23 +23,24 @@ import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.utils.PreferenceHelper
-import kotlin.collections.lastIndex as lastIndex1
 
-class NoticeAdapter(
-    val context: Context,               // MainActivity
-    val noticeList: ArrayList<Notice>,  // Notice 객체 list
-    val bookmarkList: ArrayList<Notice>,// 즐겨찾기한 list
-    val itemClick: (Notice) -> Unit)    // Notice 객체 클릭시 실행되는 lambda 식
-    : RecyclerView.Adapter<NoticeAdapter.Holder>() {
+/**
+ * BookmarkFragment의 RecyclerView를 위한 클래스
+ * @author 정준
+ */
+class BookmarkAdapter(
+    private val context: Context,
+    private var bookmarkList: ArrayList<Notice>,
+    private val itemClick: (Notice) -> Unit)
 
+    : RecyclerView.Adapter<BookmarkAdapter.Holder>() {
     lateinit var bookmarkListJson: String
     private var gson: Gson = GsonBuilder().create()
     private var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
 
     /**
-     * 각 Notice 객체를 감싸는 Holder
-     * bind 가 자동 호출되며 데이터가 매핑된다.
-     * @author jungwoo
+     * Notice 객체를 RecyclerView에 맵핑해주는 클래스
+     * @author 정준
      */
     inner class Holder(itemView: View, itemClick: (Notice) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
@@ -58,12 +64,11 @@ class NoticeAdapter(
             noticeReference.text = notice.reference
 
             if(notice.image == 0) {
-                noticeImage.visibility = View.GONE;
+                noticeImage.setVisibility(View.GONE);
             }else {
                 noticeImage.setImageResource(notice.image)
             }
-            if(notice.fixed)
-            {
+            if(notice.fixed) {
                 noticeFixedImage.setImageResource(notice.fixed_image)
                 noticeLinear.setBackgroundResource(R.drawable.notice_fixed_item_line)
             }
@@ -79,44 +84,28 @@ class NoticeAdapter(
             noticeBoard.setTextColor(color)
             itemView.setOnClickListener { itemClick(notice) }
         }
+
     }
 
-    /**
-     * 화면을 최초로 로딩하여 만들어진 View 가 없는 경우, xml 파일을 inflate 하여 ViewHolder 생성
-     * @author jungwoo
-     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        /* LayoutInflater는 item을 Adapter에서 사용할 View로 부풀려주는(inflate) 역할을 한다. */
         val view: View = LayoutInflater.from(parent.context).inflate(R.layout.fragment_notice_item, parent, false)
         return Holder(view, itemClick)
     }
 
     /**
      * onCreateViewHolder 에서 만든 view 와 실제 입력되는 각각의 데이터 연결
-     * @author jungwoo, 정준
+     * @author 정준
      */
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        // 공지리스트를 북마크리스트와 비교하여 공지리스트에 북마크 맵핑
-            for (i in 0 until bookmarkList.size) {
-                if (noticeList[position].link == bookmarkList[i].link)
-                    noticeList[position].bookmark = bookmarkList[i].bookmark
-            }
-
-        holder.bind(noticeList[position], context)
-        holder.noticeBookmark.isChecked = noticeList[position].bookmark //북마크 레이아웃에 북마크 맵핑
+        holder.bind(bookmarkList[position], context)
+        holder.noticeBookmark.isChecked = bookmarkList[position].bookmark   //북마크 레이아웃에 북마크 맵핑
         holder.noticeBookmark.setOnCheckedChangeListener {  //북마크 버튼 누를시
-                _, isChecked ->
-            noticeList[position].bookmark = isChecked
-            if(isChecked) { //버튼이 눌려서 true
-                bookmarkList.add(noticeList[position])  //북마크 리스트에 추가
-            } else {    //버튼이 눌려서 false
-                for(i in 0 until bookmarkList.size) {
-                    if(noticeList[position].link == bookmarkList[i].link) { //북마크리스트에 버튼이 눌린 공지가 있으면 리스트에서 제거
-                        bookmarkList.remove(bookmarkList[i])
-                        break
-                    }
-                }
+                buttonView, isChecked ->
+            bookmarkList[position].bookmark = isChecked
+            if (!isChecked) { //북마크 체크해제시
+                bookmarkList.remove(bookmarkList[position]) //북마크리스트에서 제거
+                notifyItemRemoved(position)
             }
             bookmarkListJson = gson.toJson(bookmarkList, listType.type)
             PreferenceHelper.put("bookmark",bookmarkListJson)
@@ -127,16 +116,16 @@ class NoticeAdapter(
 
     /**
      * RecyclerView 로 만들어지는 item 의 총 개수 반환
-     * @author jungwoo
+     * @author 정준
      */
     override fun getItemCount(): Int {
-        return noticeList.size
+        return bookmarkList.size
     }
 
 
     /**
      * 밑의 함수를 오버라이딩하여 리사이클러뷰 재사용 문제 해결
-     * @author 상은
+     * @author 정준
      */
     override fun getItemId(position: Int): Long {
         return position.toLong()
@@ -145,10 +134,7 @@ class NoticeAdapter(
     override fun getItemViewType(position: Int): Int {
         return position
     }
-
-    fun clear() {
-        val size: Int = noticeList.size
-        noticeList.clear()
-        notifyItemRangeRemoved(0, size)
-    }
 }
+
+
+

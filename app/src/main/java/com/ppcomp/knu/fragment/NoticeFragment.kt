@@ -1,12 +1,9 @@
 package com.ppcomp.knu.fragment
 
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.os.StrictMode
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,23 +12,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
-import com.ppcomp.knu.adapter.NoticeAdapter
 import com.ppcomp.knu.utils.Parsing
 import com.ppcomp.knu.utils.PreferenceHelper
-import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
-import org.json.JSONObject
-import java.io.BufferedReader
-import java.io.InputStreamReader
-import java.net.HttpURLConnection
-import java.net.URL
-import java.text.SimpleDateFormat
-import java.time.LocalDate
 
 
 /**
@@ -43,6 +33,9 @@ import java.time.LocalDate
 class NoticeFragment : Fragment() {
 
     private var noticeList = arrayListOf<Notice>()
+    private var bookmarkList = arrayListOf<Notice>()
+    private var gson: Gson = GsonBuilder().create()
+    private var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
     private lateinit var noticeRecyclerView: RecyclerView
@@ -60,10 +53,10 @@ class NoticeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_notice_layout, container, false)
 
+        bookmarkList = gson.fromJson(PreferenceHelper.get("bookmark",""),listType.type) //북마크 리스트 가져옴
         noticeRecyclerView = view!!.findViewById(R.id.notice) as RecyclerView   //recyclerview 가져오기
         progressBar = view!!.findViewById((R.id.progressbar)) as ProgressBar
         emptyResultView = view!!.findViewById((R.id.noData)) as TextView
-
         progressBar.visibility = View.GONE                                      //progressbar 숨기기
         emptyResultView.visibility = View.GONE
 
@@ -103,6 +96,7 @@ class NoticeFragment : Fragment() {
             val parseResult: List<String> = Parsing.parsing(
                 requireContext(),
                 noticeList,
+                bookmarkList,
                 noticeRecyclerView,
                 progressBar,
                 url,

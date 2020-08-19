@@ -11,9 +11,13 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.utils.Parsing
+import com.ppcomp.knu.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.fragment_search.*
 import kotlinx.android.synthetic.main.fragment_search.view.*
 
@@ -27,6 +31,9 @@ import kotlinx.android.synthetic.main.fragment_search.view.*
 class SearchFragment : Fragment() {
 
     private var noticeList = arrayListOf<Notice>()
+    private var bookmarkList = arrayListOf<Notice>()
+    private var gson: Gson = GsonBuilder().create()
+    private var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
     private lateinit var searchRecyclerView: RecyclerView
@@ -45,6 +52,8 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
+
+        bookmarkList = gson.fromJson(PreferenceHelper.get("bookmark",""),listType.type) //북마크리스트 가져옴
         progressBar = view!!.findViewById((R.id.progressbar)) as ProgressBar
         emptyResultView = view!!.findViewById((R.id.search_noData)) as TextView
         searchButton = view!!.findViewById(R.id.search_button) as Button
@@ -63,7 +72,7 @@ class SearchFragment : Fragment() {
                 }
                 return false
             }
-        })
+    })
 
         searchButton.setOnClickListener() {
             searchQuery = search_edit.text.toString()
@@ -108,6 +117,7 @@ class SearchFragment : Fragment() {
         val parseResult: List<String> = Parsing.parsing(
             requireContext(),
             noticeList,
+            bookmarkList,
             searchRecyclerView,
             progressBar,
             url,

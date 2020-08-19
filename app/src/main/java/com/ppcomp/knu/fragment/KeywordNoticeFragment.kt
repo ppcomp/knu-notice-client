@@ -11,6 +11,9 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.utils.Parsing
@@ -25,6 +28,9 @@ import kotlinx.android.synthetic.main.fragment_keyword_notice.view.*
  */
 class KeywordNoticeFragment : Fragment() {
     private var noticeList = arrayListOf<Notice>()
+    private var bookmarkList = arrayListOf<Notice>()
+    private var gson: Gson = GsonBuilder().create()
+    private var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
     private lateinit var keywordRecyclerView : RecyclerView
@@ -42,6 +48,7 @@ class KeywordNoticeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_keyword_notice, container, false)
 
+        bookmarkList = gson.fromJson(PreferenceHelper.get("bookmark",""),listType.type) //북마크리스트 가져옴
         keywordRecyclerView = view!!.findViewById(R.id.keyword_notice) as RecyclerView    //recyclerview 가져오기
         progressBar = view!!.findViewById((R.id.keyword_progressbar)) as ProgressBar
         keywordNullView = view!!.findViewById(R.id.keyword_null_view) as TextView
@@ -92,6 +99,7 @@ class KeywordNoticeFragment : Fragment() {
             val parseResult: List<String> = Parsing.parsing(
                 requireContext(),
                 noticeList,
+                bookmarkList,
                 keywordRecyclerView,
                 progressBar,
                 url,

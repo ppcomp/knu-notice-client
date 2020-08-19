@@ -40,6 +40,7 @@ class GlobalApplication : Application() {
         var iskeywordChange: Boolean = false //키워드 변경사항 유무
         var instance: GlobalApplication? = null
         var isSearchChange: Boolean = false //검색 변경사항 유무
+        var isBookmarkChange: Array<Boolean> = arrayOf(false, false, false, false) //북마크 변경사항 확인 (notice, keywordNotice, search, bookmark)
 
         /**
          * 카카오 유저 데이터 서버에 업로드
