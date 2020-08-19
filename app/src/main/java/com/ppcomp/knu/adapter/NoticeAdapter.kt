@@ -18,6 +18,7 @@ import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.utils.PreferenceHelper
+import kotlin.collections.lastIndex as lastIndex1
 
 class NoticeAdapter(
     val context: Context,               // MainActivity
@@ -97,24 +98,24 @@ class NoticeAdapter(
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: Holder, position: Int) {
         // 공지리스트를 북마크리스트와 비교하여 공지리스트에 북마크 맵핑
-        for( i in 0..position) {
-            for (j in 0..bookmarkList.lastIndex) {
-                if (noticeList[i].link == bookmarkList[j].link)
-                    noticeList[i].bookmark = true
+            for (i in 0 until bookmarkList.size) {
+                if (noticeList[position].link == bookmarkList[i].link)
+                    noticeList[position].bookmark = bookmarkList[i].bookmark
             }
-        }
+
         holder.bind(noticeList[position], context)
         holder.noticeBookmark.isChecked = noticeList[position].bookmark //북마크 레이아웃에 북마크 맵핑
         holder.noticeBookmark.setOnCheckedChangeListener {  //북마크 버튼 누를시
                 _, isChecked ->
             noticeList[position].bookmark = isChecked
             if(isChecked) { //버튼이 눌려서 true
-                if(bookmarkList.indexOf(noticeList[position]) == -1) { //북마크리스트에 버튼이 눌린 공지가 없으면 리스트에 추가
-                    bookmarkList.add(noticeList[position])
-                }
+                bookmarkList.add(noticeList[position])  //북마크 리스트에 추가
             } else {    //버튼이 눌려서 false
-                if(bookmarkList.indexOf(noticeList[position]) != -1) {  //북마크리스트에 버튼이 눌린 공지가 있으면 리스트에서 제거
-                    bookmarkList.remove(noticeList[position])
+                for(i in 0 until bookmarkList.size) {
+                    if(noticeList[position].link == bookmarkList[i].link) { //북마크리스트에 버튼이 눌린 공지가 있으면 리스트에서 제거
+                        bookmarkList.remove(bookmarkList[i])
+                        break
+                    }
                 }
             }
             bookmarkListJson = gson.toJson(bookmarkList, listType.type)
