@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +24,6 @@ import com.ppcomp.knu.adapter.BookmarkAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.fragment_bookmark.*
 import kotlinx.android.synthetic.main.fragment_bookmark.view.*
-import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import java.time.LocalDate
 
 /**

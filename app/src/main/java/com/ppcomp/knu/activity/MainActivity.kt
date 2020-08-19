@@ -1,7 +1,5 @@
 package com.ppcomp.knu.activity
 
-//import kotlinx.android.synthetic.main.main.*
-//parsing 부분
 import android.content.Context
 import android.os.Bundle
 import android.view.MotionEvent
@@ -14,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ppcomp.knu.*
 import com.ppcomp.knu.fragment.*
+
 
 
 /**
@@ -76,7 +75,10 @@ class MainActivity : AppCompatActivity() {
                     listLocationCount =0
                     keywordlistLocationCount=0
                     searchLocationCount=0
-                    replaceFragment(bookmarkFragment)
+                    if(GlobalApplication.isBookmarkChange[3]) {
+                        replaceFragment(bookmarkFragment)
+                        GlobalApplication.isBookmarkChange[3] = false
+                    }
                     addFragment(bookmarkFragment)
                     return@OnNavigationItemSelectedListener true
                 }
@@ -84,9 +86,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.list -> {
                     keywordlistLocationCount=0
                     searchLocationCount=0
-                    if(GlobalApplication.isSubsChange) {    //구독리스트에 변경사항이 있으면 화면 갱신
+                    if(GlobalApplication.isSubsChange || GlobalApplication.isBookmarkChange[0]) {    //구독리스트에 변경사항이 있으면 화면 갱신
                         replaceFragment(noticeFragment)     //화면갱신
                         GlobalApplication.isSubsChange = false  //변경사항 갱신 후 false로 변경
+                        GlobalApplication.isBookmarkChange[0] = false
                         listLocationCount=0
                     }
                     listLocationCount++             //해당 fragment에 들어가면 count++
@@ -101,9 +104,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.keywordlist -> {
                     listLocationCount =0
                     searchLocationCount=0
-                    if(GlobalApplication.iskeywordChange || GlobalApplication.isSubsChange) {    //구독리스트나 키워드 리스트에 변경사항이 있으면 화면 갱신
+                    if(GlobalApplication.iskeywordChange || GlobalApplication.isSubsChange || GlobalApplication.isBookmarkChange[1]) {    //구독리스트나 키워드 리스트에 변경사항이 있으면 화면 갱신
                         replaceFragment(keywordNoticeFragment)  //화면갱신
                         GlobalApplication.iskeywordChange = false  //변경사항 갱신 후 false로 변경
+                        GlobalApplication.isBookmarkChange[1] = false
                         keywordlistLocationCount =0
                     }
                     keywordlistLocationCount++
@@ -117,9 +121,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.search -> {
                     listLocationCount =0
                     keywordlistLocationCount=0
-                    if(GlobalApplication.isSearchChange) {    //구독리스트에 변경사항이 있으면 화면 갱신
+                    if(GlobalApplication.isSearchChange || GlobalApplication.isBookmarkChange[2]) {    //구독리스트에 변경사항이 있으면 화면 갱신
                         replaceFragment(searchFragment)  //화면갱신
                         GlobalApplication.isSearchChange = false  //변경사항 갱신 후 false로 변경
+                        GlobalApplication.isBookmarkChange[2] = false
                         searchLocationCount =0
                     }
                     searchLocationCount++

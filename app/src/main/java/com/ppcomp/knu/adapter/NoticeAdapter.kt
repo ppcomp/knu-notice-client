@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.utils.PreferenceHelper
@@ -108,14 +109,17 @@ class NoticeAdapter(
                 _, isChecked ->
             noticeList[position].bookmark = isChecked
             if(isChecked) { //버튼이 눌려서 true
-                if(bookmarkList.indexOf(noticeList[position]) == -1)    //북마크리스트에 버튼이 눌린 공지가 없으면 리스트에 추가
+                if(bookmarkList.indexOf(noticeList[position]) == -1) { //북마크리스트에 버튼이 눌린 공지가 없으면 리스트에 추가
                     bookmarkList.add(noticeList[position])
+                }
             } else {    //버튼이 눌려서 false
-                if(bookmarkList.indexOf(noticeList[position]) != -1)    //북마크리스트에 버튼이 눌린 공지가 있으면 리스트에서 제거
+                if(bookmarkList.indexOf(noticeList[position]) != -1) {  //북마크리스트에 버튼이 눌린 공지가 있으면 리스트에서 제거
                     bookmarkList.remove(noticeList[position])
+                }
             }
             bookmarkListJson = gson.toJson(bookmarkList, listType.type)
             PreferenceHelper.put("bookmark",bookmarkListJson)
+            GlobalApplication.isBookmarkChange = arrayOf(true, true, true, true)  //북마크리스트 변경사항 확인
         }
 
     }

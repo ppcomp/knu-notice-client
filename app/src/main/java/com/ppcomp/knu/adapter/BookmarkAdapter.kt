@@ -13,10 +13,13 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.utils.PreferenceHelper
@@ -26,13 +29,14 @@ import com.ppcomp.knu.utils.PreferenceHelper
  * @author 정준
  */
 class BookmarkAdapter(
-    val context: Context,
-    var bookmarkList: ArrayList<Notice>,
-    val itemClick: (Notice) -> Unit)
+    private val context: Context,
+    private var bookmarkList: ArrayList<Notice>,
+    private val itemClick: (Notice) -> Unit)
+
     : RecyclerView.Adapter<BookmarkAdapter.Holder>() {
     lateinit var bookmarkListJson: String
-    var gson: Gson = GsonBuilder().create()
-    var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
+    private var gson: Gson = GsonBuilder().create()
+    private var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
 
     /**
      * Notice 객체를 RecyclerView에 맵핑해주는 클래스
@@ -80,6 +84,7 @@ class BookmarkAdapter(
             noticeBoard.setTextColor(color)
             itemView.setOnClickListener { itemClick(notice) }
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -96,13 +101,17 @@ class BookmarkAdapter(
         holder.bind(bookmarkList[position], context)
         holder.noticeBookmark.isChecked = bookmarkList[position].bookmark   //북마크 레이아웃에 북마크 맵핑
         holder.noticeBookmark.setOnCheckedChangeListener {  //북마크 버튼 누를시
-                _, isChecked ->
+                buttonView, isChecked ->
             bookmarkList[position].bookmark = isChecked
-            if(!isChecked)  //북마크 체크해제시
+            if (!isChecked) { //북마크 체크해제시
                 bookmarkList.remove(bookmarkList[position]) //북마크리스트에서 제거
+                notifyItemRemoved(position)
+            }
             bookmarkListJson = gson.toJson(bookmarkList, listType.type)
             PreferenceHelper.put("bookmark",bookmarkListJson)
+            GlobalApplication.isBookmarkChange = arrayOf(true, true, true, true)  //북마크리스트 변경사항 확인
         }
+
     }
 
     /**
@@ -126,5 +135,6 @@ class BookmarkAdapter(
         return position
     }
 }
+
 
 
