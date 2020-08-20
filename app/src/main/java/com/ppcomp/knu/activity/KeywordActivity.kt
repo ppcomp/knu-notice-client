@@ -88,7 +88,7 @@ class KeywordActivity : AppCompatActivity() {
                 keywordList.add(Keyword(getValue))
                 keyAdapter.notifyDataSetChanged()
                 Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
-                GlobalApplication.userInfoUpload()  //서버에 업로드
+                GlobalApplication.deviceInfoUpdate(this)  //서버에 업로드
             } else {
                 // 3. 키워드가 있을경우 -> 중복확인 필요
                 val getKeywordList = PreferenceHelper.get("Keys", "")?.split("+")
@@ -106,7 +106,7 @@ class KeywordActivity : AppCompatActivity() {
                     keywordList.add(Keyword(getValue))
                     keyAdapter.notifyDataSetChanged()
                     Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
-                    GlobalApplication.userInfoUpload()  //서버에 업로드
+                    GlobalApplication.deviceInfoUpdate(this)  //서버에 업로드
                 } else {
                     // 3-2-2. 중복 키워드를 입력한 경우(문제 발생)
                     if (keywordItem != null) {

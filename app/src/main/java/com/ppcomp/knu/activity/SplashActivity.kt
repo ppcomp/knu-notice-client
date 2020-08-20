@@ -12,6 +12,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.`object`.Subscription
 import com.ppcomp.knu.utils.Parsing
 import com.ppcomp.knu.utils.PreferenceHelper
@@ -53,6 +54,8 @@ class SplashActivity : AppCompatActivity() {
                 // Log and toast
                 val getId = PreferenceHelper.get("fbId", "")
                 Log.d("tokenSave", getId)
+
+                GlobalApplication.deviceInfoUpload(this)    //매번 디바이스 정보가 등록되었는지 확인하고 서버에 id가 없으면 등록
             })
 
         loadSubscription()  //서버에서 전체 구독리스트 다운로드
@@ -70,7 +73,6 @@ class SplashActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
-
     }
 
     /**

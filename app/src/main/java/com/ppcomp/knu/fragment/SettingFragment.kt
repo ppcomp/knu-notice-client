@@ -28,7 +28,7 @@ class SettingFragment : Fragment() {
         view.alarmSwitch.isChecked = PreferenceHelper.get("alarmSwitch", false)
         view.alarmSwitch.setOnCheckedChangeListener { compoundButton: CompoundButton, isChecked: Boolean ->
             PreferenceHelper.put("alarmSwitch", isChecked)
-            GlobalApplication.userInfoUpload()
+            GlobalApplication.deviceInfoUpdate(requireActivity())
         }
         view.subscriptionSetting.setOnClickListener {
             val intent = Intent(context, SubscriptionActivity::class.java)
