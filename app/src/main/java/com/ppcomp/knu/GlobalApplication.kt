@@ -2,7 +2,9 @@ package com.ppcomp.knu
 
 import RestApiService
 import android.app.Application
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.kakao.auth.KakaoSDK
 import com.ppcomp.knu.`object`.UserInfo
 import com.ppcomp.knu.`object`.DeviceInfo
@@ -15,7 +17,6 @@ import com.ppcomp.knu.utils.PreferenceHelper
  * @author 정준
  */
 class GlobalApplication : Application() {
-
 
     override fun onCreate() {
         super.onCreate()
@@ -42,7 +43,7 @@ class GlobalApplication : Application() {
          * 카카오 유저 데이터 서버에 업로드
          * @author 정준
          */
-        fun kakaoUserInfoUpload() {
+        fun kakaoUserInfoUpload(context: Context) {
             var isGetFailed: Boolean = false
             val apiService = RestApiService()
             val getId = PreferenceHelper.get("fbId","")
@@ -52,7 +53,7 @@ class GlobalApplication : Application() {
                 device_id = getId
             )
 
-            apiService.getUser(getKakaoId) {
+            apiService.getUser(context,getKakaoId) {
                 //서버에 데이터가 있는지 확인 (GET)
                 if(it?.id != null) {
                     Log.d("kakaoUser_get","id != null")
@@ -64,9 +65,9 @@ class GlobalApplication : Application() {
 
                 if(isGetFailed) {
                     //서버에 데이터가 없으면 서버에 데이터 저장 (POST)
-                    apiService.postUser(userInfo) {
+                    apiService.postUser(context,userInfo) {
                         if (it?.id != null) {
-                            // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
+                            // it = newly added user parsed as response
                             // it?.id = newly added user ID
                             Log.d("kakaoUser_post", "id != null")
                         } else {
@@ -76,9 +77,9 @@ class GlobalApplication : Application() {
                 }
                 else {
                     //서버에 데이터가 있으면 데이터 변경 (PUT)
-                    apiService.putUser(userInfo) {
+                    apiService.putUser(context,userInfo) {
                         if (it?.id != null) {
-                            // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
+                            // it = newly added user parsed as response
                             // it?.id = newly added user ID
                             Log.d("kakaoUser_put", "id != null")
                         } else {
@@ -93,7 +94,7 @@ class GlobalApplication : Application() {
          * 유저 데이터 서버에 업로드
          * @author 정준, 정우
          */
-        fun userInfoUpload() {
+        fun userInfoUpload(context: Context) {
             var isGetFailed: Boolean = false
             val apiService = RestApiService()
             val getId = PreferenceHelper.get("fbId","").toString()
@@ -108,7 +109,7 @@ class GlobalApplication : Application() {
                 alarmSwitch = getAlarmSwitch
             )
 
-            apiService.getDevice(getId) {
+            apiService.getDevice(context, getId) {
                 //서버에 데이터가 있는지 확인 (GET)
                 if(it?.id != null) {
                     Log.d("User_get","id != null")
@@ -120,9 +121,9 @@ class GlobalApplication : Application() {
 
                 if(isGetFailed) {
                     //서버에 데이터가 없으면 서버에 데이터 저장 (POST)
-                    apiService.postDevice(deviceInfo) {
+                    apiService.postDevice(context,deviceInfo) {
                         if (it?.id != null) {
-                            // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
+                            // it = newly added user parsed as response
                             // it?.id = newly added user ID
                             Log.d("User_post", "id != null")
                         } else {
@@ -132,9 +133,9 @@ class GlobalApplication : Application() {
                 }
                 else {
                     //서버에 데이터가 있으면 데이터 변경 (PUT)
-                    apiService.putDevice(deviceInfo) {
+                    apiService.putDevice(context,deviceInfo) {
                         if (it?.id != null) {
-                            // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
+                            // it = newly added user parsed as response
                             // it?.id = newly added user ID
                             Log.d("User_put", "id != null")
                         } else {

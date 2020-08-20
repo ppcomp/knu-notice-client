@@ -1,4 +1,7 @@
+
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.ppcomp.knu.`object`.UserInfo
 import com.ppcomp.knu.utils.RestApi
 import com.ppcomp.knu.`object`.DeviceInfo
@@ -7,7 +10,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RestApiService {
-    fun getDevice(id: String, onResult: (DeviceInfo?) -> Unit){
+    fun getDevice(context: Context, id: String, onResult: (DeviceInfo?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.getDevice(id).enqueue(
             object : Callback<DeviceInfo> {
@@ -15,16 +18,21 @@ class RestApiService {
                     Log.d("call",call.toString())
                     Log.d("t",t.toString())
                     onResult(null)
+                    Toast.makeText(context,"디바이스 get 요청 실패 (네트워크 문제)",Toast.LENGTH_SHORT)
                 }
                 override fun onResponse(call: Call<DeviceInfo>, response: Response<DeviceInfo>) {
-                    val getUser = response.body()
-                    onResult(getUser)
+                    if(response.isSuccessful) {
+                        val getUser = response.body()
+                        onResult(getUser)
+                    }
+                    else
+                        Toast.makeText(context,"디바이스 get 요청 실패",Toast.LENGTH_SHORT)
                 }
             }
         )
     }
 
-    fun postDevice(deviceData: DeviceInfo, onResult: (DeviceInfo?) -> Unit){
+    fun postDevice(context: Context, deviceData: DeviceInfo, onResult: (DeviceInfo?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.postDevice(deviceData).enqueue(
             object : Callback<DeviceInfo> {
@@ -32,16 +40,21 @@ class RestApiService {
                     Log.d("call", call.toString())
                     Log.d("t",t.toString())
                     onResult(null)
+                    Toast.makeText(context,"디바이스 post 요청 실패 (네트워크 문제)",Toast.LENGTH_SHORT)
                 }
                 override fun onResponse(call: Call<DeviceInfo>, response: Response<DeviceInfo>) {
-                    val addedUser = response.body()
-                    onResult(addedUser)
+                    if(response.isSuccessful) {
+                        val addedUser = response.body()
+                        onResult(addedUser)
+                    }
+                    else
+                        Toast.makeText(context,"디바이스 post 요청 실패",Toast.LENGTH_SHORT)
                 }
             }
         )
     }
 
-    fun putDevice(deviceData: DeviceInfo, onResult: (DeviceInfo?) -> Unit){
+    fun putDevice(context: Context,deviceData: DeviceInfo, onResult: (DeviceInfo?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.putDevice(deviceData).enqueue(
             object : Callback<DeviceInfo> {
@@ -49,16 +62,21 @@ class RestApiService {
                     Log.d("call", call.toString())
                     Log.d("t",t.toString())
                     onResult(null)
+                    Toast.makeText(context,"디바이스 put 요청 실패 (네트워크 문제)",Toast.LENGTH_SHORT)
                 }
                 override fun onResponse(call: Call<DeviceInfo>, response: Response<DeviceInfo>) {
-                    val modifiedUser = response.body()
-                    onResult(modifiedUser)
+                    if(response.isSuccessful) {
+                        val modifiedUser = response.body()
+                        onResult(modifiedUser)
+                    }
+                    else
+                        Toast.makeText(context,"디바이스 put 요청 실패",Toast.LENGTH_SHORT)
                 }
             }
         )
     }
 
-    fun getUser(id: String, onResult: (UserInfo?) -> Unit){
+    fun getUser(context: Context, id: String, onResult: (UserInfo?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.getUser(id).enqueue(
             object : Callback<UserInfo> {
@@ -66,17 +84,22 @@ class RestApiService {
                     Log.d("call",call.toString())
                     Log.d("t",t.toString())
                     onResult(null)
+                    Toast.makeText(context,"유저 get 요청 실패 (네트워크 문제)",Toast.LENGTH_SHORT)
                 }
 
                 override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
-                    val getKakaoUser = response.body()
-                    onResult(getKakaoUser)
+                    if(response.isSuccessful) {
+                        val getKakaoUser = response.body()
+                        onResult(getKakaoUser)
+                    }
+                    else
+                        Toast.makeText(context,"유저 get 요청 실패",Toast.LENGTH_SHORT)
                 }
             }
         )
     }
 
-    fun postUser(userData: UserInfo, onResult: (UserInfo?) -> Unit){
+    fun postUser(context: Context, userData: UserInfo, onResult: (UserInfo?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.postUser(userData).enqueue(
             object : Callback<UserInfo> {
@@ -84,16 +107,21 @@ class RestApiService {
                     Log.d("call",call.toString())
                     Log.d("t",t.toString())
                     onResult(null)
+                    Toast.makeText(context,"유저 post 요청 실패 (네트워크 문제)",Toast.LENGTH_SHORT)
                 }
                 override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
-                    val addedKakaoUser = response.body()
-                    onResult(addedKakaoUser)
+                    if(response.isSuccessful) {
+                        val addedKakaoUser = response.body()
+                        onResult(addedKakaoUser)
+                    }
+                    else
+                        Toast.makeText(context,"유저 post 요청 실패",Toast.LENGTH_SHORT)
                 }
             }
         )
     }
 
-    fun putUser(userData: UserInfo, onResult: (UserInfo?) -> Unit){
+    fun putUser(context: Context, userData: UserInfo, onResult: (UserInfo?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.putUser(userData).enqueue(
             object : Callback<UserInfo> {
@@ -101,10 +129,15 @@ class RestApiService {
                     Log.d("call", call.toString())
                     Log.d("t",t.toString())
                     onResult(null)
+                    Toast.makeText(context,"유저 put 요청 실패 (네트워크 문제)",Toast.LENGTH_SHORT)
                 }
                 override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
-                    val modifiedUser = response.body()
-                    onResult(modifiedUser)
+                    if(response.isSuccessful) {
+                        val modifiedUser = response.body()
+                        onResult(modifiedUser)
+                    }
+                    else
+                        Toast.makeText(context,"유저 put 요청 실패",Toast.LENGTH_SHORT)
                 }
             }
         )

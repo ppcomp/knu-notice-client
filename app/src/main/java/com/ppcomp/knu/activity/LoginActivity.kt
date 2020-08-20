@@ -75,7 +75,7 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                     GlobalApplication.isLogin = true    //로그인 상태 업데이트
-                    GlobalApplication.kakaoUserInfoUpload()    //카카오계정 데이터 api서버에 추가
+                    GlobalApplication.kakaoUserInfoUpload(this@LoginActivity)    //카카오계정 데이터 api서버에 추가
                     PreferenceHelper.put("kakaoId",kakaoId)
                     PreferenceHelper.put("nickname",kakaoNickname) //닉네임 저장
                     PreferenceHelper.put("thumbnail",kakakoThumbnail) //썸네일 저장
