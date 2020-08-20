@@ -1,6 +1,5 @@
 package com.ppcomp.knu.adapter
 
-import RestApiService
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
-import com.ppcomp.knu.`object`.UserInfo
 import com.ppcomp.knu.`object`.Keyword
 import com.ppcomp.knu.utils.PreferenceHelper
 

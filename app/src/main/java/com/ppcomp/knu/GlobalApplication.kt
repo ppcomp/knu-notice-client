@@ -2,11 +2,10 @@ package com.ppcomp.knu
 
 import RestApiService
 import android.app.Application
-import android.content.Context
 import android.util.Log
 import com.kakao.auth.KakaoSDK
-import com.ppcomp.knu.`object`.KakaoUserInfo
 import com.ppcomp.knu.`object`.UserInfo
+import com.ppcomp.knu.`object`.DeviceInfo
 import com.ppcomp.knu.adapter.KakaoSDKAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
 
@@ -48,12 +47,12 @@ class GlobalApplication : Application() {
             val apiService = RestApiService()
             val getId = PreferenceHelper.get("fbId","")
             val getKakaoId = PreferenceHelper.get("kakaoId","").toString()
-            val userInfo = KakaoUserInfo(
+            val userInfo = UserInfo(
                 id = getKakaoId,
                 device_id = getId
             )
 
-            apiService.getKakaoUser(getKakaoId) {
+            apiService.getUser(getKakaoId) {
                 //서버에 데이터가 있는지 확인 (GET)
                 if(it?.id != null) {
                     Log.d("kakaoUser_get","id != null")
@@ -65,7 +64,7 @@ class GlobalApplication : Application() {
 
                 if(isGetFailed) {
                     //서버에 데이터가 없으면 서버에 데이터 저장 (POST)
-                    apiService.addKakaoUser(userInfo) {
+                    apiService.postUser(userInfo) {
                         if (it?.id != null) {
                             // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
                             // it?.id = newly added user ID
@@ -77,7 +76,7 @@ class GlobalApplication : Application() {
                 }
                 else {
                     //서버에 데이터가 있으면 데이터 변경 (PUT)
-                    apiService.modifyKakaoUser(userInfo) {
+                    apiService.putUser(userInfo) {
                         if (it?.id != null) {
                             // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
                             // it?.id = newly added user ID
@@ -98,10 +97,10 @@ class GlobalApplication : Application() {
             var isGetFailed: Boolean = false
             val apiService = RestApiService()
             val getId = PreferenceHelper.get("fbId","").toString()
-            val getKeywords: String? = PreferenceHelper.get("Keys", "")
-            val getSubscriptions: String? = PreferenceHelper.get("Urls", "")
+            val getKeywords: String? = PreferenceHelper.get("Keys", null)
+            val getSubscriptions: String? = PreferenceHelper.get("Urls", null)
             val getAlarmSwitch: Boolean? = PreferenceHelper.get("alarmSwitch", false)
-            val userInfo = UserInfo(
+            val deviceInfo = DeviceInfo(
                 id = getId,
                 id_method = "InstanceId",
                 keywords = getKeywords,
@@ -109,7 +108,7 @@ class GlobalApplication : Application() {
                 alarmSwitch = getAlarmSwitch
             )
 
-            apiService.getUser(getId) {
+            apiService.getDevice(getId) {
                 //서버에 데이터가 있는지 확인 (GET)
                 if(it?.id != null) {
                     Log.d("User_get","id != null")
@@ -121,7 +120,7 @@ class GlobalApplication : Application() {
 
                 if(isGetFailed) {
                     //서버에 데이터가 없으면 서버에 데이터 저장 (POST)
-                    apiService.addUser(userInfo) {
+                    apiService.postDevice(deviceInfo) {
                         if (it?.id != null) {
                             // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
                             // it?.id = newly added user ID
@@ -133,7 +132,7 @@ class GlobalApplication : Application() {
                 }
                 else {
                     //서버에 데이터가 있으면 데이터 변경 (PUT)
-                    apiService.modifyUser(userInfo) {
+                    apiService.putDevice(deviceInfo) {
                         if (it?.id != null) {
                             // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
                             // it?.id = newly added user ID
