@@ -52,7 +52,7 @@ class KeywordAdapter(val context: Context, val keywordList: ArrayList<Keyword>) 
 
             PreferenceHelper.put("Keys", completeKeyword)
 
-            GlobalApplication.userInfoUpload(context)
+            GlobalApplication.deviceInfoUpdate(context)
             GlobalApplication.isFragmentChange[1] = true //키워드 변경사항 확인
         }
 

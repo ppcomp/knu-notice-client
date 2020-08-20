@@ -21,12 +21,13 @@ class RestApiService {
                     Toast.makeText(context,"디바이스 get 요청 실패 (네트워크 문제)",Toast.LENGTH_SHORT)
                 }
                 override fun onResponse(call: Call<DeviceInfo>, response: Response<DeviceInfo>) {
-                    if(response.isSuccessful) {
+                    if (response.isSuccessful) {
                         val getUser = response.body()
                         onResult(getUser)
+                    } else {
+                        Toast.makeText(context, "디바이스 get 요청 실패", Toast.LENGTH_SHORT)
+                        onResult(null)
                     }
-                    else
-                        Toast.makeText(context,"디바이스 get 요청 실패",Toast.LENGTH_SHORT)
                 }
             }
         )
@@ -47,8 +48,10 @@ class RestApiService {
                         val addedUser = response.body()
                         onResult(addedUser)
                     }
-                    else
+                    else {
                         Toast.makeText(context,"디바이스 post 요청 실패",Toast.LENGTH_SHORT)
+                        onResult(null)
+                    }
                 }
             }
         )
@@ -69,8 +72,10 @@ class RestApiService {
                         val modifiedUser = response.body()
                         onResult(modifiedUser)
                     }
-                    else
-                        Toast.makeText(context,"디바이스 put 요청 실패",Toast.LENGTH_SHORT)
+                    else {
+                        Toast.makeText(context, "디바이스 put 요청 실패", Toast.LENGTH_SHORT)
+                        onResult(null)
+                    }
                 }
             }
         )
@@ -88,12 +93,13 @@ class RestApiService {
                 }
 
                 override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
-                    if(response.isSuccessful) {
+                    if (response.isSuccessful) {
                         val getKakaoUser = response.body()
                         onResult(getKakaoUser)
+                    } else {
+                        Toast.makeText(context, "유저 get 요청 실패", Toast.LENGTH_SHORT)
+                        onResult(null)
                     }
-                    else
-                        Toast.makeText(context,"유저 get 요청 실패",Toast.LENGTH_SHORT)
                 }
             }
         )
@@ -114,8 +120,10 @@ class RestApiService {
                         val addedKakaoUser = response.body()
                         onResult(addedKakaoUser)
                     }
-                    else
+                    else {
                         Toast.makeText(context,"유저 post 요청 실패",Toast.LENGTH_SHORT)
+                        onResult(null)
+                    }
                 }
             }
         )
@@ -132,12 +140,13 @@ class RestApiService {
                     Toast.makeText(context,"유저 put 요청 실패 (네트워크 문제)",Toast.LENGTH_SHORT)
                 }
                 override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
-                    if(response.isSuccessful) {
+                    if (response.isSuccessful) {
                         val modifiedUser = response.body()
                         onResult(modifiedUser)
+                    } else {
+                        Toast.makeText(context, "유저 put 요청 실패", Toast.LENGTH_SHORT)
+                        onResult(null)
                     }
-                    else
-                        Toast.makeText(context,"유저 put 요청 실패",Toast.LENGTH_SHORT)
                 }
             }
         )

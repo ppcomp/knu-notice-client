@@ -71,7 +71,7 @@ class SubscriptionActivity : AppCompatActivity() {
 
         subsSave.setOnClickListener {   // 저장 버튼 누를시
             saveSubsciption()   //체크된 구독리스트 저장
-            GlobalApplication.userInfoUpload(this)  //구독리스트 서버에 업로드
+            GlobalApplication.deviceInfoUpdate(this)  //구독리스트 서버에 업로드
             Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
             if (isNewUser) { // 신규 사용자일시 확인버튼이 메인을 띄우도록

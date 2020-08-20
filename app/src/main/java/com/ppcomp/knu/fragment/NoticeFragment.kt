@@ -110,6 +110,7 @@ class NoticeFragment : Fragment() {
                 Toast.makeText(requireContext(), "게시글이 존재하지 않습니다.", Toast.LENGTH_SHORT)
                     .show()
             }
+
             previousPage = parseResult[0]
             url = parseResult[1]
             nextPage = parseResult[2]

@@ -40,10 +40,10 @@ class GlobalApplication : Application() {
         var isFragmentChange: Array<Boolean> = arrayOf(false, false, false, false) //프레그먼트 변경사항 확인 (notice, keywordNotice, search, bookmark)
 
         /**
-         * 카카오 유저 데이터 서버에 업로드
+         * 유저 데이터 서버에 업로드
          * @author 정준
          */
-        fun kakaoUserInfoUpload(context: Context) {
+        fun userInfoUpload(context: Context) {
             var isGetFailed: Boolean = false
             val apiService = RestApiService()
             val getId = PreferenceHelper.get("fbId","")
@@ -91,15 +91,15 @@ class GlobalApplication : Application() {
         }
 
         /**
-         * 유저 데이터 서버에 업로드
+         * 디바이스 데이터 서버에 업로드 (GET, POST)
          * @author 정준, 정우
          */
-        fun userInfoUpload(context: Context) {
+        fun deviceInfoUpload(context: Context) {
             var isGetFailed: Boolean = false
             val apiService = RestApiService()
             val getId = PreferenceHelper.get("fbId","").toString()
-            val getKeywords: String? = PreferenceHelper.get("Keys", null)
-            val getSubscriptions: String? = PreferenceHelper.get("Urls", null)
+            val getKeywords: String? = PreferenceHelper.get("Keys", "")
+            val getSubscriptions: String? = PreferenceHelper.get("Urls", "")
             val getAlarmSwitch: Boolean? = PreferenceHelper.get("alarmSwitch", false)
             val deviceInfo = DeviceInfo(
                 id = getId,
@@ -131,20 +131,40 @@ class GlobalApplication : Application() {
                         }
                     }
                 }
-                else {
-                    //서버에 데이터가 있으면 데이터 변경 (PUT)
-                    apiService.putDevice(context,deviceInfo) {
-                        if (it?.id != null) {
-                            // it = newly added user parsed as response
-                            // it?.id = newly added user ID
-                            Log.d("User_put", "id != null")
-                        } else {
-                            Log.d("User_put", "id = null")
-                        }
-                    }
-                }
             }
         }
+
+        /**
+         * 디바이스 데이터 서버에 업데이트 (PUT)
+         * @author 정준
+         */
+        fun deviceInfoUpdate(context: Context) {
+            val apiService = RestApiService()
+            val getId = PreferenceHelper.get("fbId","").toString()
+            val getKeywords: String? = PreferenceHelper.get("Keys", "")
+            val getSubscriptions: String? = PreferenceHelper.get("Urls", "null")
+            val getAlarmSwitch: Boolean? = PreferenceHelper.get("alarmSwitch", false)
+            val deviceInfo = DeviceInfo(
+                id = getId,
+                id_method = "InstanceId",
+                keywords = getKeywords,
+                subscriptions = getSubscriptions,
+                alarmSwitch = getAlarmSwitch
+            )
+
+            apiService.putDevice(context,deviceInfo) {
+                if (it?.id != null) {
+                    // it = newly added user parsed as response
+                    // it?.id = newly added user ID
+                    Log.d("User_put", "id != null")
+                } else {
+                    Log.d("User_put", "id = null")
+                }
+            }
+
+        }
+
+
 
     }
 }
