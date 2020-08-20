@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="구독중인 학과에서는\n 해당 키워드가 없습니다. "
+            android:text="해당 키워드가 검색결과로 존재하지 않습니다. "
             android:textSize="30dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"></TextView>
