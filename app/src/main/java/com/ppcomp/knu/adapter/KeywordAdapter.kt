@@ -54,29 +54,8 @@ class KeywordAdapter(val context: Context, val keywordList: ArrayList<Keyword>) 
 
             PreferenceHelper.put("Keys", completeKeyword)
 
-            val apiService = RestApiService()
-            var getFbId = PreferenceHelper.get("fbId", "")
-            var getKeywords: String? = PreferenceHelper.get("Keys", "")
-            var getSubscriptions: String? = PreferenceHelper.get("Urls", "")
-            var alarmSwitch = PreferenceHelper.get("alarmSwitch", false)
-
-            val userInfo = UserInfo(
-                id = getFbId,
-                id_method = "guid",
-                keywords = getKeywords,
-                subscriptions = getSubscriptions,
-                alarmSwitch = alarmSwitch
-            )
-
-            apiService.modifyUser(userInfo) {
-                if (it?.id != null) {
-                    // it = newly added user parsed as response
-                    // it?.id = newly added user ID
-                } else {
-
-                }
-            }
-            GlobalApplication.isFragmentChange[1] = true    //키워드 변경사항 확인
+            GlobalApplication.UserInfoUpload()
+            GlobalApplication.iskeywordChange = true //키워드 변경사항 확인
         }
 
 
