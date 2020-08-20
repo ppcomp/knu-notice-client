@@ -94,4 +94,21 @@ class RestApiService {
         )
     }
 
+    fun modifyKakaoUser(kakaoUserData: KakaoUserInfo, onResult: (KakaoUserInfo?) -> Unit){
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        retrofit.modifyKakaoUser(kakaoUserData).enqueue(
+            object : Callback<KakaoUserInfo> {
+                override fun onFailure(call: Call<KakaoUserInfo>, t: Throwable) {
+                    Log.d("call", call.toString())
+                    Log.d("t",t.toString())
+                    onResult(null)
+                }
+                override fun onResponse(call: Call<KakaoUserInfo>, response: Response<KakaoUserInfo>) {
+                    val modifiedUser = response.body()
+                    onResult(modifiedUser)
+                }
+            }
+        )
+    }
+
 }

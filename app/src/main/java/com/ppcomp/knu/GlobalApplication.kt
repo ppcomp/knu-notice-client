@@ -71,7 +71,19 @@ class GlobalApplication : Application() {
                             // it?.id = newly added user ID
                             Log.d("kakaoUser_post", "id != null")
                         } else {
-                            Log.d("kakaoUser_post", "id = null")
+                            Log.d("kakaoUser_post", "id = null ")
+                        }
+                    }
+                }
+                else {
+                    //서버에 데이터가 있으면 데이터 변경 (PUT)
+                    apiService.modifyKakaoUser(userInfo) {
+                        if (it?.id != null) {
+                            // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
+                            // it?.id = newly added user ID
+                            Log.d("kakaoUser_put", "id != null")
+                        } else {
+                            Log.d("kakaoUser_put", "id = null ")
                         }
                     }
                 }
