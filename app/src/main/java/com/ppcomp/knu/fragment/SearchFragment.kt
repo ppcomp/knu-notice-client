@@ -53,11 +53,15 @@ class SearchFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
-        bookmarkList = gson.fromJson(PreferenceHelper.get("bookmark",""),listType.type) //북마크리스트 가져옴
         progressBar = view!!.findViewById((R.id.progressbar)) as ProgressBar
         emptyResultView = view!!.findViewById((R.id.search_noData)) as TextView
         searchButton = view!!.findViewById(R.id.search_button) as Button
         progressBar.visibility = View.GONE
+
+        val jsonList = PreferenceHelper.get("bookmark","")
+        if(jsonList != "")
+            bookmarkList = gson.fromJson(jsonList,listType.type) //북마크 리스트 저장
+
         searchRecyclerView =
             view!!.findViewById(R.id.search_recycler) as RecyclerView   // recyclerview 가져오기
         search_edit = view!!.findViewById(R.id.search_edit) as EditText

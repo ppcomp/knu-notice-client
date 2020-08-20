@@ -48,7 +48,6 @@ class KeywordNoticeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_keyword_notice, container, false)
 
-        bookmarkList = gson.fromJson(PreferenceHelper.get("bookmark",""),listType.type) //북마크리스트 가져옴
         keywordRecyclerView = view!!.findViewById(R.id.keyword_notice) as RecyclerView    //recyclerview 가져오기
         progressBar = view!!.findViewById((R.id.keyword_progressbar)) as ProgressBar
         keywordNullView = view!!.findViewById(R.id.keyword_null_view) as TextView
@@ -57,6 +56,10 @@ class KeywordNoticeFragment : Fragment() {
         progressBar.visibility = View.GONE      //progressbar 숨기기
         keywordNullView.visibility = View.GONE
         itemNullView.visibility = View.GONE
+
+        val jsonList = PreferenceHelper.get("bookmark","")
+        if(jsonList != "")
+            bookmarkList = gson.fromJson(jsonList,listType.type) //북마크 리스트 저장
 
         parsing()
         Parsing.scrollPagination(
