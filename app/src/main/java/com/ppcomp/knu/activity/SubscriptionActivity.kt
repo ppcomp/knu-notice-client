@@ -71,7 +71,7 @@ class SubscriptionActivity : AppCompatActivity() {
 
         subsSave.setOnClickListener {   // 저장 버튼 누를시
             saveSubsciption()   //체크된 구독리스트 저장
-            GlobalApplication.UserInfoUpload()  //구독리스트 서버에 업로드
+            GlobalApplication.userInfoUpload()  //구독리스트 서버에 업로드
             Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
 
             if (isNewUser) { // 신규 사용자일시 확인버튼이 메인을 띄우도록
@@ -135,7 +135,8 @@ class SubscriptionActivity : AppCompatActivity() {
             PreferenceHelper.put("testsub", strContact)
             // 선택하고 저장버튼 누를시 Subs 라는 Key로 SharedPreferences에 저장
         }
-        GlobalApplication.isSubsChange = true //구독리스트 변경사항 확인
+        GlobalApplication.isFragmentChange[0] = true    // 구독리스트 변경사항 확인
+        GlobalApplication.isFragmentChange[1] = true    // 키워드 변경사항 확인
     }
 
     /**

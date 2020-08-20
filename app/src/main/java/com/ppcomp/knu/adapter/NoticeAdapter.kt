@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.text.Html
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.utils.PreferenceHelper
-import kotlin.collections.lastIndex as lastIndex1
 
 class NoticeAdapter(
     val context: Context,               // MainActivity
@@ -120,7 +118,7 @@ class NoticeAdapter(
             }
             bookmarkListJson = gson.toJson(bookmarkList, listType.type)
             PreferenceHelper.put("bookmark",bookmarkListJson)
-            GlobalApplication.isBookmarkChange = arrayOf(true, true, true, true)  //북마크리스트 변경사항 확인
+            GlobalApplication.isFragmentChange = arrayOf(true, true, true, true)  //북마크리스트 변경사항 확인
         }
 
     }

@@ -35,18 +35,15 @@ class GlobalApplication : Application() {
     }
 
     companion object {  //자바의 static이 없는 대신 있는 코틀린만의 구조체, 싱글톤 패턴 구현가능
-        var isLogin: Boolean = false    //로그인 상태
-        var isSubsChange: Boolean = false //구독리스트 변경사항 유무
-        var iskeywordChange: Boolean = false //키워드 변경사항 유무
         var instance: GlobalApplication? = null
-        var isSearchChange: Boolean = false //검색 변경사항 유무
-        var isBookmarkChange: Array<Boolean> = arrayOf(false, false, false, false) //북마크 변경사항 확인 (notice, keywordNotice, search, bookmark)
+        var isLogin: Boolean = false    //로그인 상태
+        var isFragmentChange: Array<Boolean> = arrayOf(false, false, false, false) //프레그먼트 변경사항 확인 (notice, keywordNotice, search, bookmark)
 
         /**
          * 카카오 유저 데이터 서버에 업로드
          * @author 정준
          */
-        fun KakaoUserInfoUpload() {
+        fun kakaoUserInfoUpload() {
             var isGetFailed: Boolean = false
             val apiService = RestApiService()
             val getId = PreferenceHelper.get("fbId","")
@@ -57,7 +54,7 @@ class GlobalApplication : Application() {
             )
 
             apiService.getKakaoUser(getKakaoId) {
-                //서버에 데이터가 있는지 확인
+                //서버에 데이터가 있는지 확인 (GET)
                 if(it?.id != null) {
                     Log.d("kakaoUser_get","id != null")
                     isGetFailed = false
@@ -74,7 +71,19 @@ class GlobalApplication : Application() {
                             // it?.id = newly added user ID
                             Log.d("kakaoUser_post", "id != null")
                         } else {
-                            Log.d("kakaoUser_post", "id = null")
+                            Log.d("kakaoUser_post", "id = null ")
+                        }
+                    }
+                }
+                else {
+                    //서버에 데이터가 있으면 데이터 변경 (PUT)
+                    apiService.modifyKakaoUser(userInfo) {
+                        if (it?.id != null) {
+                            // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
+                            // it?.id = newly added user ID
+                            Log.d("kakaoUser_put", "id != null")
+                        } else {
+                            Log.d("kakaoUser_put", "id = null ")
                         }
                     }
                 }
@@ -85,7 +94,7 @@ class GlobalApplication : Application() {
          * 유저 데이터 서버에 업로드
          * @author 정준, 정우
          */
-        fun UserInfoUpload() {
+        fun userInfoUpload() {
             var isGetFailed: Boolean = false
             val apiService = RestApiService()
             val getId = PreferenceHelper.get("fbId","").toString()
@@ -101,7 +110,7 @@ class GlobalApplication : Application() {
             )
 
             apiService.getUser(getId) {
-                //서버에 데이터가 있는지 확인
+                //서버에 데이터가 있는지 확인 (GET)
                 if(it?.id != null) {
                     Log.d("User_get","id != null")
                     isGetFailed = false
