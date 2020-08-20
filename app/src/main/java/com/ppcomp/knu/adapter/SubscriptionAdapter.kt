@@ -8,6 +8,7 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Subscription
+import com.ppcomp.knu.utils.HangulUtils
 import kotlinx.android.synthetic.main.activity_subscription_item.view.*
 import kotlin.collections.ArrayList
 
@@ -28,16 +29,19 @@ class SubscriptionAdapter(val context: Context, var subsList: ArrayList<Subscrip
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString().toLowerCase()
-                if (charSearch.isEmpty()) {
-                    subsFilterList = subsList
+                subsFilterList = if (charSearch.isEmpty()) {
+                    subsList
                 } else {
                     val resultList = ArrayList<Subscription>()
                     for (row in subsList) {
-                        if (row.name.toLowerCase().contains(charSearch)) {
+                        val iniName = HangulUtils.getHangulInitialSound(row.name, charSearch);
+                        if (iniName.indexOf(charSearch) >= 0) { // 초성검색어가 있으면 해당 데이터 리스트에 추가
+                            resultList.add(row)
+                        } else if (row.name.toLowerCase().contains(charSearch)) {
                             resultList.add(row)
                         }
                     }
-                    subsFilterList = resultList
+                    resultList
                 }
                 val filterResults = FilterResults()
                 filterResults.values = subsFilterList
@@ -65,7 +69,7 @@ class SubscriptionAdapter(val context: Context, var subsList: ArrayList<Subscrip
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
 
-        holder.bind(subsFilterList[position], context) // 확실하지않은 부분
+        holder.bind(subsFilterList[position], context)
 
         holder.chk?.setOnCheckedChangeListener(null)
         // 체크박스 부분
@@ -73,7 +77,7 @@ class SubscriptionAdapter(val context: Context, var subsList: ArrayList<Subscrip
         holder.chk?.setChecked(subsFilterList.get(position).checked)
 
         holder.chk?.setOnCheckedChangeListener { // 체크 표시할 때
-                buttonView, isChecked ->
+                _, isChecked ->
             val getName: String = holder.itemView.subs_name.text as String
             for (i in subsList) {
                 if (i.name.equals(getName)) {
@@ -81,6 +85,9 @@ class SubscriptionAdapter(val context: Context, var subsList: ArrayList<Subscrip
                 }
             }
 
+        }
+        holder.name?.setOnClickListener{ // 학과 이름 누르면 체크되도록
+            holder.chk?.setChecked(!holder.chk?.isChecked)
         }
 
     }
@@ -114,6 +121,14 @@ class SubscriptionAdapter(val context: Context, var subsList: ArrayList<Subscrip
 
         }
         notifyDataSetChanged()
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
 
