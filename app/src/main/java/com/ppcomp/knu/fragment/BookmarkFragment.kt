@@ -33,7 +33,7 @@ import java.time.LocalDate
 class BookmarkFragment : Fragment() {
 
     var bookmarkList = arrayListOf<Notice>()
-    var makeGson: Gson = GsonBuilder().create()
+    var gson: Gson = GsonBuilder().create()
     var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
@@ -59,7 +59,9 @@ class BookmarkFragment : Fragment() {
         progressBar.setVisibility(View.GONE)                                //progressbar 숨기기
         noData.setVisibility(View.GONE)
 
-        bookmarkList = makeGson.fromJson(PreferenceHelper.get("bookmark",""),listType.type) //북마크 리스트 저장
+        val jsonList = PreferenceHelper.get("bookmark","")
+        if(jsonList != "")
+            bookmarkList = gson.fromJson(jsonList,listType.type) //북마크 리스트 저장
 
         val bookmarkAdapter = BookmarkAdapter(thisContext, bookmarkList) { notice ->
             var link: String = notice.link

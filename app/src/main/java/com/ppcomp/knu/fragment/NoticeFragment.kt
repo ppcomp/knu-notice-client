@@ -53,12 +53,15 @@ class NoticeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_notice_layout, container, false)
 
-        bookmarkList = gson.fromJson(PreferenceHelper.get("bookmark",""),listType.type) //북마크 리스트 가져옴
         noticeRecyclerView = view!!.findViewById(R.id.notice) as RecyclerView   //recyclerview 가져오기
         progressBar = view!!.findViewById((R.id.progressbar)) as ProgressBar
         emptyResultView = view!!.findViewById((R.id.noData)) as TextView
         progressBar.visibility = View.GONE                                      //progressbar 숨기기
         emptyResultView.visibility = View.GONE
+
+        val jsonList = PreferenceHelper.get("bookmark","")
+        if(jsonList != "")
+            bookmarkList = gson.fromJson(jsonList,listType.type) //북마크 리스트 저장
 
         parsing()
         Parsing.scrollPagination(
