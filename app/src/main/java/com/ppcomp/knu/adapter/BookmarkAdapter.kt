@@ -44,14 +44,14 @@ class BookmarkAdapter(
      */
     inner class Holder(itemView: View, itemClick: (Notice) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
-        val noticeLinear = itemView.findViewById<LinearLayout>(R.id.noticeLinear)
-        val noticeTitle = itemView.findViewById<TextView>(R.id.title)
-        val noticeBoard = itemView.findViewById<TextView>(R.id.board)
-        val noticeDate = itemView.findViewById<TextView>(R.id.date)
-        val noticeAuthor = itemView.findViewById<TextView>(R.id.author)
-        val noticeReference = itemView.findViewById<TextView>(R.id.reference)
-        val noticeImage = itemView.findViewById<ImageView>(R.id.image)
-        val noticeFixedImage = itemView.findViewById<ImageView>(R.id.fixed_image)
+        private val noticeLinear = itemView.findViewById<LinearLayout>(R.id.noticeLinear)
+        private val noticeTitle = itemView.findViewById<TextView>(R.id.title)
+        private val noticeBoard = itemView.findViewById<TextView>(R.id.board)
+        private val noticeDate = itemView.findViewById<TextView>(R.id.date)
+        private val noticeAuthor = itemView.findViewById<TextView>(R.id.author)
+        private val noticeReference = itemView.findViewById<TextView>(R.id.reference)
+        private val noticeImage = itemView.findViewById<ImageView>(R.id.image)
+        private val noticeFixedImage = itemView.findViewById<ImageView>(R.id.fixed_image)
         val noticeBookmark = itemView.findViewById<ToggleButton>(R.id.toggle_bookmark)
 
         @RequiresApi(Build.VERSION_CODES.N)
@@ -115,7 +115,6 @@ class BookmarkAdapter(
             PreferenceHelper.put("bookmark",bookmarkListJson)
             GlobalApplication.isFragmentChange = arrayOf(true, true, true, true)  //북마크리스트 변경사항 확인
         }
-
     }
 
     /**

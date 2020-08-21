@@ -35,9 +35,9 @@ import java.time.LocalDate
  */
 class BookmarkFragment : Fragment() {
 
-    var bookmarkList = arrayListOf<Notice>()
-    var gson: Gson = GsonBuilder().create()
-    var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
+    private var bookmarkList = arrayListOf<Notice>()
+    private var gson: Gson = GsonBuilder().create()
+    private var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
     private lateinit var noticeRecyclerView: RecyclerView
