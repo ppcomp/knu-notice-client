@@ -27,6 +27,7 @@ import com.ppcomp.knu.utils.PreferenceHelper
  */
 class BookmarkAdapter(
     private val context: Context,
+    private val fragmentView: View,
     private var bookmarkList: ArrayList<Notice>,
     private val itemClick: (Notice) -> Unit)
 
@@ -34,6 +35,8 @@ class BookmarkAdapter(
     lateinit var bookmarkListJson: String
     private var gson: Gson = GsonBuilder().create()
     private var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
+    private val bookmarkRecyclerView: RecyclerView = fragmentView.findViewById(R.id.bookmark_notice)
+    private val bookmarkNullView: TextView = fragmentView.findViewById(R.id.bookmark_null_view)
 
     /**
      * Notice 객체를 RecyclerView에 맵핑해주는 클래스
@@ -103,6 +106,10 @@ class BookmarkAdapter(
             if (!isChecked) { //북마크 체크해제시
                 bookmarkList.remove(bookmarkList[position]) //북마크리스트에서 제거
                 notifyItemRemoved(position)
+                if(bookmarkList.isEmpty()) {    //북마크리스트가 비었으면 TextView 나오게 변경
+                    bookmarkNullView.visibility = View.VISIBLE
+                    bookmarkRecyclerView.visibility = View.GONE
+                }
             }
             bookmarkListJson = gson.toJson(bookmarkList, listType.type)
             PreferenceHelper.put("bookmark",bookmarkListJson)
