@@ -17,111 +17,88 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/subscription_info_line"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginTop="50dp"
-        android:background="@drawable/keyword_info_line"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/subscription_info"
-            android:layout_width="350dp"
-            android:layout_height="80dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="30dp"
-            android:text="알림을 받고 싶은 사이트를 선택하세요.\n선택한 사이트에서 새로운 공지가 올라오면\n알람을 통해 알려줍니다.(임의) "
-            android:textSize="16dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+        <LinearLayout
+            android:id="@+id/sub_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include layout="@layout/activity_subscription_toolbar" />
+        </LinearLayout>
 
-        </TextView>
+        <LinearLayout
+            android:id="@+id/subscription_info_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/keyword_info_line" >
+            <TextView
+                android:id="@+id/subscription_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="알림을 받고 싶은 사이트를 선택하세요.\n선택한 사이트에서 새로운 공지가 올라오면 알람을 통해 알려줍니다."
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="15dp" >
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/subsSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/subscription_search_line"
+                android:textCursorDrawable="@null"
+                android:theme="@style/EditTheme"
+                app:iconifiedByDefault="false"
+                app:queryBackground="@null" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <CheckBox
+                    android:id="@+id/subs_allCheckbox"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:button="@drawable/subscription_checkbox_selector"
+                    android:checked="false"
+                    android:layout_margin="5dp" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/subsResult"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp"
+                android:overScrollMode="never" />
+
+            <TextView
+                android:id="@+id/subsSave"
+                android:layout_width="157dp"
+                android:layout_height="39dp"
+                android:background="@drawable/login_submit_btn"
+                android:gravity="center"
+                android:text="저장"
+                android:textSize="20sp" />
+
+<!--            <TextView-->
+<!--                android:id="@+id/correct"-->
+<!--                android:layout_width="100dp"-->
+<!--                android:layout_height="28dp"-->
+<!--                android:layout_marginBottom="28dp"-->
+<!--                android:clickable="true"-->
+<!--                android:gravity="center"-->
+<!--                android:text="확인"-->
+<!--                android:textSize="5sp"/>-->
+        </LinearLayout>
     </LinearLayout>
-
-
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/subsSearch"
-        android:layout_width="372dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="4dp"
-        android:background="@drawable/subscription_search_line"
-        android:textCursorDrawable="@null"
-
-        android:theme="@style/EditTheme"
-        app:iconifiedByDefault="false"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subscription_info_line"
-        app:queryBackground="@null" />
-
-    <LinearLayout
-        android:layout_width="372dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="17dp"
-        android:layout_marginRight="6dp"
-        app:layout_constraintBottom_toTopOf="@+id/subsResult"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subsSearch">
-
-        <CheckBox
-            android:id="@+id/subs_allCheckbox"
-            android:layout_width="0dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginLeft="10dp"
-            android:layout_weight=".20"
-            android:button="@drawable/subscription_checkbox_selector"
-            android:checked="false"
-            android:gravity="center" />
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/subsResult"
-        android:layout_width="373dp"
-        android:layout_height="442dp"
-        android:layout_marginTop="10dp"
-        android:overScrollMode="never"
-        app:layout_constraintBottom_toBottomOf="@id/subsSave"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.512"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/subsSearch"
-        app:layout_constraintVertical_bias="0.282">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <TextView
-        android:id="@+id/subsSave"
-        android:layout_width="157dp"
-        android:layout_height="39dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/login_submit_btn"
-        android:clickable="true"
-        android:gravity="center"
-        android:text="저장"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/correct"
-        android:layout_width="100dp"
-        android:layout_height="28dp"
-        android:layout_marginBottom="28dp"
-        android:clickable="true"
-        android:gravity="center"
-        android:text="확인"
-        android:textSize="5sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.073"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

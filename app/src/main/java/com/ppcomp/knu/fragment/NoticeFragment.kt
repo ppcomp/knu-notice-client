@@ -6,7 +6,6 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +17,9 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.utils.Parsing
@@ -36,6 +38,9 @@ import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
 class NoticeFragment : Fragment() {
 
     private var noticeList = arrayListOf<Notice>()
+    private var bookmarkList = arrayListOf<Notice>()
+    private var gson: Gson = GsonBuilder().create()
+    private var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
     private lateinit var noticeRecyclerView: RecyclerView
@@ -59,10 +64,13 @@ class NoticeFragment : Fragment() {
         emptyResultView = view!!.findViewById((R.id.noData)) as TextView
         searchNoData = view!!.findViewById((R.id.search_noData)) as TextView
 
-
         progressBar.visibility = View.GONE                                      //progressbar 숨기기
         emptyResultView.visibility = View.GONE
         searchNoData.visibility = View.GONE
+        val jsonList = PreferenceHelper.get("bookmark","")
+        if(jsonList != "")
+            bookmarkList = gson.fromJson(jsonList,listType.type) //북마크 리스트 저장
+
         parsing()
 
         Parsing.scrollPagination(
@@ -130,6 +138,7 @@ class NoticeFragment : Fragment() {
             val parseResult: List<String> = Parsing.parsing(
                 requireContext(),
                 noticeList,
+                bookmarkList,
                 noticeRecyclerView,
                 progressBar,
                 url,
@@ -145,6 +154,7 @@ class NoticeFragment : Fragment() {
             } else{
                 searchNoData.visibility = View.GONE
             }
+
             previousPage = parseResult[0]
             url = parseResult[1]
             nextPage = parseResult[2]

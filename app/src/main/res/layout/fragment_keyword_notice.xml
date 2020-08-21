@@ -8,25 +8,51 @@
 
         <include layout="@layout/activity_main_toolbar"/>
 
-    <TextView
-        android:id="@+id/keyword_null_view"
+    <LinearLayout
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="선택된 키워드가 없습니다. \n [설정 -> 키워드]\n화면에서 설정해주세요."
-        android:textSize="30dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/item_null_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="해당하는 공지가 없습니다."
-        android:textSize="30dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        <RadioGroup
+            android:id="@+id/keyword_radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/keyword_show_all"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:checked="true"
+                android:text="전체"/>
+
+            <RadioButton
+                android:id="@+id/keyword_show_subs"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:text="구독"/>
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/keyword_null_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="선택된 키워드가 없습니다. \n [설정 -> 키워드]\n화면에서 설정해주세요."
+            android:textSize="30dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"></TextView>
+
+        <TextView
+            android:id="@+id/item_null_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="해당 키워드가 검색결과로 존재하지 않습니다. "
+            android:textSize="30dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"></TextView>
+
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/keyword_swipe"
@@ -37,10 +63,10 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/keyword_notice"
-                android:scrollbars="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/progressbar2"/>
+                android:layout_above="@+id/progressbar2"
+                android:scrollbars="vertical" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
@@ -49,7 +75,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminateTint="@color/colorBlue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

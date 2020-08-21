@@ -11,6 +11,9 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.utils.Parsing
@@ -28,6 +31,9 @@ import kotlinx.android.synthetic.main.fragment_search.view.*
 class SearchFragment : Fragment() {
 
     private var noticeList = arrayListOf<Notice>()
+    private var bookmarkList = arrayListOf<Notice>()
+    private var gson: Gson = GsonBuilder().create()
+    private var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
     private lateinit var searchRecyclerView: RecyclerView
@@ -47,11 +53,19 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
+
         progressBar = view!!.findViewById((R.id.progressbar)) as ProgressBar
         emptyResultView = view!!.findViewById((R.id.search_noData)) as TextView
         searchButton = view!!.findViewById(R.id.search_button) as Button
         progressBar.visibility = View.GONE
-        searchRecyclerView = view!!.findViewById(R.id.search_recycler) as RecyclerView   // recyclerview 가져오기
+
+        val jsonList = PreferenceHelper.get("bookmark","")
+        if(jsonList != "")
+            bookmarkList = gson.fromJson(jsonList,listType.type) //북마크 리스트 저장
+
+        searchRecyclerView =
+            view!!.findViewById(R.id.search_recycler) as RecyclerView   // recyclerview 가져오기
+
         search_edit = view!!.findViewById(R.id.search_edit) as EditText
 
         search_edit.setOnKeyListener(object : View.OnKeyListener {      // 엔터키누르면 검색버튼을 자동으로 누르도록
@@ -64,7 +78,7 @@ class SearchFragment : Fragment() {
                 }
                 return false
             }
-        })
+    })
 
         searchButton.setOnClickListener() {
             searchQuery = search_edit.text.toString()
@@ -110,6 +124,7 @@ class SearchFragment : Fragment() {
         val parseResult: List<String> = Parsing.parsing(
             requireContext(),
             noticeList,
+            bookmarkList,
             searchRecyclerView,
             progressBar,
             url,

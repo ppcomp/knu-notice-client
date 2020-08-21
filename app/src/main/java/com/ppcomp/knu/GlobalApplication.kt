@@ -4,9 +4,10 @@ import RestApiService
 import android.app.Application
 import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import com.kakao.auth.KakaoSDK
-import com.ppcomp.knu.`object`.KakaoUserInfo
 import com.ppcomp.knu.`object`.UserInfo
+import com.ppcomp.knu.`object`.DeviceInfo
 import com.ppcomp.knu.adapter.KakaoSDKAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
 
@@ -16,7 +17,6 @@ import com.ppcomp.knu.utils.PreferenceHelper
  * @author 정준
  */
 class GlobalApplication : Application() {
-
 
     override fun onCreate() {
         super.onCreate()
@@ -35,28 +35,26 @@ class GlobalApplication : Application() {
     }
 
     companion object {  //자바의 static이 없는 대신 있는 코틀린만의 구조체, 싱글톤 패턴 구현가능
-        var isLogin: Boolean = false    //로그인 상태
-        var isSubsChange: Boolean = false //구독리스트 변경사항 유무
-        var iskeywordChange: Boolean = false //키워드 변경사항 유무
         var instance: GlobalApplication? = null
-        var isSearchChange: Boolean = false //검색 변경사항 유무
+        var isLogin: Boolean = false    //로그인 상태
+        var isFragmentChange: Array<Boolean> = arrayOf(false, false, false, false) //프레그먼트 변경사항 확인 (notice, keywordNotice, search, bookmark)
 
         /**
-         * 카카오 유저 데이터 서버에 업로드
+         * 유저 데이터 서버에 업로드
          * @author 정준
          */
-        fun KakaoUserInfoUpload() {
+        fun userInfoUpload(context: Context) {
             var isGetFailed: Boolean = false
             val apiService = RestApiService()
             val getId = PreferenceHelper.get("fbId","")
             val getKakaoId = PreferenceHelper.get("kakaoId","").toString()
-            val userInfo = KakaoUserInfo(
+            val userInfo = UserInfo(
                 id = getKakaoId,
                 device_id = getId
             )
 
-            apiService.getKakaoUser(getKakaoId) {
-                //서버에 데이터가 있는지 확인
+            apiService.getUser(context,getKakaoId) {
+                //서버에 데이터가 있는지 확인 (GET)
                 if(it?.id != null) {
                     Log.d("kakaoUser_get","id != null")
                     isGetFailed = false
@@ -67,13 +65,25 @@ class GlobalApplication : Application() {
 
                 if(isGetFailed) {
                     //서버에 데이터가 없으면 서버에 데이터 저장 (POST)
-                    apiService.addKakaoUser(userInfo) {
+                    apiService.postUser(context,userInfo) {
                         if (it?.id != null) {
-                            // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
+                            // it = newly added user parsed as response
                             // it?.id = newly added user ID
                             Log.d("kakaoUser_post", "id != null")
                         } else {
-                            Log.d("kakaoUser_post", "id = null")
+                            Log.d("kakaoUser_post", "id = null ")
+                        }
+                    }
+                }
+                else {
+                    //서버에 데이터가 있으면 데이터 변경 (PUT)
+                    apiService.putUser(context,userInfo) {
+                        if (it?.id != null) {
+                            // it = newly added user parsed as response
+                            // it?.id = newly added user ID
+                            Log.d("kakaoUser_put", "id != null")
+                        } else {
+                            Log.d("kakaoUser_put", "id = null ")
                         }
                     }
                 }
@@ -81,17 +91,17 @@ class GlobalApplication : Application() {
         }
 
         /**
-         * 유저 데이터 서버에 업로드
+         * 디바이스 데이터 서버에 업로드 (GET, POST)
          * @author 정준, 정우
          */
-        fun UserInfoUpload() {
+        fun deviceInfoUpload(context: Context) {
             var isGetFailed: Boolean = false
             val apiService = RestApiService()
             val getId = PreferenceHelper.get("fbId","").toString()
             val getKeywords: String? = PreferenceHelper.get("Keys", "")
             val getSubscriptions: String? = PreferenceHelper.get("Urls", "")
             val getAlarmSwitch: Boolean? = PreferenceHelper.get("alarmSwitch", false)
-            val userInfo = UserInfo(
+            val deviceInfo = DeviceInfo(
                 id = getId,
                 id_method = "InstanceId",
                 keywords = getKeywords,
@@ -99,8 +109,8 @@ class GlobalApplication : Application() {
                 alarmSwitch = getAlarmSwitch
             )
 
-            apiService.getUser(getId) {
-                //서버에 데이터가 있는지 확인
+            apiService.getDevice(context, getId) {
+                //서버에 데이터가 있는지 확인 (GET)
                 if(it?.id != null) {
                     Log.d("User_get","id != null")
                     isGetFailed = false
@@ -111,9 +121,9 @@ class GlobalApplication : Application() {
 
                 if(isGetFailed) {
                     //서버에 데이터가 없으면 서버에 데이터 저장 (POST)
-                    apiService.addUser(userInfo) {
+                    apiService.postDevice(context,deviceInfo) {
                         if (it?.id != null) {
-                            // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
+                            // it = newly added user parsed as response
                             // it?.id = newly added user ID
                             Log.d("User_post", "id != null")
                         } else {
@@ -121,20 +131,40 @@ class GlobalApplication : Application() {
                         }
                     }
                 }
-                else {
-                    //서버에 데이터가 있으면 데이터 변경 (PUT)
-                    apiService.modifyUser(userInfo) {
-                        if (it?.id != null) {
-                            // it = newly added user parsed as response  687618f9-8529-4ff6-be9e-60dc57a2f267
-                            // it?.id = newly added user ID
-                            Log.d("User_put", "id != null")
-                        } else {
-                            Log.d("User_put", "id = null")
-                        }
-                    }
-                }
             }
         }
+
+        /**
+         * 디바이스 데이터 서버에 업데이트 (PUT)
+         * @author 정준
+         */
+        fun deviceInfoUpdate(context: Context) {
+            val apiService = RestApiService()
+            val getId = PreferenceHelper.get("fbId","").toString()
+            val getKeywords: String? = PreferenceHelper.get("Keys", "")
+            val getSubscriptions: String? = PreferenceHelper.get("Urls", "null")
+            val getAlarmSwitch: Boolean? = PreferenceHelper.get("alarmSwitch", false)
+            val deviceInfo = DeviceInfo(
+                id = getId,
+                id_method = "InstanceId",
+                keywords = getKeywords,
+                subscriptions = getSubscriptions,
+                alarmSwitch = getAlarmSwitch
+            )
+
+            apiService.putDevice(context,deviceInfo) {
+                if (it?.id != null) {
+                    // it = newly added user parsed as response
+                    // it?.id = newly added user ID
+                    Log.d("User_put", "id != null")
+                } else {
+                    Log.d("User_put", "id = null")
+                }
+            }
+
+        }
+
+
 
     }
 }

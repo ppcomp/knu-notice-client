@@ -1,7 +1,7 @@
 package com.ppcomp.knu.utils
 
+import com.ppcomp.knu.`object`.DeviceInfo
 import com.ppcomp.knu.`object`.UserInfo
-import com.ppcomp.knu.`object`.KakaoUserInfo
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -9,23 +9,27 @@ interface RestApi {
 
     @Headers("Content-Type: application/json")
     @GET("accounts/device")
-    fun getUser(@Query("id") id: String): Call<UserInfo>
+    fun getDevice(@Query("id") id: String): Call<DeviceInfo>
 
     @Headers("Content-Type: application/json")
     @POST("accounts/device")
-    fun addUser(@Body userData: UserInfo): Call<UserInfo>
+    fun postDevice(@Body deviceData: DeviceInfo): Call<DeviceInfo>
 
     @Headers("Content-Type: application/json")
     @PUT("accounts/device")
-    fun modifyUser(@Body userData: UserInfo): Call<UserInfo>
+    fun putDevice(@Body deviceData: DeviceInfo): Call<DeviceInfo>
 
     @Headers("Content-Type: application/json")
     @GET("accounts/user")
-    fun getKakaoUser(@Query("id") id: String): Call<KakaoUserInfo>
+    fun getUser(@Query("id") id: String): Call<UserInfo>
 
     @Headers("Content-Type: application/json")
     @POST("accounts/user")
-    fun addKakaoUser(@Body kakaoUserData: KakaoUserInfo): Call<KakaoUserInfo>
+    fun postUser(@Body userData: UserInfo): Call<UserInfo>
+
+    @Headers("Content-Type: application/json")
+    @PUT("accounts/user")
+    fun putUser(@Body userData: UserInfo): Call<UserInfo>
 
 
 }

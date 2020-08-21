@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activity.MainActivity">
 
-    <item android:id="@+id/list"
+    <item android:id="@+id/noticelist"
         android:title="리스트"
         android:icon="@drawable/nav_list_ic"
         android:padding = "10dp"/>

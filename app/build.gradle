@@ -13,8 +13,8 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -22,6 +22,14 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    compileOptions {
+        // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
+        // Sets Java compatibility to Java 8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
 }
@@ -55,6 +63,8 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-storage:6.2.0'   //storage
     implementation 'com.google.firebase:firebase-messaging:20.2.3' //push message
     implementation 'com.google.android.material:material:1.2.0-alpha01' //scroll시 appbar 숨기기
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.5'
+
 
     compile 'com.google.code.gson:gson:2.2.4'
 
