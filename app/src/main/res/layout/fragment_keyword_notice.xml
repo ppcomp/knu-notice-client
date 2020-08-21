@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <include layout="@layout/activity_main_toolbar"/>
+    <include layout="@layout/activity_main_toolbar"/>
 
     <LinearLayout
         android:id="@+id/main_layout"
@@ -77,4 +77,5 @@
         android:indeterminateTint="@color/colorBlue"
         app:layout_constraintBottom_toBottomOf="parent" />
 
+    </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

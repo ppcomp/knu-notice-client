@@ -22,10 +22,9 @@
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/sub_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <include layout="@layout/activity_subscription_toolbar" />
+            <include layout="@layout/activity_main_toolbar" />
         </LinearLayout>
 
         <LinearLayout
