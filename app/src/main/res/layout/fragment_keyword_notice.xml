@@ -66,13 +66,11 @@
                 android:scrollbars="vertical" />
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
+    </LinearLayout>
     <ProgressBar
         android:id="@+id/keyword_progressbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:indeterminateTint="@color/colorBlue"
         app:layout_constraintBottom_toBottomOf="parent" />
-
-    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
