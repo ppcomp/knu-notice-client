@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/activity_main_toolbar"
-        android:id="@+id/toolbar"/>
+
+    <LinearLayout
+        android:id="@+id/main_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <include layout="@layout/activity_main_toolbar" />
 
     <TextView
         android:id="@+id/noData"
@@ -32,8 +37,7 @@
         android:id="@+id/swipe"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="false"
-        android:paddingTop="50dp">
+        android:layout_alignParentBottom="false">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/notice"
@@ -51,5 +55,6 @@
         android:layout_height="wrap_content"
         android:indeterminateTint="@color/colorBlue"
         app:layout_constraintBottom_toBottomOf="parent" />
+    </LinearLayout>
 <!--    </LinearLayout>-->
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
