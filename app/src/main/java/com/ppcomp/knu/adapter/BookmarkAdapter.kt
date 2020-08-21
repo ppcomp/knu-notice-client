@@ -113,7 +113,7 @@ class BookmarkAdapter(
             }
             bookmarkListJson = gson.toJson(bookmarkList, listType.type)
             PreferenceHelper.put("bookmark",bookmarkListJson)
-            GlobalApplication.isFragmentChange = arrayOf(true, true, true, true)  //북마크리스트 변경사항 확인
+            GlobalApplication.isFragmentChange = arrayOf(true, true, true)  //북마크리스트 변경사항 확인
         }
     }
 
