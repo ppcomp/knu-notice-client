@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
+import android.widget.ImageView
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.activity.*
@@ -18,6 +19,8 @@ import kotlinx.android.synthetic.main.fragment_setting.view.*
  * @author 희진, 정준, 정우
  */
 class SettingFragment : Fragment() {
+
+    private lateinit var searchIcon: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -63,6 +66,9 @@ class SettingFragment : Fragment() {
             email.putExtra(Intent.EXTRA_SUBJECT,"[앱 이름] 오류 | 요청할 사항이 있습니다!")
             startActivity(email)
         }
+
+        searchIcon = view!!.findViewById<ImageView>(R.id.search_icon)
+        searchIcon.visibility = View.GONE
         return view
     }
 }

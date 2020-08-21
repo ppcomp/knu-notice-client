@@ -6,11 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".fragment.UserInfoFragment">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/sub_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <include layout="@layout/activity_main_toolbar" />
+
+        </LinearLayout>
         <TextView
             android:id="@+id/view_keyword_cnt"
             android:layout_width="209dp"

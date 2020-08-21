@@ -45,6 +45,7 @@ class SearchFragment : Fragment() {
     private var nextPage: String = ""
     private var previousPage: String = ""
     private var searchQuery: String = ""
+    private var target: String = ""
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -64,6 +65,7 @@ class SearchFragment : Fragment() {
 
         searchRecyclerView =
             view!!.findViewById(R.id.search_recycler) as RecyclerView   // recyclerview 가져오기
+
         search_edit = view!!.findViewById(R.id.search_edit) as EditText
 
         search_edit.setOnKeyListener(object : View.OnKeyListener {      // 엔터키누르면 검색버튼을 자동으로 누르도록
@@ -117,6 +119,7 @@ class SearchFragment : Fragment() {
     private fun parsing() {
         search_edit = view!!.findViewById(R.id.search_edit) as EditText
         searchQuery = search_edit.text.toString()
+        target = PreferenceHelper.get("Urls", "오류").toString()
 
         val parseResult: List<String> = Parsing.parsing(
             requireContext(),
@@ -126,12 +129,13 @@ class SearchFragment : Fragment() {
             progressBar,
             url,
             searchQuery,
-            ""
+            target
         )
         if (noticeList.size == 0) {
             Toast.makeText(requireContext(), "검색어에 해당되는 게시글이 존재하지 않습니다", Toast.LENGTH_SHORT)
                 .show()
         }
+
         previousPage = parseResult[0]
         url = parseResult[1]
         nextPage = parseResult[2]

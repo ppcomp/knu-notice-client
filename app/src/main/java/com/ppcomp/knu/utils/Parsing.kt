@@ -222,8 +222,6 @@ class Parsing private constructor() {
                             Handler().postDelayed({   //스크롤시 progressbar 보이게하고 조금 대기
                                 parsing()
                             }, 500)
-                        } else {
-                            Toast.makeText(context, "더 이상 공지가 없습니다.", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

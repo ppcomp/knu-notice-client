@@ -5,7 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -18,8 +21,8 @@ import com.ppcomp.knu.R
 import com.ppcomp.knu.adapter.SubscriptionAdapter
 import com.ppcomp.knu.`object`.Subscription
 import com.ppcomp.knu.utils.PreferenceHelper
+import kotlinx.android.synthetic.main.activity_main_toolbar.*
 import kotlinx.android.synthetic.main.activity_subscription.*
-import kotlinx.android.synthetic.main.activity_subscription_toolbar.*
 
 
 /**
@@ -32,6 +35,7 @@ class SubscriptionActivity : AppCompatActivity() {
     lateinit var makeGson: Gson
     lateinit var listType: TypeToken<ArrayList<Subscription>>
     lateinit var subsAdapter: SubscriptionAdapter
+    private lateinit var searchIcon: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +57,13 @@ class SubscriptionActivity : AppCompatActivity() {
         subsResult.layoutManager = lm
         subsResult.setHasFixedSize(true)
 
-        setSupportActionBar(subscription_layout_toolbar)//toolbar 지정
+        val title = findViewById<TextView>(R.id.state_title)
+        title.text = "구독리스트 설정"
+
+        searchIcon = findViewById<ImageView>(R.id.search_icon)
+        searchIcon.visibility = View.GONE
+
+        setSupportActionBar(main_layout_toolbar)//toolbar 지정
         supportActionBar?.setDisplayHomeAsUpEnabled(!isNewUser) //toolbar 설정 (신규 유저가 아닐 때만 True)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back_ic)//뒤로가기 아이콘 지정
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기

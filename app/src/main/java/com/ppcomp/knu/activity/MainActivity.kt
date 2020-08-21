@@ -1,17 +1,24 @@
 package com.ppcomp.knu.activity
 
 import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.Toast
+import android.widget.Toolbar
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ppcomp.knu.*
 import com.ppcomp.knu.fragment.*
+import kotlinx.android.synthetic.main.activity_main_toolbar.*
+import kotlinx.android.synthetic.main.fragment_notice_layout.*
 
 
 
@@ -23,7 +30,7 @@ class MainActivity : AppCompatActivity() {
 
     private var noticeFragment = NoticeFragment()
     private var keywordNoticeFragment = KeywordNoticeFragment()
-    private var searchFragment = SearchFragment()
+//     private var searchFragment = SearchFragment()
     private var bookmarkFragment = BookmarkFragment()
     private var settingFragment = SettingFragment()
     private var activeFragment: Fragment = noticeFragment   //현재 띄워진 프레그먼트(default: noticeFragment)
@@ -33,8 +40,10 @@ class MainActivity : AppCompatActivity() {
      * 모든 fragment는 이 함수에서 초기화 되어야 함
      * @author 희진, 우진, jungwoo, 정준
      */
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
         content = findViewById(R.id.frameLayout)
         val navigation = findViewById<BottomNavigationView>(R.id.main_navigationView)
@@ -42,10 +51,11 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().apply {       // 모든 프레그먼트 삽입
             add(R.id.frameLayout, noticeFragment, noticeFragment.javaClass.simpleName)
             add(R.id.frameLayout, keywordNoticeFragment, keywordNoticeFragment.javaClass.simpleName).hide(keywordNoticeFragment)
-            add(R.id.frameLayout, searchFragment, searchFragment.javaClass.simpleName).hide(searchFragment)
+//             add(R.id.frameLayout, searchFragment, searchFragment.javaClass.simpleName).hide(searchFragment)
             add(R.id.frameLayout, bookmarkFragment, bookmarkFragment.javaClass.simpleName).hide(bookmarkFragment)
             add(R.id.frameLayout, settingFragment, settingFragment.javaClass.simpleName).hide(settingFragment)
         }.commit()
+
 
     }
     
@@ -87,21 +97,22 @@ class MainActivity : AppCompatActivity() {
                     addFragment(keywordNoticeFragment)
                     return@OnNavigationItemSelectedListener true
                 }
-
-                R.id.search -> {
-                    if(GlobalApplication.isFragmentChange[2]) { //북마크리스트에 변경사항이 있으면 화면 갱신
-                        replaceFragment(searchFragment) //화면갱신
-                        GlobalApplication.isFragmentChange[2] = false
-                    }
-                    if(setScrollTop == 2){      //setScrollTop이 2이면 scroll이 맨 위로 이동
-                        (searchFragment.view!!.findViewById(R.id.search_recycler) as RecyclerView).apply {
-                            scrollToPosition(0)
-                        }
-                    }
-                    setScrollTop = 2
-                    addFragment(searchFragment)
-                    return@OnNavigationItemSelectedListener true
-                }
+//                R.id.search -> {
+//                    listLocationCount =0
+//                    keywordlistLocationCount=0
+//                    if(GlobalApplication.isSearchChange) {    //구독리스트에 변경사항이 있으면 화면 갱신
+//                        replaceFragment(searchFragment)  //화면갱신
+//                        GlobalApplication.isSearchChange = false  //변경사항 갱신 후 false로 변경
+//                        searchLocationCount =0
+//                    }
+//                    searchLocationCount++
+//                    if(searchLocationCount >=2){
+//                        var recyclerview = searchFragment.view!!.findViewById(R.id.search_recycler) as RecyclerView
+//                        recyclerview.scrollToPosition(0)
+//                    }
+//                    addFragment(searchFragment)
+//                    return@OnNavigationItemSelectedListener true
+//                }
 
                 R.id.bookmark -> {
                     if(GlobalApplication.isFragmentChange[3]) { //북마크리스트에 변경사항이 있으면 화면 갱신
@@ -162,13 +173,14 @@ class MainActivity : AppCompatActivity() {
                     add(R.id.frameLayout, keywordNoticeFragment, keywordNoticeFragment.javaClass.simpleName)
                 }.commit()
             }
-            searchFragment -> {
-                supportFragmentManager.beginTransaction().apply {
-                    remove(searchFragment)
-                    searchFragment = SearchFragment()
-                    add(R.id.frameLayout, searchFragment, searchFragment.javaClass.simpleName)
-                }.commit()
-            }
+//            searchFragment -> {
+//                supportFragmentManager.beginTransaction().apply {
+//                    remove(searchFragment)
+//                    searchFragment = SearchFragment()
+//                    add(R.id.frameLayout, searchFragment, searchFragment.javaClass.simpleName)
+//                }.commit()
+//            }
+
             bookmarkFragment -> {
                 supportFragmentManager.beginTransaction().apply {
                     remove(bookmarkFragment)

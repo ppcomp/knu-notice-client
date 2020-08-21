@@ -6,18 +6,20 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.StrictMode
+import android.view.View.GONE
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.DataRunner.CountryTown.MakerAdapter
 import com.ppcomp.knu.`object`.MakerData
 import com.ppcomp.knu.R
+import kotlinx.android.synthetic.main.activity_main_toolbar.*
 import kotlinx.android.synthetic.main.activity_maker.*
-import kotlinx.android.synthetic.main.activity_maker_toolbar.*
-import kotlinx.android.synthetic.main.activity_subscription_toolbar.*
-
 import org.json.JSONArray
 
 class MakerActivity : AppCompatActivity() {
 
+    private lateinit var searchIcon: ImageView
     private var makerList = arrayListOf<MakerData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,7 +28,13 @@ class MakerActivity : AppCompatActivity() {
 
         getMakers()
 
-        setSupportActionBar(maker_layout_toolbar)//toolbar 지정
+        searchIcon = findViewById<ImageView>(R.id.search_icon)
+        searchIcon.visibility = GONE
+
+        val title = findViewById<TextView>(R.id.state_title)
+        title.text = "만든이"
+
+        setSupportActionBar(main_layout_toolbar)//toolbar 지정
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back_ic)//뒤로가기 아이콘 지정
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기

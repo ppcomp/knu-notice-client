@@ -12,6 +12,8 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,7 +43,8 @@ class BookmarkFragment : Fragment() {
     private lateinit var thisContext: Context
     private lateinit var progressBar: ProgressBar
     private lateinit var noData: TextView
-
+    private lateinit var searchIcon: ImageView
+  
     @RequiresApi(Build.VERSION_CODES.O)
     val nowDate: LocalDate = LocalDate.now()
 
@@ -50,15 +53,18 @@ class BookmarkFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         val view = inflater.inflate(R.layout.fragment_bookmark, container, false)
 
         thisContext = container!!.context                                   //context 가져오기
         noticeRecyclerView = view!!.findViewById(R.id.bookmark_notice) as RecyclerView    //recyclerview 가져오기
         progressBar = view!!.findViewById((R.id.bookmark_progressbar)) as ProgressBar
         noData = view!!.findViewById((R.id.bookmark_null_view)) as TextView
+        searchIcon = view!!.findViewById<ImageView>(R.id.search_icon)
         progressBar.setVisibility(View.GONE)                                //progressbar 숨기기
         noData.setVisibility(View.GONE)
-
+        searchIcon.setVisibility(View.GONE)
+      
         val jsonList = PreferenceHelper.get("bookmark","")
         if(jsonList != "")
             bookmarkList = gson.fromJson(jsonList,listType.type) //북마크 리스트 저장

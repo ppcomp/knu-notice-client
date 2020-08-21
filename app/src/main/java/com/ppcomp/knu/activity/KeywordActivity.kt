@@ -8,6 +8,7 @@ import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,7 +18,7 @@ import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Keyword
 import com.ppcomp.knu.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_keyword.*
-import kotlinx.android.synthetic.main.activity_keyword_toolbar.*
+import kotlinx.android.synthetic.main.activity_main_toolbar.*
 
 /**
  * 어떤 데이터(ArrayList)와 어떤 RecyclerView를 쓸 것인지 설정하는 Activity
@@ -27,6 +28,8 @@ import kotlinx.android.synthetic.main.activity_keyword_toolbar.*
 class KeywordActivity : AppCompatActivity() {
     var keywordList = arrayListOf<Keyword>()
     private lateinit var inputKeyword: TextView
+    private lateinit var searchIcon: ImageView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_keyword)
@@ -54,7 +57,13 @@ class KeywordActivity : AppCompatActivity() {
         keyResult.setHasFixedSize(true)
         // RecyclerView의 사이즈를 고정
 
-        setSupportActionBar(keyword_layout_toolbar)//toolbar 지정
+        val title = findViewById<TextView>(R.id.state_title)
+        title.text = "키워드 설정"
+
+        searchIcon = findViewById<ImageView>(R.id.search_icon)
+        searchIcon.visibility = View.GONE
+
+        setSupportActionBar(main_layout_toolbar)//toolbar 지정
         supportActionBar?.setDisplayHomeAsUpEnabled(true)//toolbar  보이게 하기
         supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back_ic)//뒤로가기 아이콘 지정
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
