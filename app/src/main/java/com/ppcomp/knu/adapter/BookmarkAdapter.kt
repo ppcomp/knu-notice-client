@@ -27,6 +27,7 @@ import com.ppcomp.knu.utils.PreferenceHelper
  */
 class BookmarkAdapter(
     private val context: Context,
+    private val fragmentView: View,
     private var bookmarkList: ArrayList<Notice>,
     private val itemClick: (Notice) -> Unit)
 
@@ -34,6 +35,8 @@ class BookmarkAdapter(
     lateinit var bookmarkListJson: String
     private var gson: Gson = GsonBuilder().create()
     private var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
+    private val bookmarkRecyclerView: RecyclerView = fragmentView.findViewById(R.id.bookmark_notice)
+    private val bookmarkNullView: TextView = fragmentView.findViewById(R.id.bookmark_null_view)
 
     /**
      * Notice 객체를 RecyclerView에 맵핑해주는 클래스
@@ -41,14 +44,14 @@ class BookmarkAdapter(
      */
     inner class Holder(itemView: View, itemClick: (Notice) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
-        val noticeLinear = itemView.findViewById<LinearLayout>(R.id.noticeLinear)
-        val noticeTitle = itemView.findViewById<TextView>(R.id.title)
-        val noticeBoard = itemView.findViewById<TextView>(R.id.board)
-        val noticeDate = itemView.findViewById<TextView>(R.id.date)
-        val noticeAuthor = itemView.findViewById<TextView>(R.id.author)
-        val noticeReference = itemView.findViewById<TextView>(R.id.reference)
-        val noticeImage = itemView.findViewById<ImageView>(R.id.image)
-        val noticeFixedImage = itemView.findViewById<ImageView>(R.id.fixed_image)
+        private val noticeLinear = itemView.findViewById<LinearLayout>(R.id.noticeLinear)
+        private val noticeTitle = itemView.findViewById<TextView>(R.id.title)
+        private val noticeBoard = itemView.findViewById<TextView>(R.id.board)
+        private val noticeDate = itemView.findViewById<TextView>(R.id.date)
+        private val noticeAuthor = itemView.findViewById<TextView>(R.id.author)
+        private val noticeReference = itemView.findViewById<TextView>(R.id.reference)
+        private val noticeImage = itemView.findViewById<ImageView>(R.id.image)
+        private val noticeFixedImage = itemView.findViewById<ImageView>(R.id.fixed_image)
         val noticeBookmark = itemView.findViewById<ToggleButton>(R.id.toggle_bookmark)
 
         @RequiresApi(Build.VERSION_CODES.N)
@@ -103,12 +106,15 @@ class BookmarkAdapter(
             if (!isChecked) { //북마크 체크해제시
                 bookmarkList.remove(bookmarkList[position]) //북마크리스트에서 제거
                 notifyItemRemoved(position)
+                if(bookmarkList.isEmpty()) {    //북마크리스트가 비었으면 TextView 나오게 변경
+                    bookmarkNullView.visibility = View.VISIBLE
+                    bookmarkRecyclerView.visibility = View.GONE
+                }
             }
             bookmarkListJson = gson.toJson(bookmarkList, listType.type)
             PreferenceHelper.put("bookmark",bookmarkListJson)
-            GlobalApplication.isFragmentChange = arrayOf(true, true, true, true)  //북마크리스트 변경사항 확인
+            GlobalApplication.isFragmentChange = arrayOf(true, true, true)  //북마크리스트 변경사항 확인
         }
-
     }
 
     /**

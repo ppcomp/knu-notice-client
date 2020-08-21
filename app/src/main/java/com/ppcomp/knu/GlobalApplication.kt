@@ -37,7 +37,7 @@ class GlobalApplication : Application() {
     companion object {  //자바의 static이 없는 대신 있는 코틀린만의 구조체, 싱글톤 패턴 구현가능
         var instance: GlobalApplication? = null
         var isLogin: Boolean = false    //로그인 상태
-        var isFragmentChange: Array<Boolean> = arrayOf(false, false, false, false) //프레그먼트 변경사항 확인 (notice, keywordNotice, search, bookmark)
+        var isFragmentChange: Array<Boolean> = arrayOf(false, false, false) //프레그먼트 변경사항 확인 (notice, keywordNotice, bookmark)
 
         /**
          * 유저 데이터 서버에 업로드

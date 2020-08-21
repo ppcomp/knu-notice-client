@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
 
     private var noticeFragment = NoticeFragment()
     private var keywordNoticeFragment = KeywordNoticeFragment()
-//     private var searchFragment = SearchFragment()
     private var bookmarkFragment = BookmarkFragment()
     private var settingFragment = SettingFragment()
     private var activeFragment: Fragment = noticeFragment   //현재 띄워진 프레그먼트(default: noticeFragment)
@@ -51,7 +50,6 @@ class MainActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().apply {       // 모든 프레그먼트 삽입
             add(R.id.frameLayout, noticeFragment, noticeFragment.javaClass.simpleName)
             add(R.id.frameLayout, keywordNoticeFragment, keywordNoticeFragment.javaClass.simpleName).hide(keywordNoticeFragment)
-//             add(R.id.frameLayout, searchFragment, searchFragment.javaClass.simpleName).hide(searchFragment)
             add(R.id.frameLayout, bookmarkFragment, bookmarkFragment.javaClass.simpleName).hide(bookmarkFragment)
             add(R.id.frameLayout, settingFragment, settingFragment.javaClass.simpleName).hide(settingFragment)
         }.commit()
@@ -61,10 +59,12 @@ class MainActivity : AppCompatActivity() {
     
     /**
      * 하단 메뉴 클릭시 fragment 전환
+     * isFragmentChange 변수는 각 fragment화면에 갱신될 일이 생기면 true로 지정 됨
+     * isFragmentChange[0]: notice, isFragmentChange[1]: keywordNotice, isFragmentChange[2]: bookmark
      * @author 희진, 정준
      */
     private var content: FrameLayout? = null
-    private var setScrollTop = -1   // 0:notice, 1:keywordNotice, 2:search, 3:bookmark
+    private var setScrollTop = -1   // 0:notice, 1:keywordNotice, 2:bookmark
     private val mOnNavigationItemSelectedListener =
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
@@ -82,7 +82,6 @@ class MainActivity : AppCompatActivity() {
                     addFragment(noticeFragment)
                     return@OnNavigationItemSelectedListener true
                 }
-
                 R.id.keywordlist -> {
                     if(GlobalApplication.isFragmentChange[1]) { //구독리스트, 키워드 리스트, 북마크리스트에 변경사항이 있으면 화면 갱신
                         replaceFragment(keywordNoticeFragment)  //화면갱신
@@ -97,38 +96,20 @@ class MainActivity : AppCompatActivity() {
                     addFragment(keywordNoticeFragment)
                     return@OnNavigationItemSelectedListener true
                 }
-//                R.id.search -> {
-//                    listLocationCount =0
-//                    keywordlistLocationCount=0
-//                    if(GlobalApplication.isSearchChange) {    //구독리스트에 변경사항이 있으면 화면 갱신
-//                        replaceFragment(searchFragment)  //화면갱신
-//                        GlobalApplication.isSearchChange = false  //변경사항 갱신 후 false로 변경
-//                        searchLocationCount =0
-//                    }
-//                    searchLocationCount++
-//                    if(searchLocationCount >=2){
-//                        var recyclerview = searchFragment.view!!.findViewById(R.id.search_recycler) as RecyclerView
-//                        recyclerview.scrollToPosition(0)
-//                    }
-//                    addFragment(searchFragment)
-//                    return@OnNavigationItemSelectedListener true
-//                }
-
                 R.id.bookmark -> {
-                    if(GlobalApplication.isFragmentChange[3]) { //북마크리스트에 변경사항이 있으면 화면 갱신
+                    if(GlobalApplication.isFragmentChange[2]) { //북마크리스트에 변경사항이 있으면 화면 갱신
                         replaceFragment(bookmarkFragment)   //화면갱신
-                        GlobalApplication.isFragmentChange[3] = false
+                        GlobalApplication.isFragmentChange[2] = false
                     }
-                    if(setScrollTop == 3){      //setScrollTop이 3이면 scroll이 맨 위로 이동
+                    if(setScrollTop == 2){      //setScrollTop이 2이면 scroll이 맨 위로 이동
                         (bookmarkFragment.view!!.findViewById(R.id.bookmark_notice) as RecyclerView).apply {
                             scrollToPosition(0)
                         }
                     }
-                    setScrollTop = 3
+                    setScrollTop = 2
                     addFragment(bookmarkFragment)
                     return@OnNavigationItemSelectedListener true
                 }
-
                 R.id.setting -> {
                     setScrollTop = -1
                     addFragment(settingFragment)
@@ -173,14 +154,6 @@ class MainActivity : AppCompatActivity() {
                     add(R.id.frameLayout, keywordNoticeFragment, keywordNoticeFragment.javaClass.simpleName)
                 }.commit()
             }
-//            searchFragment -> {
-//                supportFragmentManager.beginTransaction().apply {
-//                    remove(searchFragment)
-//                    searchFragment = SearchFragment()
-//                    add(R.id.frameLayout, searchFragment, searchFragment.javaClass.simpleName)
-//                }.commit()
-//            }
-
             bookmarkFragment -> {
                 supportFragmentManager.beginTransaction().apply {
                     remove(bookmarkFragment)

@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,9 +35,9 @@ import java.time.LocalDate
  */
 class BookmarkFragment : Fragment() {
 
-    var bookmarkList = arrayListOf<Notice>()
-    var gson: Gson = GsonBuilder().create()
-    var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
+    private var bookmarkList = arrayListOf<Notice>()
+    private var gson: Gson = GsonBuilder().create()
+    private var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
     private lateinit var mHandler: Handler
     private lateinit var mRunnable: Runnable
     private lateinit var noticeRecyclerView: RecyclerView
@@ -61,15 +62,22 @@ class BookmarkFragment : Fragment() {
         progressBar = view!!.findViewById((R.id.bookmark_progressbar)) as ProgressBar
         noData = view!!.findViewById((R.id.bookmark_null_view)) as TextView
         searchIcon = view!!.findViewById<ImageView>(R.id.search_icon)
-        progressBar.setVisibility(View.GONE)                                //progressbar 숨기기
-        noData.setVisibility(View.GONE)
-        searchIcon.setVisibility(View.GONE)
-      
-        val jsonList = PreferenceHelper.get("bookmark","")
-        if(jsonList != "")
-            bookmarkList = gson.fromJson(jsonList,listType.type) //북마크 리스트 저장
+        progressBar.visibility = View.GONE                                //progressbar 숨기기
+        searchIcon.visibility = View.GONE
 
-        val bookmarkAdapter = BookmarkAdapter(thisContext, bookmarkList) { notice ->
+        val jsonList = PreferenceHelper.get("bookmark","[]")
+        Log.d("bookmarkTest",jsonList)
+        if(jsonList != "[]") {  //북마크리스트가 비어있지않으면
+            noData.visibility = View.GONE
+            noticeRecyclerView.visibility = View.VISIBLE    //recyclerView 출력
+            bookmarkList = gson.fromJson(jsonList, listType.type) //북마크 리스트 저장
+        }
+        else {
+            noData.visibility = View.VISIBLE    //텍스트 출력
+            noticeRecyclerView.visibility = View.GONE
+        }
+
+        val bookmarkAdapter = BookmarkAdapter(thisContext, view, bookmarkList) { notice ->
             var link: String = notice.link
             if (!link.startsWith("http://") && !link.startsWith("https://"))
                 link = "http://" + link
@@ -85,8 +93,6 @@ class BookmarkFragment : Fragment() {
         noticeRecyclerView.layoutManager = lm
         noticeRecyclerView.setHasFixedSize(true)
 
-
-
         mHandler = Handler()
         view.bookmark_swipe.setOnRefreshListener {
             // Initialize a new Runnable
@@ -94,6 +100,7 @@ class BookmarkFragment : Fragment() {
 //                 Hide swipe to refresh icon animation
                 val bookmarkAdapter = BookmarkAdapter(
                     thisContext,
+                    view,
                     bookmarkList
                 ) { notice ->
                     var link: String = notice.link
@@ -108,7 +115,6 @@ class BookmarkFragment : Fragment() {
                 bookmark_swipe.isRefreshing = false
             }
             mHandler.postDelayed(mRunnable, 2000)
-
         }
         return view
     }
