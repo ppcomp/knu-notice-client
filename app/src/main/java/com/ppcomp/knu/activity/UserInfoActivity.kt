@@ -3,6 +3,9 @@ package com.ppcomp.knu.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -11,7 +14,7 @@ import com.kakao.usermgmt.callback.LogoutResponseCallback
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.utils.PreferenceHelper
-import kotlinx.android.synthetic.main.activity_userinfo_toolbar.*
+import kotlinx.android.synthetic.main.activity_main_toolbar.*
 import kotlinx.android.synthetic.main.activity_userinfo.*
 import kotlinx.android.synthetic.main.fragment_setting.*
 
@@ -26,6 +29,7 @@ class UserInfoActivity : AppCompatActivity(){
     private lateinit var keywords: String
     private lateinit var subscriptionsSplit: Array<String>
     private lateinit var keywordsSplit: Array<String>
+    private lateinit var searchIcon: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,5 +62,13 @@ class UserInfoActivity : AppCompatActivity(){
         view_keyword_cnt.text = keywordsSplit.size.toString()   //키워드 갯수 출력
 
         Glide.with(this).load(thumbnail).placeholder(R.drawable.nav_maker_ic).into(iv_thumbnail) //카카오 프로필 사진 띄우기
+
+        val title = findViewById<TextView>(R.id.state_title)
+        title.text = "회원 정보"
+
+        searchIcon = findViewById<ImageView>(R.id.search_icon)
+        searchIcon.visibility = View.GONE
+
+        setSupportActionBar(main_layout_toolbar)//toolbar 지정
     }
 }

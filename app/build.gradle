@@ -54,6 +54,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'    //storage
     implementation 'com.firebaseui:firebase-ui-storage:6.2.0'   //storage
     implementation 'com.google.firebase:firebase-messaging:20.2.3' //push message
+    implementation 'com.google.android.material:material:1.2.0-alpha01' //scroll시 appbar 숨기기
 
     compile 'com.google.code.gson:gson:2.2.4'
 

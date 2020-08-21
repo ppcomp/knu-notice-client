@@ -3,6 +3,9 @@ package com.ppcomp.knu.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kakao.auth.ApiErrorCode
@@ -16,6 +19,7 @@ import com.kakao.util.exception.KakaoException
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.utils.PreferenceHelper
+import kotlinx.android.synthetic.main.activity_main_toolbar.*
 
 /**
  * 로그인 화면 Activity
@@ -27,6 +31,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var kakaoId: String
     private lateinit var kakaoNickname: String
     private lateinit var kakakoThumbnail: String
+    private lateinit var searchIcon: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,6 +41,17 @@ class LoginActivity : AppCompatActivity() {
         Session.getCurrentSession().clearCallbacks()
         Session.getCurrentSession().addCallback(callback)
         Session.getCurrentSession().checkAndImplicitOpen()  //로그인 이력이 있으면 재접속해도 로그인 유지해줌
+
+        val title = findViewById<TextView>(R.id.state_title)
+        title.text = "로그인"
+
+        searchIcon = findViewById<ImageView>(R.id.search_icon)
+        searchIcon.visibility = View.GONE
+
+        setSupportActionBar(main_layout_toolbar)//toolbar 지정
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back_ic)//뒤로가기 아이콘 지정
+        supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
     }
 
     override fun onDestroy() {

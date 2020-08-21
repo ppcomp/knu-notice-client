@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.kakao.auth.ApiErrorCode
@@ -25,6 +26,8 @@ import com.ppcomp.knu.activity.MainActivity
  */
 class BookmarkFragment : Fragment() {
 
+    private lateinit var searchIcon: ImageView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -34,7 +37,12 @@ class BookmarkFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_bookmark, container, false)
+         val view =inflater.inflate(R.layout.fragment_bookmark, container, false)
+
+        searchIcon = view!!.findViewById<ImageView>(R.id.search_icon)
+        searchIcon.visibility = View.GONE
+
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

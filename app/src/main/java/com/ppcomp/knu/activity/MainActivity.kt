@@ -3,17 +3,24 @@ package com.ppcomp.knu.activity
 //import kotlinx.android.synthetic.main.main.*
 //parsing 부분
 import android.content.Context
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.Toast
+import android.widget.Toolbar
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ppcomp.knu.*
 import com.ppcomp.knu.fragment.*
+import kotlinx.android.synthetic.main.activity_main_toolbar.*
+import kotlinx.android.synthetic.main.fragment_notice_layout.*
 
 
 /**
@@ -27,15 +34,16 @@ class MainActivity : AppCompatActivity() {
     var noticeFragment = NoticeFragment()
     var keywordNoticeFragment = KeywordNoticeFragment()
     var activeFragment: Fragment = noticeFragment   //현재 띄워진 프레그먼트(default: noticeFragment)
-    var searchFragment = SearchFragment()
 
 
     /**
      * 화면생성해주는 메소드
      * @author 희진, 우진, jungwoo, 정준
      */
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
 
         content = findViewById(R.id.frameLayout)
@@ -46,8 +54,8 @@ class MainActivity : AppCompatActivity() {
             add(R.id.frameLayout, bookmarkFragment, bookmarkFragment.javaClass.simpleName).hide(bookmarkFragment)
             add(R.id.frameLayout, noticeFragment, noticeFragment.javaClass.simpleName)
             add(R.id.frameLayout,keywordNoticeFragment,keywordNoticeFragment.javaClass.simpleName).hide(keywordNoticeFragment)
-            add(R.id.frameLayout, searchFragment, searchFragment.javaClass.simpleName).hide(searchFragment)
     }.commit()
+        setSupportActionBar(main_layout_toolbar)//toolbar 지정
 
     }
     
@@ -113,22 +121,22 @@ class MainActivity : AppCompatActivity() {
                     addFragment(keywordNoticeFragment)
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.search -> {
-                    listLocationCount =0
-                    keywordlistLocationCount=0
-                    if(GlobalApplication.isSearchChange) {    //구독리스트에 변경사항이 있으면 화면 갱신
-                        replaceFragment(searchFragment)  //화면갱신
-                        GlobalApplication.isSearchChange = false  //변경사항 갱신 후 false로 변경
-                        searchLocationCount =0
-                    }
-                    searchLocationCount++
-                    if(searchLocationCount >=2){
-                        var recyclerview = searchFragment.view!!.findViewById(R.id.search_recycler) as RecyclerView
-                        recyclerview.scrollToPosition(0)
-                    }
-                    addFragment(searchFragment)
-                    return@OnNavigationItemSelectedListener true
-                }
+//                R.id.search -> {
+//                    listLocationCount =0
+//                    keywordlistLocationCount=0
+//                    if(GlobalApplication.isSearchChange) {    //구독리스트에 변경사항이 있으면 화면 갱신
+//                        replaceFragment(searchFragment)  //화면갱신
+//                        GlobalApplication.isSearchChange = false  //변경사항 갱신 후 false로 변경
+//                        searchLocationCount =0
+//                    }
+//                    searchLocationCount++
+//                    if(searchLocationCount >=2){
+//                        var recyclerview = searchFragment.view!!.findViewById(R.id.search_recycler) as RecyclerView
+//                        recyclerview.scrollToPosition(0)
+//                    }
+//                    addFragment(searchFragment)
+//                    return@OnNavigationItemSelectedListener true
+//                }
             }
             false
         }
@@ -181,13 +189,13 @@ class MainActivity : AppCompatActivity() {
                     add(R.id.frameLayout, keywordNoticeFragment, keywordNoticeFragment.javaClass.simpleName)
                 }.commit()
             }
-            searchFragment -> {
-                supportFragmentManager.beginTransaction().apply {
-                    remove(searchFragment)
-                    searchFragment = SearchFragment()
-                    add(R.id.frameLayout, searchFragment, searchFragment.javaClass.simpleName)
-                }.commit()
-            }
+//            searchFragment -> {
+//                supportFragmentManager.beginTransaction().apply {
+//                    remove(searchFragment)
+//                    searchFragment = SearchFragment()
+//                    add(R.id.frameLayout, searchFragment, searchFragment.javaClass.simpleName)
+//                }.commit()
+//            }
         }
 
     }

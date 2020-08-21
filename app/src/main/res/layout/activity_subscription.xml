@@ -12,7 +12,7 @@
         android:layout_height="50dp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <include layout="@layout/activity_subscription_toolbar" />
+        <include layout="@layout/activity_main_toolbar" />
 
     </LinearLayout>
 

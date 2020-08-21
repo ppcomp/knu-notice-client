@@ -1,41 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/main_layout"
+        <include layout="@layout/activity_main_toolbar"/>
+
+    <TextView
+        android:id="@+id/keyword_null_view"
         android:layout_width="match_parent"
-        android:layout_height = "match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="선택된 키워드가 없습니다. \n [설정 -> 키워드]\n화면에서 설정해주세요."
+        android:textSize="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
-        <TextView
-            android:id="@+id/keyword_null_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="선택된 키워드가 없습니다. \n [설정 -> 키워드]\n화면에서 설정해주세요."
-            android:textSize="30dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"></TextView>
-
-        <TextView
-            android:id="@+id/item_null_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="해당하는 공지가 없습니다."
-            android:textSize="30dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"></TextView>
+    <TextView
+        android:id="@+id/item_null_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="해당하는 공지가 없습니다."
+        android:textSize="30dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/keyword_swipe"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentBottom="false">
+            android:layout_alignParentBottom="false"
+            android:paddingTop="50dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/keyword_notice"
@@ -45,7 +43,6 @@
                 android:layout_above="@+id/progressbar2"/>
 
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/keyword_progressbar"
@@ -55,4 +52,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
