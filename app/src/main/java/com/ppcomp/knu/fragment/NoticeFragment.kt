@@ -97,7 +97,7 @@ class NoticeFragment : Fragment() {
             val searchView = inflater.inflate(R.layout.activity_search_dialog, null)
             search_edits = searchView!!.findViewById(R.id.search_edits) as EditText
 
-            var alertDialog = AlertDialog.Builder(requireContext(),R.style.MyDialogTheme)
+            var alertDialog = AlertDialog.Builder(requireContext(),R.style.DialogTheme)
                 .setTitle("검색어를 입력하세요")
                 .setNeutralButton("취소", null)
                 .setPositiveButton("검색") { dialog, which ->
