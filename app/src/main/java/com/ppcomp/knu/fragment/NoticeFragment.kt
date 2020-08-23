@@ -3,16 +3,15 @@ package com.ppcomp.knu.fragment
 import android.accessibilityservice.GestureDescription
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
@@ -67,6 +66,7 @@ class NoticeFragment : Fragment() {
         progressBar.visibility = View.GONE                                      //progressbar 숨기기
         emptyResultView.visibility = View.GONE
         searchNoData.visibility = View.GONE
+
         val jsonList = PreferenceHelper.get("bookmark","")
         if(jsonList != "")
             bookmarkList = gson.fromJson(jsonList,listType.type) //북마크 리스트 저장
@@ -95,33 +95,34 @@ class NoticeFragment : Fragment() {
 
         view.search_icon.setOnClickListener {
             val searchView = inflater.inflate(R.layout.activity_search_dialog, null)
-            var alertDialog = AlertDialog.Builder(requireContext())
-                .setTitle("검색어를 입력해주세요.")
-                .setPositiveButton("검색") { dialog, which ->
-                    search_edits = searchView!!.findViewById(R.id.search_edits) as EditText
-                    searchQuery =  search_edits.text.toString()
-                    url=""
-                    if(searchQuery != "") {
-                        noticeList.removeAll(noticeList)
-                        parsing()
-                    }
-                    else{
-                        Toast.makeText(requireContext(), "입력된 검색어가 없습니다.", Toast.LENGTH_SHORT).show()
-                    }
+            search_edits = searchView!!.findViewById(R.id.search_edits) as EditText
 
-                }
+            var alertDialog = AlertDialog.Builder(requireContext(),R.style.MyDialogTheme)
+                .setTitle("검색어를 입력하세요")
                 .setNeutralButton("취소", null)
-                .create()
+                .setPositiveButton("검색") { dialog, which ->
+                    searchRun()
+                }.create()
 
+            search_edits.setOnKeyListener(object : View.OnKeyListener {
+                override fun onKey(v: View?, keyCode: Int, event: KeyEvent?): Boolean {
+                    if (event != null) {
+                        if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                            searchRun()
+                            alertDialog.dismiss()
+                            return true
+                        }
+                    }
+                    return false
+                }
+            })
             alertDialog.setCancelable(false)//  여백 눌러도 창 안없어지게 설정
-
+            alertDialog.window?.setLayout(500,400)  //dialog 크기 지정
             alertDialog.setView(searchView)
             alertDialog.show()
-
         }
         return view
     }
-
     /**
      * 파싱 기능
      * @author 김우진,희진
@@ -160,5 +161,15 @@ class NoticeFragment : Fragment() {
             nextPage = parseResult[2]
         }
     }
-
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun searchRun(){
+        searchQuery = search_edits.text.toString()
+        url = ""
+        if (searchQuery != "") {
+            noticeList.removeAll(noticeList)
+            parsing()
+        } else {
+            Toast.makeText(requireContext(), "입력된 검색어가 없습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
 }
