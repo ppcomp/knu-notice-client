@@ -30,4 +30,7 @@
     <style name="EditTheme" parent="Theme.AppCompat.Light.NoActionBar">
     <item name="colorAccent">@color/colorBlue</item>
     </style>
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">@color/colorBlack</item>
+    </style>
 </resources>

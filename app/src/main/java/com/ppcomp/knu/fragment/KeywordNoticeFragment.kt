@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_keyword_notice.view.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
 import kotlinx.android.synthetic.main.fragment_notice_item.view.*
-import kotlinx.android.synthetic.main.fragment_search_item.view.*
+
 
 
 /**

@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
     <include layout="@layout/activity_main_toolbar" />
 
     <TextView
@@ -24,14 +25,15 @@
         android:textSize="30dp"
         tools:ignore="Suspicious0dp" />
 
-    <TextView
-        android:id="@+id/search_noData"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical|center_horizontal"
-        android:text="검색어가 없습니다."
-        android:textSize="30dp"
-        tools:ignore="Suspicious0dp" />
+        <TextView
+            android:id="@+id/search_noData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginTop="100dp"
+            android:text="검색어가 없습니다."
+            android:textSize="30dp"
+            tools:ignore="Suspicious0dp" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe"
@@ -44,9 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/progressbar"
-            android:scrollbars="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            android:scrollbars="vertical" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
