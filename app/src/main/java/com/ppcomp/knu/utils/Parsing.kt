@@ -223,6 +223,9 @@ class Parsing private constructor() {
                                 parsing()
                             }, 500)
                         }
+                        else{
+                            Toast.makeText(context, "더 이상 공지가 없습니다.", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             })

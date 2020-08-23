@@ -2,15 +2,24 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:paddingLeft="25dp"
+    android:paddingRight="25dp"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/search_info"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="\n검색어 입력시 구독리스트에 대한 검색 결과를 알려줍니다.\n전체 공지를 보고 싶으면 새로고침을 해주세요."
+        android:textSize="12dp"/>
 
     <EditText
         android:id="@+id/search_edits"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical|center_horizontal"
-        android:hint="검색어를 입력하세요"
+        android:hint="검색어"
         android:inputType="text"
         android:theme="@style/EditTheme"
         android:imeOptions="actionSearch"
