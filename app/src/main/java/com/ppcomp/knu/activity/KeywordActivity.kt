@@ -134,7 +134,7 @@ class KeywordActivity : AppCompatActivity() {
             GlobalApplication.isFragmentChange[1] = true    //키워드 변경사항 확인
         }
 
-        keywordInput.filters = arrayOf(InputFilter { source, start, end, dest, dstart, dend ->
+        keywordInput.filters = arrayOf(InputFilter { source, _, _, _, _, _ ->
             val ps: Pattern =
                 Pattern.compile("^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\\u318D\\u119E\\u11A2\\u2022\\u2025a\\u00B7\\uFE55]+$")
             if (source == "" || ps.matcher(source).matches()) {

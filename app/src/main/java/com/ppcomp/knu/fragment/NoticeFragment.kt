@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.text.InputFilter
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -23,9 +24,11 @@ import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.utils.Parsing
 import com.ppcomp.knu.utils.PreferenceHelper
+import kotlinx.android.synthetic.main.activity_keyword.*
 import kotlinx.android.synthetic.main.activity_main_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
+import java.util.regex.Pattern
 
 
 /**
@@ -50,7 +53,7 @@ class NoticeFragment : Fragment() {
     private var url: String = ""    //mainUrl + notice_Url 저장 할 변수
     private var nextPage: String = ""
     private var previousPage: String = ""
-    private var searchQuery :String=""
+    private var searchQuery: String = ""
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -67,9 +70,9 @@ class NoticeFragment : Fragment() {
         emptyResultView.visibility = View.GONE
         searchNoData.visibility = View.GONE
 
-        val jsonList = PreferenceHelper.get("bookmark","")
-        if(jsonList != "")
-            bookmarkList = gson.fromJson(jsonList,listType.type) //북마크 리스트 저장
+        val jsonList = PreferenceHelper.get("bookmark", "")
+        if (jsonList != "")
+            bookmarkList = gson.fromJson(jsonList, listType.type) //북마크 리스트 저장
 
         parsing()
 
@@ -86,7 +89,7 @@ class NoticeFragment : Fragment() {
             mRunnable = Runnable {
                 // Hide swipe to refresh icon animation
                 url = ""
-                searchQuery=""
+                searchQuery = ""
                 parsing()
                 swipe.isRefreshing = false
             }
@@ -97,7 +100,17 @@ class NoticeFragment : Fragment() {
             val searchView = inflater.inflate(R.layout.activity_search_dialog, null)
             search_edits = searchView!!.findViewById(R.id.search_edits) as EditText
 
-            var alertDialog = AlertDialog.Builder(requireContext(),R.style.DialogTheme)
+            search_edits.filters = arrayOf(InputFilter { source, _, _, _, _, _ ->
+                val ps: Pattern =
+                    Pattern.compile("^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\\u318D\\u119E\\u11A2\\u2022\\u2025a\\u00B7\\uFE55]+$")
+                if (source == "" || ps.matcher(source).matches()) {
+                    return@InputFilter source
+                }
+                Toast.makeText(requireContext(), "한글, 영문, 숫자만 입력 가능합니다.", Toast.LENGTH_SHORT).show()
+                ""
+            })
+
+            var alertDialog = AlertDialog.Builder(requireContext(), R.style.DialogTheme)
                 .setTitle("검색어를 입력하세요")
                 .setNeutralButton("취소", null)
                 .setPositiveButton("검색") { dialog, which ->
@@ -117,12 +130,13 @@ class NoticeFragment : Fragment() {
                 }
             })
             alertDialog.setCancelable(false)//  여백 눌러도 창 안없어지게 설정
-            alertDialog.window?.setLayout(500,400)  //dialog 크기 지정
+            alertDialog.window?.setLayout(500, 400)  //dialog 크기 지정
             alertDialog.setView(searchView)
             alertDialog.show()
         }
         return view
     }
+
     /**
      * 파싱 기능
      * @author 김우진,희진
@@ -133,7 +147,7 @@ class NoticeFragment : Fragment() {
 
         if (target == "") {
             emptyResultView.visibility = View.VISIBLE
-        } else{
+        } else {
             emptyResultView.visibility = View.GONE
             searchNoData.visibility = View.GONE
             val parseResult: List<String> = Parsing.parsing(
@@ -146,13 +160,13 @@ class NoticeFragment : Fragment() {
                 searchQuery,
                 target
             )
-            if( noticeList.size ==0 ){
-                if(searchQuery!="") {
+            if (noticeList.size == 0) {
+                if (searchQuery != "") {
                     searchNoData.visibility = View.VISIBLE
                 } else {
                     Toast.makeText(requireContext(), "게시글이 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
                 }
-            } else{
+            } else {
                 searchNoData.visibility = View.GONE
             }
 
@@ -161,8 +175,9 @@ class NoticeFragment : Fragment() {
             nextPage = parseResult[2]
         }
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun searchRun(){
+    private fun searchRun() {
         searchQuery = search_edits.text.toString()
         url = ""
         if (searchQuery != "") {
