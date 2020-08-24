@@ -11,7 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <include layout="@layout/activity_main_toolbar"/>
+
         <RadioGroup
             android:id="@+id/keyword_radio_group"
             android:layout_width="match_parent"
@@ -23,6 +25,7 @@
                 android:id="@+id/keyword_show_all"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
                 android:checked="true"
                 android:text="전체"/>
 
@@ -41,7 +44,7 @@
             android:text="선택된 키워드가 없습니다. \n [설정 -> 키워드]\n화면에서 설정해주세요."
             android:textSize="30dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"></TextView>
+            app:layout_constraintRight_toRightOf="parent" />
 
         <TextView
             android:id="@+id/item_null_view"
@@ -51,7 +54,7 @@
             android:text="해당 키워드가 검색결과로 존재하지 않습니다. "
             android:textSize="30dp"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"></TextView>
+            app:layout_constraintRight_toRightOf="parent" />
 
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout

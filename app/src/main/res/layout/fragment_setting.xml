@@ -11,6 +11,7 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="30dp"
         tools:context=".activity.KeywordActivity">
+
         <include layout="@layout/activity_main_toolbar"/>
 
         <ImageView
@@ -74,22 +75,19 @@
                 android:id="@+id/alarmSwitch"
                 android:layout_width="0dp"
                 android:layout_height="60dp"
-                android:layout_weight=".50"
-                android:layout_marginTop="1dp"
-                android:paddingRight="60dp"
-                android:text="알림 설정:"
-                android:textSize="18dp"
-                android:paddingLeft="10dp"
-                android:gravity="center_vertical"
-                android:track="@drawable/setting_switch_selector"
-                android:thumb="@drawable/setting_switch_thumb"
-                android:background="@drawable/setting_bottom_line"
                 android:layout_marginLeft="1dp"
+                android:layout_marginTop="1dp"
+                android:layout_weight=".50"
+                android:background="@drawable/setting_bottom_line"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="알림 설정:"
+                android:paddingRight="10dp"
+                android:thumbTextPadding="15dp"
+                android:textSize="18dp"
+                android:thumb="@drawable/setting_switch_thumb"
+                android:track="@drawable/setting_switch_selector"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                >
-            </Switch>
-
+                app:layout_constraintRight_toRightOf="parent" />
         </LinearLayout>
 
         <LinearLayout
@@ -110,8 +108,7 @@
                 android:textSize="16dp"
                 android:background="@drawable/setting_bottom_line"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                ></TextView>
+                app:layout_constraintRight_toRightOf="parent" />
 
             <TextView
                 android:id="@+id/subscriptionSetting"
@@ -150,7 +147,6 @@
                 android:background="@drawable/setting_bottom_line"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="@+id/subscriptionSetting"
                 app:layout_constraintRight_toRightOf="@+id/subscriptionSetting"
@@ -175,8 +171,7 @@
                 android:textSize="16dp"
                 android:background="@drawable/setting_bottom_line"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                ></TextView>
+                app:layout_constraintRight_toRightOf="parent" />
 
             <TextView
                 android:id="@+id/inquire"
@@ -194,7 +189,6 @@
                 android:background="@drawable/setting_bottom_line"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="@+id/subscriptionSetting"
                 app:layout_constraintRight_toRightOf="@+id/subscriptionSetting"
@@ -216,7 +210,6 @@
                 android:background="@drawable/setting_bottom_line"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toLeftOf="@+id/subscriptionSetting"
                 app:layout_constraintRight_toRightOf="@+id/subscriptionSetting"
