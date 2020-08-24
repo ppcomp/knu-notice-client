@@ -1,9 +1,9 @@
 package com.ppcomp.knu.activity
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.StrictMode
+import android.text.InputFilter
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.View
@@ -11,14 +11,17 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ppcomp.knu.GlobalApplication
-import com.ppcomp.knu.adapter.KeywordAdapter
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Keyword
+import com.ppcomp.knu.adapter.KeywordAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_keyword.*
 import kotlinx.android.synthetic.main.activity_main_toolbar.*
+import java.util.regex.Pattern
+
 
 /**
  * 어떤 데이터(ArrayList)와 어떤 RecyclerView를 쓸 것인지 설정하는 Activity
@@ -130,6 +133,16 @@ class KeywordActivity : AppCompatActivity() {
             inputKeyword.text = ""      //텍스트 초기화
             GlobalApplication.isFragmentChange[1] = true    //키워드 변경사항 확인
         }
+
+        keywordInput.filters = arrayOf(InputFilter { source, start, end, dest, dstart, dend ->
+            val ps: Pattern =
+                Pattern.compile("^[a-zA-Z0-9가-힣ㄱ-ㅎㅏ-ㅣ\\u318D\\u119E\\u11A2\\u2022\\u2025a\\u00B7\\uFE55]+$")
+            if (source == "" || ps.matcher(source).matches()) {
+                return@InputFilter source
+            }
+            Toast.makeText(this, "한글, 영문, 숫자만 입력 가능합니다.", Toast.LENGTH_SHORT).show()
+            ""
+        })
 
 //        testview.setOnClickListener {   // 저장 잘되어있는지 보려고 만든 View
 //            testview.text = PreferenceHelper.get("Keys", "")
