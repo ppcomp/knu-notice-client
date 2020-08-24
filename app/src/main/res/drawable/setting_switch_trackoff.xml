@@ -6,7 +6,7 @@
         android:radius="15dp" />
 
     <size
-        android:width="70dp"
+        android:width="80dp"
         android:height="30dp" />
 
     <solid

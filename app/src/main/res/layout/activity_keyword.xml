@@ -5,82 +5,94 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/keyword_toolbar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <include layout="@layout/activity_main_toolbar"/>
 
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/keyword_info_line"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/keyword_info_line"
-        >
-        <TextView
-            android:id="@+id/keyword_info"
+        <LinearLayout
+            android:id="@+id/keyword_info_line"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="알림을 받고 싶은 키워드를 입력하시오.\n구독한 사이트에 해당 키워드를 포함하는 공지가 \n올라오면 알람을 통해 알려줍니다.\n"
-            android:textSize="16dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            >
+            android:background="@drawable/keyword_info_line"
+            app:layout_constraintTop_toTopOf="parent">
 
-        </TextView>
+            <TextView
+                android:id="@+id/keyword_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="알림을 받고 싶은 키워드를 입력하시오.\n구독한 사이트에 해당 키워드를 포함하는 공지가 \n올라오면 알람을 통해 알려줍니다.\n"
+                android:textSize="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/search_line"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                app:layout_constraintTop_toBottomOf="@id/keyword_info_line">
+
+                <EditText
+                    android:id="@+id/keywordInput"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.50"
+                    android:hint="키워드를 입력하세요"
+                    android:theme="@style/EditTheme"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/keywordEnrollment"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintRight_toRightOf="@+id/keywordEnrollment"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintVertical_bias="0.047"/>
+
+                <Button
+                    android:id="@+id/keywordEnrollment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.20"
+                    android:text="등록"
+                    android:background="@color/colorBlue"
+                    app:layout_constraintBottom_toTopOf="@+id/subsResult"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.855"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintVertical_bias="0.047" />
+                </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/keyResult"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:overScrollMode="never"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.627"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="0.142">
+            </androidx.recyclerview.widget.RecyclerView>
+        </LinearLayout>
     </LinearLayout>
-
-    <EditText
-        android:id="@+id/keywordInput"
-        android:layout_width="247dp"
-        android:layout_height="wrap_content"
-        android:hint="키워드를 입력하세요"
-        android:theme="@style/EditTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/keywordEnrollment"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintRight_toRightOf="@+id/keywordEnrollment"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintVertical_bias="0.047"
-        app:layout_constraintTop_toBottomOf="@+id/keyword_info_line"/>
-
-    <Button
-        android:id="@+id/keywordEnrollment"
-        android:layout_width="73dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="등록"
-        android:background="@color/colorBlue"
-        app:layout_constraintBottom_toTopOf="@+id/subsResult"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.855"
-        app:layout_constraintStart_toStartOf="parent"
-
-        app:layout_constraintTop_toBottomOf="@+id/keyword_info_line"
-        app:layout_constraintVertical_bias="0.047" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/keyResult"
-        android:layout_width="350dp"
-        android:layout_height="400dp"
-        android:overScrollMode="never"
-        android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.627"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/keywordInput"
-        app:layout_constraintVertical_bias="0.142">
-    </androidx.recyclerview.widget.RecyclerView>
-
 <!--    <TextView-->
 <!--        android:id="@+id/testview"-->
 <!--        android:layout_width="262dp"-->

@@ -27,31 +27,30 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <include layout="@layout/activity_main_toolbar" />
+        <include layout="@layout/activity_main_toolbar" />
 
-    <TextView
-        android:id="@+id/noData"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical|center_horizontal"
-        android:text="구독리스트가 없습니다. \n [설정 -> 구독리스트]\n화면에서 설정해주세요."
-        android:textSize="30dp"
-        tools:ignore="Suspicious0dp" />
+        <TextView
+            android:id="@+id/noData"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="구독리스트가 없습니다. \n [설정 -> 구독리스트]\n화면에서 설정해주세요."
+            android:textSize="30dp"
+            tools:ignore="Suspicious0dp" />
 
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/swipe"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="false">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/notice"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/progressbar"
-            android:scrollbars="vertical" />
+            android:layout_alignParentBottom="false">
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/notice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/progressbar"
+                android:scrollbars="vertical" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
     <ProgressBar
         android:id="@+id/progressbar"
