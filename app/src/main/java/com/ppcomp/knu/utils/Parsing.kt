@@ -129,11 +129,21 @@ class Parsing private constructor() {
             for (i in 0 until jArray.length()) {
                 ///////////////////////////////// Bind variables ///////////////////////////////////
                 val obj = jArray.getJSONObject(i)
-                var title = ""
-                try {
-                    title = obj.getString("bold_title").toString()
-                } catch (e: JSONException) {
-                    title = obj.getString("title").toString()
+                var title = obj.getString("title").toString()
+                if (searchQuery != "") { // 검색어가 존재하는 경우
+                    var divideSearchQuary: List<String> =
+                        if (searchQuery.contains("+")) { // 키워드가 2개 이상인 경우
+                            searchQuery.split("+")
+                        } else { // 단일 키워드인경우
+                            listOf(searchQuery)
+                        }
+                    for (i in divideSearchQuary.indices) {
+                        title = title.replace( // 강조
+                            divideSearchQuary[i],
+                            "<u><strong>" + divideSearchQuary[i] + "</strong></u>"
+                        )
+                    }
+
                 }
                 Log.d("########", title)
                 val id = obj.getString("id").toString()
