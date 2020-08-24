@@ -17,6 +17,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             tools:ignore="MissingConstraints">
 
             <LinearLayout
@@ -24,13 +26,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="horizontal"
-                android:layout_marginRight="30dp"
                 tools:ignore="MissingConstraints"
                 android:gravity="left" >
                 <ImageView
                     android:id="@+id/fixed_image"
-                    android:layout_width="20dp"
-                    android:layout_height="18dp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
                     android:layout_marginTop="7dp" />
                 <TextView
                     android:id="@+id/board"
@@ -58,7 +59,8 @@
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:gravity="left"
                 android:singleLine="true"
                 android:textSize="15dp"
@@ -69,6 +71,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="7dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
             android:orientation="horizontal"
             tools:ignore="MissingConstraints">
 
@@ -76,7 +80,6 @@
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
-                android:layout_marginLeft="20dp"
                 android:gravity="left"
                 android:textSize="9sp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -106,8 +109,8 @@
                 android:id="@+id/reference"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
-                android:layout_marginLeft="20dp"
                 android:gravity="left"
+                android:layout_marginLeft="20dp"
                 android:textSize="9sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

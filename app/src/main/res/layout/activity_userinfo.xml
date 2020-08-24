@@ -13,7 +13,7 @@
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/sub_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent">
 
             <include layout="@layout/activity_main_toolbar" />

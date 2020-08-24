@@ -10,8 +10,8 @@
     </style>
     <style name="CustomAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
     <!--        &lt;!&ndash; Customize your theme here. &ndash;&gt;-->
-    <item name="colorPrimary">#B8D7FF</item>
-    <item name="colorPrimaryDark">#B8D7FF</item>
+    <item name="colorPrimary">@color/colorBlue</item>
+    <item name="colorPrimaryDark">@color/colorBlue</item>
     <item name="colorAccent">@color/colorAccent</item>
     </style>
 

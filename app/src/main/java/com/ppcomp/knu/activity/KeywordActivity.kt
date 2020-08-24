@@ -131,9 +131,9 @@ class KeywordActivity : AppCompatActivity() {
             GlobalApplication.isFragmentChange[1] = true    //키워드 변경사항 확인
         }
 
-        testview.setOnClickListener {   // 저장 잘되어있는지 보려고 만든 View
-            testview.text = PreferenceHelper.get("Keys", "")
-        }
+//        testview.setOnClickListener {   // 저장 잘되어있는지 보려고 만든 View
+//            testview.text = PreferenceHelper.get("Keys", "")
+//        }
     }
 
     /**

@@ -61,7 +61,7 @@ class SettingFragment : Fragment() {
         view.inquire.setOnClickListener{
             val email = Intent(Intent.ACTION_SEND)
             email.setType("plain/text")
-            val address = arrayOf("email@address.com")
+            val address = arrayOf("knu.app.develop@gmail.com")
             email.putExtra(Intent.EXTRA_EMAIL,address)
             email.putExtra(Intent.EXTRA_SUBJECT,"[앱 이름] 오류 | 요청할 사항이 있습니다!")
             startActivity(email)

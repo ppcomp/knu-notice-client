@@ -18,7 +18,7 @@
             android:layout_width="100dp"
             android:layout_height="110dp"
             android:layout_gravity="center"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="60dp"
             android:src="@drawable/setting_main_ic"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -51,7 +51,7 @@
             <TextView
                 android:id="@+id/login"
                 android:layout_width="0dp"
-                android:layout_height="65dp"
+                android:layout_height="60dp"
                 android:layout_marginTop="1dp"
                 android:layout_weight=".50"
                 android:background="@drawable/setting_bottom_line"
@@ -75,7 +75,7 @@
                 android:layout_width="0dp"
                 android:layout_height="60dp"
                 android:layout_weight=".50"
-                android:layout_marginTop="-1dp"
+                android:layout_marginTop="1dp"
                 android:paddingRight="60dp"
                 android:text="알림 설정:"
                 android:textSize="18dp"
@@ -155,13 +155,13 @@
                 app:layout_constraintLeft_toLeftOf="@+id/subscriptionSetting"
                 app:layout_constraintRight_toRightOf="@+id/subscriptionSetting"
                 app:layout_constraintTop_toBottomOf="@+id/subscriptionSetting"/>
-            "
         </LinearLayout>
         <LinearLayout
             android:id="@+id/additional_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:layout_marginBottom="30dp"
             app:layout_constraintTop_toBottomOf="@id/list"
             android:orientation="vertical">
 
@@ -178,27 +178,27 @@
                 app:layout_constraintRight_toRightOf="parent"
                 ></TextView>
 
-
             <TextView
-                android:id="@+id/license"
+                android:id="@+id/inquire"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
+                android:text="문의하기"
                 android:layout_marginTop="1dp"
-                android:background="@drawable/setting_bottom_line"
-                android:clickable="true"
-                android:drawableRight="@drawable/setting_move_btn"
-                android:focusable="true"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:gravity="center_vertical"
+                android:textSize="18dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="20dp"
-                android:text="라이선스"
+                android:gravity="center_vertical"
                 android:textColor="@color/colorBlack"
-                android:textSize="18dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.265" />
+                android:clickable="true"
+                android:drawableRight="@drawable/setting_move_btn"
+                android:background="@drawable/setting_bottom_line"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintLeft_toLeftOf="@+id/subscriptionSetting"
+                app:layout_constraintRight_toRightOf="@+id/subscriptionSetting"
+                app:layout_constraintTop_toBottomOf="@+id/subscriptionSetting"/>
 
             <TextView
                 android:id="@+id/maker"
@@ -221,29 +221,28 @@
                 app:layout_constraintLeft_toLeftOf="@+id/subscriptionSetting"
                 app:layout_constraintRight_toRightOf="@+id/subscriptionSetting"
                 app:layout_constraintTop_toBottomOf="@+id/subscriptionSetting"/>
+
             <TextView
-                android:id="@+id/inquire"
+                android:id="@+id/license"
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
-                android:text="문의하기"
                 android:layout_marginTop="1dp"
-                android:textSize="18dp"
-                android:paddingLeft="15dp"
-                android:paddingRight="20dp"
-                android:gravity="center_vertical"
-                android:textColor="@color/colorBlack"
+                android:background="@drawable/setting_bottom_line"
                 android:clickable="true"
                 android:drawableRight="@drawable/setting_move_btn"
-                android:background="@drawable/setting_bottom_line"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="@+id/subscriptionSetting"
-                app:layout_constraintRight_toRightOf="@+id/subscriptionSetting"
-                app:layout_constraintTop_toBottomOf="@+id/subscriptionSetting"/>
+                android:gravity="center_vertical"
+                android:paddingLeft="15dp"
+                android:paddingRight="20dp"
+                android:text="라이선스"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.265" />
         </LinearLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
