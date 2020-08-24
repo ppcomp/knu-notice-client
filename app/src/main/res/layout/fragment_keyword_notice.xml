@@ -15,7 +15,9 @@
         <RadioGroup
             android:id="@+id/keyword_radio_group"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
+            android:theme="@style/EditTheme"
+            android:background="@color/colorWhite"
             android:orientation="horizontal">
             <RadioButton
                 android:id="@+id/keyword_show_all"

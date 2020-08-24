@@ -36,8 +36,10 @@
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/subsSearch"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:background="@drawable/subscription_search_line"
                 android:textCursorDrawable="@null"
                 android:theme="@style/EditTheme"
@@ -46,7 +48,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
                 <CheckBox
                     android:id="@+id/subs_allCheckbox"
