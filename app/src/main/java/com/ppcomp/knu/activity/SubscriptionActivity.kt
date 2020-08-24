@@ -44,10 +44,11 @@ class SubscriptionActivity : AppCompatActivity() {
 
         val isNewUser = PreferenceHelper.get("NewUser", true) // 신규 사용자 확인
         val lm = LinearLayoutManager(this)
+        var myToast: Toast =  Toast.makeText(this, "", Toast.LENGTH_SHORT)
 
         //전역변수 초기화
         listType = object : TypeToken<ArrayList<Subscription>>() {}
-        strContact = PreferenceHelper.get("testsub", "").toString()
+        strContact = PreferenceHelper.get("subList", "").toString()
         makeGson = GsonBuilder().create()
         subsList = makeGson.fromJson(strContact, listType.type)
         subsAdapter = SubscriptionAdapter(this, subsList)
@@ -82,7 +83,8 @@ class SubscriptionActivity : AppCompatActivity() {
         subsSave.setOnClickListener {   // 저장 버튼 누를시
             saveSubsciption()   //체크된 구독리스트 저장
             GlobalApplication.deviceInfoUpdate(this)  //구독리스트 서버에 업로드
-            Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+            myToast.setText("구독리스트가 저장되었습니다")
+            myToast.show()
 
             if (isNewUser) { // 신규 사용자일시 확인버튼이 메인을 띄우도록
                 PreferenceHelper.put("NewUser", false)
@@ -132,7 +134,7 @@ class SubscriptionActivity : AppCompatActivity() {
             PreferenceHelper.put("Urls", "")
 
             strContact = makeGson.toJson(subsList, listType.type)
-            PreferenceHelper.put("testsub", strContact)
+            PreferenceHelper.put("subList", strContact)
             // 아무것도 선택 안하고 저장버튼 누를 시 reset
         } else {
             storeName = storeName.substring(0, storeName.length - 1)
@@ -142,7 +144,7 @@ class SubscriptionActivity : AppCompatActivity() {
             PreferenceHelper.put("Urls", storeUrl)
 
             strContact = makeGson.toJson(subsList, listType.type)
-            PreferenceHelper.put("testsub", strContact)
+            PreferenceHelper.put("subList", strContact)
             // 선택하고 저장버튼 누를시 Subs 라는 Key로 SharedPreferences에 저장
         }
         GlobalApplication.isFragmentChange[0] = true    // 구독리스트 변경사항 확인
