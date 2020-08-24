@@ -11,19 +11,18 @@ import android.util.Log
 import android.view.View
 import android.widget.AbsListView
 import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.adapter.NoticeAdapter
-import kotlinx.android.synthetic.main.fragment_keyword_notice.view.*
-import org.json.JSONException
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
 import java.text.SimpleDateFormat
@@ -61,6 +60,7 @@ class Parsing private constructor() {
          *
          * @param context 이 함수를 호출하는 Context
          * @param noticeList 서버로부터 받아온 공지를 저장할 배열
+         * @param bookmarkList notice adapter에 전달할 북마크 리스트
          * @param view 저장된 공지를 매핑시킬 view
          * @param progressBar 로딩중일동안 보여질 ProgressBar
          * @param currentUrl 서버로 요청할 주소
@@ -72,7 +72,7 @@ class Parsing private constructor() {
          *     List<String>[1]: currentPage
          *     List<String>[2]: nextPage
          *
-         * @author 정우
+         * @author 정우, 정준
          */
         @SuppressLint("SimpleDateFormat")
         @RequiresApi(Build.VERSION_CODES.O)
@@ -117,92 +117,97 @@ class Parsing private constructor() {
                     url = "http://15.165.178.103/notice/search?q=$searchQuery&target=$target"
                 }
             }
-            val noticeStream = URL(url).openConnection() as HttpURLConnection
-            val noticeRead = BufferedReader(InputStreamReader(noticeStream.inputStream, "UTF-8"))
-            val noticeResponse = noticeRead.readLine()
-            val jObject = JSONObject(noticeResponse)
-            val jArray = jObject.getJSONArray("results")
+            try {   //서버 연결상태 확인을 위한 try catch 문
+                val noticeStream = URL(url).openConnection() as HttpURLConnection
+                val noticeRead = BufferedReader(InputStreamReader(noticeStream.inputStream, "UTF-8"))
+                val noticeResponse = noticeRead.readLine()
+                val jObject = JSONObject(noticeResponse)
+                val jArray = jObject.getJSONArray("results")
 
-            previousPage = jObject.getString("previous")
-            nextPage = jObject.getString("next")
-            url = nextPage        //다음 Url 주소 변경
-            // 모든 공지 noticeList 에 저장
-            for (i in 0 until jArray.length()) {
-                ///////////////////////////////// Bind variables ///////////////////////////////////
-                val obj = jArray.getJSONObject(i)
-                var title = obj.getString("title").toString()
-                if (searchQuery != "") { // 검색어가 존재하는 경우
-                    var divideSearchQuary: List<String> =
-                        if (searchQuery.contains("+")) { // 키워드가 2개 이상인 경우
-                            searchQuery.split("+")
-                        } else { // 단일 키워드인경우
-                            listOf(searchQuery)
+                previousPage = jObject.getString("previous")
+                nextPage = jObject.getString("next")
+                url = nextPage        //다음 Url 주소 변경
+                // 모든 공지 noticeList 에 저장
+                for (i in 0 until jArray.length()) {
+                    ///////////////////////////////// Bind variables ///////////////////////////////////
+                    val obj = jArray.getJSONObject(i)
+                    var title = obj.getString("title").toString()
+                    if (searchQuery != "") { // 검색어가 존재하는 경우
+                        var divideSearchQuary: List<String> =
+                            if (searchQuery.contains("+")) { // 키워드가 2개 이상인 경우
+                                searchQuery.split("+")
+                            } else { // 단일 키워드인경우
+                                listOf(searchQuery)
+                            }
+                        for (i in divideSearchQuary.indices) {
+                            title = title.replace( // 강조
+                                divideSearchQuary[i],
+                                "<u><strong>" + divideSearchQuary[i] + "</strong></u>"
+                            )
                         }
-                    for (i in divideSearchQuary.indices) {
-                        title = title.replace( // 강조
-                            divideSearchQuary[i],
-                            "<u><strong>" + divideSearchQuary[i] + "</strong></u>"
-                        )
+
                     }
+                    Log.d("########", title)
+                    val id = obj.getString("id").toString()
+                    var boardName = id.split("-")[0]
+                    var days: String = ""
+                    var author = obj.getString("author").toString()
+                    val link = obj.getString("link").toString()
+                    var reference = obj.getString("reference").toString()
+                    val fixed = obj.getString("is_fixed").toBoolean()
+                    var image: Int = 0
+                    var fixedImage = 0
+                    var date = obj.getString("date")
+                    /////////////////////////////////// End binding ////////////////////////////////////
 
-                }
-                Log.d("########", title)
-                val id = obj.getString("id").toString()
-                var boardName = id.split("-")[0]
-                var days: String = ""
-                var author = obj.getString("author").toString()
-                val link = obj.getString("link").toString()
-                var reference = obj.getString("reference").toString()
-                val fixed = obj.getString("is_fixed").toBoolean()
-                var image: Int = 0
-                var fixedImage = 0
-                var date = obj.getString("date")
-                /////////////////////////////////// End binding ////////////////////////////////////
-
-                ////////////////////////////////// Data cleansing //////////////////////////////////
+                    ////////////////////////////////// Data cleansing //////////////////////////////////
 //                title = title.replace("<", "&lt;").replace(">", "&gt;")
-                if (fixed) {
-                    fixedImage = R.drawable.notice_fixed_pin_icon
-                }
-                if (author == "null") {
-                    author = ""
-                }
-                if (reference == "null") {
-                    reference = ""
-                }
-                if (date == "null") {
-                    date = ""
-                } else {
-                    val sf = SimpleDateFormat("yyyy-MM-dd")
-                    val diff = abs(
-                        (sf.parse(nowDate.toString()).time - sf.parse(date).time) /
-                                (24 * 60 * 60 * 1000)
-                    )
-                    if (diff <= 5) {
-                        image = R.drawable.notice_new_icon
+                    if (fixed) {
+                        fixedImage = R.drawable.notice_fixed_pin_icon
                     }
-                    val dateArr = date.split("-")
-                    val day = dateArr[2].split("T")
-                    days = dateArr[0] + "년 " + dateArr[1] + "월 " + day[0] + "일"
-                }
-                //////////////////////////////// End cleansing /////////////////////////////////////
+                    if (author == "null") {
+                        author = ""
+                    }
+                    if (reference == "null") {
+                        reference = ""
+                    }
+                    if (date == "null") {
+                        date = ""
+                    } else {
+                        val sf = SimpleDateFormat("yyyy-MM-dd")
+                        val diff = abs(
+                            (sf.parse(nowDate.toString()).time - sf.parse(date).time) /
+                                    (24 * 60 * 60 * 1000)
+                        )
+                        if (diff <= 5) {
+                            image = R.drawable.notice_new_icon
+                        }
+                        val dateArr = date.split("-")
+                        val day = dateArr[2].split("T")
+                        days = dateArr[0] + "년 " + dateArr[1] + "월 " + day[0] + "일"
+                    }
+                    //////////////////////////////// End cleansing /////////////////////////////////////
 
-                noticeList.add(
-                    Notice(
-                        title,
-                        boardName,
-                        "게시일: $days",
-                        "작성자: $author",
-                        link,
-                        reference,
-                        fixed,
-                        image,
-                        fixedImage,
-                        bookmark = false
+                    noticeList.add(
+                        Notice(
+                            title,
+                            boardName,
+                            "게시일: $days",
+                            "작성자: $author",
+                            link,
+                            reference,
+                            fixed,
+                            image,
+                            fixedImage,
+                            bookmark = false
+                        )
                     )
-                )
 
-            } ///////////////////////////////////// End for ////////////////////////////////////////
+                } ///////////////////////////////////// End for ////////////////////////////////////////
+                GlobalApplication.isServerConnect = true    //서버 연결 성공
+            } catch(e: Exception) {
+                GlobalApplication.isServerConnect = false   //서버 연결 실패
+            }
 
             //스크롤시 progressbar 보이게하고 조금 대기
             Handler().postDelayed({
@@ -216,8 +221,6 @@ class Parsing private constructor() {
          *  스크롤시 서버의 다음 페이지 정보를 크롤링
          *  @author 희진
          */
-
-
         fun scrollPagination(
             context: Context,
             view: RecyclerView,

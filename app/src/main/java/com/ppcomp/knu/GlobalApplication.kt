@@ -38,6 +38,7 @@ class GlobalApplication : Application() {
         var instance: GlobalApplication? = null
         var isLogin: Boolean = false    //로그인 상태
         var isFragmentChange: Array<Boolean> = arrayOf(false, false, false) //프레그먼트 변경사항 확인 (notice, keywordNotice, bookmark)
+        var isServerConnect: Boolean = false    //서버 연결 상태
 
         /**
          * 유저 데이터 서버에 업로드

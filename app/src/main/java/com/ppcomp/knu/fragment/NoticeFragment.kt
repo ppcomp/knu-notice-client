@@ -1,9 +1,6 @@
 package com.ppcomp.knu.fragment
 
-import android.accessibilityservice.GestureDescription
 import android.app.AlertDialog
-import android.content.Context
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -14,17 +11,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.utils.Parsing
 import com.ppcomp.knu.utils.PreferenceHelper
-import kotlinx.android.synthetic.main.activity_keyword.*
 import kotlinx.android.synthetic.main.activity_main_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
@@ -144,8 +140,9 @@ class NoticeFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun parsing() {
         val target = PreferenceHelper.get("Urls", "").toString()
-
+        var toastText = ""
         if (target == "") {
+            emptyResultView.text = "구독리스트가 없습니다. \n [설정 -> 구독리스트]\n화면에서 설정해주세요."
             emptyResultView.visibility = View.VISIBLE
         } else {
             emptyResultView.visibility = View.GONE
@@ -164,10 +161,20 @@ class NoticeFragment : Fragment() {
                 if (searchQuery != "") {
                     searchNoData.visibility = View.VISIBLE
                 } else {
-                    Toast.makeText(requireContext(), "게시글이 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
+                    if(GlobalApplication.isServerConnect) {//Parsing 클래스에서 확인한 서버 연결 상태
+                        toastText = "게시글이 존재하지 않습니다."
+                        emptyResultView.text = "구독리스트가 없습니다. \n [설정 -> 구독리스트]\n화면에서 설정해주세요."
+                    }
+                    else {
+                        toastText = "서버 연결에 실패했습니다."
+                        emptyResultView.text = "서버 연결에 실패했습니다.\n관리자에게 문의해주세요."
+                    }
+                    Toast.makeText(requireContext(), toastText, Toast.LENGTH_SHORT).show()
+                    emptyResultView.visibility = View.VISIBLE
                 }
             } else {
                 searchNoData.visibility = View.GONE
+                emptyResultView.visibility = View.GONE
             }
 
             previousPage = parseResult[0]
