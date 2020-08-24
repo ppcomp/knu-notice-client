@@ -36,6 +36,7 @@ import kotlin.math.abs
  */
 class Parsing private constructor() {
 
+
     companion object {
 
         @Volatile
@@ -215,12 +216,16 @@ class Parsing private constructor() {
          *  스크롤시 서버의 다음 페이지 정보를 크롤링
          *  @author 희진
          */
+
+
         fun scrollPagination(
             context: Context,
             view: RecyclerView,
             progressBar: ProgressBar,
             parsing: () -> Unit
         ) {
+            var myToast: Toast =  Toast.makeText(context, "", Toast.LENGTH_SHORT)
+
             view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 @RequiresApi(Build.VERSION_CODES.O)
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -234,7 +239,8 @@ class Parsing private constructor() {
                             }, 500)
                         }
                         else{
-                            Toast.makeText(context, "더 이상 공지가 없습니다.", Toast.LENGTH_SHORT).show()
+                            myToast.setText("더 이상 공지가 없습니다.")
+                            myToast.show()
                         }
                     }
                 }

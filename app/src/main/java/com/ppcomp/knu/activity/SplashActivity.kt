@@ -122,7 +122,7 @@ class SplashActivity : AppCompatActivity() {
         val makeGson = GsonBuilder().create()
         var listType: TypeToken<ArrayList<Subscription>> = object : TypeToken<ArrayList<Subscription>>() {}
         var strContact = makeGson.toJson(subsList, listType.type)
-        PreferenceHelper.put("testsub",strContact)
+        PreferenceHelper.put("subList",strContact)
     }
 }
 

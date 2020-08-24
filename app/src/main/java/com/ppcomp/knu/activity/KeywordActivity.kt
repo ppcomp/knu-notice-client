@@ -38,12 +38,13 @@ class KeywordActivity : AppCompatActivity() {
         setContentView(R.layout.activity_keyword)
 
         StrictMode.enableDefaults()
-        inputKeyword = findViewById(R.id.keywordInput) as TextView
+        inputKeyword = findViewById<TextView>(R.id.keywordInput)
 
         val keyword = PreferenceHelper.get("Keys", "")
+        var myToast: Toast =  Toast.makeText(this, "", Toast.LENGTH_SHORT)
 
         if (keyword != null) { // 첫 화면을 띄울 시 키워드들을 리사이클러뷰에 등록
-            if (!keyword.equals("")) {
+            if (keyword != "") {
                 val getkeywordList = keyword.split("+")
                 for (i in 0 until getkeywordList.count()) {
                     val keywordName = getkeywordList[i]
@@ -93,13 +94,15 @@ class KeywordActivity : AppCompatActivity() {
 
             if (getValue == "") {
                 // 1. 입력값이 없을 경우
-                Toast.makeText(this, "입력된 키워드가 없습니다.", Toast.LENGTH_SHORT).show()
+                myToast.setText("입력된 키워드가 없습니다")
+                myToast.show()
             } else if (getKeyword.equals("") && (getValue != "")) {
                 // 2. 입력값이 없고, 키워드 저장값이 없을 경우
                 PreferenceHelper.put("Keys", getValue)
                 keywordList.add(Keyword(getValue))
                 keyAdapter.notifyDataSetChanged()
-                Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+                myToast.setText("저장되었습니다")
+                myToast.show()
                 GlobalApplication.deviceInfoUpdate(this)  //서버에 업로드
             } else {
                 // 3. 키워드가 있을경우 -> 중복확인 필요
@@ -117,14 +120,16 @@ class KeywordActivity : AppCompatActivity() {
                     PreferenceHelper.put("Keys", storeKeyword)
                     keywordList.add(Keyword(getValue))
                     keyAdapter.notifyDataSetChanged()
-                    Toast.makeText(this, "저장되었습니다.", Toast.LENGTH_SHORT).show()
+                    myToast.setText("저장되었습니다")
+                    myToast.show()
                     GlobalApplication.deviceInfoUpdate(this)  //서버에 업로드
                 } else {
                     // 3-2-2. 중복 키워드를 입력한 경우(문제 발생)
                     if (keywordItem != null) {
                         for (keyword in keywordItem) {
                             if (keyword == getValue) {
-                                Toast.makeText(this, "이미 존재합니다.", Toast.LENGTH_SHORT).show()
+                                myToast.setText("이미 존재합니다.")
+                                myToast.show()
                             }
                         }
                     }
@@ -140,7 +145,8 @@ class KeywordActivity : AppCompatActivity() {
             if (source == "" || ps.matcher(source).matches()) {
                 return@InputFilter source
             }
-            Toast.makeText(this, "한글, 영문, 숫자만 입력 가능합니다.", Toast.LENGTH_SHORT).show()
+            myToast.setText("한글, 영문, 숫자만 입력 가능합니다.")
+            myToast.show()
             ""
         })
 
@@ -161,4 +167,7 @@ class KeywordActivity : AppCompatActivity() {
 
         return super.dispatchTouchEvent(ev)
     }
+
+
+
 }
