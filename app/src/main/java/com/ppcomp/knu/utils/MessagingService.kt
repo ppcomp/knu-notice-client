@@ -59,9 +59,9 @@ class MessagingService : FirebaseMessagingService() {
         var pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT) //intent를 특정 시점에 실행시킬 때 사용
         val notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
-        var notificationBuilder = NotificationCompat.Builder(this,"Notification")
+        var notificationBuilder = NotificationCompat.Builder(this,CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle("Push Notification FCM")
+            .setContentTitle(message.notification?.title)
             .setContentText(message.notification?.body)
             .setAutoCancel(true)
             .setSound(notificationSound)
