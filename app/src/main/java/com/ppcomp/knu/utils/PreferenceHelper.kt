@@ -37,7 +37,7 @@ class PreferenceHelper private constructor(context: Context) {
 
         fun put(key: String?, value: String?) {
             prefsEditor!!.putString(key, value)
-            prefsEditor!!.commit()
+            prefsEditor!!.apply()
         }
 
         fun get(key: String?, defValue: Int): Int? {
@@ -45,7 +45,7 @@ class PreferenceHelper private constructor(context: Context) {
         }
 
         fun put(key: String?, value: Int?) {
-            prefsEditor!!.putInt(key, value!!).commit()
+            prefsEditor!!.putInt(key, value!!).apply()
         }
 
         fun get(key: String?, defValue: Boolean): Boolean {
@@ -54,7 +54,7 @@ class PreferenceHelper private constructor(context: Context) {
 
         fun put(key: String?, value: Boolean) {
             prefsEditor!!.putBoolean(key, value)
-            prefsEditor!!.commit()
+            prefsEditor!!.apply()
         }
     }
 }
