@@ -95,6 +95,7 @@ class KeywordNoticeFragment : Fragment() {
                 // Hide swipe to refresh icon animation
                 parsing()
                 keyword_swipe.isRefreshing = false
+                keywordRecyclerView.scrollToPosition(0)
             }
             mHandler.postDelayed(mRunnable, 1000)
         }
