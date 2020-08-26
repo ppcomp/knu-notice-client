@@ -22,7 +22,6 @@ import com.ppcomp.knu.adapter.NoticeAdapter
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
-import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
 import java.text.SimpleDateFormat
@@ -41,7 +40,7 @@ class Parsing private constructor() {
         @Volatile
         private var INSTANCE: Parsing? = null
         private var url: String = ""
-
+        private var scrollPosition=0
         /**
          * SplashActivity 에서 처음에 한 번만 호출하면 됨
          * @author 정우
@@ -95,12 +94,10 @@ class Parsing private constructor() {
             }
             view.adapter = noticeAdapter
             view.scrollToPosition(AbsListView.OnScrollListener.SCROLL_STATE_IDLE)
-
             // LayoutManager 설정. RecyclerView 에서는 필수
             var lm = LinearLayoutManager(context)
             view.layoutManager = lm
             view.setHasFixedSize(true)
-
             // Web 통신
             StrictMode.enableDefaults()
 
@@ -209,10 +206,10 @@ class Parsing private constructor() {
                 GlobalApplication.isServerConnect = false   //서버 연결 실패
             }
 
+            view.scrollToPosition(scrollPosition)
             //스크롤시 progressbar 보이게하고 조금 대기
             Handler().postDelayed({
                 progressBar.visibility = View.GONE
-                view.scrollToPosition(noticeList.size - 11)
             }, 40)
             return listOf(previousPage, url, nextPage)
         }
@@ -236,6 +233,8 @@ class Parsing private constructor() {
                         !progressBar.isAnimating
                     ) {  //위치가 맨 밑이며 progressBar가 GONE이며 멈춘경우
                         if (url != "null") {
+                            val layoutmanager = recyclerView.layoutManager as LinearLayoutManager
+                            scrollPosition = layoutmanager.findFirstCompletelyVisibleItemPosition()     //레이아웃 상단의 아이템 위치
                             progressBar.visibility = View.VISIBLE   //progressbar 나옴
                             Handler().postDelayed({   //스크롤시 progressbar 보이게하고 조금 대기
                                 parsing()
@@ -251,3 +250,4 @@ class Parsing private constructor() {
         }
     }
 }
+
