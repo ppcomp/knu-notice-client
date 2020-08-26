@@ -87,6 +87,7 @@ class NoticeFragment : Fragment() {
                 url = ""
                 searchQuery = ""
                 parsing()
+                noticeRecyclerView.scrollToPosition(0)
                 swipe.isRefreshing = false
             }
             mHandler.postDelayed(mRunnable, 1000)
