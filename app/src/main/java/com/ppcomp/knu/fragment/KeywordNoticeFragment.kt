@@ -19,7 +19,6 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
-import com.ppcomp.knu.utils.Parsing
 import com.ppcomp.knu.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_main_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_keyword_notice.*
@@ -62,14 +61,14 @@ class KeywordNoticeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_keyword_notice, container, false)
 
         keywordRecyclerView =
-            view!!.findViewById(R.id.keyword_notice) as RecyclerView    //recyclerview 가져오기
-        progressBar = view!!.findViewById((R.id.keyword_progressbar)) as ProgressBar
-        keywordNullView = view!!.findViewById(R.id.keyword_null_view) as TextView
-        itemNullView =view!!.findViewById(R.id.item_null_view) as TextView
-        searchIcon = view!!.findViewById<ImageView>(R.id.search_icon)
-        itemNullView = view!!.findViewById(R.id.item_null_view) as TextView
-        radioGroup = view!!.findViewById(R.id.keyword_radio_group) as RadioGroup
-        searchIcon = view!!.findViewById<ImageView>(R.id.search_icon)
+            view.findViewById(R.id.keyword_notice) as RecyclerView    //recyclerview 가져오기
+        progressBar = view.findViewById((R.id.keyword_progressbar)) as ProgressBar
+        keywordNullView = view.findViewById(R.id.keyword_null_view) as TextView
+        itemNullView =view.findViewById(R.id.item_null_view) as TextView
+        searchIcon = view.findViewById<ImageView>(R.id.search_icon)
+        itemNullView = view.findViewById(R.id.item_null_view) as TextView
+        radioGroup = view.findViewById(R.id.keyword_radio_group) as RadioGroup
+        searchIcon = view.findViewById<ImageView>(R.id.search_icon)
 
 
         searchIcon.visibility = View.GONE
@@ -82,12 +81,12 @@ class KeywordNoticeFragment : Fragment() {
             bookmarkList = gson.fromJson(jsonList, listType.type) //북마크 리스트 저장
 
         parsing()
-        Parsing.scrollPagination(
-            requireContext(),
-            keywordRecyclerView,
-            progressBar,
-            ::parsing
-        )
+//        Parsing.scrollPagination(
+//            requireContext(),
+//            keywordRecyclerView,
+//            progressBar,
+//            ::parsing
+//        )
         mHandler = Handler()
         view.keyword_swipe.setOnRefreshListener {
             // Initialize a new Runnable
@@ -131,16 +130,16 @@ class KeywordNoticeFragment : Fragment() {
         }
         else {
             keywordNullView.visibility = View.GONE
-            val parseResult: List<String> = Parsing.parsing(
-                requireContext(),
-                noticeList,
-                bookmarkList,
-                keywordRecyclerView,
-                progressBar,
-                url,
-                searchQuery,
-                target
-            )
+//            val parseResult: List<String> = Parsing.parsing(
+//                requireContext(),
+//                noticeList,
+//                bookmarkList,
+//                keywordRecyclerView,
+//                progressBar,
+//                url,
+//                searchQuery,
+//                target
+//            )
             if (noticeList.size == 0) {     //해당하는 아이템이 없을 때 화면 설정
                 noticeList.removeAll(noticeList)
                 keywordNullView.visibility = View.GONE
@@ -150,9 +149,6 @@ class KeywordNoticeFragment : Fragment() {
             {
                 itemNullView.visibility = View.GONE
             }
-            previousPage = parseResult[0]
-            url = parseResult[1]
-            nextPage = parseResult[2]
         }
     }
 }
