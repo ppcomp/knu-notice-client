@@ -1,9 +1,10 @@
-package com.ppcomp.knu.`object`.NoticeData
+package com.ppcomp.knu.`object`.noticeData.dataSource
 
 import android.annotation.SuppressLint
 import androidx.paging.PageKeyedDataSource
 import com.ppcomp.knu.GlobalApplication
-import com.ppcomp.knu.`object`.NoticeData.DataUtils.Companion.injectDataToNotices
+import com.ppcomp.knu.`object`.noticeData.DataUtils.Companion.injectDataToNotices
+import com.ppcomp.knu.`object`.noticeData.Notice
 import com.ppcomp.knu.utils.PreferenceHelper
 import com.ppcomp.knu.utils.RestApi
 import java.lang.Exception
