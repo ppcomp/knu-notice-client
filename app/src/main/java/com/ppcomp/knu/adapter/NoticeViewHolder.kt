@@ -19,20 +19,22 @@ import com.ppcomp.knu.`object`.noticeData.Notice
  * @author 정우
  */
 class NoticeViewHolder(parent: ViewGroup, private val onClick: (Notice) -> Unit) : RecyclerView.ViewHolder(
-    LayoutInflater.from(parent.context).inflate(R.layout.fragment_notice_item, parent, false)) {
+    LayoutInflater.from(parent.context).inflate(R.layout.fragment_notice_item, parent, false)
+) {
 
-        val noticeLinear = itemView.findViewById<LinearLayout>(R.id.noticeLinear)
-        val noticeTitle = itemView.findViewById<TextView>(R.id.title)
-        val noticeBoard = itemView.findViewById<TextView>(R.id.board)
-        val noticeDate = itemView.findViewById<TextView>(R.id.date)
-        val noticeAuthor = itemView.findViewById<TextView>(R.id.author)
-        val noticeReference = itemView.findViewById<TextView>(R.id.reference)
-        val noticeImage = itemView.findViewById<ImageView>(R.id.image)
-        val noticeFixedImage = itemView.findViewById<ImageView>(R.id.fixed_image)
-        val noticeBookmark = itemView.findViewById<ToggleButton>(R.id.toggle_bookmark)
+    val noticeLinear = itemView.findViewById<LinearLayout>(R.id.noticeLinear)
+    val noticeTitle = itemView.findViewById<TextView>(R.id.title)
+    val noticeBoard = itemView.findViewById<TextView>(R.id.board)
+    val noticeDate = itemView.findViewById<TextView>(R.id.date)
+    val noticeAuthor = itemView.findViewById<TextView>(R.id.author)
+    val noticeReference = itemView.findViewById<TextView>(R.id.reference)
+    val noticeImage = itemView.findViewById<ImageView>(R.id.image)
+    val noticeFixedImage = itemView.findViewById<ImageView>(R.id.fixed_image)
+    val noticeBookmark = itemView.findViewById<ToggleButton>(R.id.toggle_bookmark)
+    val factor: Float = itemView.context.resources.displayMetrics.density
 
     @RequiresApi(Build.VERSION_CODES.N)
-    fun bindTo(notice : Notice?) {
+    fun bindTo(notice: Notice?) {
             val spannedTitle = Html.fromHtml(notice?.title, Html.FROM_HTML_MODE_LEGACY)
             noticeTitle.text = spannedTitle
             noticeBoard.text = notice?.board
@@ -47,6 +49,8 @@ class NoticeViewHolder(parent: ViewGroup, private val onClick: (Notice) -> Unit)
                 noticeImage.setImageResource(notice?.image!!)
             }
             if(notice.isFixed) {
+                noticeFixedImage.layoutParams.height = (20*factor).toInt()
+                noticeFixedImage.layoutParams.width = (20*factor).toInt()
                 noticeFixedImage.setImageResource(notice.fixedImage)
                 noticeLinear.setBackgroundResource(R.drawable.notice_fixed_item_line)
             }
