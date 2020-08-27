@@ -35,37 +35,44 @@ android {
 }
 
 dependencies {
+    implementation 'androidx.paging:paging-runtime-ktx:2.1.2'
+    def paging_version = "2.1.2"
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.core:core-ktx:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'androidx.core:core-ktx:1.3.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.0'
     implementation 'androidx.annotation:annotation:1.1.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation 'androidx.preference:preference:1.1.0-rc01'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation 'androidx.preference:preference:1.1.1'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0' // DrawerLayout
-    implementation 'com.google.android.material:material:1.0.0' // NavigationView
-    implementation 'com.google.firebase:firebase-analytics:17.2.2' // Firebase analytics
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0" //swipe 새로고침
+    implementation 'com.google.android.material:material:1.2.0' // NavigationView
+    implementation 'com.google.firebase:firebase-analytics:17.5.0' // Firebase analytics
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0" //swipe 새로고침
     implementation group: 'com.kakao.sdk', name: 'usermgmt', version: '1.29.0'// 카카오 로그인
     implementation group: 'com.kakao.sdk', name: 'kakaotalk', version: '1.29.0' // 카카오톡 로그인
     implementation group: 'com.kakao.sdk', name: 'kakaolink', version: '1.29.0' // 카카오 링크
     implementation 'com.squareup.retrofit2:retrofit:2.6.1' //유저 정보 보내기
     implementation 'com.squareup.retrofit2:converter-gson:2.6.1' //유저 정보 보내기
-    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0' //유저 정보 보내기
+    implementation 'com.squareup.retrofit2:retrofit-mock:2.3.0'
+    implementation 'com.squareup.retrofit2:converter-moshi:2.3.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.12.8'
+    implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
     implementation 'com.github.bumptech.glide:glide:4.9.0' // glide
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0' // glide
     implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'    //storage
     implementation 'com.firebaseui:firebase-ui-storage:6.2.0'   //storage
-    implementation 'com.google.firebase:firebase-messaging:20.2.3' //push message
-    implementation 'com.google.android.material:material:1.2.0-alpha01' //scroll시 appbar 숨기기
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.5'
-
-
-    compile 'com.google.code.gson:gson:2.2.4'
-
+    implementation 'com.google.firebase:firebase-messaging:20.2.4' //push message
+    implementation 'com.google.android.material:material:1.3.0-alpha02' //scroll시 appbar 숨기기
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.10'
+    implementation 'com.google.code.gson:gson:2.8.5'
+    implementation "androidx.paging:paging-runtime:$paging_version" // For Kotlin use paging-runtime-ktx
+    testImplementation "androidx.paging:paging-common:$paging_version" // For Kotlin use paging-common-ktx
+    implementation "androidx.paging:paging-rxjava2:$paging_version" // For Kotlin use paging-rxjava2-ktx
 }

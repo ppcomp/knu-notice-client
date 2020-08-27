@@ -14,7 +14,6 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.`object`.Subscription
-import com.ppcomp.knu.utils.Parsing
 import com.ppcomp.knu.utils.PreferenceHelper
 import org.json.JSONArray
 import java.io.BufferedReader
@@ -35,7 +34,6 @@ class SplashActivity : AppCompatActivity() {
 
         // Init singleton Object
         val preference = PreferenceHelper.getInstance(this)
-        val parsing = Parsing.getInstance()
 
         // 신규 사용자 확인
         val isNewUser = PreferenceHelper.get("NewUser", true)
