@@ -245,7 +245,6 @@ class NoticeFragment : Fragment() {
     private fun searchRun() {
         searchQuery = search_edits.text.toString()
         url = ""
-        adapter.submitList(null)
         if (searchQuery != "") {
             noticeList.removeAll(noticeList)
             makingView(adapter,

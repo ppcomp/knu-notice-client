@@ -26,7 +26,7 @@ class NoticeAdapter(
                 oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: Notice, newItem: Notice): Boolean =
-                oldItem.id == newItem.id
+                false
         }
     }
 
