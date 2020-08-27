@@ -51,13 +51,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp">
 
-                <CheckBox
-                    android:id="@+id/subs_allCheckbox"
-                    android:layout_width="30dp"
+<!--                <CheckBox-->
+<!--                    android:id="@+id/subs_allCheckbox"-->
+<!--                    android:layout_width="30dp"-->
+<!--                    android:layout_height="30dp"-->
+<!--                    android:button="@drawable/subscription_checkbox_selector"-->
+<!--                    android:checked="false"-->
+<!--                    android:layout_margin="5dp" />-->
+
+                <TextView
+                    android:id="@+id/itemCount"
+                    android:layout_width="65dp"
                     android:layout_height="30dp"
-                    android:button="@drawable/subscription_checkbox_selector"
-                    android:checked="false"
-                    android:layout_margin="5dp" />
+                    android:layout_margin="5dp"
+                    android:background="@drawable/login_submit_btn"
+                    android:gravity="center"
+                    android:textSize="20sp" />
 
             </LinearLayout>
 

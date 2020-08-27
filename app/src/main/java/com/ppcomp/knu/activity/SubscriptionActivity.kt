@@ -46,12 +46,14 @@ class SubscriptionActivity : AppCompatActivity() {
         val lm = LinearLayoutManager(this)
         var myToast: Toast =  Toast.makeText(this, "", Toast.LENGTH_SHORT)
 
+        val itemCount = findViewById<TextView>(R.id.itemCount)
+
         //전역변수 초기화
         listType = object : TypeToken<ArrayList<Subscription>>() {}
         strContact = PreferenceHelper.get("subList", "").toString()
         makeGson = GsonBuilder().create()
         subsList = makeGson.fromJson(strContact, listType.type)
-        subsAdapter = SubscriptionAdapter(this, subsList)
+        subsAdapter = SubscriptionAdapter(this, subsList, itemCount, myToast)
         subsResult.adapter = subsAdapter
 
         // RecyclerView의 사이즈를 고정
@@ -95,11 +97,11 @@ class SubscriptionActivity : AppCompatActivity() {
 
         }
 
-        subs_allCheckbox.setOnCheckedChangeListener { // 체크 표시할 때
-                buttonView, isChecked ->
-            subsAdapter.setCheckAll(isChecked)
-
-        }
+//        subs_allCheckbox.setOnCheckedChangeListener { // 모든 체크박스 표시할 때
+//                _, isChecked ->
+//            subsAdapter.setCheckAll(isChecked)
+//
+//        }
 
 //        correct.setOnClickListener { // 저장 잘되어있는지 보려고 만든 View
 //            correct.setText(PreferenceHelper.get("Urls", ""))
@@ -110,7 +112,7 @@ class SubscriptionActivity : AppCompatActivity() {
      * 화면에 체크된 구독리스트 저장
      * @author 상은, 정준
      */
-    fun saveSubsciption() {
+    private fun saveSubsciption() {
 
         var storeName: String = ""
         var storeUrl: String = ""

@@ -1,6 +1,8 @@
 package com.ppcomp.knu.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +12,14 @@ import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Subscription
 import com.ppcomp.knu.utils.HangulUtils
 import kotlinx.android.synthetic.main.activity_subscription_item.view.*
+import org.w3c.dom.Text
 import kotlin.collections.ArrayList
 
 /**
  * item의 어느요소를 어느 View에 넣을 것인지 연결해주는 Adapter
  * @author 상은
  */
-class SubscriptionAdapter(val context: Context, var subsList: ArrayList<Subscription>) :
+class SubscriptionAdapter(val context: Context, var subsList: ArrayList<Subscription>, private val selectedItemCount: TextView, private val myToast: Toast) :
     RecyclerView.Adapter<SubscriptionAdapter.Holder>(), Filterable {
 
     var subsFilterList = ArrayList<Subscription>()
@@ -59,6 +62,7 @@ class SubscriptionAdapter(val context: Context, var subsList: ArrayList<Subscrip
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(context).inflate(R.layout.activity_subscription_item, parent, false)
+        selectedItemCount.text = getSelectedItemCount().toString() + "/10"
         return Holder(view)
     }
 
@@ -67,27 +71,37 @@ class SubscriptionAdapter(val context: Context, var subsList: ArrayList<Subscrip
     }
 
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: Holder, position: Int) {
+
 
         holder.bind(subsFilterList[position], context)
 
         holder.chk?.setOnCheckedChangeListener(null)
         // 체크박스 부분
 
-        holder.chk?.setChecked(subsFilterList.get(position).checked)
+        holder.chk?.isChecked = subsFilterList[position].checked
 
         holder.chk?.setOnCheckedChangeListener { // 체크 표시할 때
                 _, isChecked ->
+            val getCheckedCount = getSelectedItemCount()
             val getName: String = holder.itemView.subs_name.text as String
-            for (i in subsList) {
-                if (i.name.equals(getName)) {
-                    i.checked = isChecked
+            if(getCheckedCount >= 10 && isChecked){ // 체크가 10개를 초과한 경우에서 체크를 할 때
+                    myToast.setText("구독리스트가 10개를 초과했습니다")
+                    myToast.show()
+                    holder.chk?.isChecked = false
+            } else{
+                for (i in subsList) {
+                    if (i.name == getName) {
+                        i.checked = isChecked
+                    }
                 }
+                selectedItemCount.text = getSelectedItemCount().toString() + "/10"
             }
 
         }
         holder.name?.setOnClickListener{ // 학과 이름 누르면 체크되도록
-            holder.chk?.setChecked(!holder.chk?.isChecked)
+            holder.chk?.isChecked = !holder.chk?.isChecked!!
         }
 
     }
@@ -121,6 +135,15 @@ class SubscriptionAdapter(val context: Context, var subsList: ArrayList<Subscrip
 
         }
         notifyDataSetChanged()
+    }
+
+    private fun getSelectedItemCount(): Int {
+        var count = 0
+        for(ckbox in subsList){
+            if(ckbox.checked)
+               count++
+        }
+        return count
     }
 
     override fun getItemId(position: Int): Long {
