@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import androidx.paging.PageKeyedDataSource
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.`object`.NoticeData.DataUtils.Companion.injectDataToNotices
-import com.ppcomp.knu.`object`.NoticeData.Notice
 import com.ppcomp.knu.utils.PreferenceHelper
 import com.ppcomp.knu.utils.RestApi
 import java.lang.Exception
@@ -22,15 +21,15 @@ class NoticeSearchDataSource(private val restApi: RestApi,
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Notice>) {
         val curr = 1
         try {
-            restApi.getNoticeSearch(q = q!!, target = target!!, page = curr)
+            restApi.getNoticeSearch(q=q, target=target!!, page=curr)
                 .subscribe { it ->
                     if (it.next == null)
                         it.results?.let { noticeList ->
-                            callback.onResult(injectDataToNotices(noticeList), null, null)
+                            callback.onResult(injectDataToNotices(noticeList, q), null, null)
                         }
                     else
                         it.results?.let { noticeList ->
-                            callback.onResult(injectDataToNotices(noticeList), null, curr + 1)
+                            callback.onResult(injectDataToNotices(noticeList, q), null, curr + 1)
                         }
                 }
         } catch (e: Exception) {
@@ -45,14 +44,14 @@ class NoticeSearchDataSource(private val restApi: RestApi,
     @SuppressLint("CheckResult")
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Notice>) {
         try {
-            restApi.getNoticeSearch(q = q!!, target = target!!, page = params.key)
+            restApi.getNoticeSearch(q=q, target=target!!, page=params.key)
                 .subscribe { it ->
                     if (it.next == null)
                         it.results?.let { noticeList ->
-                            callback.onResult(injectDataToNotices(noticeList),null) }
+                            callback.onResult(injectDataToNotices(noticeList, q),null) }
                     else
                         it.results?.let { noticeList ->
-                            callback.onResult(injectDataToNotices(noticeList),params.key+1) }
+                            callback.onResult(injectDataToNotices(noticeList, q),params.key+1) }
                 }
         } catch (e: Exception) {
             GlobalApplication.isServerConnect = false

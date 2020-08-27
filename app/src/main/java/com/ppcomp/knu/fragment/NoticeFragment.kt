@@ -27,9 +27,10 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
-import com.ppcomp.knu.`object`.NoticeData.Notice
+import com.ppcomp.knu.`object`.noticeData.Notice
 import com.ppcomp.knu.adapter.NoticeAdapter
-import com.ppcomp.knu.`object`.NoticeData.NoticeAllDataSource
+import com.ppcomp.knu.`object`.noticeData.dataSource.NoticeAllDataSource
+import com.ppcomp.knu.`object`.noticeData.dataSource.NoticeSearchDataSource
 import com.ppcomp.knu.utils.PreferenceHelper
 import com.ppcomp.knu.utils.RestApi
 import kotlinx.android.synthetic.main.activity_main_toolbar.view.*
@@ -66,6 +67,15 @@ class NoticeFragment : Fragment() {
         .setPrefetchDistance(5)         // n개의 아이템 여유를 두고 로딩
         .setEnablePlaceholders(true)    // default: true
         .build()
+    private val adapter = NoticeAdapter(bookmarkList) { notice ->
+        var link: String? = notice.link
+        if (link != null) {
+            if (!link.startsWith("http://") && !link.startsWith("https://"))
+                link = "http://$link"
+        }
+        val intent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+        requireContext().startActivity(intent)
+    }
 
     @SuppressLint("CheckResult")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -74,10 +84,10 @@ class NoticeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_notice_layout, container, false)
-        noticeRecyclerView = view!!.findViewById(R.id.notice) as RecyclerView   //recyclerview 가져오기
-        progressBar = view!!.findViewById((R.id.progressbar)) as ProgressBar
-        emptyResultView = view!!.findViewById((R.id.noData)) as TextView
-        searchNoData = view!!.findViewById((R.id.search_noData)) as TextView
+        noticeRecyclerView = view.findViewById(R.id.notice) as RecyclerView   //recyclerview 가져오기
+        progressBar = view.findViewById((R.id.progressbar)) as ProgressBar
+        emptyResultView = view.findViewById((R.id.noData)) as TextView
+        searchNoData = view.findViewById((R.id.search_noData)) as TextView
 
         progressBar.visibility = View.GONE                                      //progressbar 숨기기
         emptyResultView.visibility = View.GONE
@@ -93,36 +103,13 @@ class NoticeFragment : Fragment() {
 //            recyclerView.setHasFixedSize(true)
 //        }
 
-//        val mutableLiveData: MutableLiveData<NoticeAllDataSource> = MutableLiveData()
-//        val builder = RxPagedListBuilder<Int, Notice>(object: DataSource.Factory<Int, Notice>() {
-//            override fun create(): DataSource<Int, Notice> {
-//                val dataSource =
-//                    NoticeAllDataSource(
-//                        restApi
-//                    )
-//                mutableLiveData.postValue(dataSource)
-//                return dataSource
-//            }
-//        }, config)
-
-        val adapter = NoticeAdapter(bookmarkList) { notice ->
-            var link: String? = notice.link
-            if (link != null) {
-                if (!link.startsWith("http://") && !link.startsWith("https://"))
-                    link = "http://$link"
-            }
-            val intent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-            requireContext().startActivity(intent)
-        }
         noticeRecyclerView.adapter = adapter
         noticeRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-//        builder.buildObservable()
-//            .subscribe {
-//                adapter.submitList(it)
-//                updateViewStatus()
-//            }
 
-        makingView(adapter, NoticeAllDataSource(restApi), MutableLiveData())
+        makingView(adapter,
+            NoticeAllDataSource(
+                restApi
+            ), MutableLiveData())
 
         view.swipe.setOnRefreshListener {
             // Initialize a new Runnable
@@ -130,7 +117,10 @@ class NoticeFragment : Fragment() {
                 // Hide swipe to refresh icon animation
                 url = ""
                 searchQuery = ""
-                updateViewStatus()
+                makingView(adapter,
+                    NoticeAllDataSource(
+                        restApi
+                    ), MutableLiveData())
                 swipe.isRefreshing = false
             }
             mHandler.postDelayed(mRunnable, 1000)
@@ -255,9 +245,14 @@ class NoticeFragment : Fragment() {
     private fun searchRun() {
         searchQuery = search_edits.text.toString()
         url = ""
+        adapter.submitList(null)
         if (searchQuery != "") {
             noticeList.removeAll(noticeList)
-            updateViewStatus()
+            makingView(adapter,
+                NoticeSearchDataSource(
+                    restApi,
+                    searchQuery
+                ), MutableLiveData())
         } else {
             Toast.makeText(requireContext(), "입력된 검색어가 없습니다.", Toast.LENGTH_SHORT).show()
         }

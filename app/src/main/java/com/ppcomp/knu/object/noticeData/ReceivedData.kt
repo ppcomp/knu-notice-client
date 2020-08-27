@@ -1,4 +1,4 @@
-package com.ppcomp.knu.`object`.NoticeData
+package com.ppcomp.knu.`object`.noticeData
 
 import com.squareup.moshi.Json
 
@@ -6,7 +6,7 @@ import com.squareup.moshi.Json
  * 서버로부터 수신된 데이터의 구조를 정의할 포맷.
  * @author 정우
  */
-class ReceivedNotices {
+class ReceivedData {
     @Json(name = "count")
     var count: Int? = null
 

@@ -1,8 +1,7 @@
 package com.ppcomp.knu.utils
 
 import com.ppcomp.knu.`object`.DeviceInfo
-import com.ppcomp.knu.`object`.NoticeData.Notice
-import com.ppcomp.knu.`object`.NoticeData.ReceivedNotices
+import com.ppcomp.knu.`object`.noticeData.ReceivedData
 import com.ppcomp.knu.`object`.UserInfo
 import io.reactivex.Single
 import okhttp3.OkHttpClient
@@ -65,7 +64,7 @@ interface RestApi {
      */
     @GET("/notice/all")
     fun getNoticeAll(@Query("q", encoded=true) q: String,
-                     @Query("page") page: Int): Single<ReceivedNotices>
+                     @Query("page") page: Int): Single<ReceivedData>
 
     /**
      * GET) /notice/search
@@ -74,5 +73,5 @@ interface RestApi {
     @GET("/notice/search")
     fun getNoticeSearch(@Query("q", encoded=true) q: String,
                      @Query("target", encoded=true) target: String,
-                     @Query("page") page: Int): Single<ReceivedNotices>
+                     @Query("page") page: Int): Single<ReceivedData>
 }

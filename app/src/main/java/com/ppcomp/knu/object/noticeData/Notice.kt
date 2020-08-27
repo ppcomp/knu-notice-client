@@ -1,4 +1,4 @@
-package com.ppcomp.knu.`object`.NoticeData
+package com.ppcomp.knu.`object`.noticeData
 
 import com.squareup.moshi.Json
 
@@ -32,4 +32,5 @@ data class Notice (
     var image: Int = 0
     var fixedImage: Int = 0
     var bookmark: Boolean = false
+    var color: Int = 0
 }

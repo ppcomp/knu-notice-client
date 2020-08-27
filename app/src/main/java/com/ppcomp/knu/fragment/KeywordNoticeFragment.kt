@@ -61,14 +61,14 @@ class KeywordNoticeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_keyword_notice, container, false)
 
         keywordRecyclerView =
-            view!!.findViewById(R.id.keyword_notice) as RecyclerView    //recyclerview 가져오기
-        progressBar = view!!.findViewById((R.id.keyword_progressbar)) as ProgressBar
-        keywordNullView = view!!.findViewById(R.id.keyword_null_view) as TextView
-        itemNullView =view!!.findViewById(R.id.item_null_view) as TextView
-        searchIcon = view!!.findViewById<ImageView>(R.id.search_icon)
-        itemNullView = view!!.findViewById(R.id.item_null_view) as TextView
-        radioGroup = view!!.findViewById(R.id.keyword_radio_group) as RadioGroup
-        searchIcon = view!!.findViewById<ImageView>(R.id.search_icon)
+            view.findViewById(R.id.keyword_notice) as RecyclerView    //recyclerview 가져오기
+        progressBar = view.findViewById((R.id.keyword_progressbar)) as ProgressBar
+        keywordNullView = view.findViewById(R.id.keyword_null_view) as TextView
+        itemNullView =view.findViewById(R.id.item_null_view) as TextView
+        searchIcon = view.findViewById<ImageView>(R.id.search_icon)
+        itemNullView = view.findViewById(R.id.item_null_view) as TextView
+        radioGroup = view.findViewById(R.id.keyword_radio_group) as RadioGroup
+        searchIcon = view.findViewById<ImageView>(R.id.search_icon)
 
 
         searchIcon.visibility = View.GONE
