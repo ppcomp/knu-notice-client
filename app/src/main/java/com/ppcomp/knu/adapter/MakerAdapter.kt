@@ -30,7 +30,7 @@ class MakerAdapter(
         val dataEmail = itemView.findViewById<TextView>(R.id.maker_email)
         val dataGit= itemView.findViewById<TextView>(R.id.maker_git)
         val dataAff= itemView.findViewById<TextView>(R.id.maker_aff)
-        val dataImg= itemView.findViewById<ImageView>(R.id.maker_img)
+//        val dataImg= itemView.findViewById<ImageView>(R.id.maker_img)
 
         fun bind (data: MakerData, context: Context) {
             dateName.text = data.makerName
@@ -41,7 +41,7 @@ class MakerAdapter(
             // Set loading image
             Glide.with(itemView)
                 .load(R.drawable.maker_loading_spinningwheel)
-                .into(dataImg)
+//                .into(dataImg)
 
 //            // Set image
 //            val storage = Firebase.storage
