@@ -1,86 +1,179 @@
-package com.DataRunner.CountryTown
+package com.ppcomp.knu.activity
+
 
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.ppcomp.knu.`object`.MakerData
 import com.ppcomp.knu.R
+import com.google.android.gms.ads.AdView
 
-class MakerAdapter(
-    val context: Context,               // MainActivity
-    val makerList: ArrayList<MakerData>,     // 객체 list
-    val itemClick: (MakerData) -> Unit)      // 객체 클릭시 실행되는 lambda 식
-    : RecyclerView.Adapter<MakerAdapter.Holder>() {
+/**
+ * The [RecyclerViewAdapter] class.
+ *
+ * The adapter provides access to the items in the [MenuItemViewHolder]
+ * or the [AdViewHolder].
+ */
+internal class MakerAdapter
+/**
+ * For this example app, the recyclerViewItems list contains only
+ * [MenuItem] and [AdView] types.
+ */(
+    // An Activity's Context.
+    private val context: Context,
+    // The list of banner ads and menu items.
+    private val makerList: List<Any>
+) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     /**
-     * 각 객체를 감싸는 Holder
-     * bind 가 자동 호출되며 데이터가 매핑된다.
-     * @author jungwoo
+     * The [MenuItemViewHolder] class.
+     * Provides a reference to each view in the menu item view.
      */
-    inner class Holder(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-        val dateName = itemView.findViewById<TextView>(R.id.maker_name)
-        val buttonMail = itemView.findViewById<ImageButton>(R.id.button_mail)
-        val dataEmail = itemView.findViewById<TextView>(R.id.maker_email)
-        val dataGit= itemView.findViewById<TextView>(R.id.maker_git)
-        val dataAff= itemView.findViewById<TextView>(R.id.maker_aff)
-        val dataImg= itemView.findViewById<ImageView>(R.id.maker_img)
+    inner class MenuItemViewHolder internal constructor(view: View) :
+        RecyclerView.ViewHolder(view) {
+        val dateName : TextView
+        val buttonMail : ImageButton
+        val dataEmail : TextView
+        val dataGit : TextView
+        val dataAff : TextView
 
-        fun bind (data: MakerData, context: Context) {
-            dateName.text = data.makerName
-            dataEmail.text = data.makerEmail
-            dataGit.text = data.makerGit
-            dataAff.text = data.makerAff
-
-            // Set loading image
-            Glide.with(itemView)
-                .load(R.drawable.maker_loading_spinningwheel)
-                .into(dataImg)
-
-//            // Set image
-//            val storage = Firebase.storage
-//            var storageRef = storage.reference
-//            storageRef.child(data.makerImg).downloadUrl.addOnSuccessListener {
-//                // Got the download URL for 'users/me/profile.png'
-//                Glide.with(itemView)
-//                    .load(it)
-//                    .into(dataImg)
-//            }.addOnFailureListener {
-//                // Handle any errors
-//            }
-            buttonMail.setOnClickListener { itemClick(data) }
+        init {
+            dateName = view.findViewById(R.id.maker_name)
+            buttonMail = view.findViewById(R.id.button_mail)
+            dataEmail = view.findViewById(R.id.maker_email)
+            dataGit = view.findViewById(R.id.maker_git)
+            dataAff = view.findViewById(R.id.maker_aff)
         }
     }
 
     /**
-     * 화면을 최초로 로딩하여 만들어진 View 가 없는 경우, xml 파일을 inflate 하여 ViewHolder 생성
-     * @author jungwoo
+     * The [AdViewHolder] class.
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MakerAdapter.Holder {
-        /* LayoutInflater는 item을 Adapter에서 사용할 View로 부풀려주는(inflate) 역할을 한다. */
-        val view: View = LayoutInflater.from(context).inflate(R.layout.activity_maker_item, parent, false)
-        return Holder(view)
-    }
+    inner class AdViewHolder internal constructor(view: View?) :
+        RecyclerView.ViewHolder(view!!)
 
-    /**
-     * onCreateViewHolder 에서 만든 view 와 실제 입력되는 각각의 데이터 연결
-     * @author jungwoo
-     */
-    override fun onBindViewHolder(holder: MakerAdapter.Holder, position: Int) {
-        holder.bind(makerList[position], context)
-    }
-
-    /**
-     * RecyclerView 로 만들어지는 item 의 총 개수 반환
-     * @author jungwoo
-     */
     override fun getItemCount(): Int {
         return makerList.size
     }
+
+    /**
+     * Determines the view type for the given position.
+     */
+    override fun getItemViewType(position: Int): Int {
+        return if (position % MakerActivity().ITEMS_PER_AD == 0) BANNER_AD_VIEW_TYPE else DATA_ITEM_VIEW_TYPE
+    }
+
+    /**
+     * Creates a new view for a menu item view or a banner ad view
+     * based on the viewType. This method is invoked by the layout manager.
+     */
+    override fun onCreateViewHolder(
+        viewGroup: ViewGroup,
+        viewType: Int
+    ): RecyclerView.ViewHolder {
+        return when (viewType) {
+            DATA_ITEM_VIEW_TYPE -> {
+                val menuItemLayoutView: View =
+                    LayoutInflater.from(viewGroup.context).inflate(
+                        R.layout.activity_maker_item, viewGroup, false
+                    )
+                MenuItemViewHolder(
+                    menuItemLayoutView
+                )
+            }
+            BANNER_AD_VIEW_TYPE -> {
+                val bannerLayoutView: View = LayoutInflater.from(
+                    viewGroup.context
+                ).inflate(
+                    R.layout.admob,
+                    viewGroup, false
+                )
+                AdViewHolder(
+                    bannerLayoutView
+                )
+            }
+            else -> {
+                val bannerLayoutView: View = LayoutInflater.from(
+                    viewGroup.context
+                ).inflate(
+                    R.layout.admob,
+                    viewGroup, false
+                )
+                AdViewHolder(
+                    bannerLayoutView
+                )
+            }
+        }
+    }
+
+    /**
+     * Replaces the content in the views that make up the menu item view and the
+     * banner ad view. This method is invoked by the layout manager.
+     */
+    override fun onBindViewHolder(
+        holder: RecyclerView.ViewHolder,
+        position: Int
+    ) {
+        val viewType = getItemViewType(position)
+        when (viewType) {
+            DATA_ITEM_VIEW_TYPE -> {
+                val MakerItemHolder =
+                    holder as MenuItemViewHolder
+                val makerItem: MakerData = makerList[position] as MakerData
+
+                // Add the menu item details to the menu item view.
+                MakerItemHolder.dateName.text = makerItem.makerName
+                MakerItemHolder.dataEmail.text = makerItem.makerEmail
+                MakerItemHolder.dataGit.text = makerItem.makerGit
+                MakerItemHolder.dataAff.text = makerItem.makerAff
+            }
+            BANNER_AD_VIEW_TYPE -> {
+                val bannerHolder =
+                    holder as AdViewHolder
+                val adView = makerList[position] as AdView
+                val adCardView = bannerHolder.itemView as ViewGroup
+                // The AdViewHolder recycled by the RecyclerView may be a different
+                // instance than the one used previously for this position. Clear the
+                // AdViewHolder of any subviews in case it has a different
+                // AdView associated with it, and make sure the AdView for this position doesn't
+                // already have a parent of a different recycled AdViewHolder.
+                if (adCardView.childCount > 0) {
+                    adCardView.removeAllViews()
+                }
+                if (adView.parent != null) {
+                    (adView.parent as ViewGroup).removeView(adView)
+                }
+
+                // Add the banner ad to the ad view.
+                adCardView.addView(adView)
+            }
+            else -> {
+                val bannerHolder =
+                    holder as AdViewHolder
+                val adView = makerList[position] as AdView
+                val adCardView = bannerHolder.itemView as ViewGroup
+                if (adCardView.childCount > 0) {
+                    adCardView.removeAllViews()
+                }
+                if (adView.parent != null) {
+                    (adView.parent as ViewGroup).removeView(adView)
+                }
+                adCardView.addView(adView)
+            }
+        }
+    }
+
+    companion object {
+        // A menu item view type.
+        private const val DATA_ITEM_VIEW_TYPE = 0
+
+        // The banner ad view type.
+        private const val BANNER_AD_VIEW_TYPE = 1
+    }
+
 }
