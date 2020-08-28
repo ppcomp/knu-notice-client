@@ -35,27 +35,30 @@ class NoticeViewHolder(parent: ViewGroup, private val onClick: (Notice) -> Unit)
 
     @RequiresApi(Build.VERSION_CODES.N)
     fun bindTo(notice: Notice?) {
-            val spannedTitle = Html.fromHtml(notice?.title, Html.FROM_HTML_MODE_LEGACY)
-            noticeTitle.text = spannedTitle
-            noticeBoard.text = notice?.board
-            noticeDate.text = notice?.date
-            noticeAuthor.text = notice?.author
-            noticeReference.text = notice?.reference
+        val spannedTitle = Html.fromHtml(notice?.title, Html.FROM_HTML_MODE_LEGACY)
+        noticeTitle.text = spannedTitle
+        noticeBoard.text = notice?.board
+        noticeDate.text = notice?.date
+        noticeAuthor.text = notice?.author
+        noticeReference.text = notice?.reference
 
-            if(notice?.image == 0) {
-                noticeImage.visibility = View.GONE
-            } else {
-                noticeImage.visibility = View.VISIBLE
-                noticeImage.setImageResource(notice?.image!!)
-            }
-            if(notice.isFixed) {
-                noticeFixedImage.layoutParams.height = (20*factor).toInt()
-                noticeFixedImage.layoutParams.width = (20*factor).toInt()
-                noticeFixedImage.setImageResource(notice.fixedImage)
-                noticeLinear.setBackgroundResource(R.drawable.notice_fixed_item_line)
-            }
+        if(notice?.image != 0) {
+            noticeImage.visibility = View.VISIBLE
+            noticeImage.setImageResource(notice?.image!!)
+        } else {
+            noticeImage.visibility = View.GONE
+        }
+        if(notice.isFixed) {
+            noticeFixedImage.visibility = View.VISIBLE
+            noticeFixedImage.layoutParams.height = (20*factor).toInt()
+            noticeFixedImage.layoutParams.width = (20*factor).toInt()
+            noticeFixedImage.setImageResource(notice.fixedImage)
+            noticeLinear.setBackgroundResource(R.drawable.notice_fixed_item_line)
+        } else {
+            noticeFixedImage.visibility = View.GONE
+        }
 
-            noticeBoard.setTextColor(notice.color)
-            itemView.setOnClickListener { onClick(notice) }
+        noticeBoard.setTextColor(notice.color)
+        itemView.setOnClickListener { onClick(notice) }
     }
 }

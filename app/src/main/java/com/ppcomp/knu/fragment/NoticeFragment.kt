@@ -30,7 +30,6 @@ import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.noticeData.Notice
 import com.ppcomp.knu.adapter.NoticeAdapter
 import com.ppcomp.knu.`object`.noticeData.dataSource.NoticeAllDataSource
-import com.ppcomp.knu.`object`.noticeData.dataSource.NoticeSearchDataSource
 import com.ppcomp.knu.utils.PreferenceHelper
 import com.ppcomp.knu.utils.RestApi
 import kotlinx.android.synthetic.main.activity_main_toolbar.view.*
@@ -108,7 +107,8 @@ class NoticeFragment : Fragment() {
 
         makingView(adapter,
             NoticeAllDataSource(
-                restApi
+                restApi,
+                ""
             ), MutableLiveData())
 
         view.swipe.setOnRefreshListener {
@@ -119,7 +119,8 @@ class NoticeFragment : Fragment() {
                 searchQuery = ""
                 makingView(adapter,
                     NoticeAllDataSource(
-                        restApi
+                        restApi,
+                        ""
                     ), MutableLiveData())
                 swipe.isRefreshing = false
             }
@@ -248,7 +249,7 @@ class NoticeFragment : Fragment() {
         if (searchQuery != "") {
             noticeList.removeAll(noticeList)
             makingView(adapter,
-                NoticeSearchDataSource(
+                NoticeAllDataSource(
                     restApi,
                     searchQuery
                 ), MutableLiveData())

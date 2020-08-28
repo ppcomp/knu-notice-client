@@ -13,16 +13,16 @@ import java.lang.Exception
  * 데이터 소스(네트워크 서버)로부터 데이터를 받아온다.
  * @author 정우
  */
-class NoticeAllDataSource(private val restApi: RestApi) : PageKeyedDataSource<Int, Notice>() {
+class NoticeAllDataSource(private val restApi: RestApi,
+                          private val q: String) : PageKeyedDataSource<Int, Notice>() {
 
-    private val q =
-        PreferenceHelper.get("Urls", "")
+    private val target = PreferenceHelper.get("Urls", "")
 
     @SuppressLint("CheckResult")
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Notice>) {
         val curr = 1
         try {
-            restApi.getNoticeAll(q = q!!, page = curr)
+            restApi.getNoticeAll(q=q, target=target!!, page=curr)
                 .subscribe { it ->
                     if (it.next == null)
                         it.results?.let { noticeList ->
@@ -45,7 +45,7 @@ class NoticeAllDataSource(private val restApi: RestApi) : PageKeyedDataSource<In
     @SuppressLint("CheckResult")
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Notice>) {
         try {
-            restApi.getNoticeAll(q=q!!, page=params.key)
+            restApi.getNoticeAll(q=q, target=target!!, page=params.key)
                 .subscribe { it ->
                     if (it.next == null)
                         it.results?.let { noticeList ->
