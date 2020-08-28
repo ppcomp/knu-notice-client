@@ -10,7 +10,7 @@ object ServiceBuilder {
     private val client = OkHttpClient.Builder().build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://15.165.178.103/") // change this IP for testing by your actual machine IP
+        .baseUrl("https://13.124.43.203/") // https://15.165.178.103/
         .addConverterFactory(GsonConverterFactory.create())
         .client(getUnsafeOkHttpClient())
         .build()

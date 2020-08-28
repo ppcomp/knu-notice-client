@@ -79,7 +79,7 @@ class SplashActivity : AppCompatActivity() {
      */
     fun loadSubscription() {
         var subsList = arrayListOf<Subscription>()
-        val serverUrl = "http://15.165.178.103/notice/list" // Server URL
+        val serverUrl = "http://13.124.43.203/notice/list" // Server URL old: http://15.165.178.103
         val subscriptionList = PreferenceHelper.get("Subs", "")?.split("+") // 저장된 학과를 나눠 ArrayList에 저장 -- 체크박스를 위한 용도
         val set: MutableSet<String> = mutableSetOf("")
 
