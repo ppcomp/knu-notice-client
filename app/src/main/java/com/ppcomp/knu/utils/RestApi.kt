@@ -64,14 +64,6 @@ interface RestApi {
      */
     @GET("/notice/all")
     fun getNoticeAll(@Query("q", encoded=true) q: String,
-                     @Query("page") page: Int): Single<ReceivedData>
-
-    /**
-     * GET) /notice/search
-     * @author 정우
-     */
-    @GET("/notice/search")
-    fun getNoticeSearch(@Query("q", encoded=true) q: String,
                      @Query("target", encoded=true) target: String,
                      @Query("page") page: Int): Single<ReceivedData>
 }
