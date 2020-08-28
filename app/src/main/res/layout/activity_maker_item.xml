@@ -22,7 +22,6 @@
             android:paddingLeft="5dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp"
-            android:background="@drawable/goorm"
             android:orientation="vertical">
 
             <LinearLayout
