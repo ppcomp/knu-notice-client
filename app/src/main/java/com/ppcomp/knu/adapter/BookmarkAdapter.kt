@@ -8,10 +8,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.annotation.RequiresApi
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -44,7 +44,7 @@ class BookmarkAdapter(
      */
     inner class Holder(itemView: View, itemClick: (Notice) -> Unit) :
         RecyclerView.ViewHolder(itemView) {
-        private val noticeLinear = itemView.findViewById<LinearLayout>(R.id.noticeLinear)
+        private val noticeView = itemView.findViewById<CardView>(R.id.notice_view)
         private val noticeTitle = itemView.findViewById<TextView>(R.id.title)
         private val noticeBoard = itemView.findViewById<TextView>(R.id.board)
         private val noticeDate = itemView.findViewById<TextView>(R.id.date)
@@ -70,7 +70,6 @@ class BookmarkAdapter(
             }
             if(notice.fixed) {
                 noticeFixedImage.setImageResource(notice.fixed_image)
-                noticeLinear.setBackgroundResource(R.drawable.notice_fixed_item_line)
             }
 
             val hash = notice.board.hashCode()

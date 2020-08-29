@@ -54,7 +54,7 @@ class NoticeFragment : Fragment() {
     private lateinit var emptyResultView: TextView
     private var url: String = ""    //mainUrl + notice_Url 저장 할 변수
     private var searchQuery: String = ""
-    private var target: String = ""
+    private var target: String = PreferenceHelper.get("Urls","")!!
     private val restApi = RestApi.create()
     private val config = PagedList.Config.Builder()
         .setInitialLoadSizeHint(20)     // 초기 로딩 아이템 개수

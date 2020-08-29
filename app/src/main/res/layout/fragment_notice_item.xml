@@ -1,123 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content" >
 
-    <LinearLayout
+    <androidx.cardview.widget.CardView
+        android:id="@+id/notice_view"
         android:layout_width="match_parent"
-        android:id="@+id/noticeLinear"
         android:layout_height="wrap_content"
-        android:background="@drawable/notice_item_line"
         android:orientation="vertical"
-        tools:ignore="MissingConstraints">
+        android:layout_margin="5dp"
+        app:cardCornerRadius="5dp"
+        app:cardUseCompatPadding="true"
+        app:cardElevation="2dp"
+        tools:ignore="MissingConstraints" >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            tools:ignore="MissingConstraints">
-
+            android:orientation="horizontal" >
+            <LinearLayout
+                android:id="@+id/color_zone"
+                android:layout_width="5dp"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                tools:ignore="MissingConstraints"
-                android:gravity="left" >
-                <ImageView
-                    android:id="@+id/fixed_image"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginTop="7dp" />
-                <TextView
-                    android:id="@+id/board"
-                    android:layout_width="wrap_content"
-                    android:layout_height="22dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.017"
-                    android:textSize="11sp"
-                    tools:text="게시판" />
+                android:padding="12dp"
+                android:orientation="vertical" >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="6dp"
+                    android:orientation="horizontal" >
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal" >
+                        <ImageView
+                            android:id="@+id/fixed_image"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp" />
+                        <TextView
+                            android:id="@+id/title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:textSize="15sp"
+                            tools:text="제목" />
+                    </LinearLayout>
+                    <ToggleButton
+                        android:id="@+id/toggle_bookmark"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:background="#00FFFFFF"
+                        android:button="@drawable/item_bookmark_ic"
+                        android:textOff=""
+                        android:textOn="" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal" >
+                    <TextView
+                        android:id="@+id/board"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="12dp"
+                        android:textSize="11sp"
+                        tools:text="게시판" />
+                    <TextView
+                        android:id="@+id/date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="1dp"
+                        android:textSize="9sp"
+                        tools:text="날짜" />
+                    <ImageView
+                        android:id="@+id/image"
+                        android:layout_width="20dp"
+                        android:layout_height="10dp"
+                        android:layout_marginTop="1dp"
+                        android:src="@drawable/notice_new_icon"/>
+                    <TextView
+                        android:id="@+id/author"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="12dp"
+                        android:layout_marginLeft="12dp"
+                        android:textSize="9sp"
+                        tools:text="작성자" />
+                    <TextView
+                        android:id="@+id/reference"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="9sp"
+                        tools:text="참조" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
-            <ToggleButton
-                android:id="@+id/toggle_bookmark"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="#00FFFFFF"
-                android:button="@drawable/item_bookmark_ic"
-                android:textOff=""
-                android:textOn="" />
-        </LinearLayout>
-
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:gravity="left"
-                android:singleLine="true"
-                android:textSize="15dp"
-                app:layout_constraintVertical_bias="0.017"
-                tools:text="제목" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="7dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
-            android:orientation="horizontal"
-            tools:ignore="MissingConstraints">
-
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:gravity="left"
-                android:textSize="9sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.017"
-                tools:text="날짜" />
-            <ImageView
-                android:id="@+id/image"
-                android:layout_width="20dp"
-                android:layout_height="25dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="-5dp"/>
-
-            <TextView
-                android:id="@+id/author"
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:layout_marginLeft="20dp"
-                android:gravity="left"
-                android:textSize="9sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.017"
-                tools:text="작성자" />
-
-            <TextView
-                android:id="@+id/reference"
-                android:layout_width="wrap_content"
-                android:layout_height="25dp"
-                android:gravity="left"
-                android:layout_marginLeft="20dp"
-                android:textSize="9sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.017"
-                tools:text="참조" />
-
-
-        </LinearLayout>
-    </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </androidx.constraintlayout.widget.ConstraintLayout>
