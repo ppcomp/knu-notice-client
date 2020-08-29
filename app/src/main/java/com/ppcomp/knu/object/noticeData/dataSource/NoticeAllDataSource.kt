@@ -13,10 +13,11 @@ import java.lang.Exception
  * 데이터 소스(네트워크 서버)로부터 데이터를 받아온다.
  * @author 정우
  */
-class NoticeAllDataSource(private val restApi: RestApi,
-                          private val q: String) : PageKeyedDataSource<Int, Notice>() {
-
-    private val target = PreferenceHelper.get("Urls", "")
+class NoticeAllDataSource(
+    private val restApi: RestApi,
+    private val q: String,
+    private val target: String=PreferenceHelper.get("Urls", "")!!)
+    : PageKeyedDataSource<Int, Notice>() {
 
     @SuppressLint("CheckResult")
     override fun loadInitial(params: LoadInitialParams<Int>, callback: LoadInitialCallback<Int, Notice>) {
