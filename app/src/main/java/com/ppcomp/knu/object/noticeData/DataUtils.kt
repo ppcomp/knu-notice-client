@@ -19,7 +19,7 @@ class DataUtils {
                     notice.fixedImage = R.drawable.notice_fixed_pin_icon
                 }
                 if (notice.author != null) {
-                    notice.author = "작성자: ${notice.author}"
+                    notice.author = notice.author
                 }
                 if (notice.date != null) {
                     val sf = SimpleDateFormat("yyyy-MM-dd")
@@ -32,7 +32,7 @@ class DataUtils {
                     }
                     val dateArr = notice.date!!.split("-")
                     val day = dateArr[2].split("T")
-                    notice.date = "게시일: ${dateArr[0]}년 ${dateArr[1]}월 ${day[0]}일"
+                    notice.date = "${dateArr[0]}년 ${dateArr[1]}월 ${day[0]}일"
                 }
                 if (!colorMap.containsKey(notice.board)) {
                     val hash = notice.board.hashCode()
@@ -41,7 +41,7 @@ class DataUtils {
                     val b = (hash and 0x0000FF)
                     val hsv = FloatArray(3)
                     Color.colorToHSV(Color.rgb(r,g,b), hsv)
-                    hsv[1] += (100F-hsv[1])/2
+                    hsv[1] += (100F-hsv[1])/5
                     val color = Color.HSVToColor(hsv)
                     notice.color = color
                     colorMap[notice.board] = color
