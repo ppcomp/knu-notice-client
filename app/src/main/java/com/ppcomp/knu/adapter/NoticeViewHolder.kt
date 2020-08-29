@@ -10,6 +10,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.annotation.RequiresApi
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.noticeData.Notice
@@ -22,7 +23,7 @@ class NoticeViewHolder(parent: ViewGroup, private val onClick: (Notice) -> Unit)
     LayoutInflater.from(parent.context).inflate(R.layout.fragment_notice_item, parent, false)
 ) {
 
-    val noticeLinear = itemView.findViewById<LinearLayout>(R.id.noticeLinear)
+    val noticeView = itemView.findViewById<CardView>(R.id.notice_view)
     val noticeTitle = itemView.findViewById<TextView>(R.id.title)
     val noticeBoard = itemView.findViewById<TextView>(R.id.board)
     val noticeDate = itemView.findViewById<TextView>(R.id.date)
@@ -31,6 +32,7 @@ class NoticeViewHolder(parent: ViewGroup, private val onClick: (Notice) -> Unit)
     val noticeImage = itemView.findViewById<ImageView>(R.id.image)
     val noticeFixedImage = itemView.findViewById<ImageView>(R.id.fixed_image)
     val noticeBookmark = itemView.findViewById<ToggleButton>(R.id.toggle_bookmark)
+    val noticeColorZone = itemView.findViewById<LinearLayout>(R.id.color_zone)
     val factor: Float = itemView.context.resources.displayMetrics.density
 
     @RequiresApi(Build.VERSION_CODES.N)
@@ -53,12 +55,11 @@ class NoticeViewHolder(parent: ViewGroup, private val onClick: (Notice) -> Unit)
             noticeFixedImage.layoutParams.height = (20*factor).toInt()
             noticeFixedImage.layoutParams.width = (20*factor).toInt()
             noticeFixedImage.setImageResource(notice.fixedImage)
-            noticeLinear.setBackgroundResource(R.drawable.notice_fixed_item_line)
         } else {
             noticeFixedImage.visibility = View.GONE
         }
 
-        noticeBoard.setTextColor(notice.color)
+        noticeColorZone.setBackgroundColor(notice.color)
         itemView.setOnClickListener { onClick(notice) }
     }
 }

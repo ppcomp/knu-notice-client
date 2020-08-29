@@ -1,15 +1,12 @@
 package com.ppcomp.knu.activity
 
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.inputmethod.InputMethodManager
 import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.Toast
-import android.widget.Toolbar
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -17,9 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ppcomp.knu.*
 import com.ppcomp.knu.fragment.*
-import kotlinx.android.synthetic.main.activity_main_toolbar.*
-import kotlinx.android.synthetic.main.fragment_notice_layout.*
-
 
 
 /**
@@ -74,7 +68,7 @@ class MainActivity : AppCompatActivity() {
                         GlobalApplication.isFragmentChange[0] = false
                     }
                     if(setScrollTop == 0){      //setScrollTop이 0이면 scroll이 맨 위로 이동
-                        (noticeFragment.view!!.findViewById(R.id.notice) as RecyclerView).apply {
+                        (noticeFragment.view?.findViewById(R.id.notice) as RecyclerView).apply {
                             scrollToPosition(0)
                         }
                     }
@@ -88,7 +82,7 @@ class MainActivity : AppCompatActivity() {
                         GlobalApplication.isFragmentChange[1] = false
                     }
                     if(setScrollTop == 1){      //setScrollTop이 1이면 scroll이 맨 위로 이동
-                        (keywordNoticeFragment.view!!.findViewById(R.id.keyword_notice) as RecyclerView).apply {
+                        (keywordNoticeFragment.view?.findViewById(R.id.keyword_notice) as RecyclerView).apply {
                             scrollToPosition(0)
                         }
                     }
@@ -102,7 +96,7 @@ class MainActivity : AppCompatActivity() {
                         GlobalApplication.isFragmentChange[2] = false
                     }
                     if(setScrollTop == 2){      //setScrollTop이 2이면 scroll이 맨 위로 이동
-                        (bookmarkFragment.view!!.findViewById(R.id.bookmark_notice) as RecyclerView).apply {
+                        (bookmarkFragment.view?.findViewById(R.id.bookmark_notice) as RecyclerView).apply {
                             scrollToPosition(0)
                         }
                     }
