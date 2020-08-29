@@ -9,4 +9,9 @@
         <item>reply</item>
         <item>reply_all</item>
     </string-array>
+
+    <string-array name="search_option_array">
+        <item>전체</item>
+        <item>구독중</item>
+    </string-array>
 </resources>
