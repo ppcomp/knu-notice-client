@@ -4,7 +4,7 @@ import RestApiService
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
+import com.facebook.stetho.Stetho
 import com.kakao.auth.KakaoSDK
 import com.ppcomp.knu.`object`.UserInfo
 import com.ppcomp.knu.`object`.DeviceInfo
@@ -22,6 +22,7 @@ class GlobalApplication : Application() {
         super.onCreate()
         instance = this
         KakaoSDK.init(KakaoSDKAdapter())    //카카오 로그인 초기화
+        Stetho.initializeWithDefaults(this) //DB 확인용 라이브러리
     }
 
     override fun onTerminate() {

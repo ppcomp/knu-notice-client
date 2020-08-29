@@ -1,12 +1,17 @@
 package com.ppcomp.knu.`object`.noticeData
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 
 /**
- * 서버로부터 받아오는 Notice 의 구조를 정의할 포맷.
- * @author 정우
+ * 서버로부터 받아오는 Notice 의 구조(매개변수) 및
+ * DB에 저장할 Notice 의 구조(매개변수 + 클래스 내부 변수)를 정의
+ * @author 정우, 정준
  */
+@Entity(tableName = "notices")
 data class Notice (
+    @PrimaryKey
     @Json(name = "id")
     var id: String,
 
