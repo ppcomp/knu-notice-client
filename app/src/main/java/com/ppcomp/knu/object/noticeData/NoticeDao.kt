@@ -2,6 +2,7 @@ package com.ppcomp.knu.`object`.noticeData
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.paging.DataSource
 import androidx.room.*
 
 /**
@@ -16,6 +17,9 @@ interface NoticeDao {
 
     @Query("DELETE FROM notices")
     fun deleteAll()
+
+    @Query("SELECT * FROM notices")
+    fun getDataSource(): DataSource.Factory<Int, Notice>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)    //OnConflictStrategy.REPLACE : 데이터 충돌이 나면 기존데이터를 입력데이터로 교체
     fun insertNotice(notice: Notice)

@@ -52,13 +52,6 @@ abstract class AppDatabase : RoomDatabase() {
 
                     // Delete all content here.
                     noticeDao.deleteAll()
-
-                    // Add sample words.
-                    var notice = Notice("12345","테스트 공지","https://test.com","20200815","관리자",null,false,false)
-                    noticeDao.insertNotice(notice)
-                    notice = Notice("12321","테스트 공지22","https://test.com","20200816","관리자",null,false,false)
-                    noticeDao.insertNotice(notice)
-
                 }
             }
         }

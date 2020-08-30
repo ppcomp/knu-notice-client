@@ -14,6 +14,8 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.paging.DataSource
 import androidx.paging.PageKeyedDataSource
 import androidx.paging.PagedList
@@ -26,6 +28,7 @@ import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.noticeData.Notice
+import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
 import com.ppcomp.knu.`object`.noticeData.dataSource.NoticeAllDataSource
 import com.ppcomp.knu.activity.SearchableActivity
 import com.ppcomp.knu.adapter.NoticeAdapter
@@ -40,7 +43,7 @@ import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
  * 하단 바 '리스트'페이지의  kt
  * 크롤링한 공지사항을 띄워줌
  * 리펙토링 - 정우
- * @author 희진
+ * @author 희진, 정준
  */
 class NoticeFragment : Fragment() {
 
@@ -62,15 +65,8 @@ class NoticeFragment : Fragment() {
         .setPrefetchDistance(5)         // n개의 아이템 여유를 두고 로딩
         .setEnablePlaceholders(true)    // default: true
         .build()
-    private val adapter = NoticeAdapter(bookmarkList) { notice ->
-        var link: String? = notice.link
-        if (link != null) {
-            if (!link.startsWith("http://") && !link.startsWith("https://"))
-                link = "http://$link"
-        }
-        val intent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-        requireContext().startActivity(intent)
-    }
+    private lateinit var bookmarkViewModel: NoticeViewModel
+    private lateinit var adapter: NoticeAdapter
 
     @SuppressLint("CheckResult")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -92,6 +88,17 @@ class NoticeFragment : Fragment() {
 //            recyclerView.addItemDecoration(this)
 //            recyclerView.setHasFixedSize(true)
 //        }
+
+        bookmarkViewModel = ViewModelProvider(this).get(NoticeViewModel::class.java)
+        adapter = NoticeAdapter(bookmarkViewModel) { notice ->
+            var link: String? = notice.link
+            if (link != null) {
+                if (!link.startsWith("http://") && !link.startsWith("https://"))
+                    link = "http://$link"
+            }
+            val intent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+            requireContext().startActivity(intent)
+        }
 
         noticeRecyclerView.adapter = adapter
         noticeRecyclerView.layoutManager = LinearLayoutManager(requireContext())
