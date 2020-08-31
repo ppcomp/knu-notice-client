@@ -45,7 +45,6 @@
                 android:padding="15dp">
 
                 <androidx.appcompat.widget.SearchView
-                    android:descendantFocusability="blocksDescendants"
                     android:id="@+id/subsSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -103,6 +102,7 @@
                     android:layout_height="39dp"
                     android:background="@drawable/login_submit_btn"
                     android:gravity="center"
+                    android:descendantFocusability="blocksDescendants"
                     android:text="저장"
                     android:textSize="20sp" />
 
