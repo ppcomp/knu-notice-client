@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
+import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.`object`.noticeData.Notice
 import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
 
@@ -41,9 +42,22 @@ class BookmarkAdapter(
         holder.noticeBookmark.setOnCheckedChangeListener {  //북마크 버튼 누를시
                 _, isChecked ->
             if (!isChecked) { //북마크 체크해제시
-                bookmarkViewModel.delete(getItem(position)!!)
+                bookmarkViewModel.delete(getItem(position)!!)   //DB에서 해당 아이템 제거
+                GlobalApplication.isFragmentChange = arrayOf(true,true,false)   // Notice, KeywordNotice Fragement 화면 갱신
             }
         }
+    }
+
+    /**
+     * 밑의 함수를 오버라이딩하여 리사이클러뷰 재사용 문제 해결
+     * @author 상은
+     */
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
 }

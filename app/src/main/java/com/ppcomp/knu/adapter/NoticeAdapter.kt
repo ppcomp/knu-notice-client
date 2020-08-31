@@ -11,10 +11,10 @@ import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
 
 /**
  * Adapter 리팩토링
- * @author 정우
+ * @author 정우, 정준
  */
 class NoticeAdapter(
-    private val bookmarkViewModel: NoticeViewModel,
+    private var bookmarkViewModel: NoticeViewModel,
     private val onClick: (Notice) -> Unit) : PagedListAdapter<Notice, NoticeViewHolder>(diffCallback) {
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<Notice>() {
@@ -22,7 +22,7 @@ class NoticeAdapter(
                 oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: Notice, newItem: Notice): Boolean =
-                false
+                oldItem.bookmark == newItem.bookmark
         }
     }
 
@@ -32,8 +32,9 @@ class NoticeAdapter(
 
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: NoticeViewHolder, position: Int) {
-        // 공지리스트를 북마크리스트와 비교하여 공지리스트에 북마크 맵핑 (동작안함)
-        if(!bookmarkViewModel.isListNullOrEmpty()) {
+        // 공지리스트를 북마크리스트와 비교하여 공지리스트에 북마크 맵핑
+        var temp = bookmarkViewModel.isListNullOrEmpty()
+        if(!temp) {
             for( i in 0 until bookmarkViewModel.getNoticeList().value!!.size) {
                 if(getItem(position)!!.id == bookmarkViewModel.getNoticeList().value!![i]!!.id)
                     getItem(position)!!.bookmark = bookmarkViewModel.getNoticeList().value!![i]!!.bookmark
@@ -46,10 +47,23 @@ class NoticeAdapter(
                 _, isChecked ->
             getItem(position)!!.bookmark = isChecked
             if(isChecked) { //버튼이 눌려서 true
-                bookmarkViewModel.insert(getItem(position)!!)
+                bookmarkViewModel.insert(getItem(position)!!)   //DB에 아이템 추가
             } else {    //버튼이 눌려서 false
-                bookmarkViewModel.delete(getItem(position)!!)
+                bookmarkViewModel.delete(getItem(position)!!)   //DB에서 아이템 제거
             }
         }
     }
+
+    /**
+     * 밑의 함수를 오버라이딩하여 리사이클러뷰 재사용 문제 해결
+     * @author 상은
+     */
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
 }

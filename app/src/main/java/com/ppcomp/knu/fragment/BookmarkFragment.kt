@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
@@ -26,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_bookmark.*
 import kotlinx.android.synthetic.main.fragment_bookmark.view.*
 
 /**
- * 즐겨찾기추가한 리스트를 보여주는 Fragment
+ * 북마크 리스트를 보여주는 Fragment
  * @author 정준
  */
 class BookmarkFragment : Fragment() {
@@ -85,7 +86,7 @@ class BookmarkFragment : Fragment() {
     }
 
     /**
-     * bookmarkViewModel에 있는 리스트를 adapter에 맵핑하고 리스트 변화 감시
+     * bookmarkViewModel 에 있는 리스트를 adapter에 맵핑하고 리스트 변화 감시
      * @author 정준
      */
     private fun makingView() {

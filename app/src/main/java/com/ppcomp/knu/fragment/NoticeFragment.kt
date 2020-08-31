@@ -14,12 +14,10 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.paging.DataSource
-import androidx.paging.PageKeyedDataSource
-import androidx.paging.PagedList
-import androidx.paging.RxPagedListBuilder
+import androidx.paging.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -82,12 +80,6 @@ class NoticeFragment : Fragment() {
         val jsonList = PreferenceHelper.get("bookmark", "")
         if (jsonList != "")
             bookmarkList = gson.fromJson(jsonList, listType.type) //북마크 리스트 저장
-
-//        DividerItemDecoration(recyclerView.context, LinearLayout.VERTICAL).apply {
-//            setDrawable(ContextCompat.getDrawable(this@MainActivity, R.drawable.divider)!!)
-//            recyclerView.addItemDecoration(this)
-//            recyclerView.setHasFixedSize(true)
-//        }
 
         bookmarkViewModel = ViewModelProvider(this).get(NoticeViewModel::class.java)
         adapter = NoticeAdapter(bookmarkViewModel) { notice ->
@@ -153,6 +145,9 @@ class NoticeFragment : Fragment() {
                 adapter.submitList(it)
                 updateViewStatus()
             }
+        bookmarkViewModel.getNoticeList().observe(viewLifecycleOwner, Observer {
+            //코드가 없어도 bookmarkViewModel 은 변화가 생기면 업데이트 됨
+        })
     }
 
     /**

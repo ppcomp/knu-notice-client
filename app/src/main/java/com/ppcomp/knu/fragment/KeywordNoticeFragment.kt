@@ -18,6 +18,8 @@ import androidx.core.view.isInvisible
 import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.paging.DataSource
 import androidx.paging.PageKeyedDataSource
 import androidx.paging.PagedList
@@ -30,8 +32,10 @@ import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.noticeData.Notice
+import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
 import com.ppcomp.knu.`object`.noticeData.dataSource.KeywordNoticeAllDataSource
 import com.ppcomp.knu.`object`.noticeData.dataSource.NoticeAllDataSource
+import com.ppcomp.knu.adapter.BookmarkAdapter
 import com.ppcomp.knu.adapter.NoticeAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
 import com.ppcomp.knu.utils.RestApi
@@ -51,9 +55,7 @@ import kotlinx.android.synthetic.main.fragment_notice_item.view.*
  * @author 희진
  */
 class KeywordNoticeFragment : Fragment() {
-    private var bookmarkList = arrayListOf<Notice>()
-    private var gson: Gson = GsonBuilder().create()
-    private var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
+
     private val mHandler: Handler = Handler()
     private lateinit var mRunnable: Runnable
     private lateinit var keywordRecyclerView: RecyclerView
@@ -72,16 +74,8 @@ class KeywordNoticeFragment : Fragment() {
         .setPrefetchDistance(5)         // n개의 아이템 여유를 두고 로딩
         .setEnablePlaceholders(true)    // default: true
         .build()
-
-    private val adapter = NoticeAdapter(bookmarkList) { notice ->
-        var link: String? = notice.link
-        if (link != null) {
-            if (!link.startsWith("http://") && !link.startsWith("https://"))
-                link = "http://$link"
-        }
-        val intent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-        requireContext().startActivity(intent)
-    }
+    private lateinit var bookmarkViewModel: NoticeViewModel
+    private lateinit var adapter: NoticeAdapter
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -103,10 +97,16 @@ class KeywordNoticeFragment : Fragment() {
         progressBar.visibility = View.GONE      //progressbar 숨기기
         emptyResultView.visibility = View.GONE
 
-        val jsonList = PreferenceHelper.get("bookmark", "")
-        if (jsonList != "")
-            bookmarkList = gson.fromJson(jsonList, listType.type) //북마크 리스트 저장
-
+        bookmarkViewModel = ViewModelProvider(this).get(NoticeViewModel::class.java)
+        adapter = NoticeAdapter(bookmarkViewModel) { notice ->
+            var link: String? = notice.link
+            if (link != null) {
+                if (!link.startsWith("http://") && !link.startsWith("https://"))
+                    link = "http://$link"
+            }
+            val intent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+            requireContext().startActivity(intent)
+        }
         keywordRecyclerView.adapter = adapter
         keywordRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
@@ -173,6 +173,9 @@ class KeywordNoticeFragment : Fragment() {
                 adapter.submitList(it)
                 updateViewStatus()
             }
+        bookmarkViewModel.getNoticeList().observe(viewLifecycleOwner, Observer {
+            //코드가 없어도 bookmarkViewModel 은 변화가 생기면 업데이트 됨
+        })
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
