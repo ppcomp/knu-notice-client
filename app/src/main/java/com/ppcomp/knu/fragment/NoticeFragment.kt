@@ -15,14 +15,10 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.noticeData.Notice
@@ -44,13 +40,9 @@ import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
  * @author 희진, 정준
  */
 class NoticeFragment : Fragment() {
-
-    private var noticeList = arrayListOf<Notice>()
-    private var bookmarkList = arrayListOf<Notice>()
-    private var gson: Gson = GsonBuilder().create()
-    private var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
-    private val mHandler: Handler = Handler()
-    private lateinit var mRunnable: Runnable
+    
+    private lateinit var bookmarkViewModel: NoticeViewModel
+    private lateinit var adapter: NoticeAdapter
     private lateinit var noticeRecyclerView: RecyclerView
     private lateinit var emptyResultView: TextView
     private var url: String = ""    //mainUrl + notice_Url 저장 할 변수
@@ -63,8 +55,6 @@ class NoticeFragment : Fragment() {
         .setPrefetchDistance(5)         // n개의 아이템 여유를 두고 로딩
         .setEnablePlaceholders(true)    // default: true
         .build()
-    private lateinit var bookmarkViewModel: NoticeViewModel
-    private lateinit var adapter: NoticeAdapter
 
     @SuppressLint("CheckResult")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -76,10 +66,6 @@ class NoticeFragment : Fragment() {
         noticeRecyclerView = view.findViewById(R.id.notice) as RecyclerView   //recyclerview 가져오기
         emptyResultView = view.findViewById((R.id.noData)) as TextView
         emptyResultView.visibility = View.GONE
-
-        val jsonList = PreferenceHelper.get("bookmark", "")
-        if (jsonList != "")
-            bookmarkList = gson.fromJson(jsonList, listType.type) //북마크 리스트 저장
 
         bookmarkViewModel = ViewModelProvider(this).get(NoticeViewModel::class.java)
         adapter = NoticeAdapter(bookmarkViewModel) { notice ->
@@ -103,9 +89,10 @@ class NoticeFragment : Fragment() {
                 ), MutableLiveData())
         }
 
+
         view.swipe.setOnRefreshListener {
             // Initialize a new Runnable
-            mRunnable = Runnable {
+            val mRunnable = Runnable {
                 // Hide swipe to refresh icon animation
                 url = ""
                 makingView(adapter,
@@ -116,7 +103,7 @@ class NoticeFragment : Fragment() {
                     ), MutableLiveData())
                 swipe.isRefreshing = false
             }
-            mHandler.postDelayed(mRunnable, 1000)
+            Handler().postDelayed(mRunnable, 1000)
         }
 
         view.search_icon.setOnClickListener {
@@ -202,7 +189,6 @@ class NoticeFragment : Fragment() {
         this.target = target
         url = ""
         if (searchQuery != "") {
-            noticeList.removeAll(noticeList)
             makingView(adapter,
                 NoticeAllDataSource(
                     restApi,

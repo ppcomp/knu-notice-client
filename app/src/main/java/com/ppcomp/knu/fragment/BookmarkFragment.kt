@@ -32,8 +32,6 @@ import kotlinx.android.synthetic.main.fragment_bookmark.view.*
  */
 class BookmarkFragment : Fragment() {
 
-    private lateinit var mHandler: Handler
-    private lateinit var mRunnable: Runnable
     private lateinit var noticeRecyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
     private lateinit var noData: TextView
@@ -72,15 +70,15 @@ class BookmarkFragment : Fragment() {
 
         makingView()
 
-        mHandler = Handler()
+
         view.bookmark_swipe.setOnRefreshListener {
             // Initialize a new Runnable
-            mRunnable = Runnable {
+            val mRunnable = Runnable {
 //                 Hide swipe to refresh icon animation
                 makingView()
                 bookmark_swipe.isRefreshing = false
             }
-            mHandler.postDelayed(mRunnable, 2000)
+            Handler().postDelayed(mRunnable, 2000)
         }
         return view
     }

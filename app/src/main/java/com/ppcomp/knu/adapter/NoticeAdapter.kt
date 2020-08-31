@@ -33,8 +33,7 @@ class NoticeAdapter(
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onBindViewHolder(holder: NoticeViewHolder, position: Int) {
         // 공지리스트를 북마크리스트와 비교하여 공지리스트에 북마크 맵핑
-        var temp = bookmarkViewModel.isListNullOrEmpty()
-        if(!temp) {
+        if(!bookmarkViewModel.isListNullOrEmpty()) {
             for( i in 0 until bookmarkViewModel.getNoticeList().value!!.size) {
                 if(getItem(position)!!.id == bookmarkViewModel.getNoticeList().value!![i]!!.id)
                     getItem(position)!!.bookmark = bookmarkViewModel.getNoticeList().value!![i]!!.bookmark
