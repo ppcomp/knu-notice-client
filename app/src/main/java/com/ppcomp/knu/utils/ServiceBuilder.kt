@@ -1,3 +1,4 @@
+import com.ppcomp.knu.activity.MainActivity
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -8,7 +9,6 @@ import javax.net.ssl.*
 
 object ServiceBuilder {
     private val client = OkHttpClient.Builder().build()
-
     private val retrofit = Retrofit.Builder()
         .baseUrl("https://13.124.43.203/") // https://15.165.178.103/
         .addConverterFactory(GsonConverterFactory.create())

@@ -1,5 +1,6 @@
 package com.ppcomp.knu.utils
 
+import com.google.firebase.database.*
 import com.ppcomp.knu.`object`.DeviceInfo
 import com.ppcomp.knu.`object`.noticeData.ReceivedData
 import com.ppcomp.knu.`object`.UserInfo
@@ -11,8 +12,10 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
+import retrofit2.http.Query
 
 interface RestApi {
+
     /**
      * Rest Api Builder 싱글톤 객체로 생성
      * @author 정우

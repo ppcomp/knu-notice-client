@@ -15,7 +15,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.database.*
 import com.ppcomp.knu.*
+import com.ppcomp.knu.R
 import com.ppcomp.knu.fragment.*
 import kotlinx.android.synthetic.main.activity_main_toolbar.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
@@ -53,8 +55,6 @@ class MainActivity : AppCompatActivity() {
             add(R.id.frameLayout, bookmarkFragment, bookmarkFragment.javaClass.simpleName).hide(bookmarkFragment)
             add(R.id.frameLayout, settingFragment, settingFragment.javaClass.simpleName).hide(settingFragment)
         }.commit()
-
-
     }
     
     /**
