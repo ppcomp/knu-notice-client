@@ -17,6 +17,7 @@ import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.`object`.Subscription
 import com.ppcomp.knu.utils.FireBaseUtils
 import com.ppcomp.knu.utils.PreferenceHelper
+import com.ppcomp.knu.utils.PreferenceUtil
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import org.json.JSONArray
 import java.io.BufferedReader
@@ -31,9 +32,15 @@ import java.util.*
  * @author 김상은, 정준
  */
 class SplashActivity : AppCompatActivity() {
+    companion object {
+        lateinit var prefs: PreferenceUtil
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         StrictMode.enableDefaults()
+        prefs = PreferenceUtil(applicationContext)
+
 
         // Init singleton Object
         val preference = PreferenceHelper.getInstance(this)
@@ -82,9 +89,11 @@ class SplashActivity : AppCompatActivity() {
      */
     fun loadSubscription() {
         var subsList = arrayListOf<Subscription>()
-        FireBaseUtils().loadData { result ->
+        FireBaseUtils.loadData { result ->
+            var serverIP = result.toString()
+            SplashActivity.prefs.setString("serverIP", serverIP)
             var serverUrl =
-                "http://" + result.toString() + "/notice/list" // Server URL old: http://15.165.178.103
+                "http://" + serverIP + "/notice/list" // Server URL old: http://15.165.178.103
 
 
             val subscriptionList = PreferenceHelper.get("Subs", "")

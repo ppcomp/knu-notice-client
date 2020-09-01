@@ -32,6 +32,7 @@ import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.noticeData.Notice
 import com.ppcomp.knu.adapter.NoticeAdapter
 import com.ppcomp.knu.`object`.noticeData.dataSource.NoticeAllDataSource
+import com.ppcomp.knu.activity.WebViewActivity
 import com.ppcomp.knu.utils.FireBaseUtils
 import com.ppcomp.knu.utils.PreferenceHelper
 import com.ppcomp.knu.utils.RestApi
@@ -76,7 +77,9 @@ class NoticeFragment : Fragment() {
             if (!link.startsWith("http://") && !link.startsWith("https://"))
                 link = "http://$link"
         }
-        val intent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+        val intent: Intent = Intent(requireContext(), WebViewActivity::class.java)
+        intent.putExtra("link",link)
+        //Uri.parse(link)
         requireContext().startActivity(intent)
     }
 
