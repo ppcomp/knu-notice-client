@@ -1,20 +1,24 @@
 package com.ppcomp.knu.activity
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
 import android.view.Gravity
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.database.*
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.`object`.Subscription
+import com.ppcomp.knu.utils.FireBaseUtils
 import com.ppcomp.knu.utils.PreferenceHelper
+import com.ppcomp.knu.utils.PreferenceUtil
+import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import org.json.JSONArray
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -28,9 +32,15 @@ import java.util.*
  * @author 김상은, 정준
  */
 class SplashActivity : AppCompatActivity() {
+    companion object {
+        lateinit var prefs: PreferenceUtil
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         StrictMode.enableDefaults()
+        prefs = PreferenceUtil(applicationContext)
+
 
         // Init singleton Object
         val preference = PreferenceHelper.getInstance(this)
@@ -79,38 +89,46 @@ class SplashActivity : AppCompatActivity() {
      */
     fun loadSubscription() {
         var subsList = arrayListOf<Subscription>()
-        val serverUrl = "http://13.124.43.203/notice/list" // Server URL old: http://15.165.178.103
-        val subscriptionList = PreferenceHelper.get("Subs", "")?.split("+") // 저장된 학과를 나눠 ArrayList에 저장 -- 체크박스를 위한 용도
-        val set: MutableSet<String> = mutableSetOf("")
+        FireBaseUtils.loadData { result ->
+            var serverIP = result.toString()
+            SplashActivity.prefs.setString("serverIP", serverIP)
+            var serverUrl =
+                "http://" + serverIP + "/notice/list" // Server URL old: http://15.165.178.103
 
-        if (subscriptionList != null) {
-            for (i in 0 until subscriptionList.count()) { // 중복 제거
-                set.add(subscriptionList[i])
+
+            val subscriptionList = PreferenceHelper.get("Subs", "")
+                ?.split("+") // 저장된 학과를 나눠 ArrayList에 저장 -- 체크박스를 위한 용도
+            val set: MutableSet<String> = mutableSetOf("")
+
+            if (subscriptionList != null) {
+                for (i in 0 until subscriptionList.count()) { // 중복 제거
+                    set.add(subscriptionList[i])
+                }
             }
-        }
 
-        try { // 서버 연결하여 구독리스트 불러오고 confirmCheck 변수로 체크박스 호환
-            val stream = URL(serverUrl).openConnection() as HttpURLConnection
-            var read = BufferedReader(InputStreamReader(stream.inputStream, "UTF-8"))
-            val response = read.readLine()
-            val jArray = JSONArray(response)
+            try { // 서버 연결하여 구독리스트 불러오고 confirmCheck 변수로 체크박스 호환
+                val stream = URL(serverUrl).openConnection() as HttpURLConnection
+                var read = BufferedReader(InputStreamReader(stream.inputStream, "UTF-8"))
+                val response = read.readLine()
+                val jArray = JSONArray(response)
 
-            for (i in 0 until jArray.length()) {
-                val obj = jArray.getJSONObject(i)
-                val name = obj.getString("name")
-                val getUrl = obj.getString("api_url")
-                val url = getUrl.split("/")
-                val confirmCheck: Boolean = set.contains(name)// 저장된 게시판인지 확인하기위한 변수
-                val line =
-                    Subscription(
-                        name,
-                        confirmCheck,
-                        url[2]
-                    )
-                subsList.add(line)
+                for (i in 0 until jArray.length()) {
+                    val obj = jArray.getJSONObject(i)
+                    val name = obj.getString("name")
+                    val getUrl = obj.getString("api_url")
+                    val url = getUrl.split("/")
+                    val confirmCheck: Boolean = set.contains(name)// 저장된 게시판인지 확인하기위한 변수
+                    val line =
+                        Subscription(
+                            name,
+                            confirmCheck,
+                            url[2]
+                        )
+                    subsList.add(line)
+                }
+            } catch (e: Exception) {
+                val line = Subscription("오류", false, "")
             }
-        } catch (e: Exception) {
-            val line = Subscription("오류", false, "")
         }
 
         subsList.sortWith(Comparator { data1, data2 -> data1.name.compareTo(data2.name) })
@@ -123,4 +141,5 @@ class SplashActivity : AppCompatActivity() {
         PreferenceHelper.put("subList",strContact)
     }
 }
+
 
