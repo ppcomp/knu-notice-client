@@ -18,8 +18,9 @@ import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
-import com.ppcomp.knu.adapter.SubscriptionAdapter
 import com.ppcomp.knu.`object`.Subscription
+import com.ppcomp.knu.adapter.SubscriptionAdapter
+import com.ppcomp.knu.adapter.SubscriptionCheckAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_main_toolbar.*
 import kotlinx.android.synthetic.main.activity_subscription.*
@@ -30,11 +31,13 @@ import kotlinx.android.synthetic.main.activity_subscription.*
  * @author 상은, 정준
  */
 class SubscriptionActivity : AppCompatActivity() {
-    var subsList = arrayListOf<Subscription>()
-    lateinit var strContact: String
-    lateinit var makeGson: Gson
-    lateinit var listType: TypeToken<ArrayList<Subscription>>
+    private var subsList = arrayListOf<Subscription>()
+    private var subsCheckList = arrayListOf<Subscription>()
+    private lateinit var strContact: String
+    private lateinit var makeGson: Gson
+    private lateinit var listType: TypeToken<ArrayList<Subscription>>
     lateinit var subsAdapter: SubscriptionAdapter
+    private lateinit var subsCheckAdapter: SubscriptionCheckAdapter
     private lateinit var searchIcon: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +46,10 @@ class SubscriptionActivity : AppCompatActivity() {
         StrictMode.enableDefaults()
 
         val isNewUser = PreferenceHelper.get("NewUser", true) // 신규 사용자 확인
-        val lm = LinearLayoutManager(this)
+
+        val subsManager = LinearLayoutManager(this)
+        val checkManager = LinearLayoutManager(this)
+
         var myToast: Toast =  Toast.makeText(this, "", Toast.LENGTH_SHORT)
 
         val itemCount = findViewById<TextView>(R.id.itemCount)
@@ -53,12 +59,23 @@ class SubscriptionActivity : AppCompatActivity() {
         strContact = PreferenceHelper.get("subList", "").toString()
         makeGson = GsonBuilder().create()
         subsList = makeGson.fromJson(strContact, listType.type)
-        subsAdapter = SubscriptionAdapter(this, subsList, itemCount, myToast)
+        for(i in subsList){
+            if(i.checked){
+                subsCheckList.add(i)
+            }
+        }
+
+        subsAdapter = SubscriptionAdapter(this, subsList, itemCount, myToast, null, null)
+        subsCheckAdapter = SubscriptionCheckAdapter(this, subsCheckList, itemCount, subsList, subsAdapter)
+
+        subsAdapter.setCheckList(subsCheckList)
+        subsAdapter.setCheckListAdapter(subsCheckAdapter)
+
+        checkSubs.adapter = subsCheckAdapter
         subsResult.adapter = subsAdapter
 
-        // RecyclerView의 사이즈를 고정
-        subsResult.layoutManager = lm
-        subsResult.setHasFixedSize(true)
+        checkSubs.layoutManager = checkManager
+        subsResult.layoutManager = subsManager
 
         val title = findViewById<TextView>(R.id.state_title)
         title.text = "구독리스트 설정"
@@ -77,7 +94,7 @@ class SubscriptionActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                this@SubscriptionActivity.subsAdapter.getFilter().filter(newText)
+                this@SubscriptionActivity.subsAdapter.filter.filter(newText)
                 return false
             }
         })
@@ -121,11 +138,11 @@ class SubscriptionActivity : AppCompatActivity() {
             var ch: Boolean = subsAdapter.getChecked(i)
             var name: String
             var url: String
-            if (ch == true) {
+            if (ch) {
                 name = subsAdapter.getName(i)
                 url = subsAdapter.getUrl(i)
-                storeName = storeName + name + "+"
-                storeUrl = storeUrl + url + "+"
+                storeName = "$storeName$name+"
+                storeUrl = "$storeUrl$url+"
                 subsList[i].checked = true
             } else {
                 subsList[i].checked = false

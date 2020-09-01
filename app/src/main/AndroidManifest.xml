@@ -17,6 +17,13 @@
         android:theme="@style/CustomAppTheme"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".activity.SearchableActivity"
+            android:parentActivityName=".activity.KeywordActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".activity.MakerActivity"
             android:parentActivityName=".activity.KeywordActivity"
             android:screenOrientation="portrait" />
