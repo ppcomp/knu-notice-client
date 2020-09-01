@@ -103,7 +103,7 @@ class SubscriptionAdapter(
                             if (isChecked && checkList?.contains(i) == false) {
                                 checkList?.add(i) // 체크한경우 체크리스트에 체크값 추가
                             } else if(!isChecked) {
-                                checkList?.remove(i) // 체크해제한 경우 값 제거
+                                checkList?.remove(i) // 체크해제한 경우 체크리스트에서 값 제거
                             }
                         checkListAdapter?.notifyDataSetChanged()
                         }

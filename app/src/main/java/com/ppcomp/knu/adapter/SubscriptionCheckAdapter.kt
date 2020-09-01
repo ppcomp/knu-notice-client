@@ -56,7 +56,7 @@ class SubscriptionCheckAdapter(
 
         holder.chk?.setOnCheckedChangeListener { // 체크 표시할 때
                 _, isChecked ->
-            if (!isChecked) {
+            if (!isChecked) { // 체크를 해제한 경우에만
                 val getName: String = holder.itemView.subs_name.text as String
                 for (i in subsCheckList) { // 체크한 아이템의 이름으로 위치찾기
                     if (i.name == getName) {

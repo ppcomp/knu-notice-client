@@ -75,12 +75,7 @@ class SubscriptionActivity : AppCompatActivity() {
         subsResult.adapter = subsAdapter
 
         checkSubs.layoutManager = checkManager
-        checkSubs.setHasFixedSize(false)
-
-        subsManager
-        // RecyclerView의 사이즈를 고정
         subsResult.layoutManager = subsManager
-        subsResult.setHasFixedSize(false)
 
         val title = findViewById<TextView>(R.id.state_title)
         title.text = "구독리스트 설정"
