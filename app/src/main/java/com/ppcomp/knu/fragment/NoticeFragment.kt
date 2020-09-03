@@ -6,9 +6,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.text.InputFilter
-import android.util.Log
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -23,7 +20,6 @@ import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.*
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -32,7 +28,6 @@ import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.noticeData.Notice
 import com.ppcomp.knu.`object`.noticeData.dataSource.NoticeAllDataSource
 import com.ppcomp.knu.activity.WebViewActivity
-import com.ppcomp.knu.utils.FireBaseUtils
 import com.ppcomp.knu.activity.SearchableActivity
 import com.ppcomp.knu.adapter.NoticeAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
@@ -40,9 +35,6 @@ import com.ppcomp.knu.utils.RestApi
 import kotlinx.android.synthetic.main.activity_main_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
-import retrofit2.adapter.rxjava2.Result
-import java.lang.Thread.sleep
-import java.util.regex.Pattern
 
 
 /**
@@ -52,6 +44,7 @@ import java.util.regex.Pattern
  * @author 희진
  */
 class NoticeFragment : Fragment() {
+
     private var noticeList = arrayListOf<Notice>()
     private var bookmarkList = arrayListOf<Notice>()
     private var gson: Gson = GsonBuilder().create()
@@ -78,7 +71,6 @@ class NoticeFragment : Fragment() {
         }
         val intent: Intent = Intent(requireContext(), WebViewActivity::class.java)
         intent.putExtra("link",link)
-        //Uri.parse(link)
         requireContext().startActivity(intent)
     }
 
@@ -134,7 +126,6 @@ class NoticeFragment : Fragment() {
             val intent = Intent(requireContext(), SearchableActivity::class.java)
             startActivity(intent)
         }
-
         return view
     }
 
