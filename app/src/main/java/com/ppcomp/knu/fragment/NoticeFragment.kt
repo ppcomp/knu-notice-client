@@ -6,9 +6,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.text.InputFilter
-import android.util.Log
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -29,7 +26,6 @@ import com.ppcomp.knu.`object`.noticeData.Notice
 import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
 import com.ppcomp.knu.`object`.noticeData.dataSource.NoticeAllDataSource
 import com.ppcomp.knu.activity.WebViewActivity
-import com.ppcomp.knu.utils.FireBaseUtils
 import com.ppcomp.knu.activity.SearchableActivity
 import com.ppcomp.knu.adapter.NoticeAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
@@ -37,9 +33,6 @@ import com.ppcomp.knu.utils.RestApi
 import kotlinx.android.synthetic.main.activity_main_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
-import retrofit2.adapter.rxjava2.Result
-import java.lang.Thread.sleep
-import java.util.regex.Pattern
 
 
 /**
@@ -121,7 +114,6 @@ class NoticeFragment : Fragment() {
             val intent = Intent(requireContext(), SearchableActivity::class.java)
             startActivity(intent)
         }
-
         return view
     }
 

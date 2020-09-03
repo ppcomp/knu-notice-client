@@ -37,7 +37,6 @@ android {
 
 dependencies {
     implementation 'androidx.paging:paging-runtime-ktx:2.1.2'
-    implementation 'com.google.firebase:firebase-database-ktx:19.3.1'
     def paging_version = "2.1.2"
     def room_version = "2.2.5"
 
@@ -71,6 +70,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0' // glide
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0' // glide
     implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'    //storage
+    implementation 'com.google.firebase:firebase-database-ktx:19.4.0'
     implementation 'com.firebaseui:firebase-ui-storage:6.2.0'   //storage
     implementation 'com.google.firebase:firebase-messaging:20.2.4' //push message
     implementation 'com.google.android.material:material:1.3.0-alpha02' //scroll시 appbar 숨기기

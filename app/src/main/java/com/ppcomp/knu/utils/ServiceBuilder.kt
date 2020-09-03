@@ -1,5 +1,4 @@
-import com.ppcomp.knu.activity.MainActivity
-import com.ppcomp.knu.activity.SplashActivity
+import com.ppcomp.knu.utils.PreferenceHelper
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -10,9 +9,9 @@ import javax.net.ssl.*
 
 object ServiceBuilder {
     private val client = OkHttpClient.Builder().build()
-    var serverIP = SplashActivity.prefs.getString("serverIP", "")
+
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://" + serverIP + "/") // https://15.165.178.103/
+        .baseUrl("https://${PreferenceHelper.get("serverIP","")}/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(getUnsafeOkHttpClient())
         .build()
