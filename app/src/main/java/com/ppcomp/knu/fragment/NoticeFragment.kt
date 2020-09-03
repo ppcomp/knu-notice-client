@@ -64,17 +64,6 @@ class NoticeFragment : Fragment() {
         .setPrefetchDistance(5)         // n개의 아이템 여유를 두고 로딩
         .setEnablePlaceholders(true)    // default: true
         .build()
-    private val adapter = NoticeAdapter(bookmarkList) { notice ->
-        var link: String? = notice.link
-        if (link != null) {
-            if (!link.startsWith("http://") && !link.startsWith("https://"))
-                link = "http://$link"
-        }
-        val intent: Intent = Intent(requireContext(), WebViewActivity::class.java)
-        intent.putExtra("link",link)
-        //Uri.parse(link)
-        requireContext().startActivity(intent)
-    }
 
     @SuppressLint("CheckResult")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -94,7 +83,9 @@ class NoticeFragment : Fragment() {
                 if (!link.startsWith("http://") && !link.startsWith("https://"))
                     link = "http://$link"
             }
-            val intent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+            val intent: Intent = Intent(requireContext(), WebViewActivity::class.java)
+            intent.putExtra("link",link)
+            //Uri.parse(link)
             requireContext().startActivity(intent)
         }
 
