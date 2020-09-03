@@ -6,6 +6,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.text.InputFilter
+import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,11 +22,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.*
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.noticeData.Notice
 import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
 import com.ppcomp.knu.`object`.noticeData.dataSource.NoticeAllDataSource
+import com.ppcomp.knu.activity.WebViewActivity
+import com.ppcomp.knu.utils.FireBaseUtils
 import com.ppcomp.knu.activity.SearchableActivity
 import com.ppcomp.knu.adapter.NoticeAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
@@ -31,6 +37,9 @@ import com.ppcomp.knu.utils.RestApi
 import kotlinx.android.synthetic.main.activity_main_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
+import retrofit2.adapter.rxjava2.Result
+import java.lang.Thread.sleep
+import java.util.regex.Pattern
 
 
 /**
@@ -55,6 +64,17 @@ class NoticeFragment : Fragment() {
         .setPrefetchDistance(5)         // n개의 아이템 여유를 두고 로딩
         .setEnablePlaceholders(true)    // default: true
         .build()
+    private val adapter = NoticeAdapter(bookmarkList) { notice ->
+        var link: String? = notice.link
+        if (link != null) {
+            if (!link.startsWith("http://") && !link.startsWith("https://"))
+                link = "http://$link"
+        }
+        val intent: Intent = Intent(requireContext(), WebViewActivity::class.java)
+        intent.putExtra("link",link)
+        //Uri.parse(link)
+        requireContext().startActivity(intent)
+    }
 
     @SuppressLint("CheckResult")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -110,6 +130,7 @@ class NoticeFragment : Fragment() {
             val intent = Intent(requireContext(), SearchableActivity::class.java)
             startActivity(intent)
         }
+
         return view
     }
 

@@ -1,8 +1,11 @@
 package com.ppcomp.knu.utils
 
+import android.util.Log
+import com.google.firebase.database.*
 import com.ppcomp.knu.`object`.DeviceInfo
 import com.ppcomp.knu.`object`.noticeData.ReceivedData
 import com.ppcomp.knu.`object`.UserInfo
+import com.ppcomp.knu.activity.SplashActivity
 import io.reactivex.Single
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -11,28 +14,34 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.*
+import retrofit2.http.Query
 
 interface RestApi {
+
     /**
      * Rest Api Builder 싱글톤 객체로 생성
      * @author 정우
      */
     companion object {
-        fun create() : RestApi {
+        fun create(): RestApi {
+            var serverIP = SplashActivity.prefs.getString("serverIP", "")
             return Retrofit.Builder()
                 .addConverterFactory(MoshiConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(
-                    OkHttpClient.Builder()
-                    .addInterceptor(
-                        HttpLoggingInterceptor(HttpPrettyLogging())
-                        .setLevel(HttpLoggingInterceptor.Level.BODY))
-                    .build())
-                .baseUrl("http://13.124.43.203") // http://15.165.178.103
-                .build()
-                .create(RestApi::class.java)
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .client(
+                        OkHttpClient.Builder()
+                            .addInterceptor(
+                                HttpLoggingInterceptor(HttpPrettyLogging())
+                                    .setLevel(HttpLoggingInterceptor.Level.BODY)
+                            )
+                            .build()
+                    )
+                    .baseUrl("http://" + serverIP + "/") // http://15.165.178.103
+                    .build()
+                    .create(RestApi::class.java)
         }
     }
+
 
     @Headers("Content-Type: application/json")
     @GET("/accounts/device")
@@ -63,7 +72,9 @@ interface RestApi {
      * @author 정우
      */
     @GET("/notice/all")
-    fun getNoticeAll(@Query("q", encoded=true) q: String,
-                     @Query("target", encoded=true) target: String,
-                     @Query("page") page: Int): Single<ReceivedData>
+    fun getNoticeAll(
+        @Query("q", encoded = true) q: String,
+        @Query("target", encoded = true) target: String,
+        @Query("page") page: Int
+    ): Single<ReceivedData>
 }
