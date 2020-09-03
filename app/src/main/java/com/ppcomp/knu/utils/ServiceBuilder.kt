@@ -1,3 +1,4 @@
+import com.ppcomp.knu.utils.PreferenceHelper
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -10,7 +11,7 @@ object ServiceBuilder {
     private val client = OkHttpClient.Builder().build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://13.124.43.203/") // https://15.165.178.103/
+        .baseUrl("https://${PreferenceHelper.get("serverIP","")}/")
         .addConverterFactory(GsonConverterFactory.create())
         .client(getUnsafeOkHttpClient())
         .build()

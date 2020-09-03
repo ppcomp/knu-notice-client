@@ -28,7 +28,7 @@ interface RestApi {
                         HttpLoggingInterceptor(HttpPrettyLogging())
                         .setLevel(HttpLoggingInterceptor.Level.BODY))
                     .build())
-                .baseUrl("http://13.124.43.203") // http://15.165.178.103
+                .baseUrl("http://${PreferenceHelper.get("serverIP","")}")
                 .build()
                 .create(RestApi::class.java)
         }
