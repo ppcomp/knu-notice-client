@@ -2,16 +2,17 @@ package com.ppcomp.knu.fragment
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -19,18 +20,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.*
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.noticeData.Notice
 import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
 import com.ppcomp.knu.`object`.noticeData.dataSource.NoticeAllDataSource
 import com.ppcomp.knu.activity.WebViewActivity
-import com.ppcomp.knu.activity.SearchableActivity
 import com.ppcomp.knu.adapter.NoticeAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
 import com.ppcomp.knu.utils.RestApi
+import kotlinx.android.synthetic.main.activity_main_toolbar.*
 import kotlinx.android.synthetic.main.activity_main_toolbar.view.*
+import kotlinx.android.synthetic.main.activity_main_toolbar.view.search_view
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
 
@@ -47,6 +48,8 @@ class NoticeFragment : Fragment() {
     private lateinit var adapter: NoticeAdapter
     private lateinit var noticeRecyclerView: RecyclerView
     private lateinit var emptyResultView: TextView
+    private lateinit var normalToolbar: FrameLayout
+    private lateinit var searchToolbar: FrameLayout
     private var url: String = ""    //mainUrl + notice_Url 저장 할 변수
     private var searchQuery: String = ""
     private var target: String = PreferenceHelper.get("Urls","")!!
@@ -67,9 +70,12 @@ class NoticeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_notice_layout, container, false)
         noticeRecyclerView = view.findViewById(R.id.notice) as RecyclerView   //recyclerview 가져오기
         emptyResultView = view.findViewById((R.id.noData)) as TextView
+        normalToolbar = view.findViewById(R.id.main_layout_toolbar_normal) as FrameLayout
+        searchToolbar = view.findViewById(R.id.main_layout_toolbar_search) as FrameLayout
         emptyResultView.visibility = View.GONE
+        searchToolbar.visibility = View.GONE
 
-        bookmarkViewModel = ViewModelProvider(this).get(NoticeViewModel::class.java)
+        bookmarkViewModel = ViewModelProvider(requireActivity()).get(NoticeViewModel::class.java)
         adapter = NoticeAdapter(bookmarkViewModel) { notice ->
             var link: String? = notice.link
             if (link != null) {
@@ -92,8 +98,7 @@ class NoticeFragment : Fragment() {
                     ""
                 ), MutableLiveData())
         }
-
-
+        //새로고침 리스너 (+검색 리스트 초기화)
         view.swipe.setOnRefreshListener {
             // Initialize a new Runnable
             val mRunnable = Runnable {
@@ -102,17 +107,35 @@ class NoticeFragment : Fragment() {
                 makingView(adapter,
                     NoticeAllDataSource(
                         restApi,
-                        searchQuery,
-                        target
+                        ""
                     ), MutableLiveData())
                 swipe.isRefreshing = false
             }
             Handler().postDelayed(mRunnable, 1000)
         }
-
+        // 검색 버튼 리스너
         view.search_icon.setOnClickListener {
-            val intent = Intent(requireContext(), SearchableActivity::class.java)
-            startActivity(intent)
+            normalToolbar.visibility = View.GONE
+            searchToolbar.visibility = View.VISIBLE
+            view.search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    searchRun(query!!, getTarget())
+                    normalToolbar.visibility = View.VISIBLE
+                    searchToolbar.visibility = View.GONE
+                    view.search_view.setQuery("",false)
+                    view.search_view.clearFocus()
+                    return false
+                }
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return false
+                }
+            })
+        }
+
+        // 검색 툴바에서 뒤로가기 버튼 리스너
+        view.search_back_icon.setOnClickListener{
+            normalToolbar.visibility = View.VISIBLE
+            searchToolbar.visibility = View.GONE
         }
         return view
     }
@@ -201,6 +224,19 @@ class NoticeFragment : Fragment() {
                 ), MutableLiveData())
         } else {
             Toast.makeText(requireContext(), "입력된 검색어가 없습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * Spinner 에 선택된 대상에 따라 검색할 대상 사이트 선정
+     * @author 정우
+     */
+    private fun getTarget(): String {
+        val option = searchview_spinner.selectedItem.toString()
+        return if (option == "전체") {
+            "all"
+        } else {
+            PreferenceHelper.get("Urls", "")!!
         }
     }
 }
