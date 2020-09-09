@@ -31,7 +31,6 @@ import com.ppcomp.knu.utils.PreferenceHelper
 import com.ppcomp.knu.utils.RestApi
 import kotlinx.android.synthetic.main.activity_main_toolbar.*
 import kotlinx.android.synthetic.main.activity_main_toolbar.view.*
-import kotlinx.android.synthetic.main.activity_main_toolbar.view.search_view
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
 
@@ -84,21 +83,20 @@ class NoticeFragment : Fragment() {
             }
             val intent: Intent = Intent(requireContext(), WebViewActivity::class.java)
             intent.putExtra("link",link)
-            //Uri.parse(link)
             requireContext().startActivity(intent)
         }
 
         noticeRecyclerView.adapter = adapter
         noticeRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        if (searchQuery == "") {    // 첫 실행시에만 view making. search view 에서는 검색 기능만 사용.
-            makingView(adapter,
-                NoticeAllDataSource(
-                    restApi,
-                    ""
-                ), MutableLiveData())
-        }
-        //새로고침 리스너 (+검색 리스트 초기화)
+        //RecyclerView item 생성
+        makingView(adapter,
+            NoticeAllDataSource(
+                restApi,
+                ""
+            ), MutableLiveData())
+
+        //새로고침 리스너
         view.swipe.setOnRefreshListener {
             // Initialize a new Runnable
             val mRunnable = Runnable {
@@ -107,7 +105,8 @@ class NoticeFragment : Fragment() {
                 makingView(adapter,
                     NoticeAllDataSource(
                         restApi,
-                        ""
+                        searchQuery,
+                        getTarget()
                     ), MutableLiveData())
                 swipe.isRefreshing = false
             }
@@ -115,24 +114,9 @@ class NoticeFragment : Fragment() {
         }
         // 검색 버튼 리스너
         view.search_icon.setOnClickListener {
-            normalToolbar.visibility = View.GONE
-            searchToolbar.visibility = View.VISIBLE
-            view.search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    searchRun(query!!, getTarget())
-                    normalToolbar.visibility = View.VISIBLE
-                    searchToolbar.visibility = View.GONE
-                    view.search_view.setQuery("",false)
-                    view.search_view.clearFocus()
-                    return false
-                }
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    return false
-                }
-            })
+            searchEventHandler()
         }
-
-        // 검색 툴바에서 뒤로가기 버튼 리스너
+        // 검색 툴바 취소 리스너
         view.search_back_icon.setOnClickListener{
             normalToolbar.visibility = View.VISIBLE
             searchToolbar.visibility = View.GONE
@@ -211,7 +195,7 @@ class NoticeFragment : Fragment() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun searchRun(searchQuery: String, target: String) {
+    private fun searchRun(searchQuery: String, target: String) {
         this.searchQuery = searchQuery
         this.target = target
         url = ""
@@ -224,6 +208,47 @@ class NoticeFragment : Fragment() {
                 ), MutableLiveData())
         } else {
             Toast.makeText(requireContext(), "입력된 검색어가 없습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * 검색 이벤트 처리
+     * @author 정준
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun searchEventHandler() {
+        // 검색
+        if (searchQuery == "") {
+            normalToolbar.visibility = View.GONE
+            searchToolbar.visibility = View.VISIBLE
+            search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    searchRun(query!!, getTarget())
+                    state_title.text = "    검색어 : $query"
+                    search_icon.setImageResource(R.drawable.clear_ic)   //검색 아이콘 이미지 X 로 변경
+                    normalToolbar.visibility = View.VISIBLE
+                    searchToolbar.visibility = View.GONE
+                    search_view.setQuery("", false)
+                    search_view.clearFocus()
+                    return false
+                }
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return false
+                }
+            })
+        }
+        // 검색결과 지우기
+        else {
+            searchQuery = ""
+            state_title.text = ""
+            search_icon.setImageResource(R.drawable.toolbar_search_ic)  //검색 아이콘 이미지 원래대로 변경
+
+            makingView(adapter,
+                NoticeAllDataSource(
+                    restApi,
+                    ""
+                ), MutableLiveData())
         }
     }
 

@@ -36,6 +36,7 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:scaleType="fitCenter"
                     android:src="@drawable/toolbar_search_ic" />
             </LinearLayout>
         </FrameLayout>
@@ -62,7 +63,7 @@
                     android:id="@+id/search_view"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
+                    android:layout_weight="7.15"
                     android:paddingStart="-16dp"
                     android:paddingLeft="-16dp"
                     app:iconifiedByDefault="false"
@@ -73,8 +74,9 @@
                     android:id="@+id/search_back_icon"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:src="@drawable/clear_ic" />
+                    android:layout_weight="0.7"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/move_back_reverse_ic" />
 
             </LinearLayout>
         </FrameLayout>
