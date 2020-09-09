@@ -2,36 +2,34 @@ package com.ppcomp.knu.fragment
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.DataSource
-import androidx.paging.PageKeyedDataSource
-import androidx.paging.PagedList
-import androidx.paging.RxPagedListBuilder
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.paging.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.noticeData.Notice
+import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
 import com.ppcomp.knu.`object`.noticeData.dataSource.NoticeAllDataSource
 import com.ppcomp.knu.activity.WebViewActivity
-import com.ppcomp.knu.activity.SearchableActivity
 import com.ppcomp.knu.adapter.NoticeAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
 import com.ppcomp.knu.utils.RestApi
+import kotlinx.android.synthetic.main.activity_main_toolbar.*
 import kotlinx.android.synthetic.main.activity_main_toolbar.view.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.*
 import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
@@ -41,18 +39,16 @@ import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
  * 하단 바 '리스트'페이지의  kt
  * 크롤링한 공지사항을 띄워줌
  * 리펙토링 - 정우
- * @author 희진
+ * @author 희진, 정준
  */
 class NoticeFragment : Fragment() {
-
-    private var noticeList = arrayListOf<Notice>()
-    private var bookmarkList = arrayListOf<Notice>()
-    private var gson: Gson = GsonBuilder().create()
-    private var listType: TypeToken<ArrayList<Notice>> = object : TypeToken<ArrayList<Notice>>() {}
-    private val mHandler: Handler = Handler()
-    private lateinit var mRunnable: Runnable
+    
+    private lateinit var bookmarkViewModel: NoticeViewModel
+    private lateinit var adapter: NoticeAdapter
     private lateinit var noticeRecyclerView: RecyclerView
     private lateinit var emptyResultView: TextView
+    private lateinit var normalToolbar: FrameLayout
+    private lateinit var searchToolbar: FrameLayout
     private var url: String = ""    //mainUrl + notice_Url 저장 할 변수
     private var searchQuery: String = ""
     private var target: String = PreferenceHelper.get("Urls","")!!
@@ -63,16 +59,6 @@ class NoticeFragment : Fragment() {
         .setPrefetchDistance(5)         // n개의 아이템 여유를 두고 로딩
         .setEnablePlaceholders(true)    // default: true
         .build()
-    private val adapter = NoticeAdapter(bookmarkList) { notice ->
-        var link: String? = notice.link
-        if (link != null) {
-            if (!link.startsWith("http://") && !link.startsWith("https://"))
-                link = "http://$link"
-        }
-        val intent: Intent = Intent(requireContext(), WebViewActivity::class.java)
-        intent.putExtra("link",link)
-        requireContext().startActivity(intent)
-    }
 
     @SuppressLint("CheckResult")
     @RequiresApi(Build.VERSION_CODES.O)
@@ -83,48 +69,57 @@ class NoticeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_notice_layout, container, false)
         noticeRecyclerView = view.findViewById(R.id.notice) as RecyclerView   //recyclerview 가져오기
         emptyResultView = view.findViewById((R.id.noData)) as TextView
+        normalToolbar = view.findViewById(R.id.main_layout_toolbar_normal) as FrameLayout
+        searchToolbar = view.findViewById(R.id.main_layout_toolbar_search) as FrameLayout
         emptyResultView.visibility = View.GONE
+        searchToolbar.visibility = View.GONE
 
-        val jsonList = PreferenceHelper.get("bookmark", "")
-        if (jsonList != "")
-            bookmarkList = gson.fromJson(jsonList, listType.type) //북마크 리스트 저장
-
-//        DividerItemDecoration(recyclerView.context, LinearLayout.VERTICAL).apply {
-//            setDrawable(ContextCompat.getDrawable(this@MainActivity, R.drawable.divider)!!)
-//            recyclerView.addItemDecoration(this)
-//            recyclerView.setHasFixedSize(true)
-//        }
+        bookmarkViewModel = ViewModelProvider(requireActivity()).get(NoticeViewModel::class.java)
+        adapter = NoticeAdapter(bookmarkViewModel) { notice ->
+            var link: String? = notice.link
+            if (link != null) {
+                if (!link.startsWith("http://") && !link.startsWith("https://"))
+                    link = "http://$link"
+            }
+            val intent: Intent = Intent(requireContext(), WebViewActivity::class.java)
+            intent.putExtra("link",link)
+            requireContext().startActivity(intent)
+        }
 
         noticeRecyclerView.adapter = adapter
         noticeRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        if (searchQuery == "") {    // 첫 실행시에만 view making. search view 에서는 검색 기능만 사용.
-            makingView(adapter,
-                NoticeAllDataSource(
-                    restApi,
-                    ""
-                ), MutableLiveData())
-        }
+        //RecyclerView item 생성
+        makingView(adapter,
+            NoticeAllDataSource(
+                restApi,
+                ""
+            ), MutableLiveData())
 
+        //새로고침 리스너
         view.swipe.setOnRefreshListener {
             // Initialize a new Runnable
-            mRunnable = Runnable {
+            val mRunnable = Runnable {
                 // Hide swipe to refresh icon animation
                 url = ""
                 makingView(adapter,
                     NoticeAllDataSource(
                         restApi,
                         searchQuery,
-                        target
+                        getTarget()
                     ), MutableLiveData())
                 swipe.isRefreshing = false
             }
-            mHandler.postDelayed(mRunnable, 1000)
+            Handler().postDelayed(mRunnable, 1000)
         }
-
+        // 검색 버튼 리스너
         view.search_icon.setOnClickListener {
-            val intent = Intent(requireContext(), SearchableActivity::class.java)
-            startActivity(intent)
+            searchEventHandler()
+        }
+        // 검색 툴바 취소 리스너
+        view.search_back_icon.setOnClickListener{
+            normalToolbar.visibility = View.VISIBLE
+            searchToolbar.visibility = View.GONE
         }
         return view
     }
@@ -148,6 +143,9 @@ class NoticeFragment : Fragment() {
                 adapter.submitList(it)
                 updateViewStatus()
             }
+        bookmarkViewModel.getNoticeList().observe(viewLifecycleOwner, Observer {
+            //코드가 없어도 bookmarkViewModel 은 변화가 생기면 업데이트 됨
+        })
     }
 
     /**
@@ -197,12 +195,11 @@ class NoticeFragment : Fragment() {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun searchRun(searchQuery: String, target: String) {
+    private fun searchRun(searchQuery: String, target: String) {
         this.searchQuery = searchQuery
         this.target = target
         url = ""
         if (searchQuery != "") {
-            noticeList.removeAll(noticeList)
             makingView(adapter,
                 NoticeAllDataSource(
                     restApi,
@@ -211,6 +208,60 @@ class NoticeFragment : Fragment() {
                 ), MutableLiveData())
         } else {
             Toast.makeText(requireContext(), "입력된 검색어가 없습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * 검색 이벤트 처리
+     * @author 정준
+     */
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun searchEventHandler() {
+        // 검색
+        if (searchQuery == "") {
+            normalToolbar.visibility = View.GONE
+            searchToolbar.visibility = View.VISIBLE
+            search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    searchRun(query!!, getTarget())
+                    state_title.text = "    검색어 : $query"
+                    search_icon.setImageResource(R.drawable.clear_ic)   //검색 아이콘 이미지 X 로 변경
+                    normalToolbar.visibility = View.VISIBLE
+                    searchToolbar.visibility = View.GONE
+                    search_view.setQuery("", false)
+                    search_view.clearFocus()
+                    return false
+                }
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return false
+                }
+            })
+        }
+        // 검색결과 지우기
+        else {
+            searchQuery = ""
+            state_title.text = ""
+            search_icon.setImageResource(R.drawable.toolbar_search_ic)  //검색 아이콘 이미지 원래대로 변경
+
+            makingView(adapter,
+                NoticeAllDataSource(
+                    restApi,
+                    ""
+                ), MutableLiveData())
+        }
+    }
+
+    /**
+     * Spinner 에 선택된 대상에 따라 검색할 대상 사이트 선정
+     * @author 정우
+     */
+    private fun getTarget(): String {
+        val option = searchview_spinner.selectedItem.toString()
+        return if (option == "전체") {
+            "all"
+        } else {
+            PreferenceHelper.get("Urls", "")!!
         }
     }
 }
