@@ -14,7 +14,7 @@ import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
  * @author 정우, 정준
  */
 class NoticeAdapter(
-    private var bookmarkViewModel: NoticeViewModel,
+
     private val onClick: (Notice) -> Unit) : PagedListAdapter<Notice, NoticeViewHolder>(diffCallback) {
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<Notice>() {
@@ -25,7 +25,7 @@ class NoticeAdapter(
                 oldItem.bookmark == newItem.bookmark
         }
     }
-
+    private lateinit var bookmarkViewModel: NoticeViewModel
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeViewHolder {
         return NoticeViewHolder(parent, onClick)
     }
@@ -51,6 +51,10 @@ class NoticeAdapter(
                 bookmarkViewModel.delete(getItem(position)!!)   //DB에서 아이템 제거
             }
         }
+    }
+
+    fun setViewModel(viewModel: NoticeViewModel) {
+        this.bookmarkViewModel = viewModel
     }
 
     /**
