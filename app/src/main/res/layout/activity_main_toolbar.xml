@@ -1,10 +1,9 @@
 <com.google.android.material.appbar.AppBarLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/appbar3"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true" >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/main_layout_toolbar"
@@ -15,72 +14,25 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:layout_scrollFlags="scroll|enterAlways">
 
-        <FrameLayout
-            android:id="@+id/main_layout_toolbar_normal"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/state_title"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:weightSum="10">
-                <TextView
-                    android:id="@+id/state_title"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="8.5"
-                    android:text=""
-                    android:textSize="18sp" />
+                android:layout_weight=".70"
+                android:text=""
+                android:textSize="18sp" />
 
-                <ImageView
-                    android:id="@+id/search_icon"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/toolbar_search_ic" />
-            </LinearLayout>
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/main_layout_toolbar_search"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="10"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/searchview_spinner"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.5"
-                    android:background="@android:color/transparent"
-                    android:entries="@array/search_option_array"/>
-
-                <androidx.appcompat.widget.SearchView
-                    android:id="@+id/search_view"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="7.15"
-                    android:paddingStart="-16dp"
-                    android:paddingLeft="-16dp"
-                    app:iconifiedByDefault="false"
-                    app:queryHint="검색어를 입력하세요"
-                    tools:ignore="RtlSymmetry" />
-
-                <ImageView
-                    android:id="@+id/search_back_icon"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.7"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/move_back_reverse_ic" />
-
-            </LinearLayout>
-        </FrameLayout>
-
-
+            <ImageView
+                android:id="@+id/search_icon"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight=".30"
+                android:src="@drawable/toolbar_search_ic" />
+        </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 </com.google.android.material.appbar.AppBarLayout>

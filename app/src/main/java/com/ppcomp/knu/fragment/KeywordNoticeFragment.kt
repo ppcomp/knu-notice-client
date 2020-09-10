@@ -75,7 +75,15 @@ class KeywordNoticeFragment : Fragment() {
         .setEnablePlaceholders(true)    // default: true
         .build()
     private lateinit var bookmarkViewModel: NoticeViewModel
-    private lateinit var adapter: NoticeAdapter
+    private val adapter = NoticeAdapter() { notice ->
+        var link: String? = notice.link
+        if (link != null) {
+            if (!link.startsWith("http://") && !link.startsWith("https://"))
+                link = "http://$link"
+        }
+        val intent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+        requireContext().startActivity(intent)
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -98,15 +106,8 @@ class KeywordNoticeFragment : Fragment() {
         emptyResultView.visibility = View.GONE
 
         bookmarkViewModel = ViewModelProvider(this).get(NoticeViewModel::class.java)
-        adapter = NoticeAdapter(bookmarkViewModel) { notice ->
-            var link: String? = notice.link
-            if (link != null) {
-                if (!link.startsWith("http://") && !link.startsWith("https://"))
-                    link = "http://$link"
-            }
-            val intent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
-            requireContext().startActivity(intent)
-        }
+        adapter.setViewModel(bookmarkViewModel)
+
         keywordRecyclerView.adapter = adapter
         keywordRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
