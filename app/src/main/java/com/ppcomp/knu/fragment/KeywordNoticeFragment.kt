@@ -65,7 +65,7 @@ class KeywordNoticeFragment : Fragment() {
     private lateinit var radioGroup: RadioGroup
     private lateinit var allListradioButton: RadioButton
     private lateinit var subListradioButton: RadioButton
-    private var target: String = ""
+    private var target: String = "all"
     private var searchQuery:String=""
     private val restApi = RestApi.create()
     private val config = PagedList.Config.Builder()
@@ -123,7 +123,7 @@ class KeywordNoticeFragment : Fragment() {
                 if (subListradioButton.isChecked) {
                     target = PreferenceHelper.get("Urls","").toString()
                 } else if (allListradioButton.isChecked) {
-                    target = ""
+                    target = "all"
                 }
                 makingView(adapter,
                     KeywordNoticeAllDataSource(
@@ -139,9 +139,8 @@ class KeywordNoticeFragment : Fragment() {
         radioGroup.setOnCheckedChangeListener { radioGroup, i ->
             if (i == R.id.keyword_show_subs) {
                 target = PreferenceHelper.get("Urls","").toString()
-
             } else if (i == R.id.keyword_show_all) {
-                target = ""
+                target = "all"
             }
             makingView(
                 adapter,
