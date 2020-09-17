@@ -97,20 +97,25 @@ class SubscriptionAdapter(
                 myToast.show()
                 holder.chk?.isChecked = false
             } else {
-                for (i in subsList) {
-                    if (i.name == getName) {
-                        i.checked = isChecked
-                            if (isChecked && checkList?.contains(i) == false) {
-                                checkList?.add(i) // 체크한경우 체크리스트에 체크값 추가
-                            } else if(!isChecked) {
-                                checkList?.remove(i) // 체크해제한 경우 체크리스트에서 값 제거
-                            }
-                        checkListAdapter?.notifyDataSetChanged()
+                for (sub in subsList) {
+                    if (sub.name == getName) {
+                        sub.checked = isChecked
+                        if (isChecked && checkList?.contains(sub) == false) {
+                            checkList?.add(sub) // 체크한경우 체크리스트에 체크값 추가
+                        } else if(!isChecked) {
+                            checkList?.remove(sub) // 체크해제한 경우 체크리스트에서 값 제거
                         }
+                        checkListAdapter?.notifyDataSetChanged()
+                        break
                     }
                 }
                 selectedItemCount.text = getSelectedItemCount().toString() + "/10"
+
+//                nested_scroll_view.scrollTo(
+//                    0, 0
+//                )
             }
+        }
 
         holder.name?.setOnClickListener { // 학과 이름 누르면 체크되도록
             holder.chk?.isChecked = !holder.chk?.isChecked!!
@@ -162,11 +167,11 @@ class SubscriptionAdapter(
         }
     }
 
-    fun setCheckList(getCheckList : ArrayList<Subscription>){
+    fun setCheckList(getCheckList: ArrayList<Subscription>){
         checkList = getCheckList
     }
 
-    fun setCheckListAdapter(getCheckListAdapter : SubscriptionCheckAdapter){
+    fun setCheckListAdapter(getCheckListAdapter: SubscriptionCheckAdapter){
         checkListAdapter = getCheckListAdapter
     }
 
@@ -177,9 +182,4 @@ class SubscriptionAdapter(
     override fun getItemViewType(position: Int): Int {
         return position
     }
-
-
 }
-
-
-

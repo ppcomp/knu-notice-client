@@ -54,13 +54,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp">
 
-                <!--                <CheckBox-->
-                <!--                    android:id="@+id/subs_allCheckbox"-->
-                <!--                    android:layout_width="30dp"-->
-                <!--                    android:layout_height="30dp"-->
-                <!--                    android:button="@drawable/subscription_checkbox_selector"-->
-                <!--                    android:checked="false"-->
-                <!--                    android:layout_margin="5dp" />-->
+                <CheckBox
+                    android:id="@+id/subs_allCheckbox"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:button="@drawable/subscription_checkbox_selector"
+                    android:checked="false"
+                    android:layout_margin="5dp" />
 
                 <TextView
                     android:id="@+id/itemCount"
@@ -75,6 +75,7 @@
 
 
             <androidx.core.widget.NestedScrollView
+                android:id="@+id/nested_scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
@@ -108,16 +109,6 @@
                 android:text="저장"
                 android:textSize="20sp" />
 
-
-            <!--            <TextView-->
-            <!--                android:id="@+id/correct"-->
-            <!--                android:layout_width="100dp"-->
-            <!--                android:layout_height="28dp"-->
-            <!--                android:layout_marginBottom="28dp"-->
-            <!--                android:clickable="true"-->
-            <!--                android:gravity="center"-->
-            <!--                android:text="확인"-->
-            <!--                android:textSize="5sp"/>-->
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

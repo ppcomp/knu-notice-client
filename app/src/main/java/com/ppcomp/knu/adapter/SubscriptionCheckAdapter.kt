@@ -71,15 +71,11 @@ class SubscriptionCheckAdapter(
                         break
                     }
                 }
-                selectedItemCount.text = checkedList.size.toString() + "/10"
             }
-
         }
-
         holder.name?.setOnClickListener { // 학과 이름 누르면 체크되도록
             holder.chk?.isChecked = !holder.chk?.isChecked!!
         }
-
     }
 
     inner class Holder(itemView: View?) : RecyclerView.ViewHolder(itemView!!) {
@@ -99,9 +95,4 @@ class SubscriptionCheckAdapter(
     override fun getItemViewType(position: Int): Int {
         return position
     }
-
-
 }
-
-
-
