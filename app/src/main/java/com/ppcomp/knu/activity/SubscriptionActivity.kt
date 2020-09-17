@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
+import android.util.DisplayMetrics
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -13,6 +14,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -24,6 +26,7 @@ import com.ppcomp.knu.adapter.SubscriptionCheckAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_main_toolbar.*
 import kotlinx.android.synthetic.main.activity_subscription.*
+import kotlin.math.roundToInt
 
 
 /**
@@ -33,6 +36,7 @@ import kotlinx.android.synthetic.main.activity_subscription.*
 class SubscriptionActivity : AppCompatActivity() {
     private var subsList = arrayListOf<Subscription>()
     private var subsCheckList = arrayListOf<Subscription>()
+    private var subsCheckListSize = 0
     private lateinit var strContact: String
     private lateinit var makeGson: Gson
     private lateinit var listType: TypeToken<ArrayList<Subscription>>
@@ -50,7 +54,7 @@ class SubscriptionActivity : AppCompatActivity() {
         val subsManager = LinearLayoutManager(this)
         val checkManager = LinearLayoutManager(this)
 
-        var myToast: Toast =  Toast.makeText(this, "", Toast.LENGTH_SHORT)
+        var myToast: Toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
 
         val itemCount = findViewById<TextView>(R.id.itemCount)
 
@@ -59,17 +63,30 @@ class SubscriptionActivity : AppCompatActivity() {
         strContact = PreferenceHelper.get("subList", "").toString()
         makeGson = GsonBuilder().create()
         subsList = makeGson.fromJson(strContact, listType.type)
-        for(i in subsList){
-            if(i.checked){
+        for (i in subsList) {
+            if (i.checked) {
                 subsCheckList.add(i)
             }
         }
+        subsCheckListSize = subsCheckList.size
 
         subsAdapter = SubscriptionAdapter(this, subsList, itemCount, myToast, null, null)
-        subsCheckAdapter = SubscriptionCheckAdapter(this, subsCheckList, itemCount, subsList, subsAdapter)
+        subsCheckAdapter =
+            SubscriptionCheckAdapter(this, subsCheckList, itemCount, subsList, subsAdapter)
 
         subsAdapter.setCheckList(subsCheckList)
         subsAdapter.setCheckListAdapter(subsCheckAdapter)
+
+        val offset = convertDpToPx(40)
+        subsCheckAdapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                nested_scroll_view.scrollTo(
+                    0,
+                    maxOf(0, nested_scroll_view.scrollY + offset*(subsCheckList.size-subsCheckListSize))
+                )
+                subsCheckListSize = subsCheckList.size
+            }
+        })
 
         checkSubs.adapter = subsCheckAdapter
         subsResult.adapter = subsAdapter
@@ -111,18 +128,17 @@ class SubscriptionActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
-
         }
 
-//        subs_allCheckbox.setOnCheckedChangeListener { // 모든 체크박스 표시할 때
-//                _, isChecked ->
-//            subsAdapter.setCheckAll(isChecked)
-//
-//        }
-
-//        correct.setOnClickListener { // 저장 잘되어있는지 보려고 만든 View
-//            correct.setText(PreferenceHelper.get("Urls", ""))
-//        }
+        if (PreferenceHelper.get("isAdmin", false)) {
+            subs_allCheckbox.visibility = View.VISIBLE
+        } else {
+            subs_allCheckbox.visibility = View.GONE
+        }
+        subs_allCheckbox.setOnCheckedChangeListener { // 모든 체크박스 표시할 때
+                _, isChecked ->
+            subsAdapter.setCheckAll(isChecked)
+        }
     }
 
     /**
@@ -148,7 +164,7 @@ class SubscriptionActivity : AppCompatActivity() {
                 subsList[i].checked = false
             }
         }
-        if (storeName.equals("")) {
+        if (storeName == "") {
             PreferenceHelper.put("Subs", "")
             PreferenceHelper.put("Urls", "")
 
@@ -181,5 +197,9 @@ class SubscriptionActivity : AppCompatActivity() {
         }
 
         return super.dispatchTouchEvent(ev)
+    }
+
+    private fun convertDpToPx(dp: Int): Int {
+        return (dp * (resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
     }
 }
