@@ -100,7 +100,7 @@ class SubscriptionActivity : AppCompatActivity() {
         })
 
         subsSave.setOnClickListener {   // 저장 버튼 누를시
-            saveSubsciption()   //체크된 구독리스트 저장
+            saveSubscription()   //체크된 구독리스트 저장
             GlobalApplication.deviceInfoUpdate(this)  //구독리스트 서버에 업로드
             myToast.setText("구독리스트가 저장되었습니다")
             myToast.show()
@@ -129,7 +129,7 @@ class SubscriptionActivity : AppCompatActivity() {
      * 화면에 체크된 구독리스트 저장
      * @author 상은, 정준
      */
-    private fun saveSubsciption() {
+    private fun saveSubscription() {
 
         var storeName: String = ""
         var storeUrl: String = ""
