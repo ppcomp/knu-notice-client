@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -61,6 +62,9 @@ class NoticeFragment : Fragment() {
         }
         val intent: Intent = Intent(requireContext(), WebViewActivity::class.java)
         intent.putExtra("link",link)
+        intent.putExtra("title",notice.title)
+        intent.putExtra("bookmark",notice.bookmark)
+        intent.putExtra("notice",notice)
         requireContext().startActivity(intent)
     }
 
@@ -136,7 +140,7 @@ class NoticeFragment : Fragment() {
                 adapter.submitList(it)
                 updateViewStatus()
             }
-        bookmarkViewModel.getNoticeList().observe(this, Observer {
+        bookmarkViewModel.getNoticeList().observe(viewLifecycleOwner, Observer {
             //코드가 없어도 bookmarkViewModel 은 변화가 생기면 업데이트 됨
         })
     }

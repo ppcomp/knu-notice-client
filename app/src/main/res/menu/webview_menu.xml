@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_share"
+        android:title="공유하기"/>
+    <item android:id="@+id/action_bookmark"
+        android:title="북마크하기"/>
+    <item android:id="@+id/action_unBookmark"
+        android:title="북마크 해제"/>
+</menu>
