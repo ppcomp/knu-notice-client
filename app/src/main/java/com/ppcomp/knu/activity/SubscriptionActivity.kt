@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.DisplayMetrics
+import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -26,7 +27,6 @@ import com.ppcomp.knu.adapter.SubscriptionCheckAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_main_toolbar.*
 import kotlinx.android.synthetic.main.activity_subscription.*
-import kotlin.math.roundToInt
 
 
 /**
@@ -82,7 +82,10 @@ class SubscriptionActivity : AppCompatActivity() {
             override fun onChanged() {
                 nested_scroll_view.scrollTo(
                     0,
-                    maxOf(0, nested_scroll_view.scrollY + offset*(subsCheckList.size-subsCheckListSize))
+                    maxOf(
+                        0,
+                        nested_scroll_view.scrollY + offset * (subsCheckList.size - subsCheckListSize)
+                    )
                 )
                 subsCheckListSize = subsCheckList.size
             }
@@ -200,6 +203,7 @@ class SubscriptionActivity : AppCompatActivity() {
     }
 
     private fun convertDpToPx(dp: Int): Int {
-        return (dp * (resources.displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
+        val dm: DisplayMetrics = this.resources.displayMetrics
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), dm).toInt()
     }
 }

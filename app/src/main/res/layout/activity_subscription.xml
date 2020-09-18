@@ -78,7 +78,8 @@
                 android:id="@+id/nested_scroll_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:layout_marginBottom="10dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -95,7 +96,6 @@
                         android:id="@+id/subsResult"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="10dp"
                         android:overScrollMode="never" />
                 </LinearLayout>
             </androidx.core.widget.NestedScrollView>
