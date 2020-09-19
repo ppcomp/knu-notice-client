@@ -14,18 +14,19 @@ import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
  * @author 정우, 정준
  */
 class NoticeAdapter(
-
     private val onClick: (Notice) -> Unit) : PagedListAdapter<Notice, NoticeViewHolder>(diffCallback) {
+
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<Notice>() {
             override fun areItemsTheSame(oldItem: Notice, newItem: Notice): Boolean =
                 oldItem.id == newItem.id
-
             override fun areContentsTheSame(oldItem: Notice, newItem: Notice): Boolean =
                 oldItem.bookmark == newItem.bookmark
         }
     }
+
     private lateinit var bookmarkViewModel: NoticeViewModel
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeViewHolder {
         return NoticeViewHolder(parent, onClick)
     }
