@@ -35,6 +35,7 @@ import com.ppcomp.knu.`object`.noticeData.Notice
 import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
 import com.ppcomp.knu.`object`.noticeData.dataSource.KeywordNoticeAllDataSource
 import com.ppcomp.knu.`object`.noticeData.dataSource.NoticeAllDataSource
+import com.ppcomp.knu.activity.WebViewActivity
 import com.ppcomp.knu.adapter.BookmarkAdapter
 import com.ppcomp.knu.adapter.NoticeAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
@@ -81,7 +82,11 @@ class KeywordNoticeFragment : Fragment() {
             if (!link.startsWith("http://") && !link.startsWith("https://"))
                 link = "http://$link"
         }
-        val intent: Intent = Intent(Intent.ACTION_VIEW, Uri.parse(link))
+        val intent: Intent = Intent(requireContext(), WebViewActivity::class.java)
+        intent.putExtra("link",link)
+        intent.putExtra("title",notice.title)
+        intent.putExtra("bookmark",notice.bookmark)
+        intent.putExtra("notice",notice)
         requireContext().startActivity(intent)
     }
 
