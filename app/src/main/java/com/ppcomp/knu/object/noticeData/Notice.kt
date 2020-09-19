@@ -34,11 +34,14 @@ data class Notice (
     var reference: String? = null,
 
     @Json(name = "is_fixed")
-    var isFixed: Boolean ) : Parcelable {
+    var isFixed: Boolean,
 
-    var board: String = ""
-    var image: Int = 0
-    var fixedImage: Int = 0
-    var bookmark: Boolean = false
-    var color: Int = 0
-}
+    var board: String = "",
+
+    var image: Int = 0,
+
+    var fixedImage: Int = 0,
+
+    var bookmark: Boolean = false,
+
+    var color: Int = 0) : Parcelable

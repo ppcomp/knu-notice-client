@@ -147,18 +147,18 @@ class WebViewActivity : AppCompatActivity() {
             }
             R.id.action_bookmark -> {
                 // 수정 필요
-//                bookmarkViewModel.insert(notice)
-//                notice.bookmark = true
-//                menu?.findItem(R.id.action_bookmark)?.isVisible = false
-//                menu?.findItem(R.id.action_unBookmark)?.isVisible = true
+                notice.bookmark = true
+                bookmarkViewModel.insert(notice)
+                menu?.findItem(R.id.action_bookmark)?.isVisible = false
+                menu?.findItem(R.id.action_unBookmark)?.isVisible = true
                 true
             }
             R.id.action_unBookmark -> {
                 // 수정 필요
-//                bookmarkViewModel.delete(notice)
-//                notice.bookmark = false
-//                menu?.findItem(R.id.action_bookmark)?.isVisible = true
-//                menu?.findItem(R.id.action_unBookmark)?.isVisible = false
+                notice.bookmark = false
+                bookmarkViewModel.delete(notice)
+                menu?.findItem(R.id.action_bookmark)?.isVisible = true
+                menu?.findItem(R.id.action_unBookmark)?.isVisible = false
                 true
             }
             else -> true
