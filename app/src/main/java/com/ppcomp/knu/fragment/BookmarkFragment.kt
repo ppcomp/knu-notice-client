@@ -22,6 +22,7 @@ import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
 import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
+import com.ppcomp.knu.activity.WebViewActivity
 import com.ppcomp.knu.adapter.BookmarkAdapter
 import kotlinx.android.synthetic.main.fragment_bookmark.*
 import kotlinx.android.synthetic.main.fragment_bookmark.view.*
@@ -58,10 +59,12 @@ class BookmarkFragment : Fragment() {
             var link: String = notice.link!!
             if (!link!!.startsWith("http://") && !link.startsWith("https://"))
                 link = "http://" + link
-            val Intent: Intent = Uri.parse(link).let { webpage ->
-                Intent(Intent.ACTION_VIEW, webpage)
-            }
-            startActivity(Intent)
+            val intent: Intent = Intent(requireContext(), WebViewActivity::class.java)
+            intent.putExtra("link",link)
+            intent.putExtra("title",notice.title)
+            intent.putExtra("bookmark",notice.bookmark)
+            intent.putExtra("notice",notice)
+            requireContext().startActivity(intent)
         }
 
         noticeRecyclerView.adapter = adapter    // LayoutManager 설정. RecyclerView 에서는 필수
