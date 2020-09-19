@@ -161,6 +161,10 @@ class WebViewActivity : AppCompatActivity() {
                 menu?.findItem(R.id.action_unBookmark)?.isVisible = false
                 true
             }
+            android.R.id.home -> {  //툴바 뒤로가기
+                finish()
+                true
+            }
             else -> true
         }
     }
