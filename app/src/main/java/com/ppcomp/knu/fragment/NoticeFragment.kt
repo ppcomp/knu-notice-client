@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.noticeData.Notice
+import com.ppcomp.knu.`object`.noticeData.BookmarkViewModel
 import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
 import com.ppcomp.knu.`object`.noticeData.dataSource.NoticeAllDataSource
 import com.ppcomp.knu.activity.SearchableActivity
@@ -41,8 +41,9 @@ import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
  * @author 희진, 정준
  */
 class NoticeFragment : Fragment() {
-    
-    private lateinit var bookmarkViewModel: NoticeViewModel
+
+    private lateinit var noticeViewModel: NoticeViewModel
+    private lateinit var bookmarkViewModel: BookmarkViewModel
     private lateinit var noticeRecyclerView: RecyclerView
     private lateinit var emptyResultView: TextView
     private var searchQuery: String = ""
@@ -79,7 +80,8 @@ class NoticeFragment : Fragment() {
         emptyResultView = view.findViewById((R.id.noData)) as TextView
         emptyResultView.visibility = View.GONE
 
-        bookmarkViewModel = ViewModelProvider(requireActivity()).get(NoticeViewModel::class.java)
+        noticeViewModel = ViewModelProvider(this).get(NoticeViewModel::class.java)
+        bookmarkViewModel = ViewModelProvider(requireActivity()).get(BookmarkViewModel::class.java)
         adapter.setViewModel(bookmarkViewModel)
 
         noticeRecyclerView.adapter = adapter
@@ -140,7 +142,7 @@ class NoticeFragment : Fragment() {
                 adapter.submitList(it)
                 updateViewStatus()
             }
-        bookmarkViewModel.getNoticeList().observe(viewLifecycleOwner, Observer {
+        bookmarkViewModel.getNoticeList().observe(this, Observer {// this 대신 viewLifecyclerOwner를 사용하면 검색기능 팅김 수정하지 말 것
             //코드가 없어도 bookmarkViewModel 은 변화가 생기면 업데이트 됨
         })
     }
@@ -211,7 +213,7 @@ class NoticeFragment : Fragment() {
      * 검색 화면에서 viewModel 설정
      * @author 정준
      */
-    fun setBookmarkViewModel(viewModel: NoticeViewModel) {
+    fun setBookmarkViewModel(viewModel: BookmarkViewModel) {
         this.bookmarkViewModel = viewModel
         adapter.setViewModel(bookmarkViewModel)
     }

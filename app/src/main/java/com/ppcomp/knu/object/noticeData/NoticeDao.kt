@@ -19,7 +19,10 @@ interface NoticeDao {
     fun deleteAll()
 
     @Query("SELECT * FROM notices")
-    fun getDataSource(): DataSource.Factory<Int, Notice>
+    fun getNotice(): DataSource.Factory<Int, Notice>
+
+    @Query("SELECT * FROM notices WHERE bookmark = 1")
+    fun getBookmark(): DataSource.Factory<Int, Notice>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)    //OnConflictStrategy.REPLACE : 데이터 충돌이 나면 기존데이터를 입력데이터로 교체
     fun insertNotice(notice: Notice)

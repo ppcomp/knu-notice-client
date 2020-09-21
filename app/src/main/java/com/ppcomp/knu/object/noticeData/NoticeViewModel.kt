@@ -3,19 +3,17 @@ package com.ppcomp.knu.`object`.noticeData
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.paging.DataSource
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.ppcomp.knu.`object`.noticeData.dataSource.NoticeAllDataSource
 import com.ppcomp.knu.utils.AppDatabase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.ppcomp.knu.utils.RestApi
 
-/**
- * Notice viewModel
- * @author 정준
- */
-class NoticeViewModel(application: Application): AndroidViewModel(application) {
-
+class NoticeViewModel(application: Application) : AndroidViewModel(application) {
+    private val restApi = RestApi.create()
     private val repository: NoticeRepository
     private val noticeList: LiveData<PagedList<Notice>>
     private val config = PagedList.Config.Builder()
@@ -32,15 +30,15 @@ class NoticeViewModel(application: Application): AndroidViewModel(application) {
         noticeList = pagedListBuilder.build()
     }
 
-    fun insert(notice: Notice) = viewModelScope.launch(Dispatchers.IO) {
-        repository.insert(notice)
-    }
-
-    fun delete(notice: Notice) = viewModelScope.launch(Dispatchers.IO) {
-        repository.delete(notice)
-    }
-
     fun getNoticeList() = noticeList
 
-    fun isListNullOrEmpty() = noticeList.value.isNullOrEmpty()
+    private fun initPagedListBuilder(config: PagedList.Config):
+            LivePagedListBuilder<Int, Notice> {
+        val dataSourceFactory = object : DataSource.Factory<Int, Notice>() {
+            override fun create(): DataSource<Int, Notice> {
+                return NoticeAllDataSource(restApi, "")
+            }
+        }
+        return LivePagedListBuilder<Int, Notice>(dataSourceFactory, config)
+    }
 }

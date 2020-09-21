@@ -6,7 +6,7 @@ import androidx.annotation.RequiresApi
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.ppcomp.knu.`object`.noticeData.Notice
-import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
+import com.ppcomp.knu.`object`.noticeData.BookmarkViewModel
 
 
 /**
@@ -25,7 +25,7 @@ class NoticeAdapter(
         }
     }
 
-    private lateinit var bookmarkViewModel: NoticeViewModel
+    private lateinit var bookmarkViewModel: BookmarkViewModel
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeViewHolder {
         return NoticeViewHolder(parent, onClick)
@@ -54,7 +54,7 @@ class NoticeAdapter(
         }
     }
 
-    fun setViewModel(viewModel: NoticeViewModel) {
+    fun setViewModel(viewModel: BookmarkViewModel) {
         this.bookmarkViewModel = viewModel
     }
 

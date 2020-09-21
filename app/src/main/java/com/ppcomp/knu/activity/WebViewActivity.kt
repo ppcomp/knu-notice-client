@@ -25,7 +25,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.noticeData.Notice
-import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
+import com.ppcomp.knu.`object`.noticeData.BookmarkViewModel
 import kotlinx.android.synthetic.main.activity_main_toolbar.*
 import kotlinx.android.synthetic.main.weblayout.*
 import java.net.URLDecoder
@@ -39,7 +39,7 @@ class WebViewActivity : AppCompatActivity() {
     private lateinit var title: String
     private var bookmark = false
     private lateinit var notice: Notice
-    private lateinit var bookmarkViewModel: NoticeViewModel
+    private lateinit var bookmarkViewModel: BookmarkViewModel
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +51,7 @@ class WebViewActivity : AppCompatActivity() {
         title = intent.getStringExtra("title")!!
         bookmark = intent.getBooleanExtra("bookmark", false)
         notice = intent.getParcelableExtra("notice")!!
-        bookmarkViewModel = ViewModelProvider(this).get(NoticeViewModel::class.java)
+        bookmarkViewModel = ViewModelProvider(this).get(BookmarkViewModel::class.java)
 
         // toolbar setting
         setSupportActionBar(main_layout_toolbar) //toolbar 지정

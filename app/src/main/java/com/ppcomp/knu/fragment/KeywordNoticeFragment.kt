@@ -2,7 +2,6 @@ package com.ppcomp.knu.fragment
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.media.Image
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -12,10 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.core.view.get
-import androidx.core.view.isGone
-import androidx.core.view.isInvisible
-import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -26,13 +21,10 @@ import androidx.paging.PagedList
 import androidx.paging.RxPagedListBuilder
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.noticeData.Notice
-import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
+import com.ppcomp.knu.`object`.noticeData.BookmarkViewModel
 import com.ppcomp.knu.`object`.noticeData.dataSource.KeywordNoticeAllDataSource
 import com.ppcomp.knu.`object`.noticeData.dataSource.NoticeAllDataSource
 import com.ppcomp.knu.activity.WebViewActivity
@@ -40,14 +32,8 @@ import com.ppcomp.knu.adapter.BookmarkAdapter
 import com.ppcomp.knu.adapter.NoticeAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
 import com.ppcomp.knu.utils.RestApi
-import kotlinx.android.synthetic.main.activity_main_toolbar.view.*
-import kotlinx.android.synthetic.main.activity_subscription.*
 import kotlinx.android.synthetic.main.fragment_keyword_notice.*
 import kotlinx.android.synthetic.main.fragment_keyword_notice.view.*
-import kotlinx.android.synthetic.main.fragment_notice_layout.*
-import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
-import kotlinx.android.synthetic.main.fragment_notice_item.view.*
-
 
 
 /**
@@ -75,7 +61,7 @@ class KeywordNoticeFragment : Fragment() {
         .setPrefetchDistance(5)         // n개의 아이템 여유를 두고 로딩
         .setEnablePlaceholders(true)    // default: true
         .build()
-    private lateinit var bookmarkViewModel: NoticeViewModel
+    private lateinit var bookmarkViewModel: BookmarkViewModel
     private val adapter = NoticeAdapter() { notice ->
         var link: String? = notice.link
         if (link != null) {
@@ -110,7 +96,7 @@ class KeywordNoticeFragment : Fragment() {
         progressBar.visibility = View.GONE      //progressbar 숨기기
         emptyResultView.visibility = View.GONE
 
-        bookmarkViewModel = ViewModelProvider(this).get(NoticeViewModel::class.java)
+        bookmarkViewModel = ViewModelProvider(this).get(BookmarkViewModel::class.java)
         adapter.setViewModel(bookmarkViewModel)
 
         keywordRecyclerView.adapter = adapter

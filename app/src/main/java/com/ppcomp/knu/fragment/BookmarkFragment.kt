@@ -15,13 +15,9 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.reflect.TypeToken
-import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Notice
-import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
+import com.ppcomp.knu.`object`.noticeData.BookmarkViewModel
 import com.ppcomp.knu.activity.WebViewActivity
 import com.ppcomp.knu.adapter.BookmarkAdapter
 import kotlinx.android.synthetic.main.fragment_bookmark.*
@@ -37,7 +33,7 @@ class BookmarkFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
     private lateinit var noData: TextView
     private lateinit var searchIcon: ImageView
-    private lateinit var bookmarkViewModel: NoticeViewModel
+    private lateinit var bookmarkViewModel: BookmarkViewModel
     private lateinit var adapter: BookmarkAdapter
 
     override fun onCreateView(
@@ -54,7 +50,7 @@ class BookmarkFragment : Fragment() {
         progressBar.visibility = View.GONE                                //progressbar 숨기기
         searchIcon.visibility = View.GONE
 
-        bookmarkViewModel = ViewModelProvider(this).get(NoticeViewModel::class.java)
+        bookmarkViewModel = ViewModelProvider(this).get(BookmarkViewModel::class.java)
         adapter = BookmarkAdapter(bookmarkViewModel) { notice ->
             var link: String = notice.link!!
             if (!link!!.startsWith("http://") && !link.startsWith("https://"))

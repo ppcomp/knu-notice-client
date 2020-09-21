@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import com.ppcomp.knu.R
-import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
+import com.ppcomp.knu.`object`.noticeData.BookmarkViewModel
 import com.ppcomp.knu.fragment.NoticeFragment
 import com.ppcomp.knu.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_searchable.*
@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.activity_searchable.*
  */
 class SearchableActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
-    private lateinit var bookmarkViewModel: NoticeViewModel
+    private lateinit var bookmarkViewModel: BookmarkViewModel
     private val noticeFragment = NoticeFragment()
     private var searchQuery: String? = ""
 
@@ -36,7 +36,7 @@ class SearchableActivity: AppCompatActivity(), AdapterView.OnItemSelectedListene
         supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back_ic) //뒤로가기 아이콘 지정
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
 
-        bookmarkViewModel = ViewModelProvider(this).get(NoticeViewModel::class.java)
+        bookmarkViewModel = ViewModelProvider(this).get(BookmarkViewModel::class.java)
 
         search_view.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             @RequiresApi(Build.VERSION_CODES.O)

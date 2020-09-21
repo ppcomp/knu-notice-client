@@ -7,7 +7,7 @@ import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.`object`.noticeData.Notice
-import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
+import com.ppcomp.knu.`object`.noticeData.BookmarkViewModel
 
 
 /**
@@ -15,7 +15,7 @@ import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
  * @author 정준
  */
 class BookmarkAdapter(
-    private val bookmarkViewModel: NoticeViewModel,
+    private val bookmarkViewModel: BookmarkViewModel,
     private val onClick: (Notice) -> Unit) : PagedListAdapter<Notice, NoticeViewHolder>(diffCallback) {
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<Notice>() {
