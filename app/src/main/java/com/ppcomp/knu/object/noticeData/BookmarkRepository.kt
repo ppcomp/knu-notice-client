@@ -15,6 +15,6 @@ class BookmarkRepository(private val noticeDao: NoticeDao) {
     }
 
     suspend fun delete(notice: Notice) {
-        noticeDao.deleteNotice(notice)
+        noticeDao.updateNotice(notice)
     }
 }

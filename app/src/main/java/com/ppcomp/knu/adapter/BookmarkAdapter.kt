@@ -42,6 +42,7 @@ class BookmarkAdapter(
         holder.noticeBookmark.setOnCheckedChangeListener {  //북마크 버튼 누를시
                 _, isChecked ->
             if (!isChecked) { //북마크 체크해제시
+                getItem((position))!!.bookmark = false
                 bookmarkViewModel.delete(getItem(position)!!)   //DB에서 해당 아이템 제거
                 GlobalApplication.isFragmentChange = arrayOf(true,true,false)   // Notice, KeywordNotice Fragement 화면 갱신
             }

@@ -3,6 +3,7 @@ package com.ppcomp.knu.`object`.noticeData
 import android.annotation.SuppressLint
 import android.graphics.Color
 import com.ppcomp.knu.R
+import com.ppcomp.knu.utils.PreferenceHelper
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import kotlin.math.abs
@@ -63,6 +64,35 @@ class DataUtils {
                     }
 
                 }
+            }
+
+            return validateData(noticeList) //구독체크하고 반환
+        }
+
+        /**
+         * DB 데이터의 유효값 설정
+         * @author 정준
+         */
+        fun validateData(noticeList: List<Notice>): List<Notice> {
+            var isSub: Boolean
+            val subs = PreferenceHelper.get("Subs","")
+            val subList: List<String> =
+                if(subs!!.contains("+"))
+                    subs.split("+")
+                else
+                    listOf(subs)
+
+            for (notice in noticeList) {
+                isSub = false
+                for(sub in subList) {
+                    if(notice.board == sub) {
+                        notice.isSubscription = true
+                        isSub = true
+                        break
+                    }
+                }
+                if(!isSub)
+                    notice.isSubscription = false
             }
             return noticeList
         }

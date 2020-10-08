@@ -13,15 +13,15 @@ import androidx.room.*
 @Dao
 interface NoticeDao {
     @Query("SELECT * FROM notices")
-    fun getAll(): LiveData<List<Notice>>
+    fun getAll(): List<Notice>
 
     @Query("DELETE FROM notices")
     fun deleteAll()
 
-    @Query("SELECT * FROM notices")
+    @Query("SELECT * FROM notices WHERE isSubscription = 1 ORDER BY createdAt DESC")
     fun getNotice(): DataSource.Factory<Int, Notice>
 
-    @Query("SELECT * FROM notices WHERE bookmark = 1")
+    @Query("SELECT * FROM notices WHERE bookmark = 1 ORDER BY createdAt DESC")
     fun getBookmark(): DataSource.Factory<Int, Notice>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)    //OnConflictStrategy.REPLACE : 데이터 충돌이 나면 기존데이터를 입력데이터로 교체
@@ -41,4 +41,5 @@ interface NoticeDao {
 
     @Delete
     fun deleteNotice(notice: List<Notice>)
+
 }

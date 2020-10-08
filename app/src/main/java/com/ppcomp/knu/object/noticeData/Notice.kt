@@ -8,7 +8,7 @@ import kotlinx.android.parcel.Parcelize
 
 /**
  * 서버로부터 받아오는 Notice 의 구조(매개변수) 및
- * DB에 저장할 Notice 의 구조(매개변수 + 클래스 내부 변수)를 정의
+ * DB에 저장할 Notice 의 구조를 정의
  * @author 정우, 정준
  */
 @Parcelize
@@ -36,6 +36,9 @@ data class Notice (
     @Json(name = "is_fixed")
     var isFixed: Boolean,
 
+    @Json(name = "created_at")
+    var createdAt: String? = null,
+
     var board: String = "",
 
     var image: Int = 0,
@@ -44,4 +47,6 @@ data class Notice (
 
     var bookmark: Boolean = false,
 
-    var color: Int = 0) : Parcelable
+    var color: Int = 0,
+
+    var isSubscription: Boolean = false) : Parcelable
