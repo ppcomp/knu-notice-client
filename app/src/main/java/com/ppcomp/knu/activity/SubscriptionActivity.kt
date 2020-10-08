@@ -14,6 +14,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -22,6 +23,7 @@ import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.Subscription
+import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
 import com.ppcomp.knu.adapter.SubscriptionAdapter
 import com.ppcomp.knu.adapter.SubscriptionCheckAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
@@ -43,6 +45,7 @@ class SubscriptionActivity : AppCompatActivity() {
     lateinit var subsAdapter: SubscriptionAdapter
     private lateinit var subsCheckAdapter: SubscriptionCheckAdapter
     private lateinit var searchIcon: ImageView
+    private lateinit var noticeViewModel: NoticeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +60,8 @@ class SubscriptionActivity : AppCompatActivity() {
         var myToast: Toast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
 
         val itemCount = findViewById<TextView>(R.id.itemCount)
+
+        noticeViewModel = ViewModelProvider(this).get(NoticeViewModel::class.java)
 
         //전역변수 초기화
         listType = object : TypeToken<ArrayList<Subscription>>() {}
@@ -131,6 +136,9 @@ class SubscriptionActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             }
+
+            noticeViewModel.saveData("")
+            noticeViewModel.setValid()
         }
 
         if (PreferenceHelper.get("isAdmin", false)) {

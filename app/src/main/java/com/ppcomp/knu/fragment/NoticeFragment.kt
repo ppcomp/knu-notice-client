@@ -12,18 +12,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.paging.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
-import com.ppcomp.knu.`object`.noticeData.Notice
 import com.ppcomp.knu.`object`.noticeData.BookmarkViewModel
 import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
-import com.ppcomp.knu.`object`.noticeData.dataSource.NoticeAllDataSource
 import com.ppcomp.knu.activity.SearchableActivity
 import com.ppcomp.knu.activity.WebViewActivity
 import com.ppcomp.knu.adapter.NoticeAdapter
@@ -69,6 +67,7 @@ class NoticeFragment : Fragment() {
         requireContext().startActivity(intent)
     }
 
+
     @SuppressLint("CheckResult")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -80,21 +79,19 @@ class NoticeFragment : Fragment() {
         emptyResultView = view.findViewById((R.id.noData)) as TextView
         emptyResultView.visibility = View.GONE
 
-        noticeViewModel = ViewModelProvider(this).get(NoticeViewModel::class.java)
+        noticeViewModel = ViewModelProvider(requireActivity()).get(NoticeViewModel::class.java)
         bookmarkViewModel = ViewModelProvider(requireActivity()).get(BookmarkViewModel::class.java)
         adapter.setViewModel(bookmarkViewModel)
 
+        noticeViewModel.getTarget().observe(this, Observer {
+            noticeViewModel.saveData("")
+        })
         noticeRecyclerView.adapter = adapter
         noticeRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         //RecyclerView item 생성
         if (searchQuery == "") {    //search View 아닐때
-            makingView(
-                adapter,
-                NoticeAllDataSource(
-                    restApi,
-                    ""
-                ), MutableLiveData())
+            makingView(adapter)
         }
         else {  //search View 일때는 검색아이콘 제거
             view.search_icon.visibility = View.GONE
@@ -105,12 +102,7 @@ class NoticeFragment : Fragment() {
             // Initialize a new Runnable
             val mRunnable = Runnable {
                 // Hide swipe to refresh icon animation
-                makingView(adapter,
-                    NoticeAllDataSource(
-                        restApi,
-                        searchQuery,
-                        target
-                    ), MutableLiveData())
+                makingView(adapter)
                 swipe.isRefreshing = false
             }
             Handler().postDelayed(mRunnable, 1000)
@@ -122,26 +114,34 @@ class NoticeFragment : Fragment() {
         }
         return view
     }
-
+    private inline fun <VM : ViewModel> viewModelFactory(crossinline f: () -> VM) =
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T = f() as T
+        }
     @SuppressLint("CheckResult")
     @RequiresApi(Build.VERSION_CODES.O)
     private fun makingView(
-        adapter: NoticeAdapter,
-        dataSource: PageKeyedDataSource<Int, Notice>,
-        mutableLiveData: MutableLiveData<PageKeyedDataSource<Int, Notice>>?
+        adapter: NoticeAdapter
+//        dataSource: PageKeyedDataSource<Int, Notice>,
+//        mutableLiveData: MutableLiveData<PageKeyedDataSource<Int, Notice>>?
     ) {
-        val builder = RxPagedListBuilder<Int, Notice>(object : DataSource.Factory<Int, Notice>() {
-            override fun create(): DataSource<Int, Notice> {
-                mutableLiveData?.postValue(dataSource)
-                return dataSource
-            }
-        }, config)
-        builder.buildObservable()
-            .subscribe {
-                adapter.submitList(null)
-                adapter.submitList(it)
-                updateViewStatus()
-            }
+//        val builder = RxPagedListBuilder<Int, Notice>(object : DataSource.Factory<Int, Notice>() {
+//            override fun create(): DataSource<Int, Notice> {
+//                mutableLiveData?.postValue(dataSource)
+//                return dataSource
+//            }
+//        }, config)
+//        builder.buildObservable()
+//            .subscribe {
+//                adapter.submitList(null)
+//                adapter.submitList(it)
+//                updateViewStatus()
+//            }
+        noticeViewModel.setQuery(searchQuery)
+        noticeViewModel.getNoticeList().observe(this, Observer {
+            adapter.submitList(it)
+            updateViewStatus()
+        })
         bookmarkViewModel.getNoticeList().observe(this, Observer {// this 대신 viewLifecyclerOwner를 사용하면 검색기능 팅김 수정하지 말 것
             //코드가 없어도 bookmarkViewModel 은 변화가 생기면 업데이트 됨
         })
@@ -198,12 +198,7 @@ class NoticeFragment : Fragment() {
         this.searchQuery = searchQuery
         this.target = target
         if (searchQuery != "") {
-            makingView(adapter,
-                NoticeAllDataSource(
-                    restApi,
-                    searchQuery,
-                    target
-                ), MutableLiveData())
+            makingView(adapter)
         } else {
             Toast.makeText(requireContext(), "입력된 검색어가 없습니다.", Toast.LENGTH_SHORT).show()
         }

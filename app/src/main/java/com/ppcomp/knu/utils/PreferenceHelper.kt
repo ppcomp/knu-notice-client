@@ -35,6 +35,10 @@ class PreferenceHelper private constructor(context: Context) {
             return prefs!!.getString(key, defValue)
         }
 
+        fun getLiveData(key: String, defValue: String): SharedPreferenceLiveData<String> {
+            return SharedPreferenceStringLiveData(prefs, key, defValue)
+        }
+
         fun put(key: String?, value: String?) {
             prefsEditor!!.putString(key, value)
             prefsEditor!!.apply()
@@ -44,12 +48,20 @@ class PreferenceHelper private constructor(context: Context) {
             return prefs!!.getInt(key, defValue)
         }
 
+        fun getLiveData(key: String, defValue: Int): SharedPreferenceLiveData<Int> {
+            return SharedPreferenceIntLiveData(prefs, key, defValue)
+        }
+
         fun put(key: String?, value: Int?) {
             prefsEditor!!.putInt(key, value!!).apply()
         }
 
         fun get(key: String?, defValue: Boolean): Boolean {
             return prefs!!.getBoolean(key, defValue)
+        }
+
+        fun getLiveData(key: String, defValue: Boolean): SharedPreferenceLiveData<Boolean> {
+            return SharedPreferenceBooleanLiveData(prefs, key, defValue)
         }
 
         fun put(key: String?, value: Boolean) {
