@@ -140,7 +140,7 @@ class NoticeFragment : Fragment() {
                 adapter.submitList(it)
                 updateViewStatus()
             }
-        bookmarkViewModel.getNoticeList().observe(viewLifecycleOwner, Observer {
+        bookmarkViewModel.getNoticeList().observe(this, Observer {
             //코드가 없어도 bookmarkViewModel 은 변화가 생기면 업데이트 됨
         })
     }
