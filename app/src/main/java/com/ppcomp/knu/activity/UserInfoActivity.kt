@@ -25,7 +25,6 @@ import kotlinx.android.synthetic.main.fragment_setting.*
 class UserInfoActivity : AppCompatActivity(){
     private lateinit var nickname: String
     private lateinit var subscriptions: String
-    private lateinit var thumbnail: String
     private lateinit var keywords: String
     private lateinit var subscriptionsSplit: Array<String>
     private lateinit var keywordsSplit: Array<String>
@@ -49,19 +48,17 @@ class UserInfoActivity : AppCompatActivity(){
         }
 
         nickname = PreferenceHelper.get("nickname","").toString()
-        thumbnail = PreferenceHelper.get("thumbnail","").toString()
         subscriptions = PreferenceHelper.get("Subs","").toString().replace("+",", ")
-        subscriptionsSplit = subscriptions.split(", ").toTypedArray()
+//        subscriptionsSplit = subscriptions.split(", ").toTypedArray()
         keywords = PreferenceHelper.get("Keys","").toString().replace("+",", ")
-        keywordsSplit = keywords.split(", ").toTypedArray()
+//        keywordsSplit = keywords.split(", ").toTypedArray()
 
-        view_userName.text = nickname   //카카오 닉네임 출력
+        view_userName.text = nickname+"님 반갑습니다."   //카카오 닉네임 출력
         view_subscription_data.text = subscriptions //구독 목록 출력
-        view_subscription_cnt.text = subscriptionsSplit.size.toString() //구독 갯수 출력
+//        view_subscription_cnt.text = subscriptionsSplit.size.toString() //구독 갯수 출력
         view_keyword_data.text = keywords   //키워드 목록 출력
-        view_keyword_cnt.text = keywordsSplit.size.toString()   //키워드 갯수 출력
+//        view_keyword_cnt.text = keywordsSplit.size.toString()   //키워드 갯수 출력
 
-        Glide.with(this).load(thumbnail).placeholder(R.drawable.nav_maker_ic).into(iv_thumbnail) //카카오 프로필 사진 띄우기
 
         val title = findViewById<TextView>(R.id.state_title)
         title.text = "회원 정보"

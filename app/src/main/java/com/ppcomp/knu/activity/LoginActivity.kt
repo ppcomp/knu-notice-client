@@ -94,7 +94,6 @@ class LoginActivity : AppCompatActivity() {
                     GlobalApplication.userInfoUpload(this@LoginActivity)    //카카오계정 데이터 api서버에 추가
                     PreferenceHelper.put("kakaoId",kakaoId)
                     PreferenceHelper.put("nickname",kakaoNickname) //닉네임 저장
-                    PreferenceHelper.put("thumbnail",kakakoThumbnail) //썸네일 저장
 
                     val intent = Intent(this@LoginActivity, UserInfoActivity::class.java)
                     startActivity(intent)
