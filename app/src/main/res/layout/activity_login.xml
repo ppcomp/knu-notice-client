@@ -62,9 +62,11 @@
             <!-- 카카오에서 제공하는 기본 로그인 버튼-->
             <com.kakao.usermgmt.LoginButton
                 android:id="@+id/loginButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
                 android:layout_gravity="center"
+                android:layout_marginLeft="45dp"
+                android:layout_marginRight="45dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.493"
@@ -72,6 +74,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/username"
                 tools:ignore="MissingConstraints" />
 
+            <Button
+                android:id="@+id/loginPassButton"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/colorGray"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="45dp"
+                android:layout_marginRight="45dp"
+                android:textSize="16dp"
+                android:text="그냥 이용할래요"
+                android:textStyle="bold"/>
 
             <ProgressBar
                 android:id="@+id/loading"

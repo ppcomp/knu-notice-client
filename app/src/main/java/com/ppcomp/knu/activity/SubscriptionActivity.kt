@@ -122,15 +122,19 @@ class SubscriptionActivity : AppCompatActivity() {
         subsSave.setOnClickListener {   // 저장 버튼 누를시
             saveSubscription()   //체크된 구독리스트 저장
             GlobalApplication.deviceInfoUpdate(this)  //구독리스트 서버에 업로드
-            myToast.setText("구독리스트가 저장되었습니다")
-            myToast.show()
-
-            if (isNewUser) { // 신규 사용자일시 확인버튼이 메인을 띄우도록
-                PreferenceHelper.put("NewUser", false)
-                var intent = Intent(this, MainActivity::class.java)
+            if (isNewUser) { // 신규 사용자일시 확인버튼이 로그인화면을 띄우도록
+                myToast.setText("최초 로그인 1회를 해주시면 감사하겠습니다.")
+                var intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
             }
+            else
+                myToast.setText("구독리스트가 저장되었습니다")
+            myToast.show()
+
+
+
+
         }
 
         if (PreferenceHelper.get("isAdmin", false)) {

@@ -18,6 +18,7 @@ import com.kakao.util.exception.KakaoException
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.utils.PreferenceHelper
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_main_toolbar.*
 
 /**
@@ -36,6 +37,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        val isNewUser = PreferenceHelper.get("NewUser", true) // 신규 사용자 확인
+
         callback = SessionCallback()
         Session.getCurrentSession().clearCallbacks()
         Session.getCurrentSession().addCallback(callback)
@@ -48,13 +51,26 @@ class LoginActivity : AppCompatActivity() {
         searchIcon.visibility = View.GONE
 
         setSupportActionBar(main_layout_toolbar)//toolbar 지정
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(!isNewUser) //toolbar 설정 (신규 유저가 아닐 때만 True)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back_ic)//뒤로가기 아이콘 지정
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
+
+        if(isNewUser)
+            loginPassButton.visibility = View.VISIBLE
+        else
+            loginPassButton.visibility = View.GONE
+
+        loginPassButton.setOnClickListener{
+            PreferenceHelper.put("NewUser", false)
+            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
+        PreferenceHelper.put("NewUser", false)
         Session.getCurrentSession().removeCallback(callback)
     }
 
@@ -87,19 +103,24 @@ class LoginActivity : AppCompatActivity() {
                     kakakoThumbnail = result!!.kakaoAccount.profile.thumbnailImageUrl
                     Toast.makeText(
                         this@LoginActivity,
-                        "로그인 성공! 계정 이름: " + kakaoNickname,
+                        "로그인 성공",
                         Toast.LENGTH_SHORT
                     ).show()
                     GlobalApplication.isLogin = true    //로그인 상태 업데이트
                     GlobalApplication.userInfoUpload(this@LoginActivity)    //카카오계정 데이터 api서버에 추가
                     PreferenceHelper.put("kakaoId",kakaoId)
                     PreferenceHelper.put("nickname",kakaoNickname) //닉네임 저장
-
-                    val intent = Intent(this@LoginActivity, UserInfoActivity::class.java)
-                    startActivity(intent)
-                    finish()
-
-
+                    if(PreferenceHelper.get("NewUser", true)) { //신규 사용자이면 메인화면으로
+                        PreferenceHelper.put("NewUser", false)
+                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+                    else {
+                        val intent = Intent(this@LoginActivity, UserInfoActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
                 }
 
                 override fun onSessionClosed(errorResult: ErrorResult?) {
