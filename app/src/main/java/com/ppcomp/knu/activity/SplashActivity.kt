@@ -70,11 +70,14 @@ class SplashActivity : AppCompatActivity() {
                     val intent = Intent(content, SubscriptionActivity::class.java)
                     startActivity(intent)
                     finish()
+
                 } else {
-                    val intent = Intent(content, MainActivity::class.java)
+                    GlobalApplication.isFirstLogin = true
+                    val intent = Intent(content, LoginActivity::class.java)
                     startActivity(intent)
                     finish()
                 }
+
             }
             override fun fail(errorMessage: String?) {
                 val toast = Toast.makeText(content, "$errorMessage | 파이어베이스 서버에 접속할 수 없습니다. 어플을 재시작 해주세요.", Toast.LENGTH_SHORT)

@@ -123,11 +123,6 @@ class WebViewActivity : AppCompatActivity() {
         this.menu = menu
         val menuInflater = menuInflater
         menuInflater.inflate(R.menu.webview_menu, menu)
-        if (bookmark) {
-            menu?.findItem(R.id.action_bookmark)?.isVisible = false
-        } else {
-            menu?.findItem(R.id.action_unBookmark)?.isVisible = false
-        }
         return true
     }
 
@@ -143,22 +138,6 @@ class WebViewActivity : AppCompatActivity() {
                 intent.putExtra(Intent.EXTRA_SUBJECT, extraText)
                 intent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps")
                 startActivity(Intent.createChooser(intent, "공유하기"))
-                true
-            }
-            R.id.action_bookmark -> {
-                // 수정 필요
-                notice.bookmark = true
-                bookmarkViewModel.insert(notice)
-                menu?.findItem(R.id.action_bookmark)?.isVisible = false
-                menu?.findItem(R.id.action_unBookmark)?.isVisible = true
-                true
-            }
-            R.id.action_unBookmark -> {
-                // 수정 필요
-                notice.bookmark = false
-                bookmarkViewModel.delete(notice)
-                menu?.findItem(R.id.action_bookmark)?.isVisible = true
-                menu?.findItem(R.id.action_unBookmark)?.isVisible = false
                 true
             }
             android.R.id.home -> {  //툴바 뒤로가기

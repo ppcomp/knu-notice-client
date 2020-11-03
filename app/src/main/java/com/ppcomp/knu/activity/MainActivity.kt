@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
         content = findViewById(R.id.frameLayout)
         val navigation = findViewById<BottomNavigationView>(R.id.main_navigationView)

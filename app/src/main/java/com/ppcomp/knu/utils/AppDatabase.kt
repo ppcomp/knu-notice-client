@@ -49,9 +49,6 @@ abstract class AppDatabase : RoomDatabase() {
             instance?.let { database ->
                 scope.launch(Dispatchers.IO) {
                     var noticeDao = database.noticeDao()
-
-                    // Delete all content here.
-                    noticeDao.deleteAll()
                 }
             }
         }
