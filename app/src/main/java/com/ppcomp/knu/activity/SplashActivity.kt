@@ -72,10 +72,10 @@ class SplashActivity : AppCompatActivity() {
                     finish()
 
                 } else {
-                    val intent = Intent(content, MainActivity::class.java)
+                    GlobalApplication.isFirstLogin = true
+                    val intent = Intent(content, LoginActivity::class.java)
                     startActivity(intent)
                     finish()
-
                 }
 
             }

@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import com.kakao.auth.ApiErrorCode
 import com.kakao.auth.ISessionCallback
 import com.kakao.auth.Session
@@ -32,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var kakaoNickname: String
     private lateinit var kakakoThumbnail: String
     private lateinit var searchIcon: ImageView
+    private lateinit var myToast: Toast
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,25 +49,21 @@ class LoginActivity : AppCompatActivity() {
         val title = findViewById<TextView>(R.id.state_title)
         title.text = "로그인"
 
+        myToast = Toast.makeText(this, "", Toast.LENGTH_SHORT)
+
         searchIcon = findViewById<ImageView>(R.id.search_icon)
         searchIcon.visibility = View.GONE
 
         setSupportActionBar(main_layout_toolbar)//toolbar 지정
         supportActionBar?.setDisplayHomeAsUpEnabled(!isNewUser) //toolbar 설정 (신규 유저가 아닐 때만 True)
-        supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back_ic)//뒤로가기 아이콘 지정
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)  //뒤로가기 버튼 제거
 
-        if(isNewUser)
-            loginPassButton.visibility = View.VISIBLE
-        else
-            loginPassButton.visibility = View.GONE
-
-        loginPassButton.setOnClickListener{
-            PreferenceHelper.put("NewUser", false)
-            val intent = Intent(this@LoginActivity, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+        exitButton.setOnClickListener {
+            ActivityCompat.finishAffinity(this)
+            System.exit(0)
         }
+
     }
 
     override fun onDestroy() {
@@ -85,6 +83,15 @@ class LoginActivity : AppCompatActivity() {
             return
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    /**
+     * 뒤로가기 버튼 이벤트 설정(스마트폰의 뒤로가기 버튼)
+     * @author 정준
+     */
+    override fun onBackPressed() {
+        myToast.setText("로그인 이후에 서비스 이용 가능합니다.")
+        myToast.show()
     }
 
     /**
@@ -110,8 +117,9 @@ class LoginActivity : AppCompatActivity() {
                     GlobalApplication.userInfoUpload(this@LoginActivity)    //카카오계정 데이터 api서버에 추가
                     PreferenceHelper.put("kakaoId",kakaoId)
                     PreferenceHelper.put("nickname",kakaoNickname) //닉네임 저장
-                    if(PreferenceHelper.get("NewUser", true)) { //신규 사용자이면 메인화면으로
+                    if(PreferenceHelper.get("NewUser", true) || GlobalApplication.isFirstLogin) { //신규 사용자이면 메인화면으로
                         PreferenceHelper.put("NewUser", false)
+                        GlobalApplication.isFirstLogin = false
                         val intent = Intent(this@LoginActivity, MainActivity::class.java)
                         startActivity(intent)
                         finish()

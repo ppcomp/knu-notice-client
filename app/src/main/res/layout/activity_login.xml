@@ -31,10 +31,10 @@
             <TextView
                 android:id="@+id/pushapp"
                 android:layout_width="wrap_content"
-                android:layout_height="50dp"
+                android:layout_height="70dp"
                 android:fontFamily="@font/cookierun"
                 android:gravity="center"
-                android:text="knu push app"
+                android:text="착한 선배\nknu push app"
                 android:textColor="@color/colorWhite"
                 android:textSize="23dp"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -75,15 +75,18 @@
                 tools:ignore="MissingConstraints" />
 
             <Button
-                android:id="@+id/loginPassButton"
+                android:id="@+id/exitButton"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:background="@color/colorGray"
+                android:background="@color/colorBlue"
+                android:fontFamily="@font/cookierun"
+                android:textColor="@color/colorWhite"
                 android:layout_marginTop="30dp"
                 android:layout_marginLeft="45dp"
                 android:layout_marginRight="45dp"
-                android:textSize="16dp"
-                android:text="그냥 이용할래요"
+                android:textSize="20dp"
+
+                android:text="앱 종료"
                 android:textStyle="bold"/>
 
             <ProgressBar
