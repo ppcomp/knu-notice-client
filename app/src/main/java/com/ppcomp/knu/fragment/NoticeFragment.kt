@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Parcelable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.paging.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.ppcomp.knu.GlobalApplication
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.noticeData.Notice
@@ -27,6 +31,7 @@ import com.ppcomp.knu.`object`.noticeData.dataSource.NoticeAllDataSource
 import com.ppcomp.knu.activity.SearchableActivity
 import com.ppcomp.knu.activity.WebViewActivity
 import com.ppcomp.knu.adapter.NoticeAdapter
+import com.ppcomp.knu.adapter.NoticeTabAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
 import com.ppcomp.knu.utils.RestApi
 import kotlinx.android.synthetic.main.activity_main_toolbar.view.*
@@ -45,6 +50,8 @@ class NoticeFragment : Fragment() {
     private lateinit var bookmarkViewModel: NoticeViewModel
     private lateinit var noticeRecyclerView: RecyclerView
     private lateinit var emptyResultView: TextView
+    private lateinit var viewPager: ViewPager2
+    private lateinit var noticeTabAdapter: NoticeTabAdapter
     private var searchQuery: String = ""
     private var target: String = PreferenceHelper.get("Urls","")!!
     private val restApi = RestApi.create()
@@ -85,6 +92,10 @@ class NoticeFragment : Fragment() {
         noticeRecyclerView.adapter = adapter
         noticeRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        viewPager = view.findViewById(R.id.pager)
+        noticeTabAdapter = NoticeTabAdapter(this)
+        viewPager.adapter = noticeTabAdapter
+
         //RecyclerView item 생성
         if (searchQuery == "") {    //search View 아닐때
             makingView(
@@ -120,6 +131,13 @@ class NoticeFragment : Fragment() {
             startActivity(intent)
         }
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val tabLayout = view.findViewById(R.id.tab_layout) as TabLayout
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = "OBJECT ${(position + 1)}"
+        }.attach()
     }
 
     @SuppressLint("CheckResult")
