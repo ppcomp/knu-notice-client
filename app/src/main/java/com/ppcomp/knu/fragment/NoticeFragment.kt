@@ -94,8 +94,9 @@ class NoticeFragment : Fragment() {
                     ""
                 ), MutableLiveData())
         }
-        else {  //search View 일때는 검색아이콘 제거
-            view.search_icon.visibility = View.GONE
+        else {  //search View 일때는 메인 툴바, 탭 제거
+            view.main_layout_toolbar.visibility = View.GONE
+            view.tab_layout.visibility = View.GONE
         }
 
         //새로고침 리스너
