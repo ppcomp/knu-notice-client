@@ -22,8 +22,7 @@
             android:theme="@style/AppTheme"
             app:contentInsetLeft="0dp"
             app:contentInsetStart="0dp"
-            app:contentInsetStartWithNavigation="0dp"
-            app:layout_scrollFlags="scroll|enterAlways">
+            app:contentInsetStartWithNavigation="0dp">
 
             <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/searchview_spinner"
