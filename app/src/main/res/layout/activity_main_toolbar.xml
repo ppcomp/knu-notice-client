@@ -2,8 +2,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/appbar3"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:fitsSystemWindows="true" >
+    android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/main_layout_toolbar"
@@ -11,8 +10,8 @@
         android:layout_height="wrap_content"
         android:background="@color/colorBlue"
         android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:layout_scrollFlags="scroll|enterAlways">
+        android:theme="@style/AppTheme"
+        app:layout_scrollFlags="scroll|snap|enterAlways">
 
         <LinearLayout
             android:layout_width="match_parent"
