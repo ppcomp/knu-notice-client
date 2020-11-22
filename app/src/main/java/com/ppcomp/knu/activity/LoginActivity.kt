@@ -1,11 +1,13 @@
 package com.ppcomp.knu.activity
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.kakao.auth.ApiErrorCode
@@ -34,6 +36,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var kakakoThumbnail: String
     private lateinit var searchIcon: ImageView
     private lateinit var myToast: Toast
+    private var backWait: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,9 +92,17 @@ class LoginActivity : AppCompatActivity() {
      * 뒤로가기 버튼 이벤트 설정(스마트폰의 뒤로가기 버튼)
      * @author 정준
      */
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onBackPressed() {
-        myToast.setText("로그인 이후에 서비스 이용 가능합니다.")
-        myToast.show()
+        if (System.currentTimeMillis() - backWait >= 2000) {
+            backWait = System.currentTimeMillis()
+            myToast.setText("뒤로가기 버튼을 한 번 더 누르면 종료됩니다.")
+            myToast.show()
+        } else {
+            moveTaskToBack(true)			// 태스크를 백그라운드로 이동
+            finishAndRemoveTask() // 액티비티 종료 + 태스크 리스트에서 지우기
+            android.os.Process.killProcess(android.os.Process.myPid())	// 앱 프로세스 종료
+        }
     }
 
     /**
