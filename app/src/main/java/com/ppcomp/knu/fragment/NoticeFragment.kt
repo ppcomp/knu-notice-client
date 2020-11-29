@@ -4,9 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
-import android.os.Parcelable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,9 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.paging.*
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -35,8 +30,6 @@ import com.ppcomp.knu.adapter.NoticeTabAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
 import com.ppcomp.knu.utils.RestApi
 import kotlinx.android.synthetic.main.activity_main_toolbar.view.*
-import kotlinx.android.synthetic.main.fragment_notice_layout.*
-import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
 
 
 /**
@@ -53,7 +46,8 @@ class NoticeFragment : Fragment() {
     private lateinit var viewPager: ViewPager2
     private lateinit var noticeTabAdapter: NoticeTabAdapter
     private var searchQuery: String = ""
-    private var target: String = PreferenceHelper.get("Urls","")!!
+    private var targets: String = PreferenceHelper.get("Urls","")!!
+    private var boardNames: List<String> = PreferenceHelper.get("Subs","")!!.split("+")
     private val restApi = RestApi.create()
     private val config = PagedList.Config.Builder()
         .setInitialLoadSizeHint(20)     // 초기 로딩 아이템 개수
@@ -82,49 +76,11 @@ class NoticeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_notice_layout, container, false)
-        noticeRecyclerView = view.findViewById(R.id.notice) as RecyclerView   //recyclerview 가져오기
-        emptyResultView = view.findViewById((R.id.noData)) as TextView
-        emptyResultView.visibility = View.GONE
-
-        bookmarkViewModel = ViewModelProvider(requireActivity()).get(NoticeViewModel::class.java)
-        adapter.setViewModel(bookmarkViewModel)
-
-        noticeRecyclerView.adapter = adapter
-        noticeRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         viewPager = view.findViewById(R.id.pager)
         noticeTabAdapter = NoticeTabAdapter(this)
         viewPager.adapter = noticeTabAdapter
 
-        //RecyclerView item 생성
-        if (searchQuery == "") {    //search View 아닐때
-            makingView(
-                adapter,
-                NoticeAllDataSource(
-                    restApi,
-                    ""
-                ), MutableLiveData())
-        }
-        else {  //search View 일때는 메인 툴바, 탭 제거
-            view.main_layout_toolbar.visibility = View.GONE
-            view.tab_layout.visibility = View.GONE
-        }
-
-        //새로고침 리스너
-        view.swipe.setOnRefreshListener {
-            // Initialize a new Runnable
-            val mRunnable = Runnable {
-                // Hide swipe to refresh icon animation
-                makingView(adapter,
-                    NoticeAllDataSource(
-                        restApi,
-                        searchQuery,
-                        target
-                    ), MutableLiveData())
-                swipe.isRefreshing = false
-            }
-            Handler().postDelayed(mRunnable, 1000)
-        }
         // 검색 리스너
         view.search_icon.setOnClickListener {
             val intent = Intent(requireContext(), SearchableActivity::class.java)
@@ -136,7 +92,11 @@ class NoticeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val tabLayout = view.findViewById(R.id.tab_layout) as TabLayout
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = "OBJECT ${(position + 1)}"
+            if (position == 0) {
+                tab.text = "전체"
+            } else {
+                tab.text = boardNames[position - 1]
+            }
         }.attach()
     }
 
@@ -213,7 +173,7 @@ class NoticeFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     fun searchRun(searchQuery: String, target: String) {
         this.searchQuery = searchQuery
-        this.target = target
+        this.targets = target
         if (searchQuery != "") {
             makingView(adapter,
                 NoticeAllDataSource(
