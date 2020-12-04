@@ -13,7 +13,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProvider
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
-import com.ppcomp.knu.fragment.NoticeFragment
+import com.ppcomp.knu.fragment.SearchFragment
 import com.ppcomp.knu.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_searchable.*
 
@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.activity_searchable.*
 class SearchableActivity: AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     private lateinit var bookmarkViewModel: NoticeViewModel
-    private val noticeFragment = NoticeFragment()
+    private val searchFragment = SearchFragment()
     private var searchQuery: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,12 +43,12 @@ class SearchableActivity: AppCompatActivity(), AdapterView.OnItemSelectedListene
             override fun onQueryTextSubmit(query: String?): Boolean {
                 searchQuery = query
                 val fragmentTransaction = supportFragmentManager.beginTransaction()
-                if (!noticeFragment.isAdded) {
-                    fragmentTransaction.add(R.id.frameLayout, noticeFragment)
+                if (!searchFragment.isAdded) {
+                    fragmentTransaction.add(R.id.frameLayout, searchFragment)
                     fragmentTransaction.commit()
                 }
-                noticeFragment.setBookmarkViewModel(bookmarkViewModel)
-                noticeFragment.searchRun(query!!, getTarget())
+                searchFragment.setBookmarkViewModel(bookmarkViewModel)
+                searchFragment.searchRun(query!!, getTarget())
                 currentFocus?.clearFocus()
                 return false
             }
@@ -63,7 +63,7 @@ class SearchableActivity: AppCompatActivity(), AdapterView.OnItemSelectedListene
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         if (searchQuery != null && searchQuery != "") {
-            noticeFragment.searchRun(searchQuery!!, getTarget())
+            searchFragment.searchRun(searchQuery!!, getTarget())
             currentFocus?.clearFocus()
         }
     }

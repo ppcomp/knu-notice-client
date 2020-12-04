@@ -31,10 +31,12 @@ import com.ppcomp.knu.activity.WebViewActivity
 import com.ppcomp.knu.adapter.NoticeAdapter
 import com.ppcomp.knu.utils.PreferenceHelper
 import com.ppcomp.knu.utils.RestApi
+import kotlinx.android.synthetic.main.activity_main_toolbar.view.*
+import kotlinx.android.synthetic.main.fragment_notice_layout.view.*
 import kotlinx.android.synthetic.main.fragment_notice_tab.*
 import kotlinx.android.synthetic.main.fragment_notice_tab.view.*
 
-class NoticeTabFragment : Fragment() {
+class SearchFragment : Fragment() {
 
     private lateinit var bookmarkViewModel: NoticeViewModel
     private lateinit var noticeRecyclerView: RecyclerView
@@ -83,15 +85,9 @@ class NoticeTabFragment : Fragment() {
             targets = getString("target").toString()
         }
 
-        //RecyclerView item 생성
-        makingView(
-            adapter,
-            NoticeAllDataSource(
-                restApi,
-                "",
-                targets
-            ), MutableLiveData()
-        )
+        //search View 일때는 메인 툴바, 탭 제거
+        view.main_layout_toolbar.visibility = View.GONE
+        view.tab_layout.visibility = View.GONE
 
         //새로고침 리스너
         view.swipe.setOnRefreshListener {
@@ -145,8 +141,8 @@ class NoticeTabFragment : Fragment() {
      *  - 구독한 사이트가 있다면
      *      - 공지가 하나도 없을 때:
      *          - 서버연결 정상시:
-     *              "게시글이 존재하지 않습니다."
-     *              toast - "게시글이 존재하지 않습니다."
+     *              "검색 결과가 없습니다."
+     *               toast - "검색 결과가 없습니다."
      *          - 서버연결 비정상시:
      *              "서버 연결에 실패했습니다. 관리자에게 문의해주세요."
      *              toast - "서버 연결에 실패했습니다."
@@ -163,10 +159,9 @@ class NoticeTabFragment : Fragment() {
             emptyResultView.visibility = View.GONE
             if (noticeRecyclerView.adapter!!.itemCount == 0) {
                 if(GlobalApplication.isServerConnect) { // DataSource 클래스에서 확인한 서버 연결 상태
-                    toastText = "게시글이 존재하지 않습니다."
-                    emptyResultView.text = "게시글이 존재하지 않습니다."
-                }
-                else {
+                    toastText = "검색 결과가 없습니다."
+                    emptyResultView.text = "검색 결과가 없습니다."
+                } else {
                     toastText = "서버 연결에 실패했습니다."
                     emptyResultView.text = "서버 연결에 실패했습니다.\n관리자에게 문의해주세요."
                 }
@@ -174,5 +169,30 @@ class NoticeTabFragment : Fragment() {
                 emptyResultView.visibility = View.VISIBLE
             }
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun searchRun(searchQuery: String, target: String) {
+        this.searchQuery = searchQuery
+        this.targets = target
+        if (searchQuery != "") {
+            makingView(adapter,
+                NoticeAllDataSource(
+                    restApi,
+                    searchQuery,
+                    target
+                ), MutableLiveData())
+        } else {
+            Toast.makeText(requireContext(), "입력된 검색어가 없습니다.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    /**
+     * 검색 화면에서 viewModel 설정
+     * @author 정준
+     */
+    fun setBookmarkViewModel(viewModel: NoticeViewModel) {
+        this.bookmarkViewModel = viewModel
+        adapter.setViewModel(bookmarkViewModel)
     }
 }
