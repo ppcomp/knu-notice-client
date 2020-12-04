@@ -125,9 +125,11 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                     GlobalApplication.isLogin = true    //로그인 상태 업데이트
-                    GlobalApplication.userInfoUpload(this@LoginActivity)    //카카오계정 데이터 api서버에 추가
                     PreferenceHelper.put("kakaoId",kakaoId)
                     PreferenceHelper.put("nickname",kakaoNickname) //닉네임 저장
+                    GlobalApplication.userInfoDownload(this@LoginActivity)  //서버에 저장되어 있는 데이터 다운로드
+                    GlobalApplication.userInfoUpload(this@LoginActivity)    //카카오계정 데이터 api서버에 추가
+
                     if(PreferenceHelper.get("NewUser", true) || GlobalApplication.isFirstLogin) { //신규 사용자이면 메인화면으로
                         PreferenceHelper.put("NewUser", false)
                         GlobalApplication.isFirstLogin = false

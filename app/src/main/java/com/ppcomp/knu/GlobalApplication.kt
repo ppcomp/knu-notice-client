@@ -94,6 +94,37 @@ class GlobalApplication : Application() {
         }
 
         /**
+         * 서버에 유저 데이터 저장되어 있는지 확인 후
+         * 구독리스트, 키워드 다운로드 (GET)
+         * @author 정준
+         */
+        fun userInfoDownload(context: Context) {
+            val apiService = RestApiService()
+            val getKakaoId = PreferenceHelper.get("kakaoId","").toString()
+            var getLocalDeviceId = PreferenceHelper.get("fbId","")
+            var getSyncDeviceId: String
+            apiService.getUser(context, getKakaoId) { userInfo ->
+                //서버에 유저데이터가 있는지 확인 (GET)
+                if(userInfo?.id != null) {
+                    getSyncDeviceId = userInfo.device_id.toString()
+
+                    if(getSyncDeviceId != getLocalDeviceId) {
+                        //서버에 저장된 기기Id랑 로컬기기Id가 다르면
+                        apiService.getDevice(context, getSyncDeviceId) { deviceInfo ->
+                            //서버에 저장된 기기Id의 데이터 다운 (GET)
+                            if(deviceInfo?.id != null) {
+                                PreferenceHelper.put("Keys",deviceInfo.keywords.toString())
+                                PreferenceHelper.put("Urls",deviceInfo.subscriptions.toString())
+                                PreferenceHelper.put("alarmSwitch",(deviceInfo.alarmSwitch.toString() == "true"))
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+        /**
          * 디바이스 데이터 서버에 업로드 (GET, POST)
          * @author 정준, 정우
          */
@@ -166,6 +197,8 @@ class GlobalApplication : Application() {
             }
 
         }
+
+
 
 
 
