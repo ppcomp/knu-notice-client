@@ -3,6 +3,7 @@ package com.ppcomp.knu.activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -124,23 +125,34 @@ class LoginActivity : AppCompatActivity() {
                         "로그인 성공",
                         Toast.LENGTH_SHORT
                     ).show()
-                    GlobalApplication.isLogin = true    //로그인 상태 업데이트
                     PreferenceHelper.put("kakaoId",kakaoId)
                     PreferenceHelper.put("nickname",kakaoNickname) //닉네임 저장
-                    GlobalApplication.userInfoDownload(this@LoginActivity)  //서버에 저장되어 있는 데이터 다운로드
+                    GlobalApplication.isLogin = true    //로그인 상태 업데이트
                     GlobalApplication.userInfoUpload(this@LoginActivity)    //카카오계정 데이터 api서버에 추가
+                    if(PreferenceHelper.get("NewUser",true)) { //신규 유저 확인
+                        val toast = Toast.makeText(this@LoginActivity, "신규 사용자입니다. \n구독리스트 설정화면으로 이동합니다.", Toast.LENGTH_SHORT)
+                        toast.setGravity(Gravity.CENTER, 0, 0)
+                        toast.show()
 
-                    if(PreferenceHelper.get("NewUser", true) || GlobalApplication.isFirstLogin) { //신규 사용자이면 메인화면으로
-                        PreferenceHelper.put("NewUser", false)
-                        GlobalApplication.isFirstLogin = false
-                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                        val intent = Intent(this@LoginActivity, SubscriptionActivity::class.java)
                         startActivity(intent)
                         finish()
                     }
                     else {
-                        val intent = Intent(this@LoginActivity, UserInfoActivity::class.java)
-                        startActivity(intent)
-                        finish()
+                        GlobalApplication.userInfoDownload(this@LoginActivity)  //서버에 저장되어 있는 데이터 다운로드
+                        GlobalApplication.userInfoUpload(this@LoginActivity)    //카카오계정 데이터 api서버에 추가
+
+                        if(GlobalApplication.isLaunchApp) { //앱실행시에 로그인이면 메인 화면으로 이동
+                            GlobalApplication.isLaunchApp = false
+                            val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
+                        else {  //아니면 회원정보 화면
+                            val intent = Intent(this@LoginActivity, UserInfoActivity::class.java)
+                            startActivity(intent)
+                            finish()
+                        }
                     }
                 }
 

@@ -35,9 +35,6 @@ class SplashActivity : AppCompatActivity() {
         // Init singleton Object
         val preference = PreferenceHelper.getInstance(this)
 
-        // 신규 사용자 확인
-        val isNewUser = PreferenceHelper.get("NewUser", true)
-
         val content = this
         loadServerInfo(object : Callback {
             override fun success(data: String?) {
@@ -62,21 +59,11 @@ class SplashActivity : AppCompatActivity() {
                         GlobalApplication.deviceInfoUpload(content) //매번 디바이스 정보가 등록되었는지 확인하고 서버에 id가 없으면 등록
                     })
 
-                if (isNewUser) { // 신규 사용자일시 구독리스트 설정, 아닐시 메인화면
-                    val toast = Toast.makeText(content, "신규 사용자입니다. \n구독리스트 설정화면으로 이동합니다.", Toast.LENGTH_SHORT)
-                    toast.setGravity(Gravity.CENTER, 0, 0)
-                    toast.show()
+                GlobalApplication.isLaunchApp = true
+                val intent = Intent(content, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
 
-                    val intent = Intent(content, SubscriptionActivity::class.java)
-                    startActivity(intent)
-                    finish()
-
-                } else {
-                    GlobalApplication.isFirstLogin = true
-                    val intent = Intent(content, LoginActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }
 
             }
             override fun fail(errorMessage: String?) {

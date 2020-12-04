@@ -49,7 +49,7 @@ class SubscriptionActivity : AppCompatActivity() {
         setContentView(R.layout.activity_subscription)
         StrictMode.enableDefaults()
 
-        val isNewUser = PreferenceHelper.get("NewUser", true) // 신규 사용자 확인
+        val isNewUser = PreferenceHelper.get("NewUser", false) // 신규 사용자 확인
 
         val subsManager = LinearLayoutManager(this)
         val checkManager = LinearLayoutManager(this)
@@ -122,9 +122,11 @@ class SubscriptionActivity : AppCompatActivity() {
         subsSave.setOnClickListener {   // 저장 버튼 누를시
             saveSubscription()   //체크된 구독리스트 저장
             GlobalApplication.deviceInfoUpdate(this)  //구독리스트 서버에 업로드
-            if (isNewUser) { // 신규 사용자일시 확인버튼이 로그인화면을 띄우도록
-                myToast.setText("카카오 로그인 이후에 서비스 이용 가능합니다.")
-                var intent = Intent(this, LoginActivity::class.java)
+            if (isNewUser) { // 신규 사용자일시 확인버튼이 메인화면을 띄우도록
+                GlobalApplication.userInfoUpload(this)  //유저정보 등록
+                PreferenceHelper.put("NewUser",false)   //신규사용자 false
+                myToast.setText("환영합니다.")
+                var intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
             }
