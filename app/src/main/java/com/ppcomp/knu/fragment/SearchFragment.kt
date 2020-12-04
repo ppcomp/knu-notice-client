@@ -85,10 +85,6 @@ class SearchFragment : Fragment() {
             targets = getString("target").toString()
         }
 
-        //search View 일때는 메인 툴바, 탭 제거
-        view.main_layout_toolbar.visibility = View.GONE
-        view.tab_layout.visibility = View.GONE
-
         //새로고침 리스너
         view.swipe.setOnRefreshListener {
             // Initialize a new Runnable
