@@ -53,7 +53,7 @@ class GlobalApplication : Application() {
             val getKakaoId = PreferenceHelper.get("kakaoId","").toString()
             val userInfo = UserInfo(
                 id = getKakaoId,
-                device_id = getId
+                device = getId
             )
 
             apiService.getUser(context,getKakaoId) {
