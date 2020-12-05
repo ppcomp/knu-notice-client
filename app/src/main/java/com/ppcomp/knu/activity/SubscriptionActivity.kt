@@ -63,7 +63,17 @@ class SubscriptionActivity : AppCompatActivity() {
         strContact = PreferenceHelper.get("subList", "").toString()
         makeGson = GsonBuilder().create()
         subsList = makeGson.fromJson(strContact, listType.type)
+
+        val urls = PreferenceHelper.get("Urls","")
+        val urlsList: List<String>? = urls?.split("+")
+
         for (i in subsList) {
+            for(j in urlsList!!) {
+                if(i.url == j) {
+                    i.checked = true
+                }
+            }
+
             if (i.checked) {
                 subsCheckList.add(i)
             }
@@ -122,8 +132,8 @@ class SubscriptionActivity : AppCompatActivity() {
         subsSave.setOnClickListener {   // 저장 버튼 누를시
             saveSubscription()   //체크된 구독리스트 저장
             GlobalApplication.deviceInfoUpdate(this)  //구독리스트 서버에 업로드
+            GlobalApplication.userInfoUpload(this)  //유저정보 등록
             if (isNewUser) { // 신규 사용자일시 확인버튼이 메인화면을 띄우도록
-                GlobalApplication.userInfoUpload(this)  //유저정보 등록
                 PreferenceHelper.put("NewUser",false)   //신규사용자 false
                 myToast.setText("환영합니다.")
                 var intent = Intent(this, MainActivity::class.java)
