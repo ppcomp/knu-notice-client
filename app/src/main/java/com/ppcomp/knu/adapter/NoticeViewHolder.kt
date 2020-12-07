@@ -14,6 +14,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.noticeData.Notice
+import kotlinx.android.synthetic.main.fragment_notice_item.view.*
 
 /**
  * RecyclerView 의 각 요소에 데이터(Notice)를 binding 한다.
@@ -44,13 +45,13 @@ class NoticeViewHolder(parent: ViewGroup, private val onClick: (Notice) -> Unit)
         noticeAuthor.text = notice?.author
         noticeReference.text = notice?.reference
 
-        if(notice?.image != 0) {
-            noticeImage.visibility = View.VISIBLE
-            noticeImage.setImageResource(notice?.image!!)
-        } else {
-            noticeImage.visibility = View.GONE
-        }
-        if(notice.isFixed) {
+//        if(notice?.image != 0) {
+//            noticeImage.visibility = View.VISIBLE
+//            noticeImage.setImageResource(notice?.image!!)
+//        } else {
+//            noticeImage.visibility = View.GONE
+//        }
+        if(notice!!.isFixed) {
             noticeFixedImage.visibility = View.VISIBLE
             noticeFixedImage.layoutParams.height = (20*factor).toInt()
             noticeFixedImage.layoutParams.width = (20*factor).toInt()
@@ -60,6 +61,8 @@ class NoticeViewHolder(parent: ViewGroup, private val onClick: (Notice) -> Unit)
         }
 
         noticeColorZone.setBackgroundColor(notice.color)
-        itemView.setOnClickListener { onClick(notice) }
+//        itemView.setOnClickListener {
+//            onClick(notice)
+//        }
     }
 }

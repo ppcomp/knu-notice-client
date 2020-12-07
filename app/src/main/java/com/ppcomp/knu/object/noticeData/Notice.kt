@@ -44,4 +44,6 @@ data class Notice (
 
     var bookmark: Boolean = false,
 
-    var color: Int = 0) : Parcelable
+    var color: Int = 0,
+
+    var isClicked: Boolean = false) : Parcelable
