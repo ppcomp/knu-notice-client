@@ -24,6 +24,7 @@ import com.ppcomp.knu.R
 import com.ppcomp.knu.utils.PreferenceHelper
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_main_toolbar.*
+import kotlinx.coroutines.runBlocking
 
 /**
  * 로그인 화면 Activity
@@ -59,7 +60,7 @@ class LoginActivity : AppCompatActivity() {
         searchIcon.visibility = View.GONE
 
         setSupportActionBar(main_layout_toolbar)//toolbar 지정
-        supportActionBar?.setDisplayHomeAsUpEnabled(!isNewUser) //toolbar 설정 (신규 유저가 아닐 때만 True)
+        supportActionBar?.setDisplayHomeAsUpEnabled(!GlobalApplication.isNewUser) //toolbar 설정 (신규 유저가 아닐 때만 True)
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
         supportActionBar?.setDisplayHomeAsUpEnabled(false)  //뒤로가기 버튼 제거
 
@@ -128,8 +129,9 @@ class LoginActivity : AppCompatActivity() {
                     PreferenceHelper.put("kakaoId",kakaoId)
                     PreferenceHelper.put("nickname",kakaoNickname) //닉네임 저장
                     GlobalApplication.isLogin = true    //로그인 상태 업데이트
-                    GlobalApplication.userInfoUpload(this@LoginActivity)    //카카오계정 데이터 api서버에 추가
-                    if(PreferenceHelper.get("NewUser",true)) { //신규 유저 확인
+
+                    GlobalApplication.userInfoCheck(this@LoginActivity)    //카카오계정 데이터 api서버에 추가
+                    if(GlobalApplication.isNewUser) { //신규 유저 확인
                         val toast = Toast.makeText(this@LoginActivity, "신규 사용자입니다. \n구독리스트 설정화면으로 이동합니다.", Toast.LENGTH_SHORT)
                         toast.setGravity(Gravity.CENTER, 0, 0)
                         toast.show()
@@ -154,6 +156,7 @@ class LoginActivity : AppCompatActivity() {
                             finish()
                         }
                     }
+
                 }
 
                 override fun onSessionClosed(errorResult: ErrorResult?) {

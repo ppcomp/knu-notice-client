@@ -83,26 +83,7 @@ class RestApiService {
 
     fun getUser(context: Context, id: String, onResult: (UserInfo?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
-        retrofit.getUser(id).enqueue(
-            object : Callback<UserInfo> {
-                override fun onFailure(call: Call<UserInfo>, t: Throwable) {
-                    Log.d("call",call.toString())
-                    Log.d("t",t.toString())
-                    onResult(null)
-                    Toast.makeText(context,"유저 get 요청 실패 (네트워크 문제)",Toast.LENGTH_SHORT)
-                }
-
-                override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
-                    if (response.isSuccessful) {
-                        val getKakaoUser = response.body()
-                        onResult(getKakaoUser)
-                    } else {
-                        Toast.makeText(context, "유저 get 요청 실패", Toast.LENGTH_SHORT)
-                        onResult(null)
-                    }
-                }
-            }
-        )
+        onResult(retrofit.getUser(id).execute().body())
     }
 
     fun postUser(context: Context, userData: UserInfo, onResult: (UserInfo?) -> Unit){

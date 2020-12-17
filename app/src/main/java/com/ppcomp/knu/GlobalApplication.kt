@@ -9,6 +9,7 @@ import com.kakao.auth.KakaoSDK
 import com.ppcomp.knu.`object`.UserInfo
 import com.ppcomp.knu.`object`.DeviceInfo
 import com.ppcomp.knu.adapter.KakaoSDKAdapter
+import com.ppcomp.knu.utils.LoadingDialog
 import com.ppcomp.knu.utils.PreferenceHelper
 
 /**
@@ -41,6 +42,30 @@ class GlobalApplication : Application() {
         var isFragmentChange: Array<Boolean> = arrayOf(false, false, false) //프레그먼트 변경사항 확인 (notice, keywordNotice, bookmark)
         var isServerConnect: Boolean = true    //서버 연결 상태
         var isLaunchApp: Boolean = true    //앱 시작할 때 로그인 확인
+        var isNewUser: Boolean = false
+
+        fun userInfoCheck(context: Context) {
+            val apiService = RestApiService()
+            val getId = PreferenceHelper.get("fbId","")
+            val getKakaoId = PreferenceHelper.get("kakaoId","").toString()
+            val userInfo = UserInfo(
+                id = getKakaoId,
+                device = getId
+            )
+            val dialog = LoadingDialog(context)
+            dialog.show()
+            apiService.getUser(context,getKakaoId) {
+                //서버에 데이터가 있는지 확인 (GET)
+                if(it?.id != null) {
+                    Log.d("kakaoUser_get","id != null")
+                } else {
+                    Log.d("kakaoUser_get","id = null")
+                    GlobalApplication.isNewUser = true  //서버에 정보 없으면 신규유저
+                }
+            }
+
+            dialog.dismiss()
+        }
 
         /**
          * 유저 데이터 서버에 업로드
@@ -63,7 +88,6 @@ class GlobalApplication : Application() {
                     isGetFailed = false
                 } else {
                     Log.d("kakaoUser_get","id = null")
-                    PreferenceHelper.put("NewUser",true)    //서버에 정보 없으면 신규유저
                     isGetFailed = true
                 }
 
@@ -107,7 +131,7 @@ class GlobalApplication : Application() {
             apiService.getUser(context, getKakaoId) { userInfo ->
                 //서버에 유저데이터가 있는지 확인 (GET)
                 if(userInfo?.id != null) {
-                    getSyncDeviceId = userInfo.device_id.toString()
+                    getSyncDeviceId = userInfo.device.toString()
 
                     if(getSyncDeviceId != getLocalDeviceId) {
                         //서버에 저장된 기기Id랑 로컬기기Id가 다르면
@@ -120,7 +144,6 @@ class GlobalApplication : Application() {
                             }
                         }
                     }
-
                 }
             }
         }

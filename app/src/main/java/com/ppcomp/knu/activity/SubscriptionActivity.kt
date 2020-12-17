@@ -114,7 +114,7 @@ class SubscriptionActivity : AppCompatActivity() {
         searchIcon.visibility = View.GONE
 
         setSupportActionBar(main_layout_toolbar)//toolbar 지정
-        supportActionBar?.setDisplayHomeAsUpEnabled(!isNewUser) //toolbar 설정 (신규 유저가 아닐 때만 True)
+        supportActionBar?.setDisplayHomeAsUpEnabled(!GlobalApplication.isNewUser) //toolbar 설정 (신규 유저가 아닐 때만 True)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.move_back_ic)//뒤로가기 아이콘 지정
         supportActionBar?.setDisplayShowTitleEnabled(false) //타이틀 안보이게 하기
 
@@ -133,7 +133,8 @@ class SubscriptionActivity : AppCompatActivity() {
             saveSubscription()   //체크된 구독리스트 저장
             GlobalApplication.deviceInfoUpdate(this)  //구독리스트 서버에 업로드
             GlobalApplication.userInfoUpload(this)  //유저정보 등록
-            if (isNewUser) { // 신규 사용자일시 확인버튼이 메인화면을 띄우도록
+            if (GlobalApplication.isNewUser) { // 신규 사용자일시 확인버튼이 메인화면을 띄우도록
+                GlobalApplication.isNewUser = false
                 PreferenceHelper.put("NewUser",false)   //신규사용자 false
                 myToast.setText("환영합니다.")
                 var intent = Intent(this, MainActivity::class.java)
@@ -161,7 +162,6 @@ class SubscriptionActivity : AppCompatActivity() {
      * @author 상은, 정준
      */
     private fun saveSubscription() {
-
         var storeName: String = ""
         var storeUrl: String = ""
 
