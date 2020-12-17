@@ -5,9 +5,12 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import com.facebook.stetho.Stetho
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import com.kakao.auth.KakaoSDK
 import com.ppcomp.knu.`object`.UserInfo
 import com.ppcomp.knu.`object`.DeviceInfo
+import com.ppcomp.knu.`object`.Subscription
 import com.ppcomp.knu.adapter.KakaoSDKAdapter
 import com.ppcomp.knu.utils.LoadingDialog
 import com.ppcomp.knu.utils.PreferenceHelper
@@ -133,7 +136,7 @@ class GlobalApplication : Application() {
                 if(userInfo?.id != null) {
                     getSyncDeviceId = userInfo.device.toString()
 
-                    if(getSyncDeviceId != getLocalDeviceId) {
+//                    if(getSyncDeviceId != getLocalDeviceId) {
                         //서버에 저장된 기기Id랑 로컬기기Id가 다르면
                         apiService.getDevice(context, getSyncDeviceId) { deviceInfo ->
                             //서버에 저장된 기기Id의 데이터 다운 (GET)
@@ -141,9 +144,10 @@ class GlobalApplication : Application() {
                                 PreferenceHelper.put("Keys",deviceInfo.keywords.toString())
                                 PreferenceHelper.put("subCodes",deviceInfo.subscriptions.toString())
                                 PreferenceHelper.put("alarmSwitch",(deviceInfo.alarmSwitch.toString() == "true"))
+                                updateSharedPreferences(deviceInfo.subscriptions.toString())
                             }
                         }
-                    }
+//                    }
                 }
             }
         }
@@ -219,12 +223,32 @@ class GlobalApplication : Application() {
                     Log.d("User_put", "id = null")
                 }
             }
-
         }
 
+        /**
+         * Urls 를 바탕으로 SharedPreferences 의 subList 와 Subs 를 업데이트
+         * @author 정우
+         */
+        private fun updateSharedPreferences(codes: String) {
+            val listType = object : TypeToken<ArrayList<Subscription>>() {}
+            var strConcat = PreferenceHelper.get("subList", "").toString()
+            val makeGson = GsonBuilder().create()
+            val subList: ArrayList<Subscription> = makeGson.fromJson(strConcat, listType.type)
+            val subNameList = ArrayList<String>()
+            for (code in codes.split("-")) {
+                for (sub in subList) {
+                    if (sub.url == code) {
+                        sub.checked = true
+                        subNameList.add(sub.name)
+                    } else {
+                        sub.checked = false
+                    }
+                }
+            }
 
-
-
-
+            strConcat = makeGson.toJson(subList, listType.type)
+            PreferenceHelper.put("subList", strConcat)
+            PreferenceHelper.put("subNames", subNameList.joinToString("-"))
+        }
     }
 }

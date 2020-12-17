@@ -149,8 +149,8 @@ class SplashActivity : AppCompatActivity() {
         // Arraylist를 SharedPreferences에 저장
         val makeGson = GsonBuilder().create()
         var listType: TypeToken<ArrayList<Subscription>> = object : TypeToken<ArrayList<Subscription>>() {}
-        var strContact = makeGson.toJson(subList, listType.type)
-        PreferenceHelper.put("subList", strContact)
+        var strConcat = makeGson.toJson(subList, listType.type)
+        PreferenceHelper.put("subList", strConcat)
     }
 }
 

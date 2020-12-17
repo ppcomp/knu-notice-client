@@ -37,7 +37,7 @@ class SubscriptionActivity : AppCompatActivity() {
     private var subList = arrayListOf<Subscription>()
     private var subsCheckList = arrayListOf<Subscription>()
     private var subsCheckListSize = 0
-    private lateinit var strContact: String
+    private lateinit var strConcat: String
     private lateinit var makeGson: Gson
     private lateinit var listType: TypeToken<ArrayList<Subscription>>
     lateinit var subsAdapter: SubscriptionAdapter
@@ -60,9 +60,9 @@ class SubscriptionActivity : AppCompatActivity() {
 
         //전역변수 초기화
         listType = object : TypeToken<ArrayList<Subscription>>() {}
-        strContact = PreferenceHelper.get("subList", "").toString()
+        strConcat = PreferenceHelper.get("subList", "").toString()
         makeGson = GsonBuilder().create()
-        subList = makeGson.fromJson(strContact, listType.type)
+        subList = makeGson.fromJson(strConcat, listType.type)
 
         val subCodes = PreferenceHelper.get("subCodes","")
         val subCodeList: List<String>? = subCodes?.split("+")
@@ -183,8 +183,8 @@ class SubscriptionActivity : AppCompatActivity() {
             PreferenceHelper.put("subNames", "")
             PreferenceHelper.put("subCodes", "")
 
-            strContact = makeGson.toJson(subList, listType.type)
-            PreferenceHelper.put("subList", strContact)
+            strConcat = makeGson.toJson(subList, listType.type)
+            PreferenceHelper.put("subList", strConcat)
             // 아무것도 선택 안하고 저장버튼 누를 시 reset
         } else {
             storeName = storeName.substring(0, storeName.length - 1)
@@ -193,8 +193,8 @@ class SubscriptionActivity : AppCompatActivity() {
             PreferenceHelper.put("subNames", storeName)
             PreferenceHelper.put("subCodes", storeUrl)
 
-            strContact = makeGson.toJson(subList, listType.type)
-            PreferenceHelper.put("subList", strContact)
+            strConcat = makeGson.toJson(subList, listType.type)
+            PreferenceHelper.put("subList", strConcat)
             // 선택하고 저장버튼 누를시 subNames 라는 Key로 SharedPreferences에 저장
         }
         GlobalApplication.isFragmentChange[0] = true    // 구독리스트 변경사항 확인
