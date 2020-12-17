@@ -136,7 +136,7 @@ class WebViewActivity : AppCompatActivity() {
                         "다운로드하러 가기"
                 intent.type = "text/plain"
                 intent.putExtra(Intent.EXTRA_SUBJECT, extraText)
-                intent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps")
+                intent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.ppcomp.knu")
                 startActivity(Intent.createChooser(intent, "공유하기"))
                 true
             }
