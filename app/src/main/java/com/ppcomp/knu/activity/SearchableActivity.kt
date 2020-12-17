@@ -93,7 +93,7 @@ class SearchableActivity: AppCompatActivity(), AdapterView.OnItemSelectedListene
         return if (option == "전체") {
             "all"
         } else {
-            PreferenceHelper.get("Urls", "")!!
+            PreferenceHelper.get("subCodes", "")!!
         }
     }
 }

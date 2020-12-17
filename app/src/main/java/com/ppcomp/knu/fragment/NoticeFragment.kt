@@ -29,7 +29,7 @@ class NoticeFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager2
     private lateinit var noticeTabAdapter: NoticeTabAdapter
-    private var boardNames: List<String> = PreferenceHelper.get("Subs","")!!.split("+")
+    private var boardNames: List<String> = PreferenceHelper.get("subNames","")!!.split("+")
 
     @SuppressLint("CheckResult")
     @RequiresApi(Build.VERSION_CODES.O)

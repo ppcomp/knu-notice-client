@@ -108,9 +108,9 @@ class SplashActivity : AppCompatActivity() {
      * @author 상은, 정준
      */
     private fun loadSubscription() {
-        var subsList = arrayListOf<Subscription>()
+        var subList = arrayListOf<Subscription>()
         val serverUrl = "http://${PreferenceHelper.get("serverIP", "")}/notice/list"
-        val subscriptionList = PreferenceHelper.get("Subs", "")?.split("+") // 저장된 학과를 나눠 ArrayList에 저장 -- 체크박스를 위한 용도
+        val subscriptionList = PreferenceHelper.get("subNames", "")?.split("+") // 저장된 학과를 나눠 ArrayList에 저장 -- 체크박스를 위한 용도
         val set: MutableSet<String> = mutableSetOf("")
 
         if (subscriptionList != null) {
@@ -137,19 +137,19 @@ class SplashActivity : AppCompatActivity() {
                         confirmCheck,
                         url[2]
                     )
-                subsList.add(line)
+                subList.add(line)
             }
         } catch (e: Exception) {
             val line = Subscription("오류", false, "")
         }
 
-        subsList.sortWith(Comparator { data1, data2 -> data1.name.compareTo(data2.name) })
-        subsList.sortBy { data -> data.name } // 정렬
+        subList.sortWith(Comparator { data1, data2 -> data1.name.compareTo(data2.name) })
+        subList.sortBy { data -> data.name } // 정렬
 
         // Arraylist를 SharedPreferences에 저장
         val makeGson = GsonBuilder().create()
         var listType: TypeToken<ArrayList<Subscription>> = object : TypeToken<ArrayList<Subscription>>() {}
-        var strContact = makeGson.toJson(subsList, listType.type)
+        var strContact = makeGson.toJson(subList, listType.type)
         PreferenceHelper.put("subList", strContact)
     }
 }

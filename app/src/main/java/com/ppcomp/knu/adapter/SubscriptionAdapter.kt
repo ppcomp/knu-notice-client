@@ -19,7 +19,7 @@ import kotlin.collections.ArrayList
  */
 class SubscriptionAdapter(
     val context: Context,
-    var subsList: ArrayList<Subscription>,
+    var subList: ArrayList<Subscription>,
     private val selectedItemCount: TextView,
     private val myToast: Toast,
     private var checkList: ArrayList<Subscription>?,
@@ -30,7 +30,7 @@ class SubscriptionAdapter(
     var subsFilterList = ArrayList<Subscription>()
 
     init {
-        subsFilterList = subsList
+        subsFilterList = subList
     }
 
     override fun getFilter(): Filter { // 검색 기능
@@ -38,10 +38,10 @@ class SubscriptionAdapter(
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString().toLowerCase()
                 subsFilterList = if (charSearch.isEmpty()) {
-                    subsList
+                    subList
                 } else {
                     val resultList = ArrayList<Subscription>()
-                    for (row in subsList) {
+                    for (row in subList) {
                         val iniName = HangulUtils.getHangulInitialSound(row.name, charSearch);
                         if (iniName.indexOf(charSearch) >= 0) { // 초성검색어가 있으면 해당 데이터 리스트에 추가
                             resultList.add(row)
@@ -97,7 +97,7 @@ class SubscriptionAdapter(
                 myToast.show()
                 holder.chk?.isChecked = false
             } else {
-                for (sub in subsList) {
+                for (sub in subList) {
                     if (sub.name == getName) {
                         sub.checked = isChecked
                         if (isChecked && checkList?.contains(sub) == false) {
@@ -134,19 +134,19 @@ class SubscriptionAdapter(
     }
 
     fun getName(position: Int): String {
-        return subsList[position].name
+        return subList[position].name
     }
 
     fun getChecked(position: Int): Boolean {
-        return subsList[position].checked
+        return subList[position].checked
     }
 
     fun getUrl(position: Int): String {
-        return subsList[position].url
+        return subList[position].url
     }
 
     fun setCheckAll(boolean: Boolean) {
-        for (ckbox in subsList) {
+        for (ckbox in subList) {
             if (ckbox.checked == !boolean)
                 ckbox.checked = boolean
 
@@ -157,7 +157,7 @@ class SubscriptionAdapter(
     private fun getSelectedItemCount(): Int {
         return if (checkList != null) {
             var count = 0
-            for (ckbox in subsList) {
+            for (ckbox in subList) {
                 if (ckbox.checked)
                     count++
             }

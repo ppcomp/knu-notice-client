@@ -139,7 +139,7 @@ class GlobalApplication : Application() {
                             //서버에 저장된 기기Id의 데이터 다운 (GET)
                             if(deviceInfo?.id != null) {
                                 PreferenceHelper.put("Keys",deviceInfo.keywords.toString())
-                                PreferenceHelper.put("Urls",deviceInfo.subscriptions.toString())
+                                PreferenceHelper.put("subCodes",deviceInfo.subscriptions.toString())
                                 PreferenceHelper.put("alarmSwitch",(deviceInfo.alarmSwitch.toString() == "true"))
                             }
                         }
@@ -157,7 +157,7 @@ class GlobalApplication : Application() {
             val apiService = RestApiService()
             val getId = PreferenceHelper.get("fbId","").toString()
             val getKeywords: String? = PreferenceHelper.get("Keys", "")
-            val getSubscriptions: String? = PreferenceHelper.get("Urls", "")
+            val getSubscriptions: String? = PreferenceHelper.get("subCodes", "")
             val getAlarmSwitch: Boolean? = PreferenceHelper.get("alarmSwitch", false)
             val deviceInfo = DeviceInfo(
                 id = getId,
@@ -200,7 +200,7 @@ class GlobalApplication : Application() {
             val apiService = RestApiService()
             val getId = PreferenceHelper.get("fbId","").toString()
             val getKeywords: String? = PreferenceHelper.get("Keys", "")
-            val getSubscriptions: String? = PreferenceHelper.get("Urls", "null")
+            val getSubscriptions: String? = PreferenceHelper.get("subCodes", "null")
             val getAlarmSwitch: Boolean? = PreferenceHelper.get("alarmSwitch", false)
             val deviceInfo = DeviceInfo(
                 id = getId,

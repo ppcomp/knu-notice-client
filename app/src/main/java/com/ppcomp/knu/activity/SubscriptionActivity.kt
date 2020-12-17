@@ -34,7 +34,7 @@ import kotlinx.android.synthetic.main.activity_subscription.*
  * @author 상은, 정준
  */
 class SubscriptionActivity : AppCompatActivity() {
-    private var subsList = arrayListOf<Subscription>()
+    private var subList = arrayListOf<Subscription>()
     private var subsCheckList = arrayListOf<Subscription>()
     private var subsCheckListSize = 0
     private lateinit var strContact: String
@@ -62,13 +62,13 @@ class SubscriptionActivity : AppCompatActivity() {
         listType = object : TypeToken<ArrayList<Subscription>>() {}
         strContact = PreferenceHelper.get("subList", "").toString()
         makeGson = GsonBuilder().create()
-        subsList = makeGson.fromJson(strContact, listType.type)
+        subList = makeGson.fromJson(strContact, listType.type)
 
-        val urls = PreferenceHelper.get("Urls","")
-        val urlsList: List<String>? = urls?.split("+")
+        val subCodes = PreferenceHelper.get("subCodes","")
+        val subCodeList: List<String>? = subCodes?.split("+")
 
-        for (i in subsList) {
-            for(j in urlsList!!) {
+        for (i in subList) {
+            for(j in subCodeList!!) {
                 if(i.url == j) {
                     i.checked = true
                 }
@@ -80,9 +80,9 @@ class SubscriptionActivity : AppCompatActivity() {
         }
         subsCheckListSize = subsCheckList.size
 
-        subsAdapter = SubscriptionAdapter(this, subsList, itemCount, myToast, null, null)
+        subsAdapter = SubscriptionAdapter(this, subList, itemCount, myToast, null, null)
         subsCheckAdapter =
-            SubscriptionCheckAdapter(this, subsCheckList, itemCount, subsList, subsAdapter)
+            SubscriptionCheckAdapter(this, subsCheckList, itemCount, subList, subsAdapter)
 
         subsAdapter.setCheckList(subsCheckList)
         subsAdapter.setCheckListAdapter(subsCheckAdapter)
@@ -165,7 +165,7 @@ class SubscriptionActivity : AppCompatActivity() {
         var storeName: String = ""
         var storeUrl: String = ""
 
-        for (i in 0 until subsList.count()) {
+        for (i in 0 until subList.count()) {
             var ch: Boolean = subsAdapter.getChecked(i)
             var name: String
             var url: String
@@ -174,28 +174,28 @@ class SubscriptionActivity : AppCompatActivity() {
                 url = subsAdapter.getUrl(i)
                 storeName = "$storeName$name+"
                 storeUrl = "$storeUrl$url+"
-                subsList[i].checked = true
+                subList[i].checked = true
             } else {
-                subsList[i].checked = false
+                subList[i].checked = false
             }
         }
         if (storeName == "") {
-            PreferenceHelper.put("Subs", "")
-            PreferenceHelper.put("Urls", "")
+            PreferenceHelper.put("subNames", "")
+            PreferenceHelper.put("subCodes", "")
 
-            strContact = makeGson.toJson(subsList, listType.type)
+            strContact = makeGson.toJson(subList, listType.type)
             PreferenceHelper.put("subList", strContact)
             // 아무것도 선택 안하고 저장버튼 누를 시 reset
         } else {
             storeName = storeName.substring(0, storeName.length - 1)
             storeUrl = storeUrl.substring(0, storeUrl.length - 1)
 
-            PreferenceHelper.put("Subs", storeName)
-            PreferenceHelper.put("Urls", storeUrl)
+            PreferenceHelper.put("subNames", storeName)
+            PreferenceHelper.put("subCodes", storeUrl)
 
-            strContact = makeGson.toJson(subsList, listType.type)
+            strContact = makeGson.toJson(subList, listType.type)
             PreferenceHelper.put("subList", strContact)
-            // 선택하고 저장버튼 누를시 Subs 라는 Key로 SharedPreferences에 저장
+            // 선택하고 저장버튼 누를시 subNames 라는 Key로 SharedPreferences에 저장
         }
         GlobalApplication.isFragmentChange[0] = true    // 구독리스트 변경사항 확인
         GlobalApplication.isFragmentChange[1] = true    // 키워드 변경사항 확인
