@@ -12,10 +12,9 @@ class DataUtils {
         private val colorMap: HashMap<String, Int> = HashMap()
         @SuppressLint("SimpleDateFormat")
         fun injectDataToNotices(noticeList: List<Notice>, highlightText: String?=null): List<Notice> {
-//            val nowDate: LocalDate = LocalDate.now()
+            val nowDate: LocalDate = LocalDate.now()
             for (notice in noticeList) {
                 notice.board = notice.id.split('-')[0]
-//                notice.image = R.drawable.notice_new_icon
                 if (notice.isFixed) {
                     notice.fixedImage = R.drawable.notice_fixed_pin_icon
                 }
@@ -23,14 +22,14 @@ class DataUtils {
                     notice.author = notice.author
                 }
                 if (notice.date != null) {
-//                    val sf = SimpleDateFormat("yyyy-MM-dd")
-//                    val diff = abs(
-//                        (sf.parse(nowDate.toString())!!.time - sf.parse(notice.date!!)!!.time) /
-//                                (24 * 60 * 60 * 1000)
-//                    )
-//                    if (diff <= 3) {
-//                        notice.image = R.drawable.notice_new_icon
-//                    }
+                    val sf = SimpleDateFormat("yyyy-MM-dd")
+                    val diff = abs(
+                        (sf.parse(nowDate.toString())!!.time - sf.parse(notice.date!!)!!.time) /
+                                (24 * 60 * 60 * 1000)
+                    )
+                    if (diff <= 3) {
+                        notice.image = R.drawable.notice_new_icon
+                    }
                     val dateArr = notice.date!!.split("-")
                     val day = dateArr[2].split("T")
                     notice.date = "${dateArr[0]}년 ${dateArr[1]}월 ${day[0]}일"
