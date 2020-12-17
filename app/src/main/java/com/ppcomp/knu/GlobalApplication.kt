@@ -136,7 +136,7 @@ class GlobalApplication : Application() {
                 if(userInfo?.id != null) {
                     getSyncDeviceId = userInfo.device.toString()
 
-//                    if(getSyncDeviceId != getLocalDeviceId) {
+                    if(getSyncDeviceId != getLocalDeviceId) {
                         //서버에 저장된 기기Id랑 로컬기기Id가 다르면
                         apiService.getDevice(context, getSyncDeviceId) { deviceInfo ->
                             //서버에 저장된 기기Id의 데이터 다운 (GET)
@@ -147,7 +147,7 @@ class GlobalApplication : Application() {
                                 updateSharedPreferences(deviceInfo.subscriptions.toString())
                             }
                         }
-//                    }
+                    }
                 }
             }
         }
