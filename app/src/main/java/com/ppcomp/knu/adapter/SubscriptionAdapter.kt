@@ -142,7 +142,7 @@ class SubscriptionAdapter(
     }
 
     fun getUrl(position: Int): String {
-        return subList[position].url
+        return subList[position].code
     }
 
     fun setCheckAll(boolean: Boolean) {

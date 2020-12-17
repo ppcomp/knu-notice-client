@@ -237,7 +237,7 @@ class GlobalApplication : Application() {
             val subNameList = ArrayList<String>()
             for (code in codes.split("-")) {
                 for (sub in subList) {
-                    if (sub.url == code) {
+                    if (sub.code == code) {
                         sub.checked = true
                         subNameList.add(sub.name)
                     } else {

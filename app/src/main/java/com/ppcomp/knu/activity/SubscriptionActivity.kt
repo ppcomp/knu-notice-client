@@ -69,7 +69,7 @@ class SubscriptionActivity : AppCompatActivity() {
 
         for (i in subList) {
             for(j in subCodeList!!) {
-                if(i.url == j) {
+                if(i.code == j) {
                     i.checked = true
                 }
             }
@@ -168,12 +168,12 @@ class SubscriptionActivity : AppCompatActivity() {
         for (i in 0 until subList.count()) {
             var ch: Boolean = subsAdapter.getChecked(i)
             var name: String
-            var url: String
+            var code: String
             if (ch) {
                 name = subsAdapter.getName(i)
-                url = subsAdapter.getUrl(i)
+                code = subsAdapter.getUrl(i)
                 storeName = "$storeName$name+"
-                storeUrl = "$storeUrl$url+"
+                storeUrl = "$storeUrl$code+"
                 subList[i].checked = true
             } else {
                 subList[i].checked = false
