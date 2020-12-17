@@ -24,9 +24,14 @@ class MessagingService : FirebaseMessagingService() {
         Log.d(TAG, "From: " + remoteMessage.from)
 
         if(remoteMessage.notification != null) {
+            Log.d(TAG, "Notification Message Title: ${remoteMessage.notification?.title}")
             Log.d(TAG, "Notification Message Body: ${remoteMessage.notification?.body}")
+            Log.d(TAG, "Data: ${remoteMessage.data}")
             sendNotification(remoteMessage)
 
+            val subscriptionCodes = remoteMessage.data["sub_codes"] // ex. "cse+main"
+            val keywords = remoteMessage.data["keys"]               // ex. "장학+등록"
+            // subscriptionCodes, keywords 사용해서 코딩 ㄱ
         }
     }
     override fun onNewToken(token: String) {
