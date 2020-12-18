@@ -25,4 +25,11 @@
         android:padding = "10dp"
         />
 
+
+    <item android:id="@+id/alarm"
+        android:title="알림"
+        android:icon="@drawable/nav_alarm_ic"
+        android:padding = "10dp"
+        />
+
 </menu>

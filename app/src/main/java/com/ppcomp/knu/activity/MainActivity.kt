@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private var keywordNoticeFragment = KeywordNoticeFragment()
     private var bookmarkFragment = BookmarkFragment()
     private var settingFragment = SettingFragment()
+    private var alarmFragment = AlarmFragment()
     private var activeFragment: Fragment = noticeFragment   //현재 띄워진 프레그먼트(default: noticeFragment)
 
     /**
@@ -45,6 +46,7 @@ class MainActivity : AppCompatActivity() {
             add(R.id.frameLayout, keywordNoticeFragment, keywordNoticeFragment.javaClass.simpleName).hide(keywordNoticeFragment)
             add(R.id.frameLayout, bookmarkFragment, bookmarkFragment.javaClass.simpleName).hide(bookmarkFragment)
             add(R.id.frameLayout, settingFragment, settingFragment.javaClass.simpleName).hide(settingFragment)
+            add(R.id.frameLayout, alarmFragment, alarmFragment.javaClass.simpleName).hide(alarmFragment)
         }.commit()
 
 
