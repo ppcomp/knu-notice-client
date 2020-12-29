@@ -110,6 +110,12 @@ class MainActivity : AppCompatActivity() {
                     addFragment(settingFragment)
                     return@OnNavigationItemSelectedListener true
                 }
+
+                R.id.alarm -> {
+                    setScrollTop = 3
+                    addFragment(alarmFragment)
+                    return@OnNavigationItemSelectedListener true
+                }
             }
             false
         }
@@ -161,6 +167,13 @@ class MainActivity : AppCompatActivity() {
                     remove(settingFragment)
                     settingFragment = SettingFragment()
                     add(R.id.frameLayout, settingFragment, settingFragment.javaClass.simpleName)
+                }.commit()
+            }
+            alarmFragment -> {
+                supportFragmentManager.beginTransaction().apply {
+                    remove(alarmFragment)
+                    alarmFragment = AlarmFragment()
+                    add(R.id.frameLayout, alarmFragment, alarmFragment.javaClass.simpleName)
                 }.commit()
             }
         }

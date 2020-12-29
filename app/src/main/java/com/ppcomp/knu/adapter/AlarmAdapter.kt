@@ -8,11 +8,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.ppcomp.knu.R
-import com.ppcomp.knu.`object`.Subscription
 import com.ppcomp.knu.`object`.noticeData.Alarm
-import com.ppcomp.knu.utils.HangulUtils
-import kotlinx.android.synthetic.main.activity_subscription_item.view.*
-import kotlin.collections.ArrayList
+import com.ppcomp.knu.fragment.AlarmFragment
 
 /**
  * item의 어느요소를 어느 View에 넣을 것인지 연결해주는 Adapter
@@ -20,7 +17,7 @@ import kotlin.collections.ArrayList
  */
 class AlarmAdapter(
     val context: Context,
-    var alarmList: ArrayList<Alarm>,
+    var alarmList: ArrayList<Alarm>
 ) :
     RecyclerView.Adapter<AlarmAdapter.Holder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -37,15 +34,16 @@ class AlarmAdapter(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: AlarmAdapter.Holder, position: Int) {
         holder.bind(alarmList[position], context)
-        // 체크박스 부분
 
     }
 
     inner class Holder(itemView: View?) : RecyclerView.ViewHolder(itemView!!) {
-        val name = itemView?.findViewById<TextView>(R.id.subs_name)
+        val name = itemView?.findViewById<TextView>(R.id.alarm_title)
+        val date = itemView?.findViewById<TextView>(R.id.alarm_date)
 
         fun bind(alarm: Alarm, context: Context) {
-            name?.text = alarm.title
+            name?.text = alarm.id
+            date?.text = alarm.date.toString()
         }
     }
 

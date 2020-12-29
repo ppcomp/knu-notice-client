@@ -11,8 +11,14 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.R
+import com.ppcomp.knu.`object`.Subscription
+import com.ppcomp.knu.`object`.noticeData.Alarm
 import com.ppcomp.knu.activity.MainActivity
+import java.time.LocalDate
+import java.util.ArrayList
 
 /**
  * 푸시 알림 클래스
@@ -31,7 +37,27 @@ class MessagingService : FirebaseMessagingService() {
 
             val subscriptionCodes = remoteMessage.data["sub_codes"] // ex. "cse+main"
             val keywords = remoteMessage.data["keys"]               // ex. "장학+등록"
-            // subscriptionCodes, keywords 사용해서 코딩 ㄱ
+
+            val splitSubsCode = subscriptionCodes?.split("+")
+
+            val getAlarm = PreferenceHelper.get("alarm", "").toString()
+            var listType: TypeToken<ArrayList<Alarm>> = object : TypeToken<ArrayList<Alarm>>() {}
+            val makeGson = GsonBuilder().create()
+            var alarmList = ArrayList<Alarm>()
+
+            if(getAlarm!="") {
+                alarmList = makeGson.fromJson(getAlarm, listType.type)
+            }
+
+            if (splitSubsCode != null) {
+                for (i in splitSubsCode) {
+                    Log.d("알람",i.toString())
+                    alarmList.add(Alarm(i, LocalDate.now().toString()))
+                }
+            }
+            var toJson = makeGson.toJson(alarmList, listType.type)
+            PreferenceHelper.put("alarm", toJson)
+
         }
     }
     override fun onNewToken(token: String) {
