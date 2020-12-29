@@ -29,7 +29,7 @@ class MessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "From: " + remoteMessage.from)
 
-        if(remoteMessage.notification != null) {
+/*        if(remoteMessage.notification != null) {
             Log.d(TAG, "Notification Message Title: ${remoteMessage.notification?.title}")
             Log.d(TAG, "Notification Message Body: ${remoteMessage.notification?.body}")
             Log.d(TAG, "Data: ${remoteMessage.data}")
@@ -38,7 +38,7 @@ class MessagingService : FirebaseMessagingService() {
             val subscriptionCodes = remoteMessage.data["sub_codes"] // ex. "cse+main"
             val keywords = remoteMessage.data["keys"]               // ex. "장학+등록"
 
-            val splitSubsCode = subscriptionCodes?.split("+")
+            val splitSubsCode = subscriptionCodes?.split("-")
 
             val getAlarm = PreferenceHelper.get("alarm", "").toString()
             var listType: TypeToken<ArrayList<Alarm>> = object : TypeToken<ArrayList<Alarm>>() {}
@@ -57,7 +57,35 @@ class MessagingService : FirebaseMessagingService() {
             }
             var toJson = makeGson.toJson(alarmList, listType.type)
             PreferenceHelper.put("alarm", toJson)
+        }*/
 
+        if(remoteMessage.data != null){
+            Log.d(TAG, "Notification Message Title: ${remoteMessage.notification?.title}")
+            Log.d(TAG, "Notification Message Body: ${remoteMessage.notification?.body}")
+            Log.d(TAG, "Data: ${remoteMessage.data}")
+            sendNotification(remoteMessage)
+            val subscriptionCodes = remoteMessage.data["sub_codes"] // ex. "cse+main"
+//            val keywords = remoteMessage.data["keys"]               // ex. "장학+등록"
+
+            val splitSubsCode = subscriptionCodes?.split("-")
+
+            val getAlarm = PreferenceHelper.get("alarm", "").toString()
+            var listType: TypeToken<ArrayList<Alarm>> = object : TypeToken<ArrayList<Alarm>>() {}
+            val makeGson = GsonBuilder().create()
+            var alarmList = ArrayList<Alarm>()
+
+            if(getAlarm!="") {
+                alarmList = makeGson.fromJson(getAlarm, listType.type)
+            }
+
+            if (splitSubsCode != null) {
+                for (i in splitSubsCode) {
+                    Log.d("알람",i.toString())
+                    alarmList.add(Alarm(i, LocalDate.now().toString()))
+                }
+            }
+            var toJson = makeGson.toJson(alarmList, listType.type)
+            PreferenceHelper.put("alarm", toJson)
         }
     }
     override fun onNewToken(token: String) {
