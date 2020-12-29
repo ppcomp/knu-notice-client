@@ -36,10 +36,11 @@ class MessagingService : FirebaseMessagingService() {
         } else if(remoteMessage.data != null){ // 데이터 활용, SharedPreferences 저장
             val preference = PreferenceHelper.getInstance(this)
             Log.d(TAG, "Data: ${remoteMessage.data}")
-            val subscriptionCodes = remoteMessage.data["sub_codes"] // ex. "cse+main"
+//            val subscriptionCodes = remoteMessage.data["sub_codes"] // ex. "cse+main"
+            val subscriptionNames = remoteMessage.data["sub_names"] // ex. "컴퓨터공학과+강원대학교"
 //            val keywords = remoteMessage.data["keys"]               // ex. "장학+등록"
 
-            val splitSubsCode = subscriptionCodes?.split("-")
+            val splitSubsName = subscriptionNames?.split("-")
 
             val getAlarm = PreferenceHelper.get("alarm", "").toString()
             var listType: TypeToken<ArrayList<Alarm>> = object : TypeToken<ArrayList<Alarm>>() {}
@@ -50,8 +51,8 @@ class MessagingService : FirebaseMessagingService() {
                 alarmList = makeGson.fromJson(getAlarm, listType.type)
             }
 
-            if (splitSubsCode != null) {
-                for (i in splitSubsCode) {
+            if (splitSubsName != null) {
+                for (i in splitSubsName) {
                     Log.d("알람",i)
                     alarmList.add(Alarm(i, LocalDate.now().toString()))
                 }

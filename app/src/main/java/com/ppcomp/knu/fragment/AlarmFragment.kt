@@ -98,9 +98,9 @@ class AlarmFragment : Fragment() {
             noData.visibility = View.GONE
             alarmRecyclerView.visibility = View.VISIBLE
             val getAlarmList : ArrayList<Alarm> = makeGson.fromJson(getList, listType.type)
-            for (i in getAlarmList) {
+            for (i in getAlarmList.size-1 downTo 0) {
                 Log.d("알람2", i.toString())
-                alarmList.add(Alarm(i.id, i.date))
+                alarmList.add(Alarm(getAlarmList[i].id, getAlarmList[i].date))
             }
             alarmAdapter = AlarmAdapter(requireContext(), alarmList)
             alarmRecyclerView.adapter = alarmAdapter    // LayoutManager 설정. RecyclerView 에서는 필수

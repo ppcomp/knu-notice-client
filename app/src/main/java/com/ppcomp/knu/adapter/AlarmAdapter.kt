@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Color
 import android.text.SpannableStringBuilder
 import android.text.style.ForegroundColorSpan
-import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +18,9 @@ import com.ppcomp.knu.`object`.noticeData.Alarm
  * item의 어느요소를 어느 View에 넣을 것인지 연결해주는 Adapter
  * @author 상은
  */
+
+private val colorMap: HashMap<String, Int> = HashMap()
+
 class AlarmAdapter(
     val context: Context,
     var alarmList: ArrayList<Alarm>
