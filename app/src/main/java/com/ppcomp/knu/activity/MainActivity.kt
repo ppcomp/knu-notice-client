@@ -105,16 +105,15 @@ class MainActivity : AppCompatActivity() {
                     addFragment(bookmarkFragment)
                     return@OnNavigationItemSelectedListener true
                 }
-                R.id.setting -> {
-                    setScrollTop = -1
-                    addFragment(settingFragment)
-                    return@OnNavigationItemSelectedListener true
-                }
-
                 R.id.alarm -> {
                     replaceFragment(alarmFragment)
                     setScrollTop = 3
                     addFragment(alarmFragment)
+                    return@OnNavigationItemSelectedListener true
+                }
+                R.id.setting -> {
+                    setScrollTop = -1
+                    addFragment(settingFragment)
                     return@OnNavigationItemSelectedListener true
                 }
             }
@@ -163,18 +162,18 @@ class MainActivity : AppCompatActivity() {
                     add(R.id.frameLayout, bookmarkFragment, bookmarkFragment.javaClass.simpleName)
                 }.commit()
             }
-            settingFragment -> {
-                supportFragmentManager.beginTransaction().apply {
-                    remove(settingFragment)
-                    settingFragment = SettingFragment()
-                    add(R.id.frameLayout, settingFragment, settingFragment.javaClass.simpleName)
-                }.commit()
-            }
             alarmFragment -> {
                 supportFragmentManager.beginTransaction().apply {
                     remove(alarmFragment)
                     alarmFragment = AlarmFragment()
                     add(R.id.frameLayout, alarmFragment, alarmFragment.javaClass.simpleName)
+                }.commit()
+            }
+            settingFragment -> {
+                supportFragmentManager.beginTransaction().apply {
+                    remove(settingFragment)
+                    settingFragment = SettingFragment()
+                    add(R.id.frameLayout, settingFragment, settingFragment.javaClass.simpleName)
                 }.commit()
             }
         }
