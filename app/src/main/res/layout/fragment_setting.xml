@@ -19,7 +19,7 @@
             android:layout_width="100dp"
             android:layout_height="110dp"
             android:layout_gravity="center"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="90dp"
             android:src="@drawable/setting_main_ic"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -32,6 +32,7 @@
             android:layout_height="wrap_content"
             android:text="개인 정보 설정"
             android:padding="10dp"
+            android:layout_marginTop="30dp"
             android:textStyle="bold"
             android:textColor="@color/colorBlack"
             android:textSize="16dp"
@@ -39,20 +40,20 @@
 
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_marginTop="30dp"
             app:layout_constraintTop_toBottomOf="@id/imageicon" />
 
         <LinearLayout
             android:id="@+id/changeinfo"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="match_parent"
             android:layout_marginTop="0dp"
             app:layout_constraintTop_toBottomOf="@id/userinfor"
-            android:orientation="horizontal">
+            tools:ignore="UseSwitchCompatOrMaterialXml">
             <TextView
                 android:id="@+id/login"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
+                android:layout_height="match_parent"
                 android:layout_marginTop="1dp"
                 android:layout_weight=".50"
                 android:background="@drawable/setting_bottom_line"
@@ -70,24 +71,40 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.265" />
-
-            <Switch
-                android:id="@+id/alarmSwitch"
+            <LinearLayout
+                android:orientation="vertical"
                 android:layout_width="0dp"
-                android:layout_height="60dp"
-                android:layout_marginLeft="1dp"
-                android:layout_marginTop="1dp"
-                android:layout_weight=".50"
-                android:background="@drawable/setting_bottom_line"
-                android:gravity="center_vertical|center_horizontal"
-                android:text="알림 설정:"
-                android:paddingRight="10dp"
-                android:thumbTextPadding="15dp"
-                android:textSize="18dp"
-                android:thumb="@drawable/setting_switch_thumb"
-                android:track="@drawable/setting_switch_selector"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
+                android:layout_height="wrap_content"
+                android:layout_weight=".50">
+                <Switch
+                    android:id="@+id/alarmSwitchSub"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@drawable/setting_bottom_line"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="구독 알림"
+                    android:paddingRight="10dp"
+                    android:thumbTextPadding="15dp"
+                    android:textSize="18sp"
+                    android:thumb="@drawable/setting_switch_thumb"
+                    android:track="@drawable/setting_switch_selector" />
+                <Switch
+                    android:id="@+id/alarmSwitchKey"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginTop="1dp"
+                    android:background="@drawable/setting_bottom_line"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:text="키워드 알림"
+                    android:paddingRight="10dp"
+                    android:thumbTextPadding="15dp"
+                    android:textSize="18sp"
+                    android:thumb="@drawable/setting_switch_thumb"
+                    android:track="@drawable/setting_switch_selector" />
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
