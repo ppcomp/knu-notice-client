@@ -146,7 +146,7 @@ class SearchFragment : Fragment() {
      */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateViewStatus() {
-        val target = PreferenceHelper.get("Urls", "").toString()
+        val target = PreferenceHelper.get("subCodes", "").toString()
         var toastText = ""
         if (target == "") {
             emptyResultView.text = "구독리스트가 없습니다. \n [설정 -> 구독리스트]\n화면에서 설정해주세요."

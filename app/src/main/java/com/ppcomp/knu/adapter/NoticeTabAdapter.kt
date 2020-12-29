@@ -9,8 +9,12 @@ import com.ppcomp.knu.utils.PreferenceHelper
 
 class NoticeTabAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
-    private var allTargets = PreferenceHelper.get("Urls", "")!!
-    private var targets = allTargets.split("+")
+    private var allTargets = PreferenceHelper.get("subCodes", "")!!
+    private var targets = if (allTargets == "") {
+        arrayListOf()
+    } else {
+        allTargets.split("+")
+    }
 
     override fun getItemCount(): Int = targets.size + 1
 

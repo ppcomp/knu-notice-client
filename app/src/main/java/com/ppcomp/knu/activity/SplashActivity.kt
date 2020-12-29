@@ -35,9 +35,6 @@ class SplashActivity : AppCompatActivity() {
         // Init singleton Object
         val preference = PreferenceHelper.getInstance(this)
 
-        // 신규 사용자 확인
-        val isNewUser = PreferenceHelper.get("NewUser", true)
-
         val content = this
         loadServerInfo(object : Callback {
             override fun success(data: String?) {
@@ -62,21 +59,11 @@ class SplashActivity : AppCompatActivity() {
                         GlobalApplication.deviceInfoUpload(content) //매번 디바이스 정보가 등록되었는지 확인하고 서버에 id가 없으면 등록
                     })
 
-                if (isNewUser) { // 신규 사용자일시 구독리스트 설정, 아닐시 메인화면
-                    val toast = Toast.makeText(content, "신규 사용자입니다. \n구독리스트 설정화면으로 이동합니다.", Toast.LENGTH_SHORT)
-                    toast.setGravity(Gravity.CENTER, 0, 0)
-                    toast.show()
+                GlobalApplication.isLaunchApp = true
+                val intent = Intent(content, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
 
-                    val intent = Intent(content, SubscriptionActivity::class.java)
-                    startActivity(intent)
-                    finish()
-
-                } else {
-                    GlobalApplication.isFirstLogin = true
-                    val intent = Intent(content, LoginActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                }
 
             }
             override fun fail(errorMessage: String?) {
@@ -121,9 +108,9 @@ class SplashActivity : AppCompatActivity() {
      * @author 상은, 정준
      */
     private fun loadSubscription() {
-        var subsList = arrayListOf<Subscription>()
+        var subList = arrayListOf<Subscription>()
         val serverUrl = "http://${PreferenceHelper.get("serverIP", "")}/notice/list"
-        val subscriptionList = PreferenceHelper.get("Subs", "")?.split("+") // 저장된 학과를 나눠 ArrayList에 저장 -- 체크박스를 위한 용도
+        val subscriptionList = PreferenceHelper.get("subNames", "")?.split("+") // 저장된 학과를 나눠 ArrayList에 저장 -- 체크박스를 위한 용도
         val set: MutableSet<String> = mutableSetOf("")
 
         if (subscriptionList != null) {
@@ -150,20 +137,20 @@ class SplashActivity : AppCompatActivity() {
                         confirmCheck,
                         url[2]
                     )
-                subsList.add(line)
+                subList.add(line)
             }
         } catch (e: Exception) {
             val line = Subscription("오류", false, "")
         }
 
-        subsList.sortWith(Comparator { data1, data2 -> data1.name.compareTo(data2.name) })
-        subsList.sortBy { data -> data.name } // 정렬
+        subList.sortWith(Comparator { data1, data2 -> data1.name.compareTo(data2.name) })
+        subList.sortBy { data -> data.name } // 정렬
 
         // Arraylist를 SharedPreferences에 저장
         val makeGson = GsonBuilder().create()
         var listType: TypeToken<ArrayList<Subscription>> = object : TypeToken<ArrayList<Subscription>>() {}
-        var strContact = makeGson.toJson(subsList, listType.type)
-        PreferenceHelper.put("subList", strContact)
+        var strConcat = makeGson.toJson(subList, listType.type)
+        PreferenceHelper.put("subList", strConcat)
     }
 }
 

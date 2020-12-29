@@ -23,8 +23,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight=".70"
-                android:text=""
-                android:textSize="18sp" />
+                android:text="착한선배"
+                android:textSize="20sp"
+                android:theme="@style/DialogTheme"/>
 
             <ImageView
                 android:id="@+id/search_icon"
