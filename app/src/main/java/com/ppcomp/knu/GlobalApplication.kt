@@ -232,7 +232,7 @@ class GlobalApplication : Application() {
             val subList: ArrayList<Subscription> = makeGson.fromJson(strConcat, listType.type)
             val subNameList = ArrayList<String>()
             val subCodeList = ArrayList<String>()
-            for (code in codes.split("-")) {
+            for (code in codes.split("+")) {
                 for (sub in subList) {
                     if (sub.code == code) {
                         sub.checked = true
@@ -246,8 +246,8 @@ class GlobalApplication : Application() {
 
             strConcat = makeGson.toJson(subList, listType.type)
             PreferenceHelper.put("subList", strConcat)
-            PreferenceHelper.put("subNames", subNameList.joinToString("-"))
-            PreferenceHelper.put("subCodes", subCodeList.joinToString("-"))
+            PreferenceHelper.put("subNames", subNameList.joinToString("+"))
+            PreferenceHelper.put("subCodes", subCodeList.joinToString("+"))
         }
     }
 }
