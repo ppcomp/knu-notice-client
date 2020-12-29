@@ -42,7 +42,7 @@ class UserInfoActivity : AppCompatActivity(){
             })
         }
         nickname = PreferenceHelper.get("nickname","").toString()
-        subscriptions = PreferenceHelper.get("Subs","").toString().replace("+",", ")
+        subscriptions = PreferenceHelper.get("subNames","").toString().replace("+",", ")
         keywords = PreferenceHelper.get("Keys","").toString().replace("+",", ")
 
         view_userName.text = nickname+"님 반갑습니다"   //카카오 닉네임 출력
