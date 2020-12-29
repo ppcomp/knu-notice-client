@@ -28,9 +28,14 @@ class SettingFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_setting, container, false)
 
-        view.alarmSwitch.isChecked = PreferenceHelper.get("alarmSwitch", false)
-        view.alarmSwitch.setOnCheckedChangeListener { compoundButton: CompoundButton, isChecked: Boolean ->
-            PreferenceHelper.put("alarmSwitch", isChecked)
+        view.alarmSwitchSub.isChecked = PreferenceHelper.get("alarmSwitchSub", false)
+        view.alarmSwitchSub.setOnCheckedChangeListener { compoundButton: CompoundButton, isChecked: Boolean ->
+            PreferenceHelper.put("alarmSwitchSub", isChecked)
+            GlobalApplication.deviceInfoUpdate(requireActivity())
+        }
+        view.alarmSwitchKey.isChecked = PreferenceHelper.get("alarmSwitchKey", false)
+        view.alarmSwitchKey.setOnCheckedChangeListener { compoundButton: CompoundButton, isChecked: Boolean ->
+            PreferenceHelper.put("alarmSwitchKey", isChecked)
             GlobalApplication.deviceInfoUpdate(requireActivity())
         }
         view.subscriptionSetting.setOnClickListener {

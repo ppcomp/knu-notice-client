@@ -21,7 +21,7 @@ class SubscriptionCheckAdapter(
     val context: Context,
     var subsCheckList: ArrayList<Subscription>,
     private val selectedItemCount: TextView,
-    private val subsList: ArrayList<Subscription>,
+    private val subList: ArrayList<Subscription>,
     private val subsAdapter: SubscriptionAdapter
 ) :
     RecyclerView.Adapter<SubscriptionCheckAdapter.Holder>() {
@@ -61,7 +61,7 @@ class SubscriptionCheckAdapter(
                 for (i in subsCheckList) { // 체크한 아이템의 이름으로 위치찾기
                     if (i.name == getName) {
                         subsCheckList.remove(i)
-                        for (j in subsList) { // 전체 구독리스트를 나타내는 리사이클러뷰의 체크한 아이템 체크 해제
+                        for (j in subList) { // 전체 구독리스트를 나타내는 리사이클러뷰의 체크한 아이템 체크 해제
                             if (j.name == getName) {
                                 j.checked = false
                                 subsAdapter.notifyDataSetChanged()

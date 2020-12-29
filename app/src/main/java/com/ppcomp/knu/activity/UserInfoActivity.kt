@@ -42,10 +42,10 @@ class UserInfoActivity : AppCompatActivity(){
             })
         }
         nickname = PreferenceHelper.get("nickname","").toString()
-        subscriptions = PreferenceHelper.get("Subs","").toString().replace("+",", ")
+        subscriptions = PreferenceHelper.get("subNames","").toString().replace("+",", ")
         keywords = PreferenceHelper.get("Keys","").toString().replace("+",", ")
 
-        view_userName.text = nickname+"님 반갑습니다."   //카카오 닉네임 출력
+        view_userName.text = nickname+"님 반갑습니다"   //카카오 닉네임 출력
         view_subscription_data.text = subscriptions //구독 목록 출력
         view_keyword_data.text = keywords   //키워드 목록 출력
 

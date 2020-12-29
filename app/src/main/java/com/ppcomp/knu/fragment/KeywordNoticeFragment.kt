@@ -126,7 +126,7 @@ class KeywordNoticeFragment : Fragment() {
         view.keyword_swipe.setOnRefreshListener {
             mRunnable = Runnable {
                 if (subListradioButton.isChecked) {
-                    target = PreferenceHelper.get("Urls","").toString()
+                    target = PreferenceHelper.get("subCodes","").toString()
                 } else if (allListradioButton.isChecked) {
                     target = "all"
                 }
@@ -143,7 +143,7 @@ class KeywordNoticeFragment : Fragment() {
 
         radioGroup.setOnCheckedChangeListener { radioGroup, i ->
             if (i == R.id.keyword_show_subs) {
-                target = PreferenceHelper.get("Urls","").toString()
+                target = PreferenceHelper.get("subCodes","").toString()
             } else if (i == R.id.keyword_show_all) {
                 target = "all"
             }
@@ -186,7 +186,7 @@ class KeywordNoticeFragment : Fragment() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun updateViewStatus() {
         searchQuery = PreferenceHelper.get("Keys", "").toString()
-        target = PreferenceHelper.get("Urls","").toString()
+        target = PreferenceHelper.get("subCodes","").toString()
 
         if (searchQuery == "") {
             emptyResultView.text = "선택된 키워드가 없습니다. \n [설정 -> 키워드 설정]\n화면에서 설정해주세요."

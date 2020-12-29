@@ -15,7 +15,7 @@
 
     <item android:id = "@+id/bookmark"
         android:padding = "10dp"
-        android:icon="@drawable/nav_bookmark_ic"
+        android:icon="@drawable/item_bookmark_off_ic"
         android:title="즐겨찾기"
         />
 

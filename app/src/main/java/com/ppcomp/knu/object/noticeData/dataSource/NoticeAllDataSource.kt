@@ -16,7 +16,7 @@ import java.lang.Exception
 class NoticeAllDataSource(
     private val restApi: RestApi,
     private val q: String,
-    private val target: String=PreferenceHelper.get("Urls", "")!!)
+    private val target: String=PreferenceHelper.get("subCodes", "")!!)
     : PageKeyedDataSource<Int, Notice>() {
 
     @SuppressLint("CheckResult")

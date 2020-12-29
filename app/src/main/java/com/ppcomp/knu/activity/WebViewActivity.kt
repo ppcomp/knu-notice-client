@@ -130,13 +130,12 @@ class WebViewActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_share -> {
                 val intent = Intent(Intent.ACTION_SEND)
-                val extraText = "$title\n$link\n\n" +
-                        "이 글은 착한선배로부터 공유됐어요\n" +
-                        "착한선배 - 대학교 공지사항 구독 서비스\n" +
-                        "다운로드하러 가기"
+                val extraText = "[$title]\n$link\n\n\n" +
+                        "이 글은 착한선배로부터 공유됐어요 😃\n" +
+                        "착한선배 - 강원대 공지 알림이\n" +
+                        "다운로드하러 가기 ☞ https://play.google.com/store/apps/details?id=com.ppcomp.knu"
                 intent.type = "text/plain"
-                intent.putExtra(Intent.EXTRA_SUBJECT, extraText)
-                intent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps")
+                intent.putExtra(Intent.EXTRA_TEXT, extraText)
                 startActivity(Intent.createChooser(intent, "공유하기"))
                 true
             }
