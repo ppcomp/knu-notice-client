@@ -140,7 +140,8 @@ class GlobalApplication : Application() {
                         if(deviceInfo?.id != null) {
                             PreferenceHelper.put("Keys",deviceInfo.keywords.toString())
                             PreferenceHelper.put("subCodes",deviceInfo.subscriptions.toString())
-                            PreferenceHelper.put("alarmSwitch",(deviceInfo.alarmSwitch.toString() == "true"))
+                            PreferenceHelper.put("alarmSwitchSub",(deviceInfo.alarmSwitchSub.toString() == "true"))
+                            PreferenceHelper.put("alarmSwitchKey",(deviceInfo.alarmSwitchKey.toString() == "true"))
                             updateSharedPreferences(deviceInfo.subscriptions.toString())
                         }
                     }
@@ -158,13 +159,15 @@ class GlobalApplication : Application() {
             val getId = PreferenceHelper.get("fbId","").toString()
             val getKeywords: String? = PreferenceHelper.get("Keys", "")
             val getSubscriptions: String? = PreferenceHelper.get("subCodes", "")
-            val getAlarmSwitch: Boolean? = PreferenceHelper.get("alarmSwitch", false)
+            val getAlarmSwitchSub: Boolean? = PreferenceHelper.get("alarmSwitchSub", false)
+            val getAlarmSwitchKey: Boolean? = PreferenceHelper.get("alarmSwitchKey", false)
             val deviceInfo = DeviceInfo(
                 id = getId,
                 id_method = "InstanceId",
                 keywords = getKeywords,
                 subscriptions = getSubscriptions,
-                alarmSwitch = getAlarmSwitch
+                alarmSwitchSub = getAlarmSwitchSub,
+                alarmSwitchKey = getAlarmSwitchKey
             )
 
             apiService.getDevice(context, getId) {
@@ -201,13 +204,15 @@ class GlobalApplication : Application() {
             val getId = PreferenceHelper.get("fbId","").toString()
             val getKeywords: String? = PreferenceHelper.get("Keys", "")
             val getSubscriptions: String? = PreferenceHelper.get("subCodes", "null")
-            val getAlarmSwitch: Boolean? = PreferenceHelper.get("alarmSwitch", false)
+            val getAlarmSwitchSub: Boolean? = PreferenceHelper.get("alarmSwitchSub", false)
+            val getAlarmSwitchKey: Boolean? = PreferenceHelper.get("alarmSwitchKey", false)
             val deviceInfo = DeviceInfo(
                 id = getId,
                 id_method = "InstanceId",
                 keywords = getKeywords,
                 subscriptions = getSubscriptions,
-                alarmSwitch = getAlarmSwitch
+                alarmSwitchSub = getAlarmSwitchSub,
+                alarmSwitchKey = getAlarmSwitchKey
             )
 
             apiService.putDevice(context,deviceInfo) {
