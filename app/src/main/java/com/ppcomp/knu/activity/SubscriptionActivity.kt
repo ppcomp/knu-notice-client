@@ -43,6 +43,7 @@ class SubscriptionActivity : AppCompatActivity() {
     lateinit var subsAdapter: SubscriptionAdapter
     private lateinit var subsCheckAdapter: SubscriptionCheckAdapter
     private lateinit var searchIcon: ImageView
+    private lateinit var trashcan: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,6 +103,9 @@ class SubscriptionActivity : AppCompatActivity() {
 
         searchIcon = findViewById<ImageView>(R.id.search_icon)
         searchIcon.visibility = View.GONE
+
+        trashcan = findViewById<ImageView>(R.id.trash_icon)
+        trashcan.visibility = View.GONE
 
         setSupportActionBar(main_layout_toolbar)//toolbar 지정
         supportActionBar?.setDisplayHomeAsUpEnabled(!isNewUser) //toolbar 설정 (신규 유저가 아닐 때만 True)

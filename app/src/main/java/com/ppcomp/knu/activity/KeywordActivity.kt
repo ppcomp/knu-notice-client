@@ -32,6 +32,8 @@ class KeywordActivity : AppCompatActivity() {
     var keywordList = arrayListOf<Keyword>()
     private lateinit var inputKeyword: TextView
     private lateinit var searchIcon: ImageView
+    private lateinit var trashcan: ImageView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +68,9 @@ class KeywordActivity : AppCompatActivity() {
 
         searchIcon = findViewById<ImageView>(R.id.search_icon)
         searchIcon.visibility = View.GONE
+
+        trashcan = findViewById<ImageView>(R.id.trash_icon)
+        trashcan.visibility = View.GONE
 
         setSupportActionBar(main_layout_toolbar)//toolbar 지정
         supportActionBar?.setDisplayHomeAsUpEnabled(true)//toolbar  보이게 하기

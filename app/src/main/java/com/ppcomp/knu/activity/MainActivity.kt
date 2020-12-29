@@ -112,6 +112,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.alarm -> {
+                    replaceFragment(alarmFragment)
                     setScrollTop = 3
                     addFragment(alarmFragment)
                     return@OnNavigationItemSelectedListener true

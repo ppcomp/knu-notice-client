@@ -39,6 +39,7 @@ class BookmarkFragment : Fragment() {
     private lateinit var searchIcon: ImageView
     private lateinit var bookmarkViewModel: NoticeViewModel
     private lateinit var adapter: BookmarkAdapter
+    private lateinit var trashcan: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,8 +52,10 @@ class BookmarkFragment : Fragment() {
         progressBar = view!!.findViewById((R.id.bookmark_progressbar)) as ProgressBar
         noData = view!!.findViewById((R.id.bookmark_null_view)) as TextView
         searchIcon = view!!.findViewById<ImageView>(R.id.search_icon)
+        trashcan = view!!.findViewById<ImageView>(R.id.trash_icon)
         progressBar.visibility = View.GONE                                //progressbar 숨기기
         searchIcon.visibility = View.GONE
+        trashcan.visibility = View.GONE
 
         bookmarkViewModel = ViewModelProvider(this).get(NoticeViewModel::class.java)
         adapter = BookmarkAdapter(bookmarkViewModel) { notice ->

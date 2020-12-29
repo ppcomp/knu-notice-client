@@ -32,6 +32,13 @@
                 android:layout_height="25dp"
                 android:layout_weight=".30"
                 android:src="@drawable/toolbar_search_ic" />
+
+            <ImageView
+                android:id="@+id/trash_icon"
+                android:layout_width="0dp"
+                android:layout_height="25dp"
+                android:layout_weight=".30"
+                android:src="@drawable/toolbar_trashcan_ic" />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 </com.google.android.material.appbar.AppBarLayout>

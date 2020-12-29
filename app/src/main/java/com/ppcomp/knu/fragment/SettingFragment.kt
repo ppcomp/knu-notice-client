@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_setting.view.*
 class SettingFragment : Fragment() {
 
     private lateinit var searchIcon: ImageView
+    private lateinit var trashcan: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,6 +70,8 @@ class SettingFragment : Fragment() {
 
         searchIcon = view!!.findViewById<ImageView>(R.id.search_icon)
         searchIcon.visibility = View.GONE
+        trashcan = view!!.findViewById<ImageView>(R.id.trash_icon)
+        trashcan.visibility = View.GONE
         return view
     }
 }

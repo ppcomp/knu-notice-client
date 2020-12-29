@@ -63,6 +63,7 @@ class KeywordNoticeFragment : Fragment() {
     private lateinit var progressBar: ProgressBar
     private lateinit var emptyResultView: TextView
     private lateinit var searchIcon:ImageView
+    private lateinit var trashcan: ImageView
     private lateinit var radioGroup: RadioGroup
     private lateinit var allListradioButton: RadioButton
     private lateinit var subListradioButton: RadioButton
@@ -105,7 +106,9 @@ class KeywordNoticeFragment : Fragment() {
         radioGroup = view.findViewById(R.id.keyword_radio_group) as RadioGroup
         allListradioButton = view.findViewById(R.id.keyword_show_all)
         subListradioButton = view.findViewById(R.id.keyword_show_subs)
+        trashcan = view!!.findViewById<ImageView>(R.id.trash_icon)
 
+        trashcan.visibility = View.GONE
         searchIcon.visibility = View.GONE
         progressBar.visibility = View.GONE      //progressbar 숨기기
         emptyResultView.visibility = View.GONE

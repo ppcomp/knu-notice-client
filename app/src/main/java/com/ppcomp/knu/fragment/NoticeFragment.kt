@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
@@ -29,6 +30,7 @@ class NoticeFragment : Fragment() {
 
     private lateinit var viewPager: ViewPager2
     private lateinit var noticeTabAdapter: NoticeTabAdapter
+    private lateinit var trashcan: ImageView
     private var boardNames: List<String> = PreferenceHelper.get("Subs","")!!.split("+")
 
     @SuppressLint("CheckResult")
@@ -42,6 +44,8 @@ class NoticeFragment : Fragment() {
         viewPager = view.findViewById(R.id.pager)
         noticeTabAdapter = NoticeTabAdapter(this)
         viewPager.adapter = noticeTabAdapter
+        trashcan = view!!.findViewById<ImageView>(R.id.trash_icon)
+        trashcan.visibility = View.GONE
 
         // 검색 리스너
         view.search_icon.setOnClickListener {

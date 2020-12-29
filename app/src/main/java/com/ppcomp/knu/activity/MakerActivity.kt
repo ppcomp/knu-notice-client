@@ -20,6 +20,7 @@ import org.json.JSONArray
 class MakerActivity : AppCompatActivity() {
 
     private lateinit var searchIcon: ImageView
+    private lateinit var trashcan: ImageView
     private var makerList = arrayListOf<MakerData>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,6 +31,9 @@ class MakerActivity : AppCompatActivity() {
 
         searchIcon = findViewById<ImageView>(R.id.search_icon)
         searchIcon.visibility = GONE
+
+        trashcan = findViewById<ImageView>(R.id.trash_icon)
+        trashcan.visibility = GONE
 
         val title = findViewById<TextView>(R.id.state_title)
         title.text = "만든이"
