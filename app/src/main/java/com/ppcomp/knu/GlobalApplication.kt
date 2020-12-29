@@ -135,17 +135,13 @@ class GlobalApplication : Application() {
                 //서버에 유저데이터가 있는지 확인 (GET)
                 if(userInfo?.id != null) {
                     getSyncDeviceId = userInfo.device.toString()
-
-                    if(getSyncDeviceId != getLocalDeviceId) {
-                        //서버에 저장된 기기Id랑 로컬기기Id가 다르면
-                        apiService.getDevice(context, getSyncDeviceId) { deviceInfo ->
-                            //서버에 저장된 기기Id의 데이터 다운 (GET)
-                            if(deviceInfo?.id != null) {
-                                PreferenceHelper.put("Keys",deviceInfo.keywords.toString())
-                                PreferenceHelper.put("subCodes",deviceInfo.subscriptions.toString())
-                                PreferenceHelper.put("alarmSwitch",(deviceInfo.alarmSwitch.toString() == "true"))
-                                updateSharedPreferences(deviceInfo.subscriptions.toString())
-                            }
+                    apiService.getDevice(context, getSyncDeviceId) { deviceInfo ->
+                        //서버에 저장된 기기Id의 데이터 다운 (GET)
+                        if(deviceInfo?.id != null) {
+                            PreferenceHelper.put("Keys",deviceInfo.keywords.toString())
+                            PreferenceHelper.put("subCodes",deviceInfo.subscriptions.toString())
+                            PreferenceHelper.put("alarmSwitch",(deviceInfo.alarmSwitch.toString() == "true"))
+                            updateSharedPreferences(deviceInfo.subscriptions.toString())
                         }
                     }
                 }
@@ -235,11 +231,13 @@ class GlobalApplication : Application() {
             val makeGson = GsonBuilder().create()
             val subList: ArrayList<Subscription> = makeGson.fromJson(strConcat, listType.type)
             val subNameList = ArrayList<String>()
+            val subCodeList = ArrayList<String>()
             for (code in codes.split("-")) {
                 for (sub in subList) {
                     if (sub.code == code) {
                         sub.checked = true
                         subNameList.add(sub.name)
+                        subCodeList.add(sub.code)
                     } else {
                         sub.checked = false
                     }
@@ -249,6 +247,7 @@ class GlobalApplication : Application() {
             strConcat = makeGson.toJson(subList, listType.type)
             PreferenceHelper.put("subList", strConcat)
             PreferenceHelper.put("subNames", subNameList.joinToString("-"))
+            PreferenceHelper.put("subCodes", subCodeList.joinToString("-"))
         }
     }
 }
