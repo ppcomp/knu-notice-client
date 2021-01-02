@@ -12,25 +12,7 @@ import retrofit2.Response
 class RestApiService {
     fun getDevice(context: Context, id: String, onResult: (DeviceInfo?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
-        retrofit.getDevice(id).enqueue(
-            object : Callback<DeviceInfo> {
-                override fun onFailure(call: Call<DeviceInfo>, t: Throwable) {
-                    Log.d("call",call.toString())
-                    Log.d("t",t.toString())
-                    onResult(null)
-                    Toast.makeText(context,"디바이스 get 요청 실패 (네트워크 문제)",Toast.LENGTH_SHORT)
-                }
-                override fun onResponse(call: Call<DeviceInfo>, response: Response<DeviceInfo>) {
-                    if (response.isSuccessful) {
-                        val getUser = response.body()
-                        onResult(getUser)
-                    } else {
-                        Toast.makeText(context, "디바이스 get 요청 실패", Toast.LENGTH_SHORT)
-                        onResult(null)
-                    }
-                }
-            }
-        )
+        onResult(retrofit.getDevice(id).execute().body())
     }
 
     fun postDevice(context: Context, deviceData: DeviceInfo, onResult: (DeviceInfo?) -> Unit){
