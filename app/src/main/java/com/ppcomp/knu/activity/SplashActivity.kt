@@ -34,6 +34,9 @@ import java.util.*
  */
 class SplashActivity : AppCompatActivity() {
 
+    // For a flexible update, use AppUpdateType.FLEXIBLE
+    // But, if you want to force to update, use AppUpdateType.IMMEDIATE
+    private val appUpdateType = AppUpdateType.FLEXIBLE
     private val MY_REQUEST_CODE = 100
     private lateinit var appUpdateManager: AppUpdateManager
 
@@ -53,15 +56,14 @@ class SplashActivity : AppCompatActivity() {
         // Checks that the platform will allow the specified type of update.
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                // For a flexible update, use AppUpdateType.FLEXIBLE
-                && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+                && appUpdateInfo.isUpdateTypeAllowed(appUpdateType)
             ) {
                 try {
                     appUpdateManager.startUpdateFlowForResult(
                         appUpdateInfo,
-                        AppUpdateType.IMMEDIATE, // 유연한 업데이트 사용 시 (AppUpdateType.FLEXIBLE)
-                        this,    // 현재 Activity
-                        MY_REQUEST_CODE  // 전역변수로 선언해준 Code
+                        appUpdateType,
+                        this,
+                        MY_REQUEST_CODE
                     )
                 } catch (e: SendIntentException) {
                     Log.e("AppUpdater", "AppUpdateManager Error", e)
