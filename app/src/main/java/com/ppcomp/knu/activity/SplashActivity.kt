@@ -1,6 +1,7 @@
 package com.ppcomp.knu.activity
 
 import android.content.Intent
+import android.content.IntentSender.SendIntentException
 import android.os.Bundle
 import android.os.StrictMode
 import android.util.Log
@@ -8,6 +9,10 @@ import android.view.Gravity
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.database.*
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.GsonBuilder
@@ -28,9 +33,18 @@ import java.util.*
  * @author 김상은, 정준
  */
 class SplashActivity : AppCompatActivity() {
+
+    // For a flexible update, use AppUpdateType.FLEXIBLE
+    // But, if you want to force to update, use AppUpdateType.IMMEDIATE
+    private val appUpdateType = AppUpdateType.FLEXIBLE
+    private val MY_REQUEST_CODE = 100
+    private lateinit var appUpdateManager: AppUpdateManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         StrictMode.enableDefaults()
+
+        inAppUpdate()
 
         // Init singleton Object
         val preference = PreferenceHelper.getInstance(this)
@@ -48,30 +62,90 @@ class SplashActivity : AppCompatActivity() {
                             Log.w("tokenSave", "getInstanceId failed", task.exception)
                             return@OnCompleteListener
                         }
-
                         // Get new Instance ID token
                         val fbId = task.result?.token
                         PreferenceHelper.put("fbId", fbId)
-                        // Log and toast
-                        val getId = PreferenceHelper.get("fbId", "")
-                        Log.d("tokenSave", getId)
-
-                        GlobalApplication.deviceInfoUpload(content) //매번 디바이스 정보가 등록되었는지 확인하고 서버에 id가 없으면 등록
+                        GlobalApplication.deviceInfoUpload(content) //서버에 id 등록
                     })
-
                 GlobalApplication.isLaunchApp = true
                 val intent = Intent(content, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
-
-
             }
+
             override fun fail(errorMessage: String?) {
-                val toast = Toast.makeText(content, "$errorMessage | 파이어베이스 서버에 접속할 수 없습니다. 어플을 재시작 해주세요.", Toast.LENGTH_SHORT)
+                val toast = Toast.makeText(
+                    content,
+                    "$errorMessage | 파이어베이스 서버에 접속할 수 없습니다. 어플을 재시작 해주세요.",
+                    Toast.LENGTH_SHORT
+                )
                 toast.setGravity(Gravity.CENTER, 0, 0)
                 toast.show()
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability()
+                == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
+            ) {
+                // 인 앱 업데이트가 이미 실행중이었다면 계속해서 진행하도록
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        AppUpdateType.IMMEDIATE,
+                        this,
+                        MY_REQUEST_CODE
+                    )
+                } catch (e: SendIntentException) {
+                    e.printStackTrace()
+                }
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == MY_REQUEST_CODE) {
+            if (resultCode != RESULT_OK) {
+                Log.d("AppUpdate", "Update flow failed! Result code: $resultCode")
+                Toast.makeText(
+                    this,
+                    "착한선배를 이용하기 위해서는 업데이트가 필요해요.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                finishAffinity() // 앱 종료
+            }
+        }
+    }
+
+    private fun inAppUpdate() {
+        // Creates instance of the manager.
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+
+        // Returns an intent object that you use to check for an update.
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
+
+        // Checks that the platform will allow the specified type of update.
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(appUpdateType) // or IMMEDIATE or FLEXIBLE
+            ) {
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        appUpdateType,
+                        this,
+                        MY_REQUEST_CODE
+                    )
+                } catch (e: SendIntentException) {
+                    Log.e("AppUpdater", "AppUpdateManager Error", e)
+                    e.printStackTrace()
+                }
+            }
+        }
     }
 
     /**
@@ -88,6 +162,7 @@ class SplashActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 callback.success(dataSnapshot.value.toString());
             }
+
             override fun onCancelled(error: DatabaseError) {
                 callback.fail(error.message);
             }
