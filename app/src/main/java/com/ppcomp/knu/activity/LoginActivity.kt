@@ -142,6 +142,7 @@ class LoginActivity : AppCompatActivity() {
                     }
                     else {
                         GlobalApplication.userInfoDownload(this@LoginActivity)  //서버에 저장되어 있는 데이터 다운로드
+                        GlobalApplication.deviceInfoUpload(this@LoginActivity)  //디바이스 정보 업로드
                         GlobalApplication.userInfoUpload(this@LoginActivity)    //카카오계정 데이터 api서버에 추가
 
                         if(GlobalApplication.isLaunchApp) { //앱실행시에 로그인이면 메인 화면으로 이동

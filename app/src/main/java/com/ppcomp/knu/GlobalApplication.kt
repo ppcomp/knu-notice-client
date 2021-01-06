@@ -192,6 +192,18 @@ class GlobalApplication : Application() {
                         }
                     }
                 }
+                else {
+                    //서버에 데이터가 있으면 데이터 업데이트 (PUT)
+                    apiService.putDevice(context,deviceInfo) {
+                        if (it?.id != null) {
+                            // it = newly added user parsed as response
+                            // it?.id = newly added user ID
+                            Log.d("User_put", "id != null")
+                        } else {
+                            Log.d("User_put", "id = null")
+                        }
+                    }
+                }
             }
         }
 
