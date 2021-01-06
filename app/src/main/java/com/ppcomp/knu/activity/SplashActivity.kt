@@ -36,7 +36,7 @@ class SplashActivity : AppCompatActivity() {
 
     // For a flexible update, use AppUpdateType.FLEXIBLE
     // But, if you want to force to update, use AppUpdateType.IMMEDIATE
-    private val appUpdateType = AppUpdateType.FLEXIBLE
+    private val appUpdateType = AppUpdateType.IMMEDIATE
     private val MY_REQUEST_CODE = 100
     private lateinit var appUpdateManager: AppUpdateManager
 
