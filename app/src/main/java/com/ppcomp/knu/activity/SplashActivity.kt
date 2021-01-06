@@ -44,45 +44,68 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         StrictMode.enableDefaults()
 
-        inAppUpdate()
-
         // Init singleton Object
         val preference = PreferenceHelper.getInstance(this)
 
-        val content = this
-        loadServerInfo(object : Callback {
-            override fun success(data: String?) {
-                PreferenceHelper.put("serverIP", data)
-                loadSubscription()  //서버에서 전체 구독리스트 다운로드
+        // Creates instance of the manager.
+        appUpdateManager = AppUpdateManagerFactory.create(this)
 
-                //firebase instanceId를 저장하는 코드
-                FirebaseInstanceId.getInstance().instanceId
-                    .addOnCompleteListener(OnCompleteListener { task ->
-                        if (!task.isSuccessful) {
-                            Log.w("tokenSave", "getInstanceId failed", task.exception)
-                            return@OnCompleteListener
-                        }
-                        // Get new Instance ID token
-                        val fbId = task.result?.token
-                        PreferenceHelper.put("fbId", fbId)
-                        GlobalApplication.deviceInfoUpload(content) //서버에 id 등록
-                    })
-                GlobalApplication.isLaunchApp = true
-                val intent = Intent(content, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
+        // Returns an intent object that you use to check for an update.
+        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
 
-            override fun fail(errorMessage: String?) {
-                val toast = Toast.makeText(
-                    content,
-                    "$errorMessage | 파이어베이스 서버에 접속할 수 없습니다. 어플을 재시작 해주세요.",
-                    Toast.LENGTH_SHORT
-                )
-                toast.setGravity(Gravity.CENTER, 0, 0)
-                toast.show()
+        // Checks that the platform will allow the specified type of update.
+        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                && appUpdateInfo.isUpdateTypeAllowed(appUpdateType)
+            ) {
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                        appUpdateInfo,
+                        appUpdateType,
+                        this,
+                        MY_REQUEST_CODE
+                    )
+                } catch (e: SendIntentException) {
+                    Log.e("AppUpdater", "AppUpdateManager Error", e)
+                    e.printStackTrace()
+                }
+            } else {
+                val content = this
+                loadServerInfo(object : Callback {
+                    override fun success(data: String?) {
+                        PreferenceHelper.put("serverIP", data)
+                        loadSubscription()  //서버에서 전체 구독리스트 다운로드
+
+                        //firebase instanceId를 저장하는 코드
+                        FirebaseInstanceId.getInstance().instanceId
+                            .addOnCompleteListener(OnCompleteListener { task ->
+                                if (!task.isSuccessful) {
+                                    Log.w("tokenSave", "getInstanceId failed", task.exception)
+                                    return@OnCompleteListener
+                                }
+                                // Get new Instance ID token
+                                val fbId = task.result?.token
+                                PreferenceHelper.put("fbId", fbId)
+                                GlobalApplication.deviceInfoUpload(content) //서버에 id 등록
+                            })
+                        GlobalApplication.isLaunchApp = true
+                        val intent = Intent(content, LoginActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }
+
+                    override fun fail(errorMessage: String?) {
+                        val toast = Toast.makeText(
+                            content,
+                            "$errorMessage | 파이어베이스 서버에 접속할 수 없습니다. 어플을 재시작 해주세요.",
+                            Toast.LENGTH_SHORT
+                        )
+                        toast.setGravity(Gravity.CENTER, 0, 0)
+                        toast.show()
+                    }
+                })
             }
-        })
+        }
     }
 
     override fun onResume() {
@@ -121,40 +144,13 @@ class SplashActivity : AppCompatActivity() {
         }
     }
 
-    private fun inAppUpdate() {
-        // Creates instance of the manager.
-        appUpdateManager = AppUpdateManagerFactory.create(this)
-
-        // Returns an intent object that you use to check for an update.
-        val appUpdateInfoTask = appUpdateManager.appUpdateInfo
-
-        // Checks that the platform will allow the specified type of update.
-        appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                && appUpdateInfo.isUpdateTypeAllowed(appUpdateType) // or IMMEDIATE or FLEXIBLE
-            ) {
-                try {
-                    appUpdateManager.startUpdateFlowForResult(
-                        appUpdateInfo,
-                        appUpdateType,
-                        this,
-                        MY_REQUEST_CODE
-                    )
-                } catch (e: SendIntentException) {
-                    Log.e("AppUpdater", "AppUpdateManager Error", e)
-                    e.printStackTrace()
-                }
-            }
-        }
-    }
-
     /**
      * firebase data 수신 함수
      * 수신 완료, 혹은 취소시 callback 함수 호출
      * @author 정우
      */
     private fun loadServerInfo(
-        callback:Callback
+        callback: Callback
     ) {
         val database: FirebaseDatabase = FirebaseDatabase.getInstance()
         val myRef: DatabaseReference = database.getReference("url").child("server")
