@@ -33,9 +33,9 @@ import kotlinx.coroutines.runBlocking
 
 class LoginActivity : AppCompatActivity() {
     private var callback: SessionCallback = SessionCallback() //카카오에서 제공하는 콜백함수
-    private lateinit var kakaoId: String
-    private lateinit var kakaoNickname: String
-    private lateinit var kakakoThumbnail: String
+    private var kakaoId: String? = null
+    private var kakaoNickname: String? = null
+    private var kakakoThumbnail: String? = null
     private lateinit var searchIcon: ImageView
     private lateinit var myToast: Toast
     private var backWait: Long = 0
