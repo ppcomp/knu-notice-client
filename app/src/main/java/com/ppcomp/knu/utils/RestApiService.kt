@@ -5,11 +5,17 @@ import android.widget.Toast
 import com.ppcomp.knu.`object`.UserInfo
 import com.ppcomp.knu.utils.RestApi
 import com.ppcomp.knu.`object`.DeviceInfo
+import com.ppcomp.knu.`object`.Version
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class RestApiService {
+    fun getVersion(): Version? {
+        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        return retrofit.getVersion().execute().body()
+    }
+
     fun getDevice(context: Context, id: String, onResult: (DeviceInfo?) -> Unit){
         val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         onResult(retrofit.getDevice(id).execute().body())

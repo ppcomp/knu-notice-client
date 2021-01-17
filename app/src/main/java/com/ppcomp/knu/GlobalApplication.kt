@@ -47,6 +47,25 @@ class GlobalApplication : Application() {
         var isLaunchApp: Boolean = true    //앱 시작할 때 로그인 확인
         var isNewUser: Boolean = false
 
+        /**
+         * Check available version from server.
+         * @return true if available.
+         * false if not available(need update).
+         * @author 정우
+         */
+        fun checkVersion(): Boolean {
+            val apiService = RestApiService()
+            val res = apiService.getVersion() ?: return true
+            return if (res.availableVersionCode <= BuildConfig.VERSION_CODE) {
+                if (res.latest!!.split("-")[0].toInt() == BuildConfig.VERSION_CODE) {
+                    Log.d("checkVersion", "최신버전")
+                }
+                true
+            } else {
+                false
+            }
+        }
+
         fun userInfoCheck(context: Context) {
             val apiService = RestApiService()
             val getId = PreferenceHelper.get("fbId","")
