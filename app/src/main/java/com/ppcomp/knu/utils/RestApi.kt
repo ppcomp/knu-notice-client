@@ -3,6 +3,7 @@ package com.ppcomp.knu.utils
 import com.ppcomp.knu.`object`.DeviceInfo
 import com.ppcomp.knu.`object`.noticeData.ReceivedData
 import com.ppcomp.knu.`object`.UserInfo
+import com.ppcomp.knu.`object`.Version
 import io.reactivex.Single
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -33,6 +34,10 @@ interface RestApi {
                 .create(RestApi::class.java)
         }
     }
+
+    @Headers("Content-Type: application/json")
+    @GET("/support/version")
+    fun getVersion(): Call<Version>
 
     @Headers("Content-Type: application/json")
     @GET("/accounts/device")

@@ -46,7 +46,7 @@ class SplashActivity : AppCompatActivity() {
         StrictMode.enableDefaults()
 
         // Init singleton Object
-        val preference = PreferenceHelper.getInstance(this)
+        PreferenceHelper.getInstance(this)
 
         // Creates instance of the manager.
         appUpdateManager = AppUpdateManagerFactory.create(this)
@@ -57,7 +57,8 @@ class SplashActivity : AppCompatActivity() {
         // Checks that the platform will allow the specified type of update.
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
-                && appUpdateInfo.isUpdateTypeAllowed(appUpdateType)
+//                && appUpdateInfo.isUpdateTypeAllowed(appUpdateType) // Without server version check.
+                && !GlobalApplication.checkVersion() // Check version
             ) {
                 try {
                     appUpdateManager.startUpdateFlowForResult(
@@ -71,11 +72,14 @@ class SplashActivity : AppCompatActivity() {
                     e.printStackTrace()
                 }
             } else {
+                // Load server info
                 loadServerInfoHandler(this)
             }
         }
         appUpdateInfoTask.addOnFailureListener { appUpdateInfo ->
+            // Load server info
             loadServerInfoHandler(this)
+
 //            throw Exception(appUpdateInfo)
         }
     }
