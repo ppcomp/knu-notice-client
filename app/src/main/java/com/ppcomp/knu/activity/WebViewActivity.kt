@@ -3,12 +3,16 @@ package com.ppcomp.knu.activity
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
+import android.net.http.SslError
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.webkit.*
+import android.webkit.SslErrorHandler
+import android.webkit.WebChromeClient
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -16,7 +20,7 @@ import com.ppcomp.knu.R
 import com.ppcomp.knu.`object`.noticeData.Notice
 import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
 import kotlinx.android.synthetic.main.activity_main_toolbar.*
-import kotlinx.android.synthetic.main.weblayout.*
+import kotlinx.android.synthetic.main.activity_weblayout.*
 
 
 class WebViewActivity : AppCompatActivity() {
@@ -33,7 +37,7 @@ class WebViewActivity : AppCompatActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.weblayout)
+        setContentView(R.layout.activity_weblayout)
         val searchIcon = findViewById<ImageView>(R.id.search_icon)
         searchIcon.visibility = View.GONE
         link = intent.getStringExtra("link")!!
@@ -54,13 +58,13 @@ class WebViewActivity : AppCompatActivity() {
         mWebView.settings.javaScriptEnabled = true //자바스크립트 허용
         mWebView.webChromeClient = WebChromeClient() // To allow js alert
         mWebView.webViewClient = object : WebViewClient() { // To use webView instead of chrome
-            override fun shouldOverrideUrlLoading(
-                view: WebView,
-                url: String
-            ): Boolean {
+            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 webViewLoadCount += 1
                 view.loadUrl(url)
                 return true
+            }
+            override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
+                handler.proceed() // Ignore SSL certificate errors
             }
         }
         mWebView.setDownloadListener { url, userAgent, contentDisposition, mimeType, contentLength ->
