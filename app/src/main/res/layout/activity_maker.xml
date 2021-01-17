@@ -7,13 +7,19 @@
     tools:context=".activity.MakerActivity"
     tools:ignore="MissingDefaultResource">
 
-    <include layout="@layout/activity_main_toolbar"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/maker"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:orientation="vertical">
+
+        <include layout="@layout/activity_main_toolbar"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/maker"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

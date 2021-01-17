@@ -1,5 +1,6 @@
 package com.ppcomp.knu.activity
 
+import android.content.Context
 import android.content.Intent
 import android.content.IntentSender.SendIntentException
 import android.os.Bundle
@@ -70,41 +71,12 @@ class SplashActivity : AppCompatActivity() {
                     e.printStackTrace()
                 }
             } else {
-                val content = this
-                loadServerInfo(object : Callback {
-                    override fun success(data: String?) {
-                        PreferenceHelper.put("serverIP", data)
-                        loadSubscription()  //서버에서 전체 구독리스트 다운로드
-
-                        //firebase instanceId를 저장하는 코드
-                        FirebaseInstanceId.getInstance().instanceId
-                            .addOnCompleteListener(OnCompleteListener { task ->
-                                if (!task.isSuccessful) {
-                                    Log.w("tokenSave", "getInstanceId failed", task.exception)
-                                    return@OnCompleteListener
-                                }
-                                // Get new Instance ID token
-                                val fbId = task.result?.token
-                                PreferenceHelper.put("fbId", fbId)
-                                GlobalApplication.deviceInfoUpload(content) //서버에 id 등록
-                            })
-                        GlobalApplication.isLaunchApp = true
-                        val intent = Intent(content, LoginActivity::class.java)
-                        startActivity(intent)
-                        finish()
-                    }
-
-                    override fun fail(errorMessage: String?) {
-                        val toast = Toast.makeText(
-                            content,
-                            "$errorMessage | 파이어베이스 서버에 접속할 수 없습니다. 어플을 재시작 해주세요.",
-                            Toast.LENGTH_SHORT
-                        )
-                        toast.setGravity(Gravity.CENTER, 0, 0)
-                        toast.show()
-                    }
-                })
+                loadServerInfoHandler(this)
             }
+        }
+        appUpdateInfoTask.addOnFailureListener { appUpdateInfo ->
+            loadServerInfoHandler(this)
+//            throw Exception(appUpdateInfo)
         }
     }
 
@@ -142,6 +114,47 @@ class SplashActivity : AppCompatActivity() {
                 finishAffinity() // 앱 종료
             }
         }
+    }
+
+    /**
+     * loadServerInfo 핸들러
+     * loadServerInfo를 호출한 후, 성공 여부에 따른 적절한 후처리를 해준다.
+     * @author 정우
+     */
+    private fun loadServerInfoHandler(content: Context) {
+        loadServerInfo(object : Callback {
+            override fun success(data: String?) {
+                PreferenceHelper.put("serverIP", data)
+                loadSubscription()  //서버에서 전체 구독리스트 다운로드
+
+                //firebase instanceId를 저장하는 코드
+                FirebaseInstanceId.getInstance().instanceId
+                    .addOnCompleteListener(OnCompleteListener { task ->
+                        if (!task.isSuccessful) {
+                            Log.w("tokenSave", "getInstanceId failed", task.exception)
+                            return@OnCompleteListener
+                        }
+                        // Get new Instance ID token
+                        val fbId = task.result?.token
+                        PreferenceHelper.put("fbId", fbId)
+                        GlobalApplication.deviceInfoUpload(content) //서버에 id 등록
+                    })
+                GlobalApplication.isLaunchApp = true
+                val intent = Intent(content, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+
+            override fun fail(errorMessage: String?) {
+                val toast = Toast.makeText(
+                    content,
+                    "$errorMessage | 파이어베이스 서버에 접속할 수 없습니다. 어플을 재시작 해주세요.",
+                    Toast.LENGTH_SHORT
+                )
+                toast.setGravity(Gravity.CENTER, 0, 0)
+                toast.show()
+            }
+        })
     }
 
     /**
