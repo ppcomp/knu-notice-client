@@ -4,190 +4,196 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include layout="@layout/activity_main_toolbar"/>
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp">
-        <LinearLayout
+        android:orientation="vertical">
+
+        <include layout="@layout/activity_main_toolbar"/>
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height = "match_parent"
-            android:padding="10dp"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="안드로이드"
-                android:textSize="23sp"
-                android:textStyle="bold" />
+                android:layout_height = "match_parent"
+                android:padding="10dp"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="https://source.android.google.cn/setup/start/licenses?hl=ko\n
-Android 소프트웨어에는 Apache 2.0 라이선스가 부여됩니다.\n
-본 프로젝트를 진행하면서 기본 라이선스를 준수하기 위해 노력하겠지만, 예외로 처리되는 사례가 있을 수 있습니다.\n
-예를 들어 Linux 커널 패치에는 kernel.org에서 확인할 수 있는 시스템 예외가 포함된 GPLv2 라이선스가 적용됩니다.\n
-AOSP에 아이디어, 코드 또는 문서를 기여하는 모든 개인 기여자(자신을 위해서만 기여하는 자)는 개인 기여자 라이선스 계약을 작성하고 서명한 다음 제출해야 합니다.\n
-코드 검토 도구를 통해 온라인으로 계약을 체결할 수 있습니다.\n
-이 계약은 AOSP에 지적 재산을 기여하는 조건을 명확하게 정의합니다.\n
-이 라이선스는 프로젝트의 보호와 기여자로서의 보호를 위한 것이며 기여를 다른 목적으로 사용하기 위해 권리를 변경하지 않습니다.\n
-AOSP를 사용하는 직원은 기업(또는 기타 법인)에 제공되는 기업 기여자 라이선스 계약을 사용할 수 있습니다.\n
-이 계약 버전을 통해 기업은 지정된 직원이 제출하는 기여를 승인하고 저작권 및 특허 라이선스를 부여할 수 있습니다."
-                android:textSize="15sp"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="안드로이드"
+                    android:textSize="23sp"
+                    android:textStyle="bold" />
 
-
-
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="23sp"
-                android:textStyle="bold"
-                android:text="카페24 당당해 폰트" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textSize="15sp"
-                android:text="카페24(주)이 제공하는 '카페24 당당해'는 SIL OPEN FONT LICENSE(Version 1.1)에 따라 사용이 허가됩니다.
-
-'카페24 당당해'의 지적 재산권은 카페24(주)에 있습니다.
-'카페24 당당해'는 개인 및 기업 사용자를 포함한 모든 사용자에게 무료로 제공되며 자유롭게 수정하고 재배포할 수 있습니다.
-단, 글꼴 자체를 유료로 판매하는 것은 금지하며 본 저작권 안내와 라이선스 전문을 포함해서 다른 소프트웨어와 번들하거나 재배포 또는 판매가 가능합니다.
-라이선스 전문을 포함하기 어려울 경우, 출처 표기를 권장합니다.
-예) 이 페이지에는 카페24(주)이 제공한 '카페24 당당해'가 적용되어 있습니다.
-'카페24 당당해'가 사용된 인쇄물, 광고물(온라인 포함)의 이미지는 카페24(주)의 프로모션을 위해 활용될 수 있습니다.
-이를 원치 않는 사용자는 언제든지 당사에 요청하실 수 있습니다." />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="쿠키런 글꼴"
-                android:textSize="23sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:text="'쿠키런 글꼴'의 지식 재산권은 데브시스터즈(주)에 있습니다.
-'쿠키런 글꼴'은 개인 및 기업 사용자를 포함한 모든 사용자에게 무료로 제공되며
-자유롭게 사용할 수 있습니다.
-'쿠키런 글꼴'은 온/오프라인, 상품, 광고 등 상업적 목적으로 사용할 수 있습니다.
-단, '쿠키런 글꼴' 자체를 유료로 판매하거나, 어떠한 형태로든 임의 수정 및
-개작하여 글꼴을 재배포 하는 것은 금지합니다.
-'쿠키런 글꼴'은 배포되는 형태 그대로 사용해야 합니다.
-쿠키런 IP를 상징하는 쿠키런 딩벳 10자1)의 경우 상업적 목적으로 사용할 수 없으며,
-비상업적인 용도에 한해 사용이 가능합니다. 그리고, 어떠한 형태로든 임의 수정 및
-개작은 금지합니다.
-'쿠키런 글꼴'은 본 저작권 안내와 라이선스 전문을 포함해서
-다른 소프트웨어에 임베딩 및 번들하거나 재배포가 가능합니다.
-라이선스 전문을 포함하기 어려울 경우 ‘쿠키런 글꼴'의 출처 표기를 권장합니다.
-예) 이 페이지에는 데브시스터즈에서 제작한 ‘쿠키런 글꼴’이 적용되어 있습니다.
-'쿠키런 글꼴'을 사용한 온/오프라인, 상품, 광고 등 모든 종류의 창작물은
-쿠키런 및 데브시스터즈 프로모션을 위해 활용될 수 있습니다.
-이를 원치 않는 사용자는 언제든지 당사에 요청하실 수 있습니다. "
-                android:textSize="15sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="23sp"
-                android:textStyle="bold"
-                android:text="카카오 로그인" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textSize="15sp"
-                android:text="https://developers.kakao.com/docs/latest/ko/kakaologin/android" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="23sp"
-                android:textStyle="bold"
-                android:text="곰두리 캐릭터" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textSize="15sp"
-                android:text="https://www.kangwon.ac.kr/www/contents.do?key=23" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="23sp"
-                android:textStyle="bold"
-                android:text="picasso" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textSize="15sp"
-                android:text="https://github.com/square/picasso/blob/master/LICENSE.txt" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="23sp"
-                android:textStyle="bold"
-                android:text="retrofit" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textSize="15sp"
-                android:text="https://github.com/square/retrofit/tree/master/retrofit-converters/gson\nhttps://github.com/square/retrofit/blob/master/LICENSE.txt" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="23sp"
-                android:textStyle="bold"
-                android:text="bumptech" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textSize="15sp"
-                android:text="https://github.com/bumptech/glide/blob/master/LICENSE" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textSize="23sp"
-                android:textStyle="bold"
-                android:text="벡터 아이콘" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:textSize="15sp"
-                android:text="https://www.flaticon.com/kr/authors/freepik\nhttps://pngtree.com/so/게시판-아이콘'>게시판-아이콘 "/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="https://source.android.google.cn/setup/start/licenses?hl=ko\n
+    Android 소프트웨어에는 Apache 2.0 라이선스가 부여됩니다.\n
+    본 프로젝트를 진행하면서 기본 라이선스를 준수하기 위해 노력하겠지만, 예외로 처리되는 사례가 있을 수 있습니다.\n
+    예를 들어 Linux 커널 패치에는 kernel.org에서 확인할 수 있는 시스템 예외가 포함된 GPLv2 라이선스가 적용됩니다.\n
+    AOSP에 아이디어, 코드 또는 문서를 기여하는 모든 개인 기여자(자신을 위해서만 기여하는 자)는 개인 기여자 라이선스 계약을 작성하고 서명한 다음 제출해야 합니다.\n
+    코드 검토 도구를 통해 온라인으로 계약을 체결할 수 있습니다.\n
+    이 계약은 AOSP에 지적 재산을 기여하는 조건을 명확하게 정의합니다.\n
+    이 라이선스는 프로젝트의 보호와 기여자로서의 보호를 위한 것이며 기여를 다른 목적으로 사용하기 위해 권리를 변경하지 않습니다.\n
+    AOSP를 사용하는 직원은 기업(또는 기타 법인)에 제공되는 기업 기여자 라이선스 계약을 사용할 수 있습니다.\n
+    이 계약 버전을 통해 기업은 지정된 직원이 제출하는 기여를 승인하고 저작권 및 특허 라이선스를 부여할 수 있습니다."
+                    android:textSize="15sp"/>
 
 
 
-        </LinearLayout>
-    </ScrollView>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textSize="23sp"
+                    android:textStyle="bold"
+                    android:text="카페24 당당해 폰트" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textSize="15sp"
+                    android:text="카페24(주)이 제공하는 '카페24 당당해'는 SIL OPEN FONT LICENSE(Version 1.1)에 따라 사용이 허가됩니다.
+
+    '카페24 당당해'의 지적 재산권은 카페24(주)에 있습니다.
+    '카페24 당당해'는 개인 및 기업 사용자를 포함한 모든 사용자에게 무료로 제공되며 자유롭게 수정하고 재배포할 수 있습니다.
+    단, 글꼴 자체를 유료로 판매하는 것은 금지하며 본 저작권 안내와 라이선스 전문을 포함해서 다른 소프트웨어와 번들하거나 재배포 또는 판매가 가능합니다.
+    라이선스 전문을 포함하기 어려울 경우, 출처 표기를 권장합니다.
+    예) 이 페이지에는 카페24(주)이 제공한 '카페24 당당해'가 적용되어 있습니다.
+    '카페24 당당해'가 사용된 인쇄물, 광고물(온라인 포함)의 이미지는 카페24(주)의 프로모션을 위해 활용될 수 있습니다.
+    이를 원치 않는 사용자는 언제든지 당사에 요청하실 수 있습니다." />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="쿠키런 글꼴"
+                    android:textSize="23sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="'쿠키런 글꼴'의 지식 재산권은 데브시스터즈(주)에 있습니다.
+    '쿠키런 글꼴'은 개인 및 기업 사용자를 포함한 모든 사용자에게 무료로 제공되며
+    자유롭게 사용할 수 있습니다.
+    '쿠키런 글꼴'은 온/오프라인, 상품, 광고 등 상업적 목적으로 사용할 수 있습니다.
+    단, '쿠키런 글꼴' 자체를 유료로 판매하거나, 어떠한 형태로든 임의 수정 및
+    개작하여 글꼴을 재배포 하는 것은 금지합니다.
+    '쿠키런 글꼴'은 배포되는 형태 그대로 사용해야 합니다.
+    쿠키런 IP를 상징하는 쿠키런 딩벳 10자1)의 경우 상업적 목적으로 사용할 수 없으며,
+    비상업적인 용도에 한해 사용이 가능합니다. 그리고, 어떠한 형태로든 임의 수정 및
+    개작은 금지합니다.
+    '쿠키런 글꼴'은 본 저작권 안내와 라이선스 전문을 포함해서
+    다른 소프트웨어에 임베딩 및 번들하거나 재배포가 가능합니다.
+    라이선스 전문을 포함하기 어려울 경우 ‘쿠키런 글꼴'의 출처 표기를 권장합니다.
+    예) 이 페이지에는 데브시스터즈에서 제작한 ‘쿠키런 글꼴’이 적용되어 있습니다.
+    '쿠키런 글꼴'을 사용한 온/오프라인, 상품, 광고 등 모든 종류의 창작물은
+    쿠키런 및 데브시스터즈 프로모션을 위해 활용될 수 있습니다.
+    이를 원치 않는 사용자는 언제든지 당사에 요청하실 수 있습니다. "
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textSize="23sp"
+                    android:textStyle="bold"
+                    android:text="카카오 로그인" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textSize="15sp"
+                    android:text="https://developers.kakao.com/docs/latest/ko/kakaologin/android" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textSize="23sp"
+                    android:textStyle="bold"
+                    android:text="곰두리 캐릭터" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textSize="15sp"
+                    android:text="https://www.kangwon.ac.kr/www/contents.do?key=23" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textSize="23sp"
+                    android:textStyle="bold"
+                    android:text="picasso" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textSize="15sp"
+                    android:text="https://github.com/square/picasso/blob/master/LICENSE.txt" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textSize="23sp"
+                    android:textStyle="bold"
+                    android:text="retrofit" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textSize="15sp"
+                    android:text="https://github.com/square/retrofit/tree/master/retrofit-converters/gson\nhttps://github.com/square/retrofit/blob/master/LICENSE.txt" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textSize="23sp"
+                    android:textStyle="bold"
+                    android:text="bumptech" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textSize="15sp"
+                    android:text="https://github.com/bumptech/glide/blob/master/LICENSE" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textSize="23sp"
+                    android:textStyle="bold"
+                    android:text="벡터 아이콘" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textSize="15sp"
+                    android:text="https://www.flaticon.com/kr/authors/freepik\nhttps://pngtree.com/so/게시판-아이콘'>게시판-아이콘 "/>
+
+
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
