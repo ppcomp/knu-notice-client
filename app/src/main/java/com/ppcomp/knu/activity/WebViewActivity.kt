@@ -70,7 +70,10 @@ class WebViewActivity : AppCompatActivity() {
                 return true
             }
             override fun onReceivedSslError(view: WebView, handler: SslErrorHandler, error: SslError) {
-                handler.proceed() // Ignore SSL certificate errors
+                if(error.toString() == "SSLError")
+                    handler.cancel()
+                else
+                    handler.proceed() // Ignore SSL certificate errors
             }
         }
         mWebView.setDownloadListener { url, userAgent, contentDisposition, mimeType, contentLength ->
