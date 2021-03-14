@@ -22,7 +22,11 @@ import com.ppcomp.knu.`object`.noticeData.NoticeViewModel
 import kotlinx.android.synthetic.main.activity_main_toolbar.*
 import kotlinx.android.synthetic.main.activity_weblayout.*
 
-
+/**
+ * WebView Activity
+ * 웹 주소를 가지고 앱안에서 웹페이지를 보여줌
+ * @author 정우, 정준
+ */
 class WebViewActivity : AppCompatActivity() {
 
     private var menu: Menu? = null
@@ -56,6 +60,8 @@ class WebViewActivity : AppCompatActivity() {
         mWebView = webView //xml 자바코드 연결
         mWebView.settings.defaultTextEncodingName = "UTF-8"
         mWebView.settings.javaScriptEnabled = true //자바스크립트 허용
+        mWebView.settings.builtInZoomControls = true //페이지 줌 기능 허용
+        mWebView.settings.displayZoomControls = false //줌 컨트롤 박스 제거
         mWebView.webChromeClient = WebChromeClient() // To allow js alert
         mWebView.webViewClient = object : WebViewClient() { // To use webView instead of chrome
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
