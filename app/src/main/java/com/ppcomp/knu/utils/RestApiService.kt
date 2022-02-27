@@ -1,9 +1,10 @@
+package com.ppcomp.knu.utils
 
+import ServiceBuilder
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.ppcomp.knu.`object`.UserInfo
-import com.ppcomp.knu.utils.RestApi
 import com.ppcomp.knu.`object`.DeviceInfo
 import com.ppcomp.knu.`object`.Version
 import retrofit2.Call
@@ -11,18 +12,19 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class RestApiService {
+    companion object {
+        private val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+    }
+
     fun getVersion(): Version? {
-        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         return retrofit.getVersion().execute().body()
     }
 
     fun getDevice(context: Context, id: String, onResult: (DeviceInfo?) -> Unit){
-        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
-        onResult(retrofit.getDevice(id).execute().body())
+        onResult(retrofit.getDeviceInfo(DeviceInfo(id=id)).execute().body())
     }
 
     fun postDevice(context: Context, deviceData: DeviceInfo, onResult: (DeviceInfo?) -> Unit){
-        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.postDevice(deviceData).enqueue(
             object : Callback<DeviceInfo> {
                 override fun onFailure(call: Call<DeviceInfo>, t: Throwable) {
@@ -46,7 +48,6 @@ class RestApiService {
     }
 
     fun putDevice(context: Context,deviceData: DeviceInfo, onResult: (DeviceInfo?) -> Unit){
-        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.putDevice(deviceData).enqueue(
             object : Callback<DeviceInfo> {
                 override fun onFailure(call: Call<DeviceInfo>, t: Throwable) {
@@ -70,12 +71,10 @@ class RestApiService {
     }
 
     fun getUser(context: Context, id: String, onResult: (UserInfo?) -> Unit){
-        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         onResult(retrofit.getUser(id).execute().body())
     }
 
     fun postUser(context: Context, userData: UserInfo, onResult: (UserInfo?) -> Unit){
-        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.postUser(userData).enqueue(
             object : Callback<UserInfo> {
                 override fun onFailure(call: Call<UserInfo>, t: Throwable) {
@@ -99,7 +98,6 @@ class RestApiService {
     }
 
     fun putUser(context: Context, userData: UserInfo, onResult: (UserInfo?) -> Unit){
-        val retrofit = ServiceBuilder.buildService(RestApi::class.java)
         retrofit.putUser(userData).enqueue(
             object : Callback<UserInfo> {
                 override fun onFailure(call: Call<UserInfo>, t: Throwable) {

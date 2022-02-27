@@ -41,7 +41,12 @@ interface RestApi {
 
     @Headers("Content-Type: application/json")
     @GET("/accounts/device")
+    @Deprecated("Getting device with GET method is deprecated. Use getDeviceInfo() instead.")
     fun getDevice(@Query("id") id: String): Call<DeviceInfo>
+
+    @Headers("Content-Type: application/json")
+    @POST("/accounts/device-info")
+    fun getDeviceInfo(@Body deviceData: DeviceInfo): Call<DeviceInfo>
 
     @Headers("Content-Type: application/json")
     @POST("/accounts/device")

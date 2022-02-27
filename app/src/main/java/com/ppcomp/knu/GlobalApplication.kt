@@ -1,6 +1,6 @@
 package com.ppcomp.knu
 
-import RestApiService
+import com.ppcomp.knu.utils.RestApiService
 import android.app.Application
 import android.content.Context
 import android.util.Log
