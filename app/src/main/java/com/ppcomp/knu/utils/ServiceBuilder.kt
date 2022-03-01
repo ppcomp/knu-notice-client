@@ -1,4 +1,5 @@
-import com.ppcomp.knu.utils.PreferenceHelper
+package com.ppcomp.knu.utils
+
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
