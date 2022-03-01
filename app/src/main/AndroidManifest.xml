@@ -18,8 +18,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".activity.SearchableActivity"
-            android:parentActivityName=".activity.KeywordActivity"
-            android:exported="false">
+            android:parentActivityName=".activity.KeywordActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -48,8 +47,7 @@
         <activity
             android:name=".activity.SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme"
-            android:exported="true">
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
