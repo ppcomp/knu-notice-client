@@ -1,39 +1,44 @@
 package com.ppcomp.knu.utils
 
-import ServiceBuilder
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import com.ppcomp.knu.`object`.UserInfo
 import com.ppcomp.knu.`object`.DeviceInfo
 import com.ppcomp.knu.`object`.Version
+import com.ppcomp.knu.dto.device.BaseDeviceInfo
+import com.ppcomp.knu.dto.device.DeviceInfoRequest
+import com.ppcomp.knu.dto.device.DeviceInfoResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class RestApiService {
     companion object {
-        private val retrofit = ServiceBuilder.buildService(RestApi::class.java)
+        private val restApi = RestApi.create()
     }
 
     fun getVersion(): Version? {
-        return retrofit.getVersion().execute().body()
+        return restApi.getVersion().execute().body()
     }
 
-    fun getDevice(context: Context, id: String, onResult: (DeviceInfo?) -> Unit){
-        onResult(retrofit.getDeviceInfo(DeviceInfo(id=id)).execute().body())
+    fun getDevice(context: Context, id: String, onResult: (DeviceInfoResponse?) -> Unit){
+        onResult(restApi.getDeviceInfo(BaseDeviceInfo(id=id, id_method = "InstanceId")).execute().body())
     }
 
-    fun postDevice(context: Context, deviceData: DeviceInfo, onResult: (DeviceInfo?) -> Unit){
-        retrofit.postDevice(deviceData).enqueue(
-            object : Callback<DeviceInfo> {
-                override fun onFailure(call: Call<DeviceInfo>, t: Throwable) {
+    fun postDevice(context: Context, deviceData: DeviceInfo, onResult: (DeviceInfoResponse?) -> Unit){
+        restApi.postDevice(DeviceInfoRequest(deviceData)).enqueue(
+            object : Callback<DeviceInfoResponse> {
+                override fun onFailure(call: Call<DeviceInfoResponse>, t: Throwable) {
                     Log.d("call", call.toString())
                     Log.d("t",t.toString())
                     onResult(null)
                     Toast.makeText(context,"디바이스 post 요청 실패 (네트워크 문제)",Toast.LENGTH_SHORT)
                 }
-                override fun onResponse(call: Call<DeviceInfo>, response: Response<DeviceInfo>) {
+                override fun onResponse(
+                    call: Call<DeviceInfoResponse>,
+                    response: Response<DeviceInfoResponse>
+                ) {
                     if(response.isSuccessful) {
                         val addedUser = response.body()
                         onResult(addedUser)
@@ -47,16 +52,19 @@ class RestApiService {
         )
     }
 
-    fun putDevice(context: Context,deviceData: DeviceInfo, onResult: (DeviceInfo?) -> Unit){
-        retrofit.putDevice(deviceData).enqueue(
-            object : Callback<DeviceInfo> {
-                override fun onFailure(call: Call<DeviceInfo>, t: Throwable) {
+    fun putDevice(context: Context,deviceData: DeviceInfo, onResult: (DeviceInfoResponse?) -> Unit){
+        restApi.putDevice(DeviceInfoRequest(deviceData)).enqueue(
+            object : Callback<DeviceInfoResponse> {
+                override fun onFailure(call: Call<DeviceInfoResponse>, t: Throwable) {
                     Log.d("call", call.toString())
                     Log.d("t",t.toString())
                     onResult(null)
                     Toast.makeText(context,"디바이스 put 요청 실패 (네트워크 문제)",Toast.LENGTH_SHORT)
                 }
-                override fun onResponse(call: Call<DeviceInfo>, response: Response<DeviceInfo>) {
+                override fun onResponse(
+                    call: Call<DeviceInfoResponse>,
+                    response: Response<DeviceInfoResponse>
+                ) {
                     if(response.isSuccessful) {
                         val modifiedUser = response.body()
                         onResult(modifiedUser)
@@ -71,11 +79,11 @@ class RestApiService {
     }
 
     fun getUser(context: Context, id: String, onResult: (UserInfo?) -> Unit){
-        onResult(retrofit.getUser(id).execute().body())
+        onResult(restApi.getUser(id).execute().body())
     }
 
     fun postUser(context: Context, userData: UserInfo, onResult: (UserInfo?) -> Unit){
-        retrofit.postUser(userData).enqueue(
+        restApi.postUser(userData).enqueue(
             object : Callback<UserInfo> {
                 override fun onFailure(call: Call<UserInfo>, t: Throwable) {
                     Log.d("call",call.toString())
@@ -98,7 +106,7 @@ class RestApiService {
     }
 
     fun putUser(context: Context, userData: UserInfo, onResult: (UserInfo?) -> Unit){
-        retrofit.putUser(userData).enqueue(
+        restApi.putUser(userData).enqueue(
             object : Callback<UserInfo> {
                 override fun onFailure(call: Call<UserInfo>, t: Throwable) {
                     Log.d("call", call.toString())

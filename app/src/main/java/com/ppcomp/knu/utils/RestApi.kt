@@ -4,6 +4,9 @@ import com.ppcomp.knu.`object`.DeviceInfo
 import com.ppcomp.knu.`object`.noticeData.ReceivedData
 import com.ppcomp.knu.`object`.UserInfo
 import com.ppcomp.knu.`object`.Version
+import com.ppcomp.knu.dto.device.BaseDeviceInfo
+import com.ppcomp.knu.dto.device.DeviceInfoRequest
+import com.ppcomp.knu.dto.device.DeviceInfoResponse
 import io.reactivex.Single
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -42,19 +45,19 @@ interface RestApi {
     @Headers("Content-Type: application/json")
     @GET("/accounts/device")
     @Deprecated("Getting device with GET method is deprecated. Use getDeviceInfo() instead.")
-    fun getDevice(@Query("id") id: String): Call<DeviceInfo>
+    fun getDevice(@Query("id") id: String): Call<DeviceInfoResponse>
 
     @Headers("Content-Type: application/json")
     @POST("/accounts/device-info")
-    fun getDeviceInfo(@Body deviceData: DeviceInfo): Call<DeviceInfo>
+    fun getDeviceInfo(@Body deviceData: BaseDeviceInfo): Call<DeviceInfoResponse>
 
     @Headers("Content-Type: application/json")
     @POST("/accounts/device")
-    fun postDevice(@Body deviceData: DeviceInfo): Call<DeviceInfo>
+    fun postDevice(@Body deviceData: DeviceInfoRequest): Call<DeviceInfoResponse>
 
     @Headers("Content-Type: application/json")
     @PUT("/accounts/device")
-    fun putDevice(@Body deviceData: DeviceInfo): Call<DeviceInfo>
+    fun putDevice(@Body deviceData: DeviceInfoRequest): Call<DeviceInfoResponse>
 
     @Headers("Content-Type: application/json")
     @GET("/accounts/user")
