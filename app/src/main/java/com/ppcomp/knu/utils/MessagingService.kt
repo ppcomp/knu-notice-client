@@ -46,17 +46,15 @@ class MessagingService : FirebaseMessagingService() {
 
         var notificationManager: NotificationManager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        if( android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) { //안드로이드 오레오부터 적용되는 코드
-            val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance)
-            channel.description = description
-            channel.enableLights(true)
-            channel.lightColor = Color.RED
-            channel.enableVibration(true)
-            channel.setShowBadge(false)
-            notificationManager.createNotificationChannel(channel)
-        }
+        val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME, importance)
+        channel.description = description
+        channel.enableLights(true)
+        channel.lightColor = Color.RED
+        channel.enableVibration(true)
+        channel.setShowBadge(false)
+        notificationManager.createNotificationChannel(channel)
 
-        var pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT) //intent를 특정 시점에 실행시킬 때 사용
+        var pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_MUTABLE) //intent를 특정 시점에 실행시킬 때 사용
         val notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
         var notificationBuilder = NotificationCompat.Builder(this,CHANNEL_ID)
