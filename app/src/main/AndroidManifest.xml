@@ -18,7 +18,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".activity.SearchableActivity"
-            android:parentActivityName=".activity.KeywordActivity">
+            android:parentActivityName=".activity.KeywordActivity"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
@@ -26,11 +27,11 @@
         <activity
             android:name=".activity.MakerActivity"
             android:parentActivityName=".activity.KeywordActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="fullSensor" />
         <activity
             android:name=".activity.KeywordActivity"
             android:parentActivityName=".activity.KeywordActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustNothing" />
         <activity
             android:name=".adapter.SubscriptionAdapter"
@@ -38,16 +39,17 @@
         <activity
             android:name=".activity.SubscriptionActivity"
             android:parentActivityName=".activity.KeywordActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustNothing" /> <!-- adjustNothing : 키보드가 화면에 영향 안주도록 -->
         <activity
             android:name=".activity.LicenseActivity"
             android:parentActivityName=".activity.KeywordActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="fullSensor" />
         <activity
             android:name=".activity.SplashActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/SplashTheme">
+            android:screenOrientation="fullSensor"
+            android:theme="@style/SplashTheme"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -56,18 +58,18 @@
         </activity>
         <activity
             android:name=".activity.LoginActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:parentActivityName=".activity.KeywordActivity"/>
         <activity
             android:name=".activity.UserInfoActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="fullSensor" />
         <activity
             android:name=".activity.MainActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
 
         <activity android:name=".activity.WebViewActivity"
-            android:screenOrientation="portrait"
+            android:screenOrientation="fullSensor"
             android:parentActivityName=".activity.MainActivity"/>
 
         <meta-data

@@ -5,12 +5,12 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 32
 
     defaultConfig {
         applicationId "com.ppcomp.knu"
-        minSdkVersion 16
-        targetSdkVersion 29
+        minSdkVersion 26
+        targetSdkVersion 32
         versionCode 10
         versionName "0.1.8"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -35,30 +35,32 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.paging:paging-runtime-ktx:2.1.2'
-    def paging_version = "2.1.2"
-    def room_version = "2.2.5"
+    implementation 'androidx.paging:paging-runtime-ktx:3.1.0'
+    def paging_version = "3.1.0"
+    def room_version = "2.4.2"
+    def kakao_version = "1.30.7"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.core:core-ktx:1.3.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0'
-    implementation 'androidx.annotation:annotation:1.1.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+    implementation 'androidx.annotation:annotation:1.3.0'
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"   //viewModel-coroutine
-    implementation 'androidx.preference:preference:1.1.1'
-    implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1"   //viewModel-coroutine
+    implementation 'androidx.preference:preference-ktx:1.2.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'androidx.work:work-runtime-ktx:2.7.1'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0' // DrawerLayout
-    implementation 'com.google.android.material:material:1.2.0' // NavigationView
-    implementation 'com.google.firebase:firebase-analytics:17.5.0' // Firebase analytics
+    implementation 'com.google.android.material:material:1.5.0' // NavigationView
+    implementation 'com.google.firebase:firebase-analytics:20.1.0' // Firebase analytics
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0" //swipe 새로고침
-    implementation group: 'com.kakao.sdk', name: 'usermgmt', version: '1.29.0'// 카카오 로그인
-    implementation group: 'com.kakao.sdk', name: 'kakaotalk', version: '1.29.0' // 카카오톡 로그인
-    implementation group: 'com.kakao.sdk', name: 'kakaolink', version: '1.29.0' // 카카오 링크
+    implementation "com.kakao.sdk:usermgmt:$kakao_version" // 카카오 로그인
+    implementation "com.kakao.sdk:kakaotalk:$kakao_version" // 카카오톡 로그인
+    implementation "com.kakao.sdk:kakaolink:$kakao_version" // 카카오 링크
     implementation 'com.squareup.retrofit2:retrofit:2.6.1' //유저 정보 보내기
     implementation 'com.squareup.retrofit2:converter-gson:2.6.1' //유저 정보 보내기
     implementation 'com.squareup.retrofit2:retrofit-mock:2.3.0'
@@ -66,21 +68,21 @@ dependencies {
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
     implementation 'com.squareup.okhttp3:okhttp:3.12.8'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.10.0'
-    implementation 'com.github.bumptech.glide:glide:4.9.0' // glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0' // glide
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0' // glide
-    implementation 'com.google.firebase:firebase-storage-ktx:19.1.1'    //storage
-    implementation 'com.google.firebase:firebase-database-ktx:19.4.0'
-    implementation 'com.firebaseui:firebase-ui-storage:7.2.0'   //storage
-    implementation 'com.google.firebase:firebase-messaging:20.2.4' //push message
-    implementation 'com.google.android.material:material:1.3.0-alpha02' //scroll시 appbar 숨기기
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.0.10'
-    implementation 'com.google.code.gson:gson:2.8.5'
-    implementation "androidx.paging:paging-runtime:$paging_version" // For Kotlin use paging-runtime-ktx
-    testImplementation "androidx.paging:paging-common:$paging_version" // For Kotlin use paging-common-ktx
-    implementation "androidx.paging:paging-rxjava2:$paging_version" // For Kotlin use paging-rxjava2-ktx
+    implementation 'com.google.firebase:firebase-storage-ktx:20.0.0'    //storage
+    implementation 'com.google.firebase:firebase-database-ktx:20.0.3'
+    implementation 'com.firebaseui:firebase-ui-storage:8.0.0'   //storage
+    implementation 'com.google.firebase:firebase-messaging:23.0.0' //push message
+    implementation 'com.google.android.material:material:1.6.0-alpha03' //scroll시 appbar 숨기기
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version" // For Kotlin use paging-runtime-ktx
+    testImplementation "androidx.paging:paging-common-ktx:$paging_version" // For Kotlin use paging-common-ktx
+    implementation "androidx.paging:paging-rxjava2-ktx:$paging_version" // For Kotlin use paging-rxjava2-ktx
     implementation "androidx.room:room-runtime:$room_version"   //room
     implementation "androidx.room:room-ktx:$room_version"   //room-ktx
     kapt "androidx.room:room-compiler:$room_version"    //room compiler
     implementation 'com.facebook.stetho:stetho:1.5.1'   //support debugging
-    implementation 'com.google.android.play:core:1.9.0'
+    implementation 'com.google.android.play:core:1.10.3'
 }

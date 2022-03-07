@@ -15,7 +15,7 @@ import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.database.*
-import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import com.ppcomp.knu.GlobalApplication
@@ -132,14 +132,14 @@ class SplashActivity : AppCompatActivity() {
                 loadSubscription()  //서버에서 전체 구독리스트 다운로드
 
                 //firebase instanceId를 저장하는 코드
-                FirebaseInstanceId.getInstance().instanceId
+                FirebaseMessaging.getInstance().token
                     .addOnCompleteListener(OnCompleteListener { task ->
                         if (!task.isSuccessful) {
                             Log.w("tokenSave", "getInstanceId failed", task.exception)
                             return@OnCompleteListener
                         }
-                        // Get new Instance ID token
-                        val fbId = task.result?.token
+                        // Get new token
+                        val fbId = task.result
                         PreferenceHelper.put("fbId", fbId)
                         GlobalApplication.deviceInfoUpload(content) //서버에 id 등록
                     })
